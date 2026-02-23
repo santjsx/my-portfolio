@@ -240,7 +240,7 @@ const DISCORD_ID = "1284925883240550552";
 
 async function updateDiscordStatus() {
   try {
-    const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+    const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}?t=${Date.now()}`);
     const resData = await response.json();
 
     if (!resData.success) return;
@@ -280,27 +280,33 @@ async function updateDiscordStatus() {
             </div>
           </a>
         `;
-    } else {
+    } else if (genericActivities.length === 0) {
+      // 2. No Spotify, No Activities -> Technical Standby Fallback
+      const status = data.discord_status || 'offline';
+      const onDesktop = data.active_on_discord_desktop;
+      const onMobile = data.active_on_discord_mobile;
+
+      let statusLabel = "STANDBY";
+      if (status === "online") {
+        statusLabel = onDesktop ? "ONLINE" : (onMobile ? "MOBILE" : "ONLINE");
+      } else if (status === "dnd") {
+        statusLabel = "BUSY";
+      } else if (status === "idle") {
+        statusLabel = "IDLE";
+      } else {
+        statusLabel = "OFFLINE";
+      }
+
       newHTML += `
-          <a href="https://open.spotify.com/user/your_spotify_id" target="_blank" class="spotify-pill paused">
-            <div class="spotify-vinyl">
-              <img src="https://i.scdn.co/image/ab67616d0000b273b50c4bb2112ac0c8fe4de039" class="spotify-cover" alt="Album Art">
-              <div class="vinyl-hole"></div>
-            </div>
-            <div class="spotify-pill-info">
-              <span class="spotify-pill-track">Not playing</span>
-              <div class="spotify-pill-bottom">
-                <span class="spotify-pill-artist">Spotify</span>
-                <div class="spotify-equalizer" style="display:none;">
-                  <span></span><span></span><span></span>
-                </div>
-              </div>
-            </div>
-            <div class="spotify-pill-brand">
-              <i class="ri-spotify-fill"></i>
-            </div>
-          </a>
-        `;
+        <div class="idle-pill-minimal">
+          <div class="status-indicator">
+            <div class="status-pulse ${status}"></div>
+          </div>
+          <div class="status-text">
+            <span class="status-label">${statusLabel}</span>
+          </div>
+        </div>
+      `;
     }
 
     // 2. Generic Activities (VS Code, etc)
