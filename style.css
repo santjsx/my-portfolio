@@ -293,7 +293,6 @@ h4 em {
   display: flex;
   visibility: hidden;
   opacity: 0;
-  pointer-events: none;
   /* GSAP will animate visibility/opacity */
 }
 
