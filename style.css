@@ -1005,11 +1005,83 @@ h4 em {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--transition-slow);
+  transition: transform var(--transition-slow), filter var(--transition-base);
 }
 
 .about-image-wrapper:hover .about-image {
   transform: scale(1.05);
+  filter: brightness(1.1) contrast(1.1);
+}
+
+/* Technical Scanner & Corner Locks */
+.scanner-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.3;
+  z-index: 5;
+  pointer-events: none;
+  display: none;
+  /* Shown via GSAP */
+  animation: scannerLoop 3s infinite linear;
+}
+
+@keyframes scannerLoop {
+  0% {
+    top: -2%;
+  }
+
+  100% {
+    top: 102%;
+  }
+}
+
+.corner-locks {
+  position: absolute;
+  inset: 1.5rem;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.lock {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border: 1px solid var(--accent);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* Each span forms 2 sides of a corner square */
+.lock.tl {
+  top: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+}
+
+.lock.tr {
+  top: 0;
+  right: 0;
+  border-left: none;
+  border-bottom: none;
+}
+
+.lock.bl {
+  bottom: 0;
+  left: 0;
+  border-right: none;
+  border-top: none;
+}
+
+.lock.br {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+  border-top: none;
 }
 
 .about-image-caption {
