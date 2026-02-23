@@ -445,8 +445,8 @@ h4 em {
 .mobile-nav-links {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 20vh;
+  gap: 1.2rem;
+  margin-top: 12vh;
 }
 
 .mobile-link {
@@ -471,6 +471,44 @@ h4 em {
 
 .mobile-link:hover span {
   color: var(--accent);
+}
+
+/* Mobile Live Status Integration */
+.mobile-status-section {
+  margin-top: 2.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.mobile-status-section .footer-label {
+  margin-bottom: 1.2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  opacity: 0.7;
+}
+
+.mobile-status-section .activity-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Adjusting cards specifically for the mobile overlay */
+.mobile-status-section .spotify-pill,
+.mobile-status-section .generic-activity-pill,
+.mobile-status-section .idle-pill-minimal {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.8rem;
+  width: 100%;
+  max-width: 320px;
+}
+
+[data-theme="light"] .mobile-status-section .spotify-pill,
+[data-theme="light"] .mobile-status-section .generic-activity-pill,
+[data-theme="light"] .mobile-status-section .idle-pill-minimal {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.05);
 }
 
 .mobile-nav-footer {

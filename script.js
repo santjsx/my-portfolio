@@ -91,6 +91,7 @@ const nav = document.getElementById("main-nav");
 const navToggle = document.getElementById("nav-toggle");
 const mobileOverlay = document.getElementById("mobile-nav-overlay");
 const mobileLinks = document.querySelectorAll(".mobile-link span");
+const mobileStatusSection = document.querySelector(".mobile-status-section");
 const mobileFooter = document.querySelector(".mobile-nav-footer");
 
 let isMenuOpen = false;
@@ -110,12 +111,18 @@ menuTl
     stagger: 0.1,
     ease: "power4.out"
   }, "-=0.2")
+  .to(mobileStatusSection, {
+    opacity: 1,
+    y: 0,
+    duration: 0.5,
+    ease: "power2.out"
+  }, "-=0.4")
   .to(mobileFooter, {
     opacity: 1,
     y: 0,
     duration: 0.5,
     ease: "power2.out"
-  }, "-=0.6");
+  }, "-=0.4");
 
 // Navbar background on scroll
 window.addEventListener("scroll", () => {
@@ -247,9 +254,10 @@ async function updateDiscordStatus() {
 
     const data = resData.data;
     const activities = data.activities || [];
-    const stackEl = document.getElementById('discord-activity-stack');
+    const footerStack = document.getElementById('discord-activity-stack');
+    const mobileStack = document.getElementById('mobile-activity-stack');
 
-    if (!stackEl) return;
+    if (!footerStack && !mobileStack) return;
 
     const genericActivities = activities.filter(a => a.type === 0 && a.name !== "Spotify" && a.id !== "custom");
 
@@ -335,7 +343,8 @@ async function updateDiscordStatus() {
       `;
     });
 
-    stackEl.innerHTML = newHTML;
+    if (footerStack) footerStack.innerHTML = newHTML;
+    if (mobileStack) mobileStack.innerHTML = newHTML;
 
   } catch (error) {
     console.warn("Could not fetch Discord status from Lanyard:", error);
