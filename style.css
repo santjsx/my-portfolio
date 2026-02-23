@@ -2010,6 +2010,34 @@ h4 em {
     grid-template-columns: 1fr;
     gap: 3rem;
   }
+
+  /* About Section Refinements */
+  .about-grid {
+    gap: 3rem;
+  }
+
+  .about-image-col {
+    padding-left: 0;
+    padding-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-image-wrapper {
+    aspect-ratio: 3 / 4;
+    width: 90%;
+    max-width: 400px;
+  }
+
+  .about-image-caption {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    margin-top: 1.5rem;
+    align-self: flex-end;
+    transform: none !important;
+  }
 }
 
 /* Micro */
