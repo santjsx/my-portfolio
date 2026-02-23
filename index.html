@@ -5,1262 +5,353 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png" />
-  <link rel="manifest" href="favicon_io/site.webmanifest" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <title>Santhosh Reddy — MERN Stack Dev</title>
+  <meta name="description"
+    content="Portfolio of Santhosh Reddy, MERN Stack Developer crafting modern web experiences with precision and elegance." />
 
-  <title>Santhosh's Portfolio</title>
-  <meta name="description" content="Portfolio of Santhosh Reddy, Aspiring Developer. GTA V Styled Interface." />
-
-  <!-- Fonts -->
+  <!-- Fonts: Playfair Display + Montserrat -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Chakra+Petch:wght@400;500;600;700&family=Fugaz+One&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Montserrat:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
 
   <!-- Remix Icons -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet" />
 
-  <!-- EmailJS SDK -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function () {
-      // Initialize EmailJS with your Public Key
-      emailjs.init("iK49Ep9iD7HFWMGNz");
-    })();
-  </script>
-
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Theme Loading Script (Prevents FOUC) -->
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            gta: {
-              black: "#0A0A0A",
-              charcoal: "#1A1A1A",
-              cyan: "#3498DB",
-              magenta: "#D4AF37",
-              yellow: "#F39C12",
-              green: "#2ECC71",
-              gray: "#888888",
-              red: "#E74C3C",
-              hudBlue: "#577083",
-              hudActive: "#89CFF0",
-              hudDark: "#0f171e",
-            },
-          },
-          fontFamily: {
-            display: ['"Archivo Black"', "sans-serif"],
-            hud: ['"Chakra Petch"', "sans-serif"],
-            price: ['"Fugaz One"', "cursive"],
-          },
-          spacing: {
-            128: "32rem",
-          },
-          backgroundImage: {
-            noise:
-              "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAA5OTkAAABMTExERERmZmYzMzMyMjJ43I3xAAAACHRSTlMAMwA3M3MzM3MzM3MzAAAAVklEQVQ4y2NgwA+YQYCBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYEA804AY6FxKtQAAAAASUVORK5CYII=')",
-          },
-        },
-      },
-    };
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
   </script>
 
-  <!-- Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- Lenis (Smooth Scrolling) -->
+  <!-- Smooth Scrolling & Animations -->
   <script src="https://unpkg.com/lenis@1.0.45/dist/lenis.min.js"></script>
-
-  <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body class="font-hud bg-gta-black selection:bg-gta-cyan selection:text-black">
-  <!-- Scanline Overlay -->
-  <div class="scanlines"></div>
+<body>
 
-  <!-- MISSION PASSED OVERLAY -->
-  <div id="mission-passed">
-    <div class="mp-title">MISSION PASSED</div>
-    <div class="mp-stats">
-      <div class="mp-stat-row">
-        <span>Message Status</span>
-        <span class="mp-stat-value">Sent</span>
-      </div>
-      <div class="mp-stat-row">
-        <span>Connection</span>
-        <span class="mp-stat-value">Secure</span>
-      </div>
-      <div class="mp-stat-row">
-        <span>Respect</span>
-        <span class="mp-stat-value text-gta-green">+ 100</span>
-      </div>
-      <div class="mp-completion">100% Completion</div>
-    </div>
-  </div>
-
-  <!-- Transition Overlay (Rockstar Style) - DISABLED -->
-  <div id="transition-overlay" style="display: none !important;">
-    <div class="overlay-content">
-      <!-- Central 'Rockstar' Badge (SR Personal Brand) -->
-      <div class="sr-badge-container">
-        <div class="sr-badge">
-          <span class="badg-initial">S</span>
-          <div class="badge-star-box">
-            <svg viewBox="0 0 24 24" class="badge-star">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                fill="currentColor" />
-            </svg>
-            <span class="badge-r">R</span>
-          </div>
-        </div>
-        <div class="badge-shadow"></div>
-      </div>
-
-      <!-- Bottom Right Loading Indicator -->
-      <div class="loading-footer">
-        <div class="gta-spinner"></div>
-        <p class="text-xl text-white font-price tracking-wider uppercase ml-4" id="loading-text">
-          Loading Story Mode...
-        </p>
-      </div>
-
-      <!-- Start Prompt (Center Bottom) -->
-      <p class="text-lg text-white font-hud tracking-widest uppercase center-prompt hidden animate-pulse"
-        id="start-prompt">
-        [ Click to Start ]
-      </p>
-    </div>
-  </div>
-
-  <!-- ===== UNIQUE NAVIGATION ===== -->
-  <!-- Desktop: Pause Menu Header -->
-  <nav
-    class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10 h-24 hidden md:flex items-center justify-between px-8">
-    <div class="flex flex-col relative group cursor-pointer w-[280px]" onclick="navigateTo('home')">
-      <span id="navbar-logo-text"
-        class="logo-style-1 text-2xl text-white uppercase tracking-tight transition-all duration-300 block whitespace-nowrap">Santhosh
-        <span class="text-gta-green">Reddy</span></span>
-      <!-- Tooltip -->
-      <div
-        class="absolute top-full left-0 mt-2 w-48 bg-black/90 border border-white/20 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 shadow-[0_0_15px_rgba(0,0,0,0.8)] backdrop-blur-md">
-        <div class="absolute -top-1 left-4 w-2 h-2 bg-black border-t border-l border-white/20 transform rotate-45">
-        </div>
-        <div class="flex items-center gap-2 border-b border-white/10 pb-1 mb-1">
-          <div class="w-1.5 h-1.5 bg-gta-green rounded-full animate-pulse"></div>
-          <span class="font-hud text-[10px] text-gta-green uppercase tracking-widest">Status: Online</span>
-        </div>
-        <p class="font-hud text-xs text-white uppercase tracking-wide">
-          Santhosh: Says Hi
-        </p>
-      </div>
-      <span class="font-hud text-[10px] text-gray-400 uppercase tracking-widest">Hyderabad Vault [Online]</span>
-    </div>
-    <div class="flex items-center justify-center h-full pt-4 flex-1">
-      <a href="#home" class="nav-desktop-item active" data-page="home">
-        <div class="nav-hud-item">
-          <div class="nav-hud-bg"></div>
-          <div class="nav-hud-content">
-            <i data-lucide="crosshair" class="w-4 h-4"></i>
-            <span>Brief</span>
-          </div>
-        </div>
-      </a>
-      <a href="#about" class="nav-desktop-item" data-page="about">
-        <div class="nav-hud-item">
-          <div class="nav-hud-bg"></div>
-          <div class="nav-hud-content">
-            <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
-            <span>Stats</span>
-          </div>
-        </div>
-      </a>
-      <a href="#skills" class="nav-desktop-item" data-page="skills">
-        <div class="nav-hud-item">
-          <div class="nav-hud-bg"></div>
-          <div class="nav-hud-content">
-            <i data-lucide="zap" class="w-4 h-4"></i>
-            <span>Loadout</span>
-          </div>
-        </div>
-      </a>
-      <a href="#projects" class="nav-desktop-item" data-page="projects">
-        <div class="nav-hud-item">
-          <div class="nav-hud-bg"></div>
-          <div class="nav-hud-content">
-            <i data-lucide="briefcase" class="w-4 h-4"></i>
-            <span>Heists</span>
-          </div>
-        </div>
-      </a>
-      <a href="#contact" class="nav-desktop-item" data-page="contact">
-        <div class="nav-hud-item">
-          <div class="nav-hud-bg"></div>
-          <div class="nav-hud-content">
-            <i data-lucide="radio" class="w-4 h-4"></i>
-            <span>Contact</span>
-          </div>
-        </div>
-      </a>
-      <button onclick="openRapSheet()" class="nav-desktop-item operative-file">
-        <div class="nav-hud-item">
-          <div class="nav-hud-bg"></div>
-          <div class="nav-hud-content">
-            <i data-lucide="file-warning" class="w-4 h-4"></i>
-            <span>Operative File</span>
-          </div>
-        </div>
-      </button>
-    </div>
-    <div class="text-right flex flex-col items-end">
-      <div class="flex items-center gap-4 mb-1">
-        <!-- MUTE BUTTON DESKTOP -->
-        <button id="mute-btn-desktop"
-          class="text-gray-400 hover:text-white transition-colors flex items-center gap-2 uppercase font-hud text-xs tracking-widest"
-          title="Toggle Audio">
-          <span id="mute-text-desktop">Sound On</span>
-          <i data-lucide="volume-2" id="mute-icon-desktop" class="w-4 h-4"></i>
+  <!-- Navigation -->
+  <nav id="main-nav">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">Santhosh<span class="accent">.</span></a>
+      <div class="nav-links" id="nav-links">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#work" class="nav-link">Work</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+          <i class="ri-moon-line"></i>
         </button>
-        <span class="block font-price text-3xl text-gta-green tracking-wider">$ 500</span>
       </div>
-      <div class="flex justify-end gap-1">
-        <!-- Low wanted level / reputation -->
-        <svg class="w-4 h-4 star-filled" viewBox="0 0 24 24">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-        </svg>
-        <svg class="w-4 h-4 star-empty" viewBox="0 0 24 24">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-            stroke="gray" stroke-width="2" />
-        </svg>
-        <svg class="w-4 h-4 star-empty" viewBox="0 0 24 24">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-            stroke="gray" stroke-width="2" />
-        </svg>
-        <svg class="w-4 h-4 star-empty" viewBox="0 0 24 24">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-            stroke="gray" stroke-width="2" />
-        </svg>
-        <svg class="w-4 h-4 star-empty" viewBox="0 0 24 24">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-            stroke="gray" stroke-width="2" />
-        </svg>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Mobile: Help Message (GTA V Style) -->
-  <div id="gta-mobile-hint" class="gta-help-box hidden md:hidden">
-    <span class="help-icon">i</span>
-    <span class="help-text">Tap the <strong>PHONE</strong> to access menu</span>
-  </div>
-
-  <nav
-    class="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-md h-16 flex md:hidden items-center justify-between px-4 border-b border-white/10">
-    <div class="flex items-center w-[220px] cursor-pointer" onclick="navigateTo('home')">
-      <span id="mobile-logo-text"
-        class="logo-style-1 text-lg text-white uppercase tracking-tight transition-all duration-300 block whitespace-nowrap">Santhosh
-        <span class="text-gta-green">Reddy</span></span>
-    </div>
-    <div class="flex gap-4">
-      <!-- MUTE BUTTON MOBILE -->
-      <button id="mute-btn-mobile"
-        class="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center border border-gray-700 active:scale-90 transition-transform">
-        <i data-lucide="volume-2" id="mute-icon-mobile" class="w-5 h-5 text-white"></i>
-      </button>
-      <button id="ifruit-trigger"
-        class="relative w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center border border-gray-600 active:scale-90 transition-transform">
-        <div id="phone-notification-badge"
-          class="hidden absolute -top-1 -right-1 w-3 h-3 bg-gta-green rounded-full border border-black animate-pulse">
-        </div>
-        <i data-lucide="smartphone" class="w-5 h-5 text-white"></i>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle Menu">
+        <span></span>
+        <span></span>
       </button>
     </div>
   </nav>
 
-  <!-- Mobile: iFruit Overlay -->
-  <div id="ifruit-menu" class="ifruit-phone md:hidden">
-    <div class="ifruit-screen">
-      <!-- Notch with Camera & IR Sensor -->
-      <div class="ifruit-notch">
-        <div class="notch-sensors">
-          <!-- IR Sensor with blinking red light -->
-          <div class="ir-sensor">
-            <div class="ir-dot"></div>
-          </div>
-          <!-- Front Camera Lens -->
-          <div class="camera-lens">
-            <div class="camera-lens-inner">
-              <div class="camera-lens-core"></div>
-            </div>
-          </div>
-        </div>
+  <!-- Mobile Full-Screen Overlay -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+    <div class="mobile-nav-inner">
+      <div class="mobile-nav-links">
+        <a href="#about" class="mobile-link"><span>About</span></a>
+        <a href="#skills" class="mobile-link"><span>Skills</span></a>
+        <a href="#work" class="mobile-link"><span>Work</span></a>
+        <a href="#contact" class="mobile-link"><span>Contact</span></a>
       </div>
-      <!-- Realistic Status Bar -->
-      <div class="flex justify-between items-center text-white text-[10px] mb-6 px-3 font-sans">
-        <!-- Left: Time -->
-        <span id="ifruit-time" class="font-semibold tracking-wide">--:--</span>
-
-        <!-- Right: Signal, Network, Wifi, Battery -->
-        <div class="flex items-center gap-1.5">
-          <!-- Cellular Signal Bars -->
-          <div class="flex items-end gap-[1px] h-3">
-            <div class="w-[2px] h-[40%] bg-white rounded-sm"></div>
-            <div class="w-[2px] h-[60%] bg-white rounded-sm"></div>
-            <div class="w-[2px] h-[80%] bg-white rounded-sm"></div>
-            <div class="w-[2px] h-[100%] bg-white rounded-sm"></div>
-          </div>
-          <!-- Network Name -->
-          <span class="text-[9px] text-gray-300 tracking-wide font-semibold">Jio 5G+</span>
-          <!-- Wifi -->
-          <i data-lucide="wifi" class="w-3 h-3"></i>
-          <!-- Battery with Percentage -->
-          <div class="flex items-center gap-0.5">
-            <span id="ifruit-battery-text" class="text-[9px] text-gray-300">--%</span>
-            <div class="relative w-5 h-2.5 border border-white/60 rounded-sm flex items-center p-[1px]">
-              <div id="ifruit-battery-fill" class="h-full bg-green-400 rounded-sm" style="width: 80%;"></div>
-              <div class="absolute -right-[2px] top-1/2 -translate-y-1/2 w-[2px] h-1 bg-white/60 rounded-r-sm"></div>
-            </div>
-          </div>
+      <div class="mobile-nav-footer">
+        <p class="mobile-footer-title">Let's Connect</p>
+        <div class="mobile-socials">
+          <a href="https://github.com/santjsx" target="_blank">GitHub</a>
+          <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+          <a href="https://x.com/Santhoshh_void" target="_blank">Twitter</a>
         </div>
+        <button id="mobile-theme-toggle" class="mobile-theme-btn" aria-label="Toggle Dark Mode">
+          <i class="ri-moon-line"></i> Theme
+        </button>
       </div>
-
-      <!-- Quote Section -->
-      <div class="phone-quote-container">
-        <p class="phone-quote">"Ah shit, here we go again."</p>
-        <span class="phone-quote-author">— CJ, Grove Street</span>
-      </div>
-
-      <div class="grid grid-cols-3 gap-y-8 justify-items-center">
-        <div class="flex flex-col items-center gap-1" data-mobile-target="home">
-          <div class="app-icon bg-green-500">
-            <i data-lucide="home" class="w-8 h-8"></i>
-          </div>
-          <span class="app-label">Brief</span>
-        </div>
-        <div class="flex flex-col items-center gap-1" data-mobile-target="about">
-          <div class="app-icon bg-blue-500">
-            <i data-lucide="user" class="w-8 h-8"></i>
-          </div>
-          <span class="app-label">Stats</span>
-        </div>
-        <div class="flex flex-col items-center gap-1" data-mobile-target="skills">
-          <div class="app-icon bg-orange-500">
-            <i data-lucide="crosshair" class="w-8 h-8"></i>
-          </div>
-          <span class="app-label">Loadout</span>
-        </div>
-        <div class="flex flex-col items-center gap-1" data-mobile-target="projects">
-          <div class="app-icon bg-purple-600">
-            <i data-lucide="briefcase" class="w-8 h-8"></i>
-          </div>
-          <span class="app-label">Heists</span>
-        </div>
-        <div class="flex flex-col items-center gap-1" data-mobile-target="contact">
-          <div class="app-icon bg-gray-700">
-            <i data-lucide="mail" class="w-8 h-8"></i>
-          </div>
-          <span class="app-label">Contact</span>
-        </div>
-        <div class="flex flex-col items-center gap-1" onclick="openRapSheet()">
-          <div class="app-icon bg-blue-900">
-            <i data-lucide="file-warning" class="w-8 h-8"></i>
-          </div>
-          <span class="app-label">Operative File</span>
-        </div>
-        <div class="flex flex-col items-center gap-1" onclick="toggleIfruit()">
-          <div class="app-icon bg-red-600">
-            <i data-lucide="x" class="w-8 h-8"></i>
-          </div>
-          <span class="app-label">Close</span>
-        </div>
-      </div>
-      <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-1/3 h-1 bg-white/50 rounded-full"></div>
     </div>
   </div>
 
-  <!-- ===== HOME PAGE ===== -->
-  <div id="page-home" class="app-page active" style="padding-top: 0">
-    <section class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-grid">
-      <div class="absolute inset-0 bg-black/80 z-0"></div>
-      <div
-        class="absolute top-0 right-0 w-[500px] h-[500px] bg-gta-cyan/10 rounded-full blur-[100px] pointer-events-none">
-      </div>
-
-      <div
-        class="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 pt-20 pb-20 md:pt-32 md:pb-10">
-        <div class="text-left md:w-3/5">
-          <!-- CLEAN HERO LEFT SECTION -->
-          <div class="hero-clean">
-            <!-- Status Badge -->
-            <div class="status-badge-clean">
-              <span class="status-dot-clean"></span>
-              <span>Available for Hire</span>
-            </div>
-
-            <!-- Main Title -->
-            <h1 class="hero-title-clean">
-              Santhosh<br />
-              <span class="text-gta-green">Reddy</span>
-            </h1>
-
-            <!-- Role -->
-            <p class="hero-role-clean">MERN Stack Developer</p>
-
-            <!-- Brief Description -->
-            <p class="hero-desc-clean">
-              Building modern web experiences with React, Node.js, and MongoDB.
-              Ready to bring your ideas to life.
-            </p>
-
-            <!-- CTA Buttons -->
-            <div class="hero-cta-clean">
-              <button onclick="navigateTo('projects')" class="btn-primary-clean">
-                View Projects
-              </button>
-              <button onclick="navigateTo('contact')" class="btn-secondary-clean">
-                Get in Touch
-              </button>
-            </div>
-
-            <!-- Quick Links -->
-            <div class="hero-links-clean">
-              <a href="https://github.com/santjsx" target="_blank" class="hero-link-clean">
-                <i data-lucide="github" class="w-5 h-5"></i>
-              </a>
-              <a href="https://linkedin.com" target="_blank" class="hero-link-clean">
-                <i data-lucide="linkedin" class="w-5 h-5"></i>
-              </a>
-              <button onclick="openRapSheet()" class="hero-link-clean resume-link">
-                <i data-lucide="file-text" class="w-4 h-4"></i>
-                <span>Resume</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Stats Panel -->
-        <div class="md:w-2/5 w-full">
-          <div class="gta-stats-panel">
-            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-              <h3 class="font-display text-2xl text-white uppercase">
-                Character Stats
-              </h3>
-              <div
-                class="w-16 h-16 bg-black border-2 border-white/20 flex items-center justify-center rounded-full overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                <img src="images/download.gif" alt="Character Mugshot"
-                  class="w-full h-full object-cover grayscale contrast-125">
-              </div>
-            </div>
-
-            <div class="space-y-1">
-              <div class="gta-stat-row">
-                <span class="gta-stat-label">Special Ability</span>
-                <span class="gta-stat-value text-gta-yellow">Full Stack Dev</span>
-              </div>
-              <div class="gta-stat-row">
-                <span class="gta-stat-label">Stamina (Coding)</span>
-                <div class="w-32 h-2 bg-gray-800 rounded-full overflow-hidden">
-                  <div class="h-full bg-gta-green w-[90%]"></div>
-                </div>
-              </div>
-              <div class="gta-stat-row">
-                <span class="gta-stat-label">Shooting (Debug)</span>
-                <div class="w-32 h-2 bg-gray-800 rounded-full overflow-hidden">
-                  <div class="h-full bg-gta-cyan w-[85%]"></div>
-                </div>
-              </div>
-              <div class="gta-stat-row">
-                <span class="gta-stat-label">Driving (Delivery)</span>
-                <div class="w-32 h-2 bg-gray-800 rounded-full overflow-hidden">
-                  <div class="h-full bg-gta-magenta w-[80%]"></div>
-                </div>
-              </div>
-              <div class="gta-stat-row">
-                <span class="gta-stat-label">Location</span>
-                <span class="gta-stat-value">Hyderabad (Remote)</span>
-              </div>
-              <div class="gta-stat-row">
-                <span class="gta-stat-label">Status</span>
-                <span class="gta-stat-value text-gta-green animate-pulse">Available</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="absolute bottom-0 left-0 w-full border-t border-white/10 bg-black/50 backdrop-blur-md py-2 px-6 flex justify-between items-center text-[10px] uppercase tracking-[0.2em] text-gray-500 font-hud">
-        <span>V. 1.5</span><span>Hyderabad Network</span>
-      </div>
-    </section>
-  </div>
-
-  <!-- ===== ABOUT PAGE ===== -->
-  <div id="page-about" class="app-page">
-    <section class="py-12 relative bg-[#0e0e0e] min-h-screen flex items-center justify-center">
-      <div class="absolute inset-0 opacity-20" style="
-            background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
-          "></div>
-      <div class="max-w-6xl mx-auto w-full px-4 relative z-10">
-        <div class="flex justify-between items-end mb-2 border-b-2 border-white/20 pb-2">
-          <h2 class="font-display text-4xl text-white/80 uppercase tracking-tighter">
-            FIB SURVEILLANCE RECORD
-          </h2>
-          <span class="font-hud text-red-500 text-sm uppercase tracking-widest animate-pulse">Classified // Top
-            Secret</span>
-        </div>
-        <div class="dossier-box backdrop-blur-md overflow-hidden relative">
-          <div class="dossier-header">
-            <div class="flex items-center gap-4">
-              <i data-lucide="file-lock" class="text-gta-cyan w-6 h-6"></i><span
-                class="font-hud text-white uppercase tracking-widest">Subject ID: 839-21A // Santhosh Reddy</span>
-            </div>
-            <div class="font-hud text-gray-500 text-xs uppercase">
-              Last Updated: 14:02 PM
-            </div>
-          </div>
-          <!-- FIX: Ensuring grid splits correctly on Desktop (md:grid-cols-3) -->
-          <div class="grid grid-cols-1 md:grid-cols-3 border-t border-white/10">
-            <!-- Left Column: Profile (Takes 1 Col on Desktop) -->
-            <div
-              class="col-span-1 bg-black/20 border-r border-white/10 p-8 flex flex-col items-center justify-center md:justify-start">
-              <div class="profile-image-container shadow-lg shrink-0">
-                <img src="images/download.gif" class="absolute inset-0 w-full h-full object-cover"
-                  alt="Subject Mugshot" />
-                <div class="absolute bottom-0 w-full text-center bg-black/60 backdrop-blur-sm py-1 z-20">
-                  <span class="font-display text-xs uppercase tracking-widest text-white">Booking #49201</span>
-                </div>
-              </div>
-              <div class="w-full space-y-4 font-hud text-sm">
-                <div class="flex justify-between border-b border-white/10 pb-1">
-                  <span class="text-gray-500 uppercase">Alias</span><span class="text-gta-cyan uppercase">"The
-                    Architect"</span>
-                </div>
-                <div class="flex justify-between border-b border-white/10 pb-1">
-                  <span class="text-gray-500 uppercase">Experience</span>
-                  <span class="text-white uppercase">Rookie
-                    <span class="text-gta-yellow text-[10px] ml-1 tracking-widest">[ TRAINING ]</span></span>
-                </div>
-                <div class="flex justify-between border-b border-white/10 pb-1">
-                  <span class="text-gray-500 uppercase">Affiliation</span><span class="text-white uppercase">Freelance /
-                    Remote</span>
-                </div>
-                <div class="flex justify-between border-b border-white/10 pb-1">
-                  <span class="text-gray-500 uppercase">Status</span><span
-                    class="text-red-500 uppercase animate-pulse">Wanted for Hire</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Right Column: Report (Takes 2 Cols on Desktop) -->
-            <div class="col-span-2 p-8 bg-transparent">
-              <div class="mb-8">
-                <h3 class="font-display text-2xl text-white uppercase mb-4 flex items-center gap-2">
-                  <span class="w-2 h-6 bg-gta-yellow"></span>Psychiatric
-                  Evaluation
-                </h3>
-                <p class="dossier-text text-justify">
-                  Subject is a recent initiate into the world of code.
-                  Displays high aptitude for structural integrity (HTML) and
-                  visual styling (CSS). Currently undergoing intensive mental
-                  conditioning in logic gates (JavaScript).
-                  <br /><br />Profile suggests eagerness to prove worth.
-                  Highly motivated to execute missions. Lacks field experience
-                  but compensates with raw determination and clean syntax
-                  habits.
-                </p>
-              </div>
-              <div>
-                <h3 class="font-display text-xl text-white uppercase mb-4 flex items-center gap-2">
-                  <span class="w-2 h-6 bg-gta-magenta"></span>Skill Assessment
-                </h3>
-                <div class="space-y-3 font-display text-xs uppercase tracking-widest">
-                  <div class="flex items-center gap-4">
-                    <span class="w-24 text-gray-400 text-right">HTML5/CSS3</span>
-                    <div class="flex-1 h-4 bg-gray-800 flex gap-[2px]">
-                      <div class="stat-segment filled"></div>
-                      <div class="stat-segment filled"></div>
-                      <div class="stat-segment filled"></div>
-                      <div class="stat-segment filled"></div>
-                      <div class="stat-segment filled"></div>
-                    </div>
-                  </div>
-                  <div class="flex items-center gap-4">
-                    <span class="w-24 text-gray-400 text-right">JavaScript</span>
-                    <div class="flex-1 h-4 bg-gray-800 flex gap-[2px]">
-                      <div class="stat-segment filled"></div>
-                      <div class="stat-segment filled"></div>
-                      <div class="stat-segment"></div>
-                      <div class="stat-segment"></div>
-                      <div class="stat-segment"></div>
-                    </div>
-                  </div>
-                  <div class="flex items-center gap-4">
-                    <span class="w-24 text-gray-400 text-right">Frameworks</span>
-                    <div class="flex-1 h-4 bg-gray-800 flex gap-[2px]">
-                      <div class="stat-segment"></div>
-                      <div class="stat-segment"></div>
-                      <div class="stat-segment"></div>
-                      <div class="stat-segment"></div>
-                      <div class="stat-segment"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- ===== SKILLS PAGE (AMMU-NATION INVENTORY) ===== -->
-  <div id="page-skills" class="app-page">
-    <section
-      class="py-8 bg-gta-black relative overflow-hidden flex flex-col items-center justify-center min-h-[calc(100vh-100px)]">
-      <div class="absolute inset-0 bg-grid opacity-20 pointer-events-none"></div>
-
-      <div class="relative z-10 w-full max-w-7xl mx-auto px-4 text-center mb-4 pt-4">
-        <h2 class="font-display text-4xl md:text-5xl text-white uppercase tracking-tighter mb-2">
-          Tech <span class="text-gta-cyan">Loadout</span>
-        </h2>
-        <p class="text-gray-400 font-hud tracking-wide hidden md:block uppercase text-xs">
-          Scroll to cycle / Hover to equip
+  <!-- Hero -->
+  <section id="hero" class="hero">
+    <div class="hero-ambient"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <p class="hero-eyebrow anim-fade-up">MERN Stack Dev</p>
+        <h1 class="hero-title">
+          <span class="filled anim-fade-up">Santhosh<span class="accent-dot">.</span></span>
+          <span class="outline anim-fade-up">Reddy</span>
+        </h1>
+        <p class="hero-subtitle anim-fade-up">
+          Building modern web experiences with precision, creativity, and clean code. Designing for humans.
         </p>
+        <div class="hero-cta anim-fade-up">
+          <a href="#work" class="btn-primary">Selected Work</a>
+          <a href="#about" class="btn-outline">About Me</a>
+        </div>
       </div>
+      <div class="hero-meta anim-fade-up">
+        <div class="hero-scroll-indicator">
+          <div class="scroll-line"></div>
+          <span>Scroll</span>
+        </div>
+        <div class="hero-socials">
+          <a href="https://github.com/santjsx" target="_blank" aria-label="GitHub"><i class="ri-github-fill"></i></a>
+          <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="ri-linkedin-fill"></i></a>
+          <a href="https://x.com/Santhoshh_void?t=VnSvBxGt1TdMipcfmajRVA&s=09" target="_blank" aria-label="X"><i
+              class="ri-twitter-x-fill"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      <!-- Desktop Wheel (Hidden on Mobile) -->
-      <div class="scale-100 transition-transform duration-500 wheel-layout-wrapper">
-        <div class="wheel-container" id="wheel-container" data-lenis-prevent>
-          <svg viewBox="0 0 600 600" class="w-full h-full drop-shadow-2xl">
-            <defs>
-              <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="3" result="blur" />
-                <feComposite in="SourceGraphic" in2="blur" operator="over" />
-              </filter>
-            </defs>
-            <g id="wheel-slices"></g>
-            <g id="wheel-icons" class="pointer-events-none"></g>
-          </svg>
-
-          <!-- Center Info HUD -->
-          <div class="wheel-center">
-            <div id="center-content"
-              class="text-center w-full px-2 h-full hidden md:flex flex-col justify-center relative">
-              <div class="absolute inset-0 bg-black/40 rounded-full z-[-1]"></div>
-              <div class="mb-1">
-                <h3
-                  class="text-white font-display text-2xl uppercase tracking-tighter leading-none drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]"
-                  id="skill-category">
-                  SELECT
-                </h3>
-                <p class="text-gta-cyan font-bold font-hud text-[10px] tracking-widest uppercase mt-1" id="skill-count">
-                  -- / --
-                </p>
-              </div>
-
-              <!-- Attachments -->
-              <div id="skill-attachments" class="mb-2 flex flex-wrap justify-center gap-1">
-                <!-- Injected via JS -->
-              </div>
-
-              <div class="w-full px-4 space-y-1">
-                <div class="flex items-center gap-2 w-full">
-                  <span class="text-[8px] uppercase text-gray-500 font-bold w-6 text-right">EXP</span>
-                  <div class="h-1 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]">
-                    <div id="stat-bar-1" class="h-full bg-white w-0 transition-all duration-300"></div>
-                  </div>
-                </div>
-                <div class="flex items-center gap-2 w-full">
-                  <span class="text-[8px] uppercase text-gray-500 font-bold w-6 text-right">USE</span>
-                  <div class="h-1 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]">
-                    <div id="stat-bar-2" class="h-full bg-white w-0 transition-all duration-300"></div>
-                  </div>
-                </div>
-                <div class="flex items-center gap-2 w-full">
-                  <span class="text-[8px] uppercase text-gray-500 font-bold w-6 text-right">SPD</span>
-                  <div class="h-1 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]">
-                    <div id="stat-bar-3" class="h-full bg-white w-0 transition-all duration-300"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+  <!-- About -->
+  <section id="about" class="section about-section">
+    <div class="about-bg-text">01</div>
+    <div class="section-inner about-grid">
+      <div class="about-image-col anim-fade-up">
+        <div class="about-image-offset-box"></div>
+        <div class="about-image-wrapper" data-parallax="0.15">
+          <img src="images/about.jpg" alt="Santhosh Reddy" class="about-image" />
+        </div>
+        <div class="about-image-caption">
+          <span>Currently based in India</span>
+        </div>
+      </div>
+      <div class="about-text-col">
+        <div class="about-header-wrap anim-fade-up">
+          <p class="section-label">About</p>
+          <div class="about-diamond"></div>
+        </div>
+        <h2 class="section-heading anim-fade-up">Crafting digital<br />experiences with<br /><em>intention.</em></h2>
+        <p class="about-body lead anim-fade-up">
+          I'm a MERN stack developer passionate about building things that live on the internet.
+        </p>
+        <p class="about-body anim-fade-up">
+          I specialize in creating
+          thoughtful, human-centered web applications using React, Node.js,
+          and MongoDB. As a recent B.Tech graduate in Electronics & Communication
+          Engineering, I bring a unique hardware-meets-software perspective
+          to every project.
+        </p>
+        <p class="about-body anim-fade-up">
+          Currently available for freelance work and exciting opportunities.
+        </p>
+        <div class="about-details anim-fade-up">
+          <div class="detail-item">
+            <span class="detail-label">Location</span>
+            <span class="detail-value">Hyderabad, India</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Education</span>
+            <span class="detail-value">B.Tech ECE, 2025</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Status</span>
+            <span class="detail-value accent">Available for Hire</span>
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- Mobile Wheel Details (Visible on Mobile) -->
-      <div id="mobile-wheel-details" class="md:hidden w-full max-w-sm mx-auto mt-6 px-4">
-        <div class="bg-black/80 border border-white/10 p-4 rounded-lg backdrop-blur-md">
-          <div class="text-center mb-4">
-            <h3 class="text-white font-display text-2xl uppercase tracking-tighter" id="mobile-skill-category">
-              SELECT
-            </h3>
-            <p class="text-gta-cyan font-bold font-hud text-[10px] tracking-widest uppercase mt-1"
-              id="mobile-skill-count">
-              -- / --
-            </p>
+  <!-- Skills -->
+  <section id="skills" class="section skills-section">
+    <div class="section-inner skills-wrapper">
+      <div class="skills-intro anim-fade-up">
+        <p class="section-label">02. Expertise</p>
+        <h2 class="section-heading">Technical<br /><em>Arsenal.</em></h2>
+        <p class="skills-desc">A curated stack of tools and technologies, chosen for modern performance, scalability,
+          and premium developer experience.</p>
+      </div>
+
+      <div class="skills-index">
+        <div class="skill-row anim-fade-up">
+          <h3 class="skill-row-title">Frontend</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">React.js</span>
+            <span class="skill-tag">Next.js</span>
+            <span class="skill-tag">Tailwind CSS</span>
+            <span class="skill-tag">GSAP</span>
+            <span class="skill-tag">TypeScript</span>
+            <span class="skill-tag">Framer Motion</span>
           </div>
+        </div>
 
-          <div id="mobile-skill-attachments" class="mb-4 flex flex-wrap justify-center gap-1">
-            <!-- Injected via JS -->
+        <div class="skill-row anim-fade-up" style="transition-delay: 0.1s;">
+          <h3 class="skill-row-title">Backend</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">Express.js</span>
+            <span class="skill-tag">MongoDB</span>
+            <span class="skill-tag">PostgreSQL</span>
+            <span class="skill-tag">REST APIs</span>
+            <span class="skill-tag">GraphQL</span>
           </div>
+        </div>
 
-          <div class="space-y-2 font-hud">
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] uppercase text-gray-500 font-bold w-8 text-right">EXP</span>
-              <div class="h-2 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]">
-                <div id="mobile-stat-bar-1" class="h-full bg-white w-0 transition-all duration-300"></div>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] uppercase text-gray-500 font-bold w-8 text-right">USE</span>
-              <div class="h-2 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]">
-                <div id="mobile-stat-bar-2" class="h-full bg-white w-0 transition-all duration-300"></div>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] uppercase text-gray-500 font-bold w-8 text-right">SPD</span>
-              <div class="h-2 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]">
-                <div id="mobile-stat-bar-3" class="h-full bg-white w-0 transition-all duration-300"></div>
-              </div>
-            </div>
+        <div class="skill-row anim-fade-up" style="transition-delay: 0.2s;">
+          <h3 class="skill-row-title">Workflow</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Git & GitHub</span>
+            <span class="skill-tag">Redux Toolkit</span>
+            <span class="skill-tag">Zustand</span>
+            <span class="skill-tag">Figma UI/UX</span>
+            <span class="skill-tag">Vercel</span>
+            <span class="skill-tag">Jest</span>
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- Mobile Inventory Grid (Visible on Mobile) -->
-      <div class="hidden w-full px-4 pb-20 overflow-y-auto h-[calc(100vh-200px)]" data-lenis-prevent>
-        <div class="grid grid-cols-2 gap-4" id="mobile-inventory-grid">
-          <!-- Items injected via JS -->
+  <!-- Projects -->
+  <section id="work" class="section projects-section">
+    <div class="section-inner">
+      <div class="projects-header anim-fade-up">
+        <div>
+          <p class="section-label">03. Portfolio</p>
+          <h2 class="section-heading">Selected <em>Work</em></h2>
+        </div>
+        <div class="projects-header-desc">
+          <p class="hero-subtitle" style="margin: 0; max-width: 300px;">A collection of recent projects focusing on
+            seamless UX and robust engineering.</p>
         </div>
       </div>
-    </section>
-  </div>
 
-  <!-- ===== PROJECTS PAGE (Heist Board) ===== -->
-  <div id="page-projects" class="app-page">
-    <section class="py-12 bg-gta-black min-h-[calc(100vh-80px)]">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-12 border-b-4 border-white/10 pb-6">
-          <div>
-            <div class="flex items-center gap-3 mb-2">
-              <span class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></span><span
-                class="text-xs font-hud text-red-500 tracking-widest uppercase">Planning Board Active</span>
-            </div>
-            <h2 class="font-display text-5xl md:text-6xl text-white uppercase tracking-tighter">
-              Training Sims
-            </h2>
+      <div class="projects-list">
+        <!-- Project 1 -->
+        <a href="#" class="project-row anim-fade-up">
+          <div class="project-image-wrapper">
+            <img src="images/hustle_planner.png" alt="The Hustle Planner" class="project-image" />
           </div>
-          <div class="flex gap-4 mt-6 md:mt-0">
-            <button
-              class="px-4 py-1 text-sm font-hud uppercase tracking-widest text-black bg-white hover:bg-gta-cyan transition-colors">
-              All
-            </button>
-            <button
-              class="px-4 py-1 text-sm font-hud uppercase tracking-widest text-gray-400 hover:text-white transition-colors">
-              Drills
-            </button>
-            <button
-              class="px-4 py-1 text-sm font-hud uppercase tracking-widest text-gray-400 hover:text-white transition-colors">
-              Setups
-            </button>
+          <div class="project-title-group">
+            <h3 class="project-title">The Hustle Planner</h3>
+            <p class="project-desc">A productivity tool that brings focus to daily goals through clean management.</p>
           </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-          <!-- New Project: The Hustle Planner -->
-          <div
-            class="mission-card group relative bg-gta-charcoal border-2 border-white/10 overflow-hidden cursor-pointer"
-            onclick="window.open('https://the-hustle-planner.vercel.app/', '_blank')">
-            <div class="mission-stamp text-gta-green border-gta-green">PASSED</div>
-            <div class="h-56 bg-gray-800 relative overflow-hidden mission-image-overlay">
-              <img src="images/hustle_planner.png" alt="The Hustle Planner"
-                class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-              <div class="absolute top-2 left-2 font-hud text-[10px] text-white/50">
-                CAM_00A [REC]
-              </div>
-            </div>
-            <div class="p-6 bg-noise relative">
-              <div class="flex justify-between items-start mb-4">
-                <div>
-                  <span class="text-[10px] text-gta-cyan font-bold uppercase tracking-widest mb-1 block">Live
-                    Project</span>
-                  <h3 class="text-2xl font-display text-white uppercase group-hover:text-gta-cyan transition-colors">
-                    The Hustle Planner
-                  </h3>
-                </div>
-                <div
-                  class="w-10 h-10 bg-gta-cyan rounded-full flex items-center justify-center border-2 border-white/20 shadow-lg">
-                  <i data-lucide="external-link" class="w-6 h-6 text-black"></i>
-                </div>
-              </div>
-              <div class="grid grid-cols-2 gap-4 mb-6 border-t border-b border-white/10 py-3">
-                <div>
-                  <span class="block text-[9px] uppercase text-gray-500 font-bold">Status</span><span
-                    class="font-display text-lg text-gta-green tracking-wide">Live</span>
-                </div>
-                <div>
-                  <span class="block text-[9px] uppercase text-gray-500 font-bold">Access</span><span
-                    class="font-display text-lg text-white tracking-wide">Public</span>
-                </div>
-              </div>
-              <div class="flex justify-between items-center">
-                <div class="flex -space-x-2">
-                  <div class="w-8 h-8 rounded-full bg-gray-800 border border-gray-600 flex items-center justify-center">
-                    <i data-lucide="globe" class="w-4 h-4 text-gray-400"></i>
-                  </div>
-                </div>
-                <span class="text-xs font-hud uppercase text-gray-400 group-hover:text-white transition-colors">Visit
-                  Site &rarr;</span>
-              </div>
-            </div>
+          <div class="project-tags">
+            <span>React</span>
+            <span>Node.js</span>
+            <span>MongoDB</span>
           </div>
-          <!-- Mission 1 -->
-          <div
-            class="mission-card group relative bg-gta-charcoal border-2 border-white/10 overflow-hidden cursor-pointer"
-            onclick="window.open('https://hybrid-os.vercel.app/', '_blank')">
-            <div class="mission-stamp text-gta-green border-gta-green">
-              PASSED
-            </div>
-            <div class="h-56 bg-gray-800 relative overflow-hidden mission-image-overlay">
-              <img src="images/Hybrid_OS.png" alt="Hybrid OS"
-                class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-              <div class="absolute top-2 left-2 font-hud text-[10px] text-white/50">
-                CAM_01A [REC]
-              </div>
-            </div>
-            <div class="p-6 bg-noise relative">
-              <div class="flex justify-between items-start mb-4">
-                <div>
-                  <span class="text-[10px] text-gta-cyan font-bold uppercase tracking-widest mb-1 block">Live
-                    Project</span>
-                  <h3 class="text-2xl font-display text-white uppercase group-hover:text-gta-cyan transition-colors">
-                    Hybrid OS
-                  </h3>
-                </div>
-                <div
-                  class="w-10 h-10 bg-gta-magenta rounded-full flex items-center justify-center border-2 border-white/20 shadow-lg">
-                  <i data-lucide="medal" class="w-6 h-6 text-black"></i>
-                </div>
-              </div>
-              <div class="grid grid-cols-2 gap-4 mb-6 border-t border-b border-white/10 py-3">
-                <div>
-                  <span class="block text-[9px] uppercase text-gray-500 font-bold">Status</span><span
-                    class="font-display text-lg text-gta-green tracking-wide">Live</span>
-                </div>
-                <div>
-                  <span class="block text-[9px] uppercase text-gray-500 font-bold">Access</span><span
-                    class="font-display text-lg text-white tracking-wide">Public</span>
-                </div>
-              </div>
-              <div class="flex justify-between items-center">
-                <div class="flex -space-x-2">
-                  <div class="w-8 h-8 rounded-full bg-gray-800 border border-gray-600 flex items-center justify-center"
-                    title="HTML">
-                    <i data-lucide="code" class="w-4 h-4 text-gray-400"></i>
-                  </div>
-                  <div class="w-8 h-8 rounded-full bg-gray-800 border border-gray-600 flex items-center justify-center"
-                    title="CSS">
-                    <i data-lucide="palette" class="w-4 h-4 text-gray-400"></i>
-                  </div>
-                </div>
-                <span class="text-xs font-hud uppercase text-gray-400 group-hover:text-white transition-colors">Visit
-                  Site &rarr;</span>
-              </div>
-            </div>
-          </div>
-          <!-- Mission 2 -->
-          <div
-            class="mission-card group relative bg-gta-charcoal border-2 border-white/10 overflow-hidden cursor-pointer"
-            onclick="window.open('https://pdf-studio-sable.vercel.app/', '_blank')">
-            <div class="mission-stamp text-gta-cyan border-gta-cyan">NEW</div>
-            <div class="h-56 bg-gray-800 relative overflow-hidden mission-image-overlay">
-              <img src="images/pdf_studio.png" alt="Pdf Studio"
-                class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-              <div class="absolute top-2 left-2 font-hud text-[10px] text-white/50">
-                CAM_02B [REC]
-              </div>
-            </div>
-            <div class="p-6 bg-noise relative">
-              <div class="flex justify-between items-start mb-4">
-                <div>
-                  <span class="text-[10px] text-gta-cyan font-bold uppercase tracking-widest mb-1 block">Live
-                    Project</span>
-                  <h3 class="text-2xl font-display text-white uppercase group-hover:text-gta-cyan transition-colors">
-                    Pdf Studio
-                  </h3>
-                </div>
-                <div
-                  class="w-10 h-10 bg-gta-magenta rounded-full flex items-center justify-center border-2 border-white/20 shadow-lg">
-                  <i data-lucide="file-text" class="w-6 h-6 text-black"></i>
-                </div>
-              </div>
-              <div class="grid grid-cols-2 gap-4 mb-6 border-t border-b border-white/10 py-3">
-                <div>
-                  <span class="block text-[9px] uppercase text-gray-500 font-bold">Status</span><span
-                    class="font-display text-lg text-gta-green tracking-wide">Live</span>
-                </div>
-                <div>
-                  <span class="block text-[9px] uppercase text-gray-500 font-bold">Access</span><span
-                    class="font-display text-lg text-white tracking-wide">Public</span>
-                </div>
-              </div>
-              <div class="flex justify-between items-center">
-                <div class="flex -space-x-2">
-                  <div class="w-8 h-8 rounded-full bg-gray-800 border border-gray-600 flex items-center justify-center"
-                    title="Web App">
-                    <i data-lucide="globe" class="w-4 h-4 text-gray-400"></i>
-                  </div>
-                </div>
-                <span class="text-xs font-hud uppercase text-gray-400 group-hover:text-white transition-colors">Visit
-                  Site &rarr;</span>
-              </div>
-            </div>
-          </div>
-          <!-- Mission 4: Add New -->
-          <div
-            class="mission-card group relative bg-gta-charcoal/50 border-2 border-dashed border-white/10 overflow-hidden cursor-pointer flex flex-col items-center justify-center p-12 hover:border-gta-cyan hover:bg-gta-charcoal transition-all">
-            <i data-lucide="plus"
-              class="w-16 h-16 text-gray-600 mb-4 group-hover:text-gta-cyan group-hover:rotate-90 transition-all duration-500"></i>
-            <h3 class="font-display text-xl text-gray-500 uppercase group-hover:text-white text-center">
-              Plan New Heist
-            </h3>
-            <p class="text-[10px] font-hud text-gray-600 uppercase mt-2 group-hover:text-gta-cyan">
-              View Github Archive
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- ===== CONTACT PAGE ===== -->
-  <div id="page-contact" class="app-page">
-    <section class="py-12 bg-gta-black min-h-[calc(100vh-80px)] flex items-center relative overflow-hidden">
-      <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
-      <div class="absolute bottom-0 right-0 w-96 h-96 bg-gta-cyan/5 rounded-full blur-[100px] pointer-events-none">
-      </div>
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-        <div class="text-center mb-12">
-          <div class="inline-block bg-black/80 border border-gta-green px-4 py-1 transform -skew-x-12 mb-4">
-            <span
-              class="text-gta-green font-hud uppercase tracking-widest text-xs skew-x-12 flex items-center gap-2"><span
-                class="w-2 h-2 bg-gta-green rounded-full animate-pulse"></span>Secure Connection Established</span>
-          </div>
-          <h2 class="font-display text-5xl md:text-7xl text-white uppercase tracking-tighter">
-            Contact <span class="text-gta-cyan">Network</span>
-          </h2>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          <div
-            class="lg:col-span-2 bg-black/60 border-2 border-white/10 backdrop-blur-md p-6 relative group overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-1 bg-gta-magenta"></div>
-            <h3 class="font-display text-2xl text-white uppercase mb-6 flex items-center gap-2">
-              <i data-lucide="folder-open" class="w-6 h-6 text-gta-magenta"></i>
-              Dossier
-            </h3>
-            <div class="space-y-6 font-hud">
-              <div
-                class="flex items-center gap-4 p-4 bg-white/5 border border-white/5 hover:border-gta-magenta transition-colors cursor-pointer group/item">
-                <div
-                  class="w-10 h-10 bg-gta-magenta/10 border border-gta-magenta/30 flex items-center justify-center rounded text-gta-magenta group-hover/item:bg-gta-magenta group-hover/item:text-black transition-colors">
-                  <i data-lucide="mail" class="w-5 h-5"></i>
-                </div>
-                <div>
-                  <span class="block text-[10px] uppercase text-gray-500 tracking-widest">Email Frequency</span><span
-                    class="text-white text-sm tracking-wide">heysanthoshreddy@gmail.com</span>
-                </div>
-              </div>
-              <div
-                class="flex items-center gap-4 p-4 bg-white/5 border border-white/5 hover:border-gta-cyan transition-colors cursor-pointer group/item">
-                <div
-                  class="w-10 h-10 bg-gta-cyan/10 border border-gta-cyan/30 flex items-center justify-center rounded text-gta-cyan group-hover/item:bg-gta-cyan group-hover/item:text-black transition-colors">
-                  <i data-lucide="map-pin" class="w-5 h-5"></i>
-                </div>
-                <div>
-                  <span class="block text-[10px] uppercase text-gray-500 tracking-widest">Current Location</span><span
-                    class="text-white text-sm tracking-wide">Hyderabad India</span>
-                </div>
-              </div>
-              <!-- Socials Grid -->
-              <div class="grid grid-cols-3 gap-2 mt-8">
-                <a href="#"
-                  class="h-24 bg-blue-600/10 border border-blue-500/30 flex flex-col items-center justify-center gap-2 hover:bg-blue-600 hover:text-white transition-all group/icon">
-                  <i data-lucide="linkedin" class="w-6 h-6 text-blue-400 group-hover/icon:text-white"></i>
-                  <span class="text-[8px] uppercase tracking-widest">LinkedIn</span>
-                </a>
-                <a href="https://github.com/santjsx" target="_blank"
-                  class="h-24 bg-gray-800/50 border border-gray-600/50 flex flex-col items-center justify-center gap-2 hover:bg-white hover:text-black transition-all group/icon">
-                  <i data-lucide="github" class="w-6 h-6 text-white group-hover/icon:text-black"></i>
-                  <span class="text-[8px] uppercase tracking-widest">GitHub</span>
-                </a>
-                <a href="https://x.com/Santhoshh_void?t=VnSvBxGt1TdMipcfmajRVA&s=09" target="_blank"
-                  class="h-24 bg-gray-900/80 border border-gray-700/50 flex flex-col items-center justify-center gap-2 hover:bg-white hover:text-black transition-all group/icon">
-                  <i class="ri-twitter-x-fill text-2xl text-white group-hover/icon:text-black"></i>
-                  <span class="text-[8px] uppercase tracking-widest">X</span>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="lg:col-span-3 relative">
-            <div class="bg-black/80 border border-gta-cyan p-8 relative overflow-hidden h-full">
-              <div
-                class="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%] pointer-events-none opacity-20">
-              </div>
-              <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-                <div class="flex items-center gap-2">
-                  <i data-lucide="terminal" class="w-4 h-4 text-gta-cyan"></i><span
-                    class="text-gta-cyan font-hud text-xs uppercase tracking-widest">COMMS_UPLINK_V2.0</span>
-                </div>
-                <div class="flex gap-1">
-                  <div class="w-1.5 h-1.5 bg-gta-cyan rounded-full animate-pulse"></div>
-                  <div class="w-1.5 h-1.5 bg-gta-cyan/50 rounded-full"></div>
-                  <div class="w-1.5 h-1.5 bg-gta-cyan/20 rounded-full"></div>
-                </div>
-              </div>
-              <form class="space-y-6 relative z-10" id="contact-form">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div class="group">
-                    <label
-                      class="block text-[10px] uppercase tracking-widest text-gta-cyan mb-2 group-focus-within:text-white transition-colors">Codename</label><input
-                      type="text" required name="from_name"
-                      class="w-full bg-white/5 border-b-2 border-white/20 p-3 text-white font-hud focus:border-gta-cyan focus:bg-white/10 focus:outline-none transition-all placeholder-gray-600 text-sm uppercase"
-                      placeholder="ENTER IDENTITY" />
-                  </div>
-                  <div class="group">
-                    <label
-                      class="block text-[10px] uppercase tracking-widest text-gta-cyan mb-2 group-focus-within:text-white transition-colors">Frequency</label><input
-                      type="email" required name="from_email"
-                      class="w-full bg-white/5 border-b-2 border-white/20 p-3 text-white font-hud focus:border-gta-cyan focus:bg-white/10 focus:outline-none transition-all placeholder-gray-600 text-sm uppercase"
-                      placeholder="ENTER EMAIL" />
-                  </div>
-                </div>
-                <div class="group">
-                  <label
-                    class="block text-[10px] uppercase tracking-widest text-gta-cyan mb-2 group-focus-within:text-white transition-colors">Mission
-                    Parameters</label><textarea rows="5" required name="message"
-                    class="w-full bg-white/5 border-2 border-white/20 p-3 text-white font-hud focus:border-gta-cyan focus:bg-white/10 focus:outline-none transition-all placeholder-gray-600 text-sm uppercase"
-                    placeholder="BRIEFING DETAILS..."></textarea>
-                </div>
-                <button type="submit"
-                  class="w-full bg-gta-cyan text-black font-display text-xl uppercase py-4 hover:bg-white hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 relative overflow-hidden group">
-                  <span class="relative z-10 flex items-center justify-center gap-2">Transmit Data <i data-lucide="send"
-                      class="w-5 h-5"></i></span>
-                  <div
-                    class="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-500">
-                  </div>
-                </button>
-              </form>
-            </div>
-            <div class="absolute -top-2 -right-2 w-16 h-16 border-t-4 border-r-4 border-white/20"></div>
-            <div class="absolute -bottom-2 -left-2 w-16 h-16 border-b-4 border-l-4 border-white/20"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- Footer -->
-  <!-- Footer (Socials & Credits) -->
-  <footer class="bg-black border-t border-white/10 py-8 pb-24 md:pb-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-      <div class="flex items-center gap-4">
-        <a href="https://github.com/santjsx" target="_blank" class="hover:opacity-80 transition-opacity">
-          <span class="font-display text-2xl text-white">SR</span>
+          <div class="project-link-icon" aria-label="View Project"><i class="ri-arrow-right-up-line"></i></div>
         </a>
-        <!-- Cool Credits Integrated -->
-        <div class="dev-credits-container group/dev cursor-default">
-          <div class="dev-status-light"></div>
-          <span class="dev-label">ARCHITECT //</span>
-          <span class="dev-name glitch-hover" data-text="SANTHOSH REDDY">SANTHOSH REDDY</span>
 
-          <!-- HUD Corner Accents -->
-          <div
-            class="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-gta-cyan opacity-0 group-hover/dev:opacity-100 transition-opacity">
+        <!-- Project 2 -->
+        <a href="#" class="project-row anim-fade-up" style="transition-delay: 0.1s;">
+          <div class="project-image-wrapper">
+            <img src="images/Hybrid_OS.png" alt="Hybrid OS" class="project-image" />
           </div>
-          <div
-            class="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-gta-cyan opacity-0 group-hover/dev:opacity-100 transition-opacity">
+          <div class="project-title-group">
+            <h3 class="project-title">Hybrid OS</h3>
+            <p class="project-desc">A browser-based operating system experience blending nostalgia with modern web tech.
+            </p>
           </div>
-        </div>
-      </div>
-
-      <div class="flex gap-4 items-center">
-        <a href="https://github.com/santjsx" target="_blank"
-          class="text-gray-500 hover:text-white transition-colors flex items-center justify-center w-8 h-8"><i
-            data-lucide="github" class="w-5 h-5"></i></a>
-        <a href="https://x.com/Santhoshh_void?t=VnSvBxGt1TdMipcfmajRVA&s=09" target="_blank"
-          class="text-gray-500 hover:text-gta-cyan transition-colors flex items-center justify-center w-8 h-8"><i
-            class="ri-twitter-x-fill text-lg"></i></a>
-        <a href="#" target="_blank"
-          class="text-gray-500 hover:text-gta-magenta transition-colors flex items-center justify-center w-8 h-8"><i
-            data-lucide="linkedin" class="w-5 h-5"></i></a>
-        <a href="https://discord.com/users/1284925883240550552" target="_blank"
-          class="text-gray-500 hover:text-[#5865F2] transition-colors flex items-center justify-center w-8 h-8"><i
-            class="ri-discord-fill text-xl"></i></a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ===== OPERATIVE FILE OVERLAY ===== -->
-  <div id="rap-sheet-overlay" class="hidden">
-    <div class="rap-sheet-container">
-      <!-- Loading State -->
-      <div id="rap-sheet-loading" class="rap-sheet-loading hidden">
-        <div class="loading-spinner"></div>
-        <p class="font-hud text-gta-cyan tracking-widest animate-pulse">ACCESSING IAA SECURE ARCHIVES...</p>
-      </div>
-
-      <!-- Watermark -->
-      <div class="rap-sheet-watermark">CLASSIFIED</div>
-
-      <div class="rap-sheet-header">
-        <div class="flex items-center gap-4">
-          <div class="lspd-badge">
-            <svg viewBox="0 0 100 100" class="w-16 h-16">
-              <path d="M50 5 L90 25 L90 75 L50 95 L10 75 L10 25 Z" fill="none" stroke="white" stroke-width="2" />
-              <text x="50" y="50" text-anchor="middle" fill="white" font-size="12" font-family="Arial">IAA</text>
-            </svg>
+          <div class="project-tags">
+            <span>HTML5</span>
+            <span>CSS3</span>
+            <span>JS</span>
           </div>
-          <div>
-            <h2 class="text-4xl font-display text-white tracking-tighter">OPERATIVE FILE</h2>
-            <p class="text-gta-red font-hud tracking-widest uppercase text-sm">Classified // Personnel Division</p>
+          <div class="project-link-icon" aria-label="View Project"><i class="ri-arrow-right-up-line"></i></div>
+        </a>
+
+        <!-- Project 3 -->
+        <a href="#" class="project-row anim-fade-up" style="transition-delay: 0.2s;">
+          <div class="project-image-wrapper">
+            <img src="images/pdf_studio.png" alt="PDF Studio" class="project-image" />
           </div>
-        </div>
-        <button onclick="closeRapSheet()" class="text-white hover:text-gta-red transition-colors">
-          <i data-lucide="x" class="w-8 h-8"></i>
-        </button>
-      </div>
-
-      <div class="rap-sheet-body" data-lenis-prevent>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <!-- Mugshot Section -->
-          <div class="col-span-1">
-            <div class="mugshot-box">
-              <img src="images/download.gif" alt="Suspect" class="w-full h-auto grayscale contrast-125">
-              <div class="mugshot-overlay">
-                <span>IAA</span>
-                <span>49201</span>
-                <span>2025</span>
-              </div>
-            </div>
-            <div class="mt-4 space-y-2 font-hud text-sm uppercase">
-              <div class="flex justify-between border-b border-white/10 pb-1">
-                <span class="text-gray-400">Name</span>
-                <span class="text-white">Santhosh Reddy</span>
-              </div>
-              <div class="flex justify-between border-b border-white/10 pb-1">
-                <span class="text-gray-400">Alias</span>
-                <span class="text-gta-red">"The Architect"</span>
-              </div>
-
-              <div class="flex justify-between border-b border-white/10 pb-1">
-                <span class="text-gray-400">Status</span>
-                <span class="text-gta-red animate-pulse">WANTED</span>
-              </div>
-            </div>
+          <div class="project-title-group">
+            <h3 class="project-title">PDF Studio</h3>
+            <p class="project-desc">A streamlined document toolkit for seamless PDF manipulation directly in the
+              browser.</p>
           </div>
-
-          <!-- Record Details -->
-          <div class="col-span-2 space-y-6">
-            <!-- Prior Convictions (Experience) -->
-            <div class="record-section">
-              <h3 class="record-title">
-                <i data-lucide="siren" class="w-5 h-5"></i>
-                PRIOR CONVICTIONS (EXPERIENCE)
-              </h3>
-              <div class="space-y-4">
-                <div class="crime-entry">
-                  <div class="flex justify-between items-start mb-1">
-                    <span class="text-gta-cyan font-bold uppercase">Fresh Recruit (2025 Batch)</span>
-                    <span class="text-gray-400 text-xs">2025</span>
-                  </div>
-                  <p class="text-gray-300 text-sm leading-relaxed">
-                    <span class="text-gta-red font-bold">[ STATUS ]</span> Ready for Deployment.
-                    <br>
-                    <span class="text-gta-red font-bold">[ OBJECTIVE ]</span> Seeking first major assignment in Full
-                    Stack Development.
-                  </p>
-                </div>
-
-                <div class="crime-entry">
-                  <div class="flex justify-between items-start mb-1">
-                    <span class="text-gta-cyan font-bold uppercase">Independent Operations</span>
-                    <span class="text-gray-400 text-xs">2024 - Present</span>
-                  </div>
-                  <p class="text-gray-300 text-sm leading-relaxed">
-                    <span class="text-gta-red font-bold">[ ACTIVITY ]</span> Building High-Level Web Applications.
-                    <br>
-                    <span class="text-gta-red font-bold">[ EVIDENCE ]</span> Developed complex portfolios and full-stack
-                    projects using modern tech stacks.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Known Associates (Education) -->
-            <div class="record-section">
-              <h3 class="record-title">
-                <i data-lucide="school" class="w-5 h-5"></i>
-                INSTITUTIONAL RECORD (EDUCATION)
-              </h3>
-              <div class="crime-entry">
-                <div class="flex justify-between items-start mb-1">
-                  <span class="text-gta-cyan font-bold uppercase">Bachelor of Technology</span>
-                  <span class="text-gray-400 text-xs">2021 - 2025</span>
-                </div>
-                <p class="text-gray-300 text-sm">
-                  Electronics & Communication Engineering
-                  <br>
-                  <span class="text-gray-500 text-xs">Graduated 2025. Re-purposed hardware logic for software
-                    dominance.</span>
-                </p>
-              </div>
-            </div>
-
-            <!-- Modus Operandi (Skills) -->
-            <div class="record-section">
-              <h3 class="record-title">
-                <i data-lucide="crosshair" class="w-5 h-5"></i>
-                MODUS OPERANDI (SKILLS)
-              </h3>
-              <div class="flex flex-wrap gap-2">
-                <span class="skill-tag">JavaScript (ES6+)</span>
-                <span class="skill-tag">React.js</span>
-                <span class="skill-tag">Node.js</span>
-                <span class="skill-tag">MongoDB</span>
-                <span class="skill-tag">Tailwind CSS</span>
-                <span class="skill-tag">Python</span>
-                <span class="skill-tag">Git</span>
-                <span class="skill-tag">REST APIs</span>
-              </div>
-            </div>
+          <div class="project-tags">
+            <span>React</span>
+            <span>PDF.js</span>
           </div>
-        </div>
+          <div class="project-link-icon" aria-label="View Project"><i class="ri-arrow-right-up-line"></i></div>
+        </a>
       </div>
-
-      <div class="rap-sheet-footer">
-        <button onclick="window.print()" class="btn-gta btn-gta-primary text-sm py-2 px-4">
-          <i data-lucide="printer" class="w-4 h-4 inline mr-2"></i> PRINT RECORD
-        </button>
-        <div class="text-right">
-          <p class="text-[10px] text-gray-500 uppercase tracking-widest">IAA DATABASE V.4.0.2</p>
-          <p class="text-[10px] text-gta-red uppercase tracking-widest">EYES ONLY // TOP SECRET</p>
-        </div>
-      </div>
-    </div>
+  </section>
+  <div class="more-work anim-fade-up">
+    <a href="https://github.com/santjsx" target="_blank" class="btn-outline">
+      View All on GitHub <i class="ri-github-fill"></i>
+    </a>
   </div>
-  <script src="script.js"></script>
-</body>
+  </section>
 
-</html>
+  <!-- Contact & Footer -->
+  <section id="contact" class="section contact-ultra-minimal">
+    <div class="contact-ultra-inner">
+      <p class="section-label anim-fade-up">Have an idea?</p>
+
+      <a href="mailto:heysanthoshreddy@gmail.com" class="massive-contact-link anim-fade-up">
+        <span>Let's Talk</span>
+        <i class="ri-arrow-right-up-line"></i>
+      </a>
+
+      <div class="minimal-footer-grid anim-fade-up">
+        <!-- Discord Activity Widget -->
+        <div class="footer-col activity-col">
+          <span class="footer-label">Live Status</span>
+          <div class="activity-stack" id="discord-activity-stack">
+            <a href="https://open.spotify.com/user/your_spotify_id" target="_blank" class="spotify-pill paused"
+              id="spotify-widget">
+              <div class="spotify-vinyl">
+                <img src="https://i.scdn.co/image/ab67616d0000b273b50c4bb2112ac0c8fe4de039" class="spotify-cover"
+                  alt="Album Art" id="spotify-cover">
+                <div class="vinyl-hole"></div>
+              </div>
+              <div class="spotify-pill-info">
+                <span class="spotify-pill-track" id="spotify-track">Nightcall</span>
+                <div class="spotify-pill-bottom">
+                  <span class="spotify-pill-artist" id="spotify-artist">Kavinsky</span>
+                  <div class="spotify-equalizer" id="spotify-equalizer">
+                    <span></span><span></span><span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="spotify-pill-brand">
+                <i class="ri-spotify-fill"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <span class="footer-label">Local Time</span>
+          <p class="footer-value time-display" id="local-time">Loading...</p>
+        </div>
+
+        <div class="footer-col">
+          <span class="footer-label">Socials</span>
+          <div class="footer-social-links">
+            <a href="https://github.com/santjsx" target="_blank">GitHub</a>
+            <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+            <a href="https://x.com/Santhoshh_void?t=VnSvBxGt1TdMipcfmajRVA&s=09" target="_blank">X / Twitter</a>
+            <a href="https://discord.com/users/1284925883240550552" target="_blank">Discord</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <span class="footer-label">Status</span>
+          <p class="footer-value availability"><span class="status-dot"></span> Available for freelance</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
 </body>
 
 </html>
