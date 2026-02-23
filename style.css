@@ -43,6 +43,31 @@
   --nav-bg: rgba(26, 26, 26, 0.92);
 }
 
+/* --- Cinematic Theme Switch View Transitions --- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+  /* Start circle clip path at the mouse coordinates passed from JS */
+  clip-path: circle(0px at var(--x, 50%) var(--y, 50%));
+  animation: themeReveal 1s ease-in-out forwards;
+}
+
+@keyframes themeReveal {
+  to {
+    /* Expand circle to cover entire screen */
+    clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
+  }
+}
+
 /* Base */
 *,
 *::before,
@@ -68,7 +93,7 @@ body {
   line-height: 1.7;
   letter-spacing: 0.02em;
   overflow-x: hidden;
-  transition: background-color var(--transition-base), color var(--transition-base);
+  /* Removed background transition so View Transitions API takes over */
 }
 
 ::selection {

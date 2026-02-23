@@ -39,27 +39,46 @@ if (currentTheme === 'dark') {
   mobileThemeToggle.innerHTML = '<i class="ri-sun-line"></i> Theme';
 }
 
-function toggleTheme() {
+function executeThemeSwitch() {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   if (isDark) {
     document.documentElement.setAttribute('data-theme', 'light');
     localStorage.setItem('theme', 'light');
     themeIcon.className = 'ri-moon-line';
-    mobileThemeIcon.className = 'ri-moon-line';
-    mobileThemeToggle.innerHTML = '<i class="ri-moon-line"></i> Theme';
+    if (mobileThemeIcon) mobileThemeIcon.className = 'ri-moon-line';
+    if (mobileThemeToggle) mobileThemeToggle.innerHTML = '<i class="ri-moon-line"></i> Theme';
   } else {
     document.documentElement.setAttribute('data-theme', 'dark');
     localStorage.setItem('theme', 'dark');
     themeIcon.className = 'ri-sun-line';
-    mobileThemeIcon.className = 'ri-sun-line';
-    mobileThemeToggle.innerHTML = '<i class="ri-sun-line"></i> Theme';
+    if (mobileThemeIcon) mobileThemeIcon.className = 'ri-sun-line';
+    if (mobileThemeToggle) mobileThemeToggle.innerHTML = '<i class="ri-sun-line"></i> Theme';
   }
+}
+
+function toggleTheme(e) {
+  // Fallback for browsers that don't support View Transitions API
+  if (!document.startViewTransition) {
+    executeThemeSwitch();
+    return;
+  }
+
+  // Get the click position, or fallback to center of screen
+  const x = e?.clientX ?? window.innerWidth / 2;
+  const y = e?.clientY ?? window.innerHeight / 2;
+
+  document.documentElement.style.setProperty('--x', `${x}px`);
+  document.documentElement.style.setProperty('--y', `${y}px`);
+
+  document.startViewTransition(() => {
+    executeThemeSwitch();
+  });
 }
 
 themeToggle.addEventListener('click', toggleTheme);
 if (mobileThemeToggle) {
-  mobileThemeToggle.addEventListener('click', () => {
-    toggleTheme();
+  mobileThemeToggle.addEventListener('click', (e) => {
+    toggleTheme(e);
     // Close menu after toggling on mobile
     if (typeof toggleMobileMenu === 'function' && isMenuOpen) {
       toggleMobileMenu();
