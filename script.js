@@ -138,12 +138,17 @@ function toggleMobileMenu() {
     // Close
     menuTl.reverse();
     navToggle.classList.remove("active");
+    gsap.to(navToggle, { scale: 1, duration: 0.4, ease: "power2.out" });
     document.body.style.overflow = "";
     isMenuOpen = false;
   } else {
     // Open
     menuTl.play();
     navToggle.classList.add("active");
+    gsap.fromTo(navToggle,
+      { scale: 0.9 },
+      { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.5)" }
+    );
     document.body.style.overflow = "hidden";
     isMenuOpen = true;
   }
