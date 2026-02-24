@@ -1299,6 +1299,114 @@ h4 em {
   color: var(--accent);
 }
 
+/* Pull-Quote */
+.about-pullquote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  font-style: italic;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin: 0 0 2.5rem 0;
+  padding: 0 0 0 2rem;
+  border-left: 2px solid var(--accent);
+  position: relative;
+  max-width: 90%;
+}
+
+.pullquote-mark {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  color: var(--accent);
+  position: absolute;
+  top: -1.2rem;
+  left: -0.5rem;
+  opacity: 0.3;
+  line-height: 1;
+}
+
+/* Stats Ribbon */
+.about-stats-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 3rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.stat-number {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.stat-number.accent {
+  color: var(--accent);
+}
+
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.stat-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* Marquee Band */
+.marquee-band {
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  padding: 1.8rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.marquee-track {
+  display: flex;
+  gap: 2rem;
+  animation: marqueeScroll 25s linear infinite;
+  white-space: nowrap;
+  width: max-content;
+}
+
+.marquee-track span {
+  font-family: var(--font-serif);
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-33.33%);
+  }
+}
+
 /* Expertise */
 .skills-section {
   background: var(--bg-secondary);
