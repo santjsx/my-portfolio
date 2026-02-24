@@ -156,13 +156,13 @@ function initParallax() {
 
 function getIdleContext() {
   const hour = new Date().getHours();
-  if (hour >= 0 && hour < 6) return { label: "DEEP SLEEP", desc: "Dreaming in code — back by morning", icon: "💤" };
-  if (hour >= 6 && hour < 9) return { label: "WAKING UP", desc: "Booting up with caffeine...", icon: "☕" };
-  if (hour >= 9 && hour < 12) return { label: "OFFLINE", desc: "Probably in a lecture or building something", icon: "📚" };
-  if (hour >= 12 && hour < 14) return { label: "BREAK", desc: "Refueling — back shortly", icon: "🍜" };
-  if (hour >= 14 && hour < 18) return { label: "AWAY", desc: "Heads-down on something. Check back soon", icon: "⚡" };
-  if (hour >= 18 && hour < 21) return { label: "OFFLINE", desc: "Recharging creativity", icon: "🌆" };
-  return { label: "WINDING DOWN", desc: "Wrapping up for the night", icon: "🌙" };
+  if (hour >= 0 && hour < 6) return { label: "DEEP SLEEP", desc: "System hibernating — back by morning" };
+  if (hour >= 6 && hour < 9) return { label: "BOOTING UP", desc: "Initializing with caffeine..." };
+  if (hour >= 9 && hour < 12) return { label: "OFFLINE", desc: "Probably in a lecture or building something" };
+  if (hour >= 12 && hour < 14) return { label: "ON BREAK", desc: "Refueling — back shortly" };
+  if (hour >= 14 && hour < 18) return { label: "AWAY", desc: "Heads-down on something. Check back soon" };
+  if (hour >= 18 && hour < 21) return { label: "OFFLINE", desc: "Recharging creativity" };
+  return { label: "WINDING DOWN", desc: "Wrapping up for the night" };
 }
 
 async function updateDiscordStatus() {
@@ -185,7 +185,7 @@ async function updateDiscordStatus() {
             <div class="status-pulse ${dotClass}"></div>
           </div>
           <div class="idle-pill-content">
-            <span class="status-label">${ctx.icon} ${ctx.label}</span>
+            <span class="status-label">${ctx.label}</span>
             <span class="idle-pill-desc">${ctx.desc}</span>
           </div>
         </div>`;
