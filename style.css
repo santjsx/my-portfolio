@@ -763,18 +763,99 @@ h4 em {
   max-width: 850px;
 }
 
-.hero-eyebrow {
-  display: inline-block;
-  font-size: 0.75rem;
+/* Rotating Availability Badge */
+.hero-badge {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+
+.badge-svg {
+  width: 100%;
+  height: 100%;
+  animation: badgeRotate 20s linear infinite;
+}
+
+.badge-text {
+  font-family: 'JetBrains Mono', 'Montserrat', monospace;
+  font-size: 7.8px;
   font-weight: 600;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 2rem;
-  padding: 0.4rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  backdrop-filter: blur(10px);
+  fill: var(--text-secondary);
+}
+
+.badge-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgeRotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes badgePulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.3);
+  }
+}
+
+/* Decorative Accent Lines */
+.hero-line {
+  position: absolute;
+  background: var(--border);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-line-h {
+  top: 35%;
+  left: var(--macro-margin);
+  width: 120px;
+  height: 1px;
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.hero-line-v {
+  top: 15%;
+  right: calc(var(--macro-margin) + 3rem);
+  width: 1px;
+  height: 140px;
+  transform-origin: top center;
+  transform: scaleY(0);
+}
+
+/* Hero title parallax */
+.hero-title,
+.hero-ambient {
+  will-change: transform;
+}
+
+/* Staggered letter spans */
+.hero-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(60px) rotate(5deg);
+  transform-origin: bottom left;
 }
 
 .hero-title {

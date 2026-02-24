@@ -134,6 +134,39 @@ function initScrollAnimations() {
     });
   });
 
+  // --- Hero Letter Split Animation ---
+  document.querySelectorAll("[data-hero-split]").forEach(span => {
+    const text = span.childNodes;
+    const frag = document.createDocumentFragment();
+    text.forEach(node => {
+      if (node.nodeType === 3) { // text node
+        node.textContent.split("").forEach(char => {
+          const s = document.createElement("span");
+          s.className = "hero-letter";
+          s.textContent = char;
+          frag.appendChild(s);
+        });
+      } else {
+        frag.appendChild(node.cloneNode(true)); // preserve accent-dot span
+      }
+    });
+    span.innerHTML = "";
+    span.appendChild(frag);
+  });
+
+  const heroLetters = document.querySelectorAll(".hero-letter");
+  if (heroLetters.length > 0) {
+    gsap.to(heroLetters, {
+      opacity: 1, y: 0, rotate: 0,
+      duration: 0.8, stagger: 0.04,
+      ease: "power4.out", delay: 0.3
+    });
+  }
+
+  // --- Accent Lines Draw-In ---
+  gsap.to(".hero-line-h", { scaleX: 1, duration: 1.2, ease: "power4.inOut", delay: 0.6 });
+  gsap.to(".hero-line-v", { scaleY: 1, duration: 1.2, ease: "power4.inOut", delay: 0.8 });
+
   // Technical Scanner Animation
   const scannerWrap = document.querySelector(".about-image-wrapper");
   if (scannerWrap) {
@@ -145,6 +178,35 @@ function initScrollAnimations() {
       .set(line, { display: "block" }, "-=0.2")
       .fromTo(line, { opacity: 0 }, { opacity: 0.3, duration: 1 }, "<");
   }
+}
+
+// --- Hero Mouse Parallax ---
+function initHeroParallax() {
+  if ("ontouchstart" in window) return; // disable on touch devices
+
+  const hero = document.querySelector(".hero");
+  const title = document.querySelector(".hero-title");
+  const ambient = document.querySelector(".hero-ambient");
+  if (!hero || !title) return;
+
+  let ticking = false;
+  hero.addEventListener("mousemove", (e) => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const rect = hero.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      gsap.to(title, { x: x * 15, y: y * 10, duration: 0.8, ease: "power2.out" });
+      if (ambient) gsap.to(ambient, { x: x * -30, y: y * -20, duration: 1.2, ease: "power2.out" });
+      ticking = false;
+    });
+  });
+
+  hero.addEventListener("mouseleave", () => {
+    gsap.to(title, { x: 0, y: 0, duration: 0.6, ease: "power2.out" });
+    if (ambient) gsap.to(ambient, { x: 0, y: 0, duration: 0.8, ease: "power2.out" });
+  });
 }
 
 function initParallax() {
@@ -271,7 +333,7 @@ updateLocalTime();
 window.addEventListener("load", () => {
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   window.scrollTo(0, 0);
-  requestAnimationFrame(() => { initScrollAnimations(); initParallax(); ScrollTrigger.refresh(); });
+  requestAnimationFrame(() => { initScrollAnimations(); initParallax(); initHeroParallax(); ScrollTrigger.refresh(); });
 });
 
 window.addEventListener("resize", () => { ScrollTrigger.refresh(); });
