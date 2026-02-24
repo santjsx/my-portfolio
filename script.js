@@ -214,6 +214,23 @@ function initParallax() {
   });
 }
 
+function initBentoSpotlight() {
+  if ("ontouchstart" in window) return; // Disable complex tracking on touch devices for performance
+
+  const cards = document.querySelectorAll(".bento-card");
+
+  cards.forEach(card => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      card.style.setProperty("--mouse-x", `${x}px`);
+      card.style.setProperty("--mouse-y", `${y}px`);
+    }, { passive: true });
+  });
+}
+
 /* Contact Section Animations */
 function initContactAnimations() {
   // Split text reveal for contact headlines
@@ -396,7 +413,7 @@ updateLocalTime();
 window.addEventListener("load", () => {
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   window.scrollTo(0, 0);
-  requestAnimationFrame(() => { initScrollAnimations(); initParallax(); initHeroParallax(); initContactAnimations(); ScrollTrigger.refresh(); });
+  requestAnimationFrame(() => { initScrollAnimations(); initParallax(); initHeroParallax(); initBentoSpotlight(); initContactAnimations(); ScrollTrigger.refresh(); });
 });
 
 window.addEventListener("resize", () => { ScrollTrigger.refresh(); });
