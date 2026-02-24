@@ -284,10 +284,17 @@ function initMagneticConstellation() {
   });
 
   // Magnetic Hover
-  wrapper.addEventListener("mousemove", (e) => {
-    if (window.scrollY > (container.offsetTop + 300)) return; // Disable hover if scrolling down into grid
+  window.addEventListener("mousemove", (e) => {
+    // Disable hover interaction if scrolling down into the grid alignment phase
+    if (window.scrollY > (container.offsetTop + 100)) return;
 
+    // Calculate mouse relative to the exact position of the sticky wrapper on screen
     const rect = wrapper.getBoundingClientRect();
+
+    // Check if the mouse is actually inside the wrapper area first
+    if (e.clientX < rect.left || e.clientX > rect.right ||
+      e.clientY < rect.top || e.clientY > rect.bottom) return;
+
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
 
@@ -295,6 +302,7 @@ function initMagneticConstellation() {
       const nodeRect = node.getBoundingClientRect();
       const nodeCenterX = nodeRect.left - rect.left + nodeRect.width / 2;
       const nodeCenterY = nodeRect.top - rect.top + nodeRect.height / 2;
+
       const dist = Math.sqrt(Math.pow(nodeCenterX - mouseX, 2) + Math.pow(nodeCenterY - mouseY, 2));
 
       if (dist < 200) {

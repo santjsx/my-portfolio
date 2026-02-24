@@ -1618,6 +1618,8 @@ h4 em {
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
+  /* Allow scroll to pass through the massive empty space */
 }
 
 [data-theme="light"] .constellation-wrapper {
@@ -1658,6 +1660,8 @@ h4 em {
 
   cursor: crosshair;
   user-select: none;
+  pointer-events: auto;
+  /* Restore interaction for hover/repel */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
 
   will-change: transform, left, top;
