@@ -1652,23 +1652,52 @@ h4 em {
 
 .project-row {
   display: grid;
-  grid-template-columns: 240px 1.5fr 1fr auto;
-  gap: 3rem;
+  grid-template-columns: 2.5rem 200px 1.5fr 1fr auto;
+  gap: 2rem;
   align-items: center;
-  padding: 2.5rem 1rem;
+  padding: 2rem 0;
   border-bottom: 1px solid var(--border);
-  transition: background-color var(--transition-base), padding-left var(--transition-base);
+  transition: padding-left var(--transition-base);
   position: relative;
   text-decoration: none;
 }
 
-.project-row:hover {
-  background-color: rgba(255, 255, 255, 0.02);
-  padding-left: 2rem;
+/* Full-width accent line wipe */
+.project-row::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-[data-theme="dark"] .project-row:hover {
-  background-color: var(--bg-card);
+.project-row:hover::after {
+  transform: scaleX(1);
+}
+
+.project-row:hover {
+  padding-left: 1rem;
+}
+
+/* Numbered index */
+.project-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  transition: color var(--transition-base), opacity var(--transition-base);
+}
+
+.project-row:hover .project-num {
+  color: var(--accent);
+  opacity: 1;
 }
 
 .project-image-wrapper {
@@ -1683,23 +1712,23 @@ h4 em {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
 }
 
 .project-row:hover .project-image {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .project-title-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .project-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 2vw, 2.2rem);
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
   color: var(--text-primary);
   line-height: 1.1;
   margin: 0;
@@ -1712,48 +1741,71 @@ h4 em {
 
 .project-desc {
   font-family: var(--font-sans);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
   line-height: 1.6;
-  max-width: 400px;
+  max-width: 350px;
   margin: 0;
+}
+
+/* Project meta: tags + year */
+.project-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  align-items: flex-start;
 }
 
 .project-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .project-tags span {
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-secondary);
-  padding: 0.4rem 1rem;
+  padding: 0.25rem 0.6rem;
   border: 1px solid var(--border);
-  border-radius: 100px;
+  border-radius: 2px;
+  transition: border-color var(--transition-base), color var(--transition-base);
+}
+
+.project-row:hover .project-tags span {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.project-year {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--text-secondary);
+  opacity: 0.5;
 }
 
 .project-link-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 1px solid var(--border);
   color: var(--text-primary);
-  font-size: 1.2rem;
+  font-size: 1rem;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background var(--transition-base), color var(--transition-base), border-color var(--transition-base);
 }
 
 .project-row:hover .project-link-icon {
   transform: rotate(45deg);
-  background: var(--text-primary);
+  background: var(--accent);
   color: var(--bg-primary);
-  border-color: var(--text-primary);
+  border-color: var(--accent);
 }
 
 .more-work {
