@@ -215,110 +215,127 @@ function initParallax() {
 }
 
 function initMagneticConstellation() {
+  const container = document.querySelector('.skills-scroll-container');
   const wrapper = document.querySelector('.constellation-wrapper');
   const nodes = document.querySelectorAll('.skill-node');
+
   if (!wrapper || nodes.length === 0) return;
 
-  // Configuration for constellation physics
-  const floatRange = 30; // Max px they drift normally
-  const floatDuration = 4; // Seconds per float cycle
+  if (window.innerWidth <= 768) {
+    gsap.to(nodes, { opacity: 1, duration: 1, stagger: 0.1 });
+    return;
+  }
 
-  const repelRadius = 200; // Radius of mouse influence
-  const repelForce = 80;   // Max px they get pushed away
+  const wrapperWidth = wrapper.offsetWidth;
+  const wrapperHeight = wrapper.offsetHeight;
 
-  const wrapperRect = wrapper.getBoundingClientRect();
-  const nodeData = [];
+  const nodeSize = 100;
+  const gap = 30;
+  const columns = Math.min(6, Math.floor((wrapperWidth * 0.8) / (nodeSize + gap)));
+  const rows = Math.ceil(nodes.length / columns);
 
-  // 1. Initial Spread & Float Animation
-  nodes.forEach((node) => {
-    // Generate random constraints within wrapper (adding padding so they don't clip off edge)
-    const nodeWidth = node.offsetWidth;
-    const nodeHeight = node.offsetHeight;
+  const gridWidth = (columns * nodeSize) + ((columns - 1) * gap);
+  const gridHeight = (rows * nodeSize) + ((rows - 1) * gap);
+  const startX = (wrapperWidth - gridWidth) / 2;
+  const startY = (wrapperHeight - gridHeight) / 2;
 
-    // We want them somewhat scattered but avoiding extreme edges
-    const randomX = gsap.utils.random(10, 80); // percentage 10% to 90%
-    const randomY = gsap.utils.random(10, 80);
+  const layouts = [];
+  const floatTweens = [];
 
-    // Set base position natively
-    node.style.left = `${randomX}%`;
-    node.style.top = `${randomY}%`;
+  nodes.forEach((node, index) => {
+    // Initial Scatter (Percentages to adapt to resize)
+    const randomLeft = gsap.utils.random(10, 90);
+    const randomTop = gsap.utils.random(15, 85);
 
-    // Scale based on data-weight attached to HTML
-    const weight = parseFloat(node.getAttribute("data-weight")) || 1;
-    gsap.set(node, { scale: weight });
+    node.style.left = `${randomLeft}%`;
+    node.style.top = `${randomTop}%`;
 
-    // Staggered reveal
-    gsap.to(node, { opacity: parseFloat(weight) >= 1.2 ? 1 : 0.8, duration: 1, delay: gsap.utils.random(0, 0.5) });
+    // Target Grid Position (Pixels relative to wrapper top-left)
+    const col = index % columns;
+    const row = Math.floor(index / columns);
 
-    // Continuous random drift loop (the "floating" state)
-    gsap.to(node, {
-      x: `random(-${floatRange}, ${floatRange})`,
-      y: `random(-${floatRange}, ${floatRange})`,
-      rotation: `random(-10, 10)`,
-      duration: `random(${floatDuration - 1}, ${floatDuration + 2})`,
+    // We target the center of the grid tile because the node has translate(-50%, -50%)
+    const targetLeftPX = startX + (col * (nodeSize + gap)) + (nodeSize / 2);
+    const targetTopPX = startY + (row * (nodeSize + gap)) + (nodeSize / 2);
+
+    layouts.push({
+      node,
+      targetLeft: targetLeftPX,
+      targetTop: targetTopPX,
+      weight: parseFloat(node.getAttribute("data-weight")) || 1
+    });
+
+    gsap.set(node, { scale: layouts[index].weight });
+    gsap.to(node, { opacity: parseFloat(layouts[index].weight) > 1.2 ? 1 : 0.8, duration: 1.5, delay: gsap.utils.random(0, 0.5) });
+
+    // Chaotic Float
+    const floatTween = gsap.to(node, {
+      x: `random(-50, 50)`,
+      y: `random(-50, 50)`,
+      rotation: `random(-25, 25)`,
+      duration: `random(3, 7)`,
       ease: "sine.inOut",
       yoyo: true,
       repeat: -1,
-      repeatRefresh: true // pick new random values each loop
+      repeatRefresh: true
     });
 
-    // Store node data for repel math
-    nodeData.push({ element: node, initialX: randomX, initialY: randomY });
+    floatTweens.push(floatTween);
   });
 
-  // 2. Mouse Interaction: Magnetic Repel Effect
-  // If on mobile (touch), skip the intensive math listener
-  if ("ontouchstart" in window) return;
-
+  // Magnetic Hover
   wrapper.addEventListener("mousemove", (e) => {
+    if (window.scrollY > (container.offsetTop + 300)) return; // Disable hover if scrolling down into grid
+
     const rect = wrapper.getBoundingClientRect();
-    // Mouse X/Y relative to the wrapper center
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
 
     nodes.forEach((node) => {
-      // Get current center of node
       const nodeRect = node.getBoundingClientRect();
       const nodeCenterX = nodeRect.left - rect.left + nodeRect.width / 2;
       const nodeCenterY = nodeRect.top - rect.top + nodeRect.height / 2;
+      const dist = Math.sqrt(Math.pow(nodeCenterX - mouseX, 2) + Math.pow(nodeCenterY - mouseY, 2));
 
-      // Calculate distance between mouse and node center
-      const dx = nodeCenterX - mouseX;
-      const dy = nodeCenterY - mouseY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      // If mouse is within the repel radius of the node
-      if (distance < repelRadius) {
-        // Calculate force vector
-        const force = (repelRadius - distance) / repelRadius; // 1 at center, 0 at edge
-
-        // Push node away based on angle and force
-        const pushX = (dx / distance) * (repelForce * force);
-        const pushY = (dy / distance) * (repelForce * force);
-
-        // Animate the repel
+      if (dist < 200) {
+        const force = (200 - dist) / 200;
         gsap.to(node, {
-          x: `+=${pushX}`,
-          y: `+=${pushY}`,
-          duration: 0.4,
+          x: `+=${((nodeCenterX - mouseX) / dist) * (80 * force)}`,
+          y: `+=${((nodeCenterY - mouseY) / dist) * (80 * force)}`,
+          duration: 0.6,
           ease: "power2.out",
-          overwrite: "auto" // cancel ongoing drift momentarily
-        });
-      } else {
-        // If outside radius, ensure drifting resumes smoothly.
-        // We don't necessarily need to force them back since repeatRefresh handles it, 
-        // but adding a subtle return to near-origin prevents clustering over time.
-        gsap.to(node, {
-          x: `random(-${floatRange}, ${floatRange})`,
-          y: `random(-${floatRange}, ${floatRange})`,
-          duration: `random(${floatDuration - 1}, ${floatDuration + 2})`,
-          ease: "sine.inOut",
-          overwrite: "auto",
-          delay: 0.5 // Wait before resuming drift loop
+          overwrite: "auto"
         });
       }
     });
   }, { passive: true });
+
+  // Grid Scroll Scrub
+  const masterScrub = gsap.timeline({
+    scrollTrigger: {
+      trigger: container,
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 1, // Tighter scrub mapping
+      onEnter: () => floatTweens.forEach(t => t.pause()), // Freeze physics to stop fight
+      onLeaveBack: () => floatTweens.forEach(t => t.play()), // Re-enable physics when scrolling back up
+    }
+  });
+
+  layouts.forEach((data) => {
+    masterScrub.to(data.node, {
+      left: `${data.targetLeft}px`,
+      top: `${data.targetTop}px`,
+      x: 0, // Wipe the random float translates
+      y: 0,
+      rotation: 0,
+      scale: 1,
+      opacity: 1,
+      background: "rgba(255, 255, 255, 0.05)",
+      borderColor: "rgba(255, 255, 255, 0.2)",
+      ease: "power2.inOut"
+    }, 0);
+  });
 }
 
 /* Contact Section Animations */

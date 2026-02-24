@@ -1597,15 +1597,22 @@ h4 em {
   color: var(--text-secondary);
 }
 
-/* --- Magnetic Floating Constellation --- */
-.constellation-wrapper {
-  position: relative;
+/* --- Magnetic Floating Constellation to Grid --- */
+.skills-scroll-container {
   width: 100%;
-  min-height: 80vh;
+  height: 400vh;
+  /* Massive scroll space for the GSAP timeline scrub */
+  position: relative;
+}
+
+.constellation-wrapper {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  /* Lock to viewport height during scroll */
   overflow: hidden;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.01);
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  background: var(--bg-primary);
   /* The radial gradient acts as a subtle background map */
   background-image: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 60%);
   display: flex;
@@ -1614,15 +1621,121 @@ h4 em {
 }
 
 [data-theme="light"] .constellation-wrapper {
-  background: rgba(0, 0, 0, 0.01);
-  border-color: rgba(0, 0, 0, 0.05);
+  background: var(--bg-primary);
   background-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.02) 0%, transparent 60%);
 }
 
 .skill-node {
   position: absolute;
-  /* Start hidden, JS will reveal them after mapping coordinates */
   opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* Premium App Block Design */
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+
+  border-radius: 20px;
+  /* Square block look */
+
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  cursor: crosshair;
+  user-select: none;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+
+  will-change: transform, left, top;
+  transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+  z-index: 10;
+}
+
+.skill-icon {
+  font-size: 2rem;
+  color: var(--accent);
+  transition: transform 0.4s ease, color 0.4s ease;
+}
+
+[data-theme="light"] .skill-node {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Glow Themes based on data attributes */
+.skill-node[data-glow="frontend"] {
+  --node-glow: rgba(59, 130, 246, 0.3);
+  --node-border: rgba(59, 130, 246, 0.5);
+}
+
+.skill-node[data-glow="backend"] {
+  --node-glow: rgba(16, 185, 129, 0.3);
+  --node-border: rgba(16, 185, 129, 0.5);
+}
+
+.skill-node[data-glow="workflow"] {
+  --node-glow: rgba(236, 72, 153, 0.3);
+  --node-border: rgba(236, 72, 153, 0.5);
+}
+
+.skill-node:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--node-border);
+  box-shadow: 0 0 25px var(--node-glow), 0 12px 40px rgba(0, 0, 0, 0.4);
+  z-index: 20;
+}
+
+.skill-node:hover .skill-icon {
+  transform: scale(1.1);
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .skill-node:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* Mobile Responsiveness for Constellation */
+@media (max-width: 768px) {
+  .skills-scroll-container {
+    height: auto;
+    /* Disable massive scrub on mobile */
+  }
+
+  .constellation-wrapper {
+    position: relative;
+    height: auto;
+    min-height: auto;
+    padding: 3rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .skill-node {
+    /* Reset from absolute to static flow for mobile fallback */
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    opacity: 1;
+    /* Force visibility */
+  }
 }
 
 /* --- Selected Work / Projects - Editorial Showcase Setup --- */
