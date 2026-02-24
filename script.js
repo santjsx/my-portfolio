@@ -253,8 +253,20 @@ async function updateDiscordStatus() {
   } catch (err) { console.warn("Lanyard fetch failed:", err); }
 }
 
-setInterval(updateDiscordStatus, 10000);
+setInterval(updateDiscordStatus, 5000);
 updateDiscordStatus();
+
+// Real-time local clock (IST)
+function updateLocalTime() {
+  const el = document.getElementById("local-time");
+  if (!el) return;
+  el.textContent = new Date().toLocaleTimeString("en-IN", {
+    hour: "2-digit", minute: "2-digit", second: "2-digit",
+    hour12: true, timeZone: "Asia/Kolkata"
+  });
+}
+setInterval(updateLocalTime, 1000);
+updateLocalTime();
 
 window.addEventListener("load", () => {
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
