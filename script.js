@@ -154,6 +154,17 @@ function initParallax() {
   });
 }
 
+function getIdleContext() {
+  const hour = new Date().getHours();
+  if (hour >= 0 && hour < 6) return { label: "DEEP SLEEP", desc: "Dreaming in code — back by morning", icon: "💤" };
+  if (hour >= 6 && hour < 9) return { label: "WAKING UP", desc: "Booting up with caffeine...", icon: "☕" };
+  if (hour >= 9 && hour < 12) return { label: "OFFLINE", desc: "Probably in a lecture or building something", icon: "📚" };
+  if (hour >= 12 && hour < 14) return { label: "BREAK", desc: "Refueling — back shortly", icon: "🍜" };
+  if (hour >= 14 && hour < 18) return { label: "AWAY", desc: "Heads-down on something. Check back soon", icon: "⚡" };
+  if (hour >= 18 && hour < 21) return { label: "OFFLINE", desc: "Recharging creativity", icon: "🌆" };
+  return { label: "WINDING DOWN", desc: "Wrapping up for the night", icon: "🌙" };
+}
+
 async function updateDiscordStatus() {
   const footerStack = document.getElementById("discord-activity-stack");
   const mobileStack = document.getElementById("mobile-activity-stack");
@@ -161,25 +172,72 @@ async function updateDiscordStatus() {
     const response = await fetch(`https://api.lanyard.rest/v1/users/1284925883240550552`);
     const data = await response.json();
     if (!data.success) return;
+
+    const discordStatus = data.data.discord_status; // online, idle, dnd, offline
     const activities = data.data.activities.filter(a => a.type !== 4);
+
     if (activities.length === 0) {
-      const idleHTML = `<div class="idle-pill-minimal"><div class="status-dot-wrap"><div class="status-dot ${data.data.discord_status}"></div></div><div class="idle-info"><span class="idle-label">SYSTEM ${data.data.discord_status.toUpperCase()}</span><span class="idle-desc">Ready for new challenges</span></div></div>`;
+      const ctx = getIdleContext();
+      const dotClass = discordStatus === "offline" ? "" : discordStatus;
+      const idleHTML = `
+        <div class="idle-pill-minimal">
+          <div class="status-indicator">
+            <div class="status-pulse ${dotClass}"></div>
+          </div>
+          <div class="idle-pill-content">
+            <span class="status-label">${ctx.icon} ${ctx.label}</span>
+            <span class="idle-pill-desc">${ctx.desc}</span>
+          </div>
+        </div>`;
       if (footerStack) footerStack.innerHTML = idleHTML;
       if (mobileStack) mobileStack.innerHTML = idleHTML;
       return;
     }
+
     let newHTML = '';
     activities.forEach(activity => {
       if (activity.name === 'Spotify') {
-        newHTML += `<div class="spotify-pill"><div class="spotify-vinyl"><img src="${activity.assets.large_image.replace('spotify:', 'https://i.scdn.co/image/')}" alt="Album Art" class="vinyl-img"></div><div class="spotify-pill-info"><span class="spotify-pill-track">${activity.details}</span><span class="spotify-pill-artist">${activity.state}</span></div></div>`;
+        const albumArt = activity.album_art_url
+          || (activity.assets?.large_image?.replace('spotify:', 'https://i.scdn.co/image/'))
+          || '';
+        newHTML += `
+          <div class="spotify-pill">
+            <div class="spotify-vinyl">
+              <img src="${albumArt}" alt="Album Art" class="vinyl-img">
+            </div>
+            <div class="spotify-pill-info">
+              <span class="spotify-pill-track">${activity.details || 'Unknown Track'}</span>
+              <div class="spotify-pill-bottom">
+                <span class="spotify-pill-artist">${activity.state || 'Unknown Artist'}</span>
+              </div>
+            </div>
+          </div>`;
       } else {
-        const imageUrl = activity.assets?.large_image ? (activity.assets.large_image.startsWith('mp:external') ? `https://media.discordapp.net/external/${activity.assets.large_image.split('https/')[1]}` : `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png`) : null;
-        newHTML += `<div class="generic-activity-pill">${imageUrl ? `<div class="generic-activity-icon"><img src="${imageUrl}" alt="Activity"></div>` : ''}<div class="spotify-pill-info"><span class="spotify-pill-track">${activity.name}</span><span class="spotify-pill-artist">${activity.details || ''}</span></div></div>`;
+        let imageUrl = null;
+        if (activity.assets?.large_image) {
+          if (activity.assets.large_image.startsWith('mp:external')) {
+            const extPath = activity.assets.large_image.split('mp:external/')[1];
+            imageUrl = extPath ? `https://media.discordapp.net/external/${extPath}` : null;
+          } else {
+            imageUrl = `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png`;
+          }
+        }
+        const details = activity.details || activity.state || '';
+        newHTML += `
+          <div class="generic-activity-pill">
+            ${imageUrl ? `<div class="generic-activity-icon"><img src="${imageUrl}" alt="${activity.name}"></div>` : ''}
+            <div class="spotify-pill-info">
+              <span class="spotify-pill-track">${activity.name}</span>
+              <div class="spotify-pill-bottom">
+                <span class="spotify-pill-artist">${details}</span>
+              </div>
+            </div>
+          </div>`;
       }
     });
     if (footerStack) footerStack.innerHTML = newHTML;
     if (mobileStack) mobileStack.innerHTML = newHTML;
-  } catch (err) { console.warn("Lanyard fetch failed", err); }
+  } catch (err) { console.warn("Lanyard fetch failed:", err); }
 }
 
 setInterval(updateDiscordStatus, 10000);

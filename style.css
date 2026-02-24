@@ -167,12 +167,25 @@
 
 .status-label {
   font-family: 'JetBrains Mono', monospace;
-  /* Monospace for technical look */
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--text-secondary);
   text-transform: uppercase;
+}
+
+.idle-pill-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.idle-pill-desc {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
 }
 
 
