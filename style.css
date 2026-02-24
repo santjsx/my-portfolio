@@ -1047,8 +1047,59 @@ h4 em {
   transform: scale(0.98);
 }
 
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2.8rem;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .btn-outline {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--text-light);
+}
+
+[data-theme="dark"] .btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .btn-outline:active {
   transform: translateY(0);
+}
+
+/* View All on GitHub */
+.more-work {
+  text-align: center;
+  padding: 4rem 0 2rem;
+}
+
+.more-work .btn-outline i {
+  font-size: 1.1em;
+  transition: transform 0.3s ease;
+}
+
+.more-work .btn-outline:hover i {
+  transform: translateX(3px);
 }
 
 /* About */
