@@ -1,41 +1,96 @@
-/* HEADER - Pill Navigation */
+/* HEADER - Premium Stealth Split Layout */
 .site-header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 100;
-    display: flex;
-    justify-content: center;
-    padding-top: var(--space-6);
+    transition: background var(--transition-medium), padding var(--transition-medium), border-color var(--transition-medium), backdrop-filter var(--transition-medium);
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid transparent;
 }
 
-.pill-nav {
+/* When scrolled down */
+.site-header.scrolled {
+    background: rgba(5, 5, 5, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header-container {
+    max-width: var(--site-max-width);
+    margin: 0 auto;
+    padding: 0 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.site-logo {
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    color: var(--text-dark-primary);
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.nav-links {
     display: flex;
     align-items: center;
     gap: var(--space-8);
-    background: #111111;
-    padding: var(--space-2) var(--space-6);
-    border-radius: 99px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.pill-nav a {
+.nav-item {
     font-size: var(--text-xs);
-    color: var(--text-dark-secondary);
     font-weight: var(--weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dark-secondary);
+    position: relative;
+    padding: var(--space-2) 0;
     transition: color var(--transition-fast);
 }
 
-.pill-nav a:hover {
+.nav-item:hover {
     color: var(--text-dark-primary);
 }
 
-.pill-nav a.active {
-    color: var(--accent-lime);
+/* The subtle rising dot hover effect */
+.nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background-color: var(--text-dark-primary);
+    opacity: 0;
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
 }
 
-.pill-nav a.active.yellow {
-    color: #EAB308;
-    font-weight: 600;
+.nav-item:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Special highlight for Contact */
+.nav-item.highlight {
+    color: var(--text-dark-primary);
+}
+
+.nav-item.highlight::after {
+    background-color: var(--accent-lime);
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        /* Hide standard links on mobile to preserve layout */
+    }
 }

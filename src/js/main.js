@@ -14,7 +14,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Initialize intersection observers for fade-up reveals
     initScrollObserver();
 
-    // 3. Update copyright year
+    // 3. Header Scroll Effect
+    const header = document.getElementById('header');
+    if (header) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    }
+
+    // 4. Update copyright year
     const yearEl = document.getElementById('year');
     if (yearEl) {
         yearEl.textContent = new Date().getFullYear();
