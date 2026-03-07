@@ -22,6 +22,12 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+    display: none;
 }
 
 /* Base Body - Default is Dark per the screenshot layout */
@@ -32,6 +38,15 @@ body {
     line-height: var(--leading-normal);
     font-weight: var(--weight-regular);
     overflow-x: hidden;
+    -ms-overflow-style: none;
+    /* IE / Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+body::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
 }
 
 /* Mixed Typography styles */
