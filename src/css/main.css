@@ -5,8 +5,8 @@
 @import './components/hero.css';
 @import './components/project-card.css';
 @import './components/about.css';
-
 @import './components/cta.css';
+@import './components/drawer.css';
 
 /* BASE RESET */
 *,

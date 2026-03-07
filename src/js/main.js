@@ -3,6 +3,7 @@ import '../css/main.css';
 import { setupLenis } from './utils/lenis-setup.js';
 import { initScrollObserver } from './utils/scroll-observer.js';
 import { initTitleAnimation } from './utils/title-anim.js';
+import { initResumeDrawer } from './utils/drawer.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize smooth scrolling
@@ -10,6 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize browser tab title animation
     initTitleAnimation();
+
+    // Initialize Resume Drawer
+    initResumeDrawer();
 
     // 2. Initialize intersection observers for fade-up reveals
     initScrollObserver();
