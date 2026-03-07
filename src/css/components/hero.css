@@ -212,7 +212,8 @@
 
 @media (max-width: 768px) {
     .hero-title {
-        font-size: var(--text-3xl);
+        font-size: clamp(1.75rem, 6.5vw, 2.5rem);
+        max-width: 95vw;
     }
 
     .hero-feature-card {
