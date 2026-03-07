@@ -1,0 +1,35 @@
+/* TOKENS: Colors - Replicated Aesthetic */
+:root {
+    /* Core Backgrounds */
+    --bg-dark: #000000;
+    --bg-light-container: #FDFCF7;
+    /* The warm off-white works container */
+    --bg-avatar-card: #C7D2FE;
+    /* Light purple for avatar background */
+    --bg-pink-card: #FCE7F3;
+    /* Pink block in about */
+
+    /* Vibrant Accents */
+    --accent-blue: #4F46E5;
+    /* Indigo/blue for hero card and 'works' pill */
+    --accent-green: #D9F99D;
+    /* Neon green 'myself' pill */
+    --accent-lime: #BEF264;
+    /* Branding lime square */
+    --accent-orange: #FB923C;
+    /* A sun icon orange */
+
+    /* Text Colors - Dark Context */
+    --text-dark-primary: #FFFFFF;
+    --text-dark-secondary: #A1A1AA;
+
+    /* Text Colors - Light Context */
+    --text-light-primary: #18181B;
+    --text-light-secondary: #52525B;
+    --text-light-muted: #A1A1AA;
+
+    /* Borders and UI */
+    --border-dark: rgba(255, 255, 255, 0.1);
+    --glass-dark: rgba(255, 255, 255, 0.05);
+    /* Nav pill bg */
+}

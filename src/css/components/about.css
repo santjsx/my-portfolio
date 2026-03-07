@@ -1,0 +1,342 @@
+/* ABOUT SECTION - Premium Dark Layout */
+
+.about-header {
+    margin-bottom: var(--space-12);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.about-pretitle {
+    font-size: var(--text-3xl);
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--text-dark-secondary);
+    margin: 0;
+    line-height: var(--leading-tight);
+}
+
+.title-pill.dark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-dark-primary);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-medium);
+    padding: var(--space-2) var(--space-6);
+    border-radius: 99px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    align-self: flex-start;
+    letter-spacing: -0.02em;
+    box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.4);
+}
+
+/* About Grid Layout */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+}
+
+/* Base Card Style for Bento Grid */
+.bento-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Avatar Card */
+.avatar-card {
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.05));
+}
+
+.avatar-card img {
+    width: 90%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.1) brightness(0.9);
+}
+
+/* Skills/Tools Grid */
+.skills-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: var(--space-4);
+}
+
+.skill-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    color: var(--text-dark-secondary);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-normal);
+    gap: var(--space-2);
+    padding: var(--space-3);
+    transition: transform var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+    cursor: default;
+    position: relative;
+
+    /* Default fallback accent */
+    --skill-accent: rgba(255, 255, 255, 0.4);
+}
+
+/* Subtle Colored Radial Gradient Base */
+.skill-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 120%, color-mix(in srgb, var(--skill-accent) 20%, transparent), transparent 70%);
+    z-index: 0;
+    opacity: 0.8;
+    transition: opacity var(--transition-fast), background var(--transition-medium);
+}
+
+/* SVG Noise Overlay */
+.skill-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.12;
+    mix-blend-mode: overlay;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Ensure contents stay above backgrounds */
+.skill-card>* {
+    position: relative;
+    z-index: 1;
+}
+
+.skill-card svg {
+    width: 26px;
+    /* slightly more compact */
+    height: 26px;
+    opacity: 0.9;
+    color: var(--skill-accent);
+    /* Make SVG use the logo color constantly */
+    transition: opacity var(--transition-fast), transform var(--transition-fast), filter var(--transition-fast);
+}
+
+.skill-card:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--skill-accent) 40%, rgba(255, 255, 255, 0.15));
+    color: var(--text-dark-primary);
+}
+
+.skill-card:hover::before {
+    opacity: 1;
+    background: radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--skill-accent) 45%, transparent), transparent 80%);
+}
+
+.skill-card:hover svg {
+    opacity: 1;
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--skill-accent) 50%, transparent));
+}
+
+/* Specific Accent Colors permanently assigned to the cards */
+.skill-card.html-card {
+    --skill-accent: #e34f26;
+}
+
+.skill-card.css-card {
+    --skill-accent: #1572b6;
+}
+
+.skill-card.js-card {
+    --skill-accent: #f7df1e;
+}
+
+.skill-card.react-card {
+    --skill-accent: #61dafb;
+}
+
+.skill-card.tailwind-card {
+    --skill-accent: #38b2ac;
+}
+
+.skill-card.git-card {
+    --skill-accent: #f05032;
+}
+
+
+/* Lower blocks (Quote and Experience) */
+.about-lower-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--space-4);
+}
+
+.quote-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-4);
+    padding: var(--space-6);
+}
+
+.quote-text {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-dark-secondary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.quote-big {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: var(--text-2xl);
+    color: var(--text-dark-primary);
+    line-height: var(--leading-tight);
+}
+
+.quote-profile {
+    width: 120px;
+    height: 48px;
+    border-radius: 99px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.quote-profile:hover {
+    transform: scale(1.02);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.quote-profile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: contrast(1.1);
+    /* Removed grayscale */
+}
+
+.experience-block {
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-8);
+    position: relative;
+    overflow: hidden;
+    /* Sophisticated Deep Nebula Gradient */
+    background:
+        radial-gradient(circle at 0% 0%, rgba(100, 50, 255, 0.15), transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(255, 50, 150, 0.1), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(20, 20, 40, 0.8), #050505);
+}
+
+.experience-block::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.12;
+    mix-blend-mode: overlay;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.exp-title {
+    font-family: var(--font-sans);
+    font-weight: var(--weight-medium);
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    line-height: 1.4;
+    color: var(--text-dark-primary);
+    max-width: 80%;
+    letter-spacing: -0.01em;
+}
+
+.exp-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.exp-item {
+    display: grid;
+    grid-template-columns: 20px 1fr auto;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-2) 0;
+    font-family: var(--font-mono);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.exp-num {
+    font-size: 9px;
+    color: var(--text-dark-secondary);
+    opacity: 0.4;
+}
+
+.exp-label {
+    font-size: var(--text-sm);
+    color: var(--text-dark-primary);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-weight: var(--weight-medium);
+}
+
+.exp-status {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-base);
+    color: var(--text-dark-secondary);
+    opacity: 0.7;
+}
+
+.exp-item.active .exp-status {
+    color: var(--text-dark-primary);
+    opacity: 1;
+}
+
+@media (min-width: 768px) {
+    .exp-list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-8);
+    }
+
+    .exp-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        border-bottom: none;
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 0 0 0 var(--space-5);
+        gap: var(--space-2);
+    }
+
+    .exp-status {
+        margin-top: var(--space-1);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .about-grid,
+    .about-lower-grid {
+        grid-template-columns: 1fr;
+    }
+}

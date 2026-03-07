@@ -1,0 +1,41 @@
+/* HEADER - Pill Navigation */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    padding-top: var(--space-6);
+}
+
+.pill-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    background: #111111;
+    padding: var(--space-2) var(--space-6);
+    border-radius: 99px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pill-nav a {
+    font-size: var(--text-xs);
+    color: var(--text-dark-secondary);
+    font-weight: var(--weight-medium);
+    transition: color var(--transition-fast);
+}
+
+.pill-nav a:hover {
+    color: var(--text-dark-primary);
+}
+
+.pill-nav a.active {
+    color: var(--accent-lime);
+}
+
+.pill-nav a.active.yellow {
+    color: #EAB308;
+    font-weight: 600;
+}

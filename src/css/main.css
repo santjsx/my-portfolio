@@ -1,0 +1,130 @@
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+@import './components/header.css';
+@import './components/hero.css';
+@import './components/project-card.css';
+@import './components/about.css';
+
+@import './components/cta.css';
+
+/* BASE RESET */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+}
+
+/* Base Body - Default is Dark per the screenshot layout */
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-dark-primary);
+    font-family: var(--font-sans);
+    line-height: var(--leading-normal);
+    font-weight: var(--weight-regular);
+    overflow-x: hidden;
+}
+
+/* Mixed Typography styles */
+.serif-italic {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+}
+
+.title-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-1) var(--space-4);
+    border-radius: 99px;
+    font-family: var(--font-sans);
+    font-weight: var(--weight-medium);
+    text-transform: lowercase;
+}
+
+/* Typography elements */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+    height: auto;
+}
+
+/* GLOBAL LAYOUT CLASSES */
+.container {
+    max-width: var(--site-max-width);
+    margin: 0 auto;
+    padding: 0 5vw;
+}
+
+/* Rounded section block for the 'Works' area */
+.light-container {
+    background-color: var(--bg-light-container);
+    color: var(--text-light-primary);
+    border-radius: var(--radius-section);
+    margin: var(--space-8) 0;
+    padding: var(--section-padding);
+}
+
+/* Premium Noise Gradient Container */
+.noise-container {
+    position: relative;
+    background-color: #030303;
+    /* Deep almost-black base */
+    color: var(--text-dark-primary);
+    border-radius: var(--radius-section);
+    margin: var(--space-8) 0;
+    padding: var(--section-padding);
+    overflow: hidden;
+    /* Subtle border matching dark aesthetic */
+    border: 1px solid var(--border-dark);
+}
+
+.noise-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* Cosmic / Aurora rare gradient: Deep magenta and cyan/sky blue */
+    background:
+        radial-gradient(ellipse at 0% 0%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(14, 165, 233, 0.12) 0%, transparent 50%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.noise-container::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* Clean SVG Noise Texture blended */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.25' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.noise-container>* {
+    position: relative;
+    z-index: 1;
+}
+
+.dark-container {
+    background-color: var(--bg-dark);
+    color: var(--text-dark-primary);
+    padding: var(--section-padding);
+}
