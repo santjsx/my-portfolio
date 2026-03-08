@@ -7,13 +7,20 @@
     justify-content: center;
 }
 
+.hero-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-3);
+    width: 100%;
+}
+
 .hero-intro {
     display: flex;
     align-items: center;
     gap: var(--space-2);
     font-size: var(--text-sm);
     color: var(--text-dark-secondary);
-    margin-bottom: var(--space-3);
     opacity: 0;
     animation: heroFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
@@ -247,6 +254,11 @@
     }
 }
 
+/* Mobile Resume Button defaults to hidden on desktop */
+.mobile-resume-btn {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .hero-title {
         font-size: clamp(1.75rem, 6.5vw, 2.5rem);
@@ -256,5 +268,43 @@
     .hero-feature-card {
         aspect-ratio: auto;
         padding: var(--space-10) var(--space-4) var(--space-12) var(--space-4);
+    }
+
+    /* Show and style the mobile resume button */
+    .mobile-resume-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-dark-primary);
+        font-family: var(--font-sans);
+        font-size: 13px;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: 99px;
+        cursor: pointer;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        transition: all 0.3s ease;
+        opacity: 0;
+        animation: heroFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+    }
+
+    .mobile-resume-btn svg {
+        width: 16px;
+        height: 16px;
+        opacity: 0.7;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .mobile-resume-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .mobile-resume-btn:hover svg {
+        opacity: 1;
+        transform: translateY(-2px);
     }
 }

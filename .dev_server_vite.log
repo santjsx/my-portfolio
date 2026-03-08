@@ -4,13 +4,9 @@ nohup: ignoring input
 > vite
 
 [33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+Port 3000 is in use, trying another one...
 
-  VITE v5.4.21  ready in 324 ms
+  VITE v5.4.21  ready in 316 ms
 
-  ➜  Local:   http://localhost:3000/
+  ➜  Local:   http://localhost:3001/
   ➜  Network: use --host to expose
-12:22:17 AM [vite] page reload src/js/utils/drawer.js
-12:22:30 AM [vite] page reload src/js/utils/drawer.js
-12:24:41 AM [vite] page reload index.html
-12:27:01 AM [vite] page reload src/js/utils/drawer.js
-12:27:03 AM [vite] page reload src/js/utils/drawer.js
