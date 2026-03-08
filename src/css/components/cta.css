@@ -169,28 +169,28 @@
 /* Mobile Responsive Typography for CTA */
 @media (max-width: 768px) {
     .cta-container {
-        padding: var(--space-16) var(--space-6);
+        padding: var(--space-16) var(--space-3);
     }
 
     .cta-title {
-        font-size: clamp(1.75rem, 8vw, 2.25rem);
+        font-size: clamp(1.4rem, 6vw, 1.8rem);
         margin-bottom: var(--space-8);
-        line-height: 1.25;
+        line-height: 1.3;
     }
 
-    /* Allow the gradient word to flow naturally instead of acting as a rigid block */
+    /* Restore inline-block. Mobile webkit breaks background-clip on inline elements. */
     .premium-gradient-text {
-        display: inline;
+        display: inline-block;
     }
 
-    /* Compress the massive desktop button padding for narrow phones */
     .cta-button.primary {
-        padding: var(--space-4) var(--space-8);
+        padding: var(--space-3) var(--space-6);
         width: 100%;
-        max-width: 300px;
+        max-width: 280px;
+        font-size: var(--text-base);
     }
 
-    /* Let the structural <br> we wrote handle the line breaks gracefully */
+    /* Keep the break so it specifically stacks as 2 clean lines instead of 4 messy ones */
     .cta-title br {
         display: block; 
     }
