@@ -186,6 +186,7 @@
     padding: 1px;
     background: linear-gradient(to bottom, color-mix(in srgb, var(--skill-accent) 20%, transparent), transparent);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0.5;
@@ -265,20 +266,42 @@
 
 
 /* Lower blocks (Quote and Experience) */
+/* Lower blocks (Quote and Experience) */
 .about-lower-grid {
     display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: var(--space-4);
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
 }
 
-.quote-block {
+@media (min-width: 1024px) {
+    .about-lower-grid {
+        grid-template-columns: 1fr 1.5fr;
+        gap: var(--space-12);
+        align-items: center;
+    }
+}
+
+/* Quote: Floating Liquid Bubble */
+.quote-block.liquid-bubble {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     gap: var(--space-4);
-    padding: var(--space-6);
+    padding: var(--space-8) var(--space-6);
+    background: rgba(10, 10, 10, 0.4);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Asymmetrical geometric leaf shape */
+    border-radius: 40px 100px 40px 100px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.02);
+    position: relative;
+    transition: transform 0.6s ease;
+}
+
+.quote-block.liquid-bubble:hover {
+    transform: translateY(-5px);
 }
 
 .quote-text {
@@ -299,18 +322,21 @@
 }
 
 .quote-profile {
-    width: 120px;
-    height: 48px;
-    border-radius: 99px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.15);
     background: #000;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
     transition: transform var(--transition-fast), border-color var(--transition-fast);
+    /* Pop out of the bubble slightly */
+    margin-bottom: -40px;
+    z-index: 2;
 }
 
 .quote-profile:hover {
-    transform: scale(1.02);
+    transform: scale(1.08) rotate(5deg);
     border-color: rgba(255, 255, 255, 0.4);
 }
 
@@ -319,73 +345,116 @@
     height: 100%;
     object-fit: cover;
     filter: contrast(1.1);
-    /* Removed grayscale */
 }
 
-.experience-block {
-    padding: var(--space-8);
+/* Experience: Naked Neon Timeline */
+.experience-block.naked-timeline {
+    padding: var(--space-6) 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     gap: var(--space-8);
     position: relative;
-    overflow: hidden;
-    /* Sophisticated Deep Nebula Gradient */
-    background:
-        radial-gradient(circle at 0% 0%, rgba(100, 50, 255, 0.15), transparent 50%),
-        radial-gradient(circle at 100% 100%, rgba(255, 50, 150, 0.1), transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(20, 20, 40, 0.8), #050505);
-}
-
-.experience-block::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.12;
-    mix-blend-mode: overlay;
-    z-index: 0;
-    pointer-events: none;
+    background: transparent;
 }
 
 .exp-title {
     font-family: var(--font-sans);
     font-weight: var(--weight-medium);
-    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
-    line-height: 1.4;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    line-height: 1.3;
     color: var(--text-dark-primary);
-    max-width: 80%;
+    max-width: 90%;
     letter-spacing: -0.01em;
 }
 
-.exp-list {
+/* The neon pipeline structure */
+.exp-list.timeline-wire {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--space-6);
+    position: relative;
+    padding-left: 24px;
 }
 
-.exp-item {
-    display: grid;
-    grid-template-columns: 20px 1fr auto;
+/* Glowing central wire */
+.exp-list.timeline-wire::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 4px;
+    width: 2px;
+    background: linear-gradient(to bottom, 
+        rgba(255, 255, 255, 0.8), 
+        rgba(255, 255, 255, 0.2) 50%, 
+        transparent
+    );
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
+}
+
+/* Floating Glass Node Items */
+.exp-item.data-node {
+    display: flex;
+    flex-direction: row;
     align-items: center;
     gap: var(--space-4);
-    padding: var(--space-2) 0;
-    font-family: var(--font-mono);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 12px 24px;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 999px; /* Pill shape */
+    position: relative;
+    transition: transform 0.4s ease, border-color 0.4s ease;
+    width: fit-content;
+}
+
+.exp-item.data-node:hover {
+    transform: translateX(10px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Glowing Connection Orb */
+.exp-item.data-node::before {
+    content: '';
+    position: absolute;
+    left: -24px; /* Align perfectly with the laser wire */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #fff, 0 0 24px rgba(255, 255, 255, 0.5);
+    transition: transform 0.4s ease;
+}
+
+.exp-item.data-node:hover::before {
+    transform: translateY(-50%) scale(1.5);
+}
+
+/* Dim outinactive orb */
+.exp-item.data-node:not(.active)::before {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: none;
 }
 
 .exp-num {
-    font-size: 9px;
+    font-size: 10px;
     color: var(--text-dark-secondary);
-    opacity: 0.4;
+    opacity: 0.5;
+    font-family: var(--font-mono);
 }
 
 .exp-label {
     font-size: var(--text-sm);
     color: var(--text-dark-primary);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    font-weight: var(--weight-medium);
+    font-weight: var(--weight-bold);
+    font-family: var(--font-sans);
 }
 
 .exp-status {
@@ -393,40 +462,28 @@
     font-style: italic;
     font-size: var(--text-base);
     color: var(--text-dark-secondary);
-    opacity: 0.7;
+    opacity: 0.6;
 }
 
-.exp-item.active .exp-status {
+.exp-item.data-node.active .exp-status {
     color: var(--text-dark-primary);
     opacity: 1;
 }
 
-@media (min-width: 768px) {
-    .exp-list {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: var(--space-8);
-    }
-
-    .exp-item {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        border-bottom: none;
-        border-left: 1px solid rgba(255, 255, 255, 0.08);
-        padding: 0 0 0 var(--space-5);
-        gap: var(--space-2);
-    }
-
-    .exp-status {
-        margin-top: var(--space-1);
-    }
+.exp-item.data-node.active {
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.03);
 }
 
+/* Mobile wrap fix */
 @media (max-width: 768px) {
-
-    .about-grid,
-    .about-lower-grid {
-        grid-template-columns: 1fr;
+    .quote-block.liquid-bubble {
+        border-radius: 30px 80px 30px 80px;
+        margin-bottom: var(--space-4);
+    }
+    
+    .exp-item.data-node {
+        padding: 10px 16px;
+        flex-wrap: wrap;
     }
 }
