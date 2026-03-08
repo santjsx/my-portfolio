@@ -95,6 +95,10 @@ body.drawer-open .resume-drawer {
     transform: rotate(90deg);
 }
 
+.drawer-close svg {
+    pointer-events: none;
+}
+
 .drawer-content {
     flex: 1;
     position: relative;

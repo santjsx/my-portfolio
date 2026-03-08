@@ -16,9 +16,8 @@ export function initResumeDrawer() {
         const btn = e.target.closest('.js-close-resume');
         if (!btn) return;
 
-        if (btn.tagName.toLowerCase() === 'a') {
-            e.preventDefault();
-        }
+        e.preventDefault();
+        e.stopPropagation();
 
         console.log('Closing resume drawer...');
         document.body.classList.remove('drawer-open');
