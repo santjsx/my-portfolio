@@ -12,9 +12,30 @@ export function initPreloader() {
     // Lock body scroll while loading
     document.body.style.overflow = 'hidden';
 
-    let loadProgress = 0;
     let targetProgress = 0;
     
+    // Dynamic Text Logic
+    const dynamicTextEl = document.getElementById('loader-dynamic-text');
+    const titles = ['Creative Developer', 'Pixel Perfectionist', 'UX Engineer', 'Santhosh Reddy'];
+    let titleIndex = 0;
+    let textInterval = null;
+
+    if (dynamicTextEl) {
+        textInterval = setInterval(() => {
+            // Fade out
+            dynamicTextEl.classList.add('fade-out');
+            
+            setTimeout(() => {
+                // Change text while invisible
+                titleIndex = (titleIndex + 1) % titles.length;
+                dynamicTextEl.textContent = titles[titleIndex];
+                
+                // Fade back in
+                dynamicTextEl.classList.remove('fade-out');
+            }, 300); // 300ms matches the CSS transition ease
+        }, 800); // Rotate every 800ms
+    }
+
     // Smooth counter animation
     let hasLoaded = false;
     const updateCounter = () => {
@@ -29,6 +50,9 @@ export function initPreloader() {
         } else if (loadProgress >= 100 && !hasLoaded) {
             hasLoaded = true; // Prevent running multiple times
             
+            // Clean up text interval
+            if (textInterval) clearInterval(textInterval);
+
             // Unveil the website
             loader.classList.add('loaded');
             setTimeout(() => {
