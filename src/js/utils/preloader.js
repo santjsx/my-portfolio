@@ -12,6 +12,7 @@ export function initPreloader() {
     // Lock body scroll while loading
     document.body.style.overflow = 'hidden';
 
+    let loadProgress = 0;
     let targetProgress = 0;
     
     // Dynamic Text Logic
