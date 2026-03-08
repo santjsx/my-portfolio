@@ -1,0 +1,30 @@
+127.0.0.1 - - [09/Mar/2026 00:17:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:17:56] "GET /src/js/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:17:56] code 404, message File not found
+127.0.0.1 - - [09/Mar/2026 00:17:56] "GET /images/Profile.gif HTTP/1.1" 404 -
+127.0.0.1 - - [09/Mar/2026 00:17:56] "GET /src/css/main.css HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:17:56] "GET /src/js/utils/lenis-setup.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:17:56] "GET /src/js/utils/scroll-observer.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:17:56] "GET /src/js/utils/title-anim.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:17:56] "GET /src/js/utils/drawer.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:17:56] code 404, message File not found
+127.0.0.1 - - [09/Mar/2026 00:17:56] "GET /images/About.png HTTP/1.1" 404 -
+127.0.0.1 - - [09/Mar/2026 00:17:56] code 404, message File not found
+127.0.0.1 - - [09/Mar/2026 00:17:56] "GET /Santhosh%20Reddy%20Resume.pdf HTTP/1.1" 404 -
+127.0.0.1 - - [09/Mar/2026 00:17:56] code 404, message File not found
+127.0.0.1 - - [09/Mar/2026 00:17:56] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [09/Mar/2026 00:19:00] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:19:00] code 404, message File not found
+127.0.0.1 - - [09/Mar/2026 00:19:00] "GET /src/js/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:19:00] "GET /images/Profile.gif HTTP/1.1" 404 -
+127.0.0.1 - - [09/Mar/2026 00:19:00] "GET /src/css/main.css HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:19:00] "GET /src/js/utils/lenis-setup.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:19:00] "GET /src/js/utils/title-anim.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:19:00] "GET /src/js/utils/drawer.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:19:00] "GET /src/js/utils/scroll-observer.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Mar/2026 00:19:01] code 404, message File not found
+127.0.0.1 - - [09/Mar/2026 00:19:01] "GET /images/About.png HTTP/1.1" 404 -
+127.0.0.1 - - [09/Mar/2026 00:19:01] code 404, message File not found
+127.0.0.1 - - [09/Mar/2026 00:19:01] "GET /Santhosh%20Reddy%20Resume.pdf HTTP/1.1" 404 -
+127.0.0.1 - - [09/Mar/2026 00:19:01] code 404, message File not found
+127.0.0.1 - - [09/Mar/2026 00:19:01] "GET /favicon.ico HTTP/1.1" 404 -
