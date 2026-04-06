@@ -1,21 +1,16 @@
 import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 
 export function setupLenis() {
-    // Disable JS smooth scrolling on mobile/touch interfaces to use native, buttery hardware acceleration
-    if (window.matchMedia('(max-width: 768px)').matches || ('ontouchstart' in window)) {
-        return null;
-    }
-
     const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom apple-like ease
-        direction: 'vertical',
-        gestureDirection: 'vertical',
-        smooth: true,
-        mouseMultiplier: 1,
-        smoothTouch: false,
-        touchMultiplier: 2,
+        lerp: 0.08,               /* Spring-physics friction (replaces duration) for buttery inertia */
+        wheelMultiplier: 1.0,     /* Standard desktop wheel speed */
+        smoothWheel: true,
+        smoothTouch: true,        /* Forces Lenis physics on mobile swipes */
+        touchMultiplier: 2.5,     /* Significantly increases mobile responsiveness */
+        gestureOrientation: 'vertical',
         infinite: false,
+        autoResize: true,
     });
 
     function raf(time) {
@@ -24,5 +19,9 @@ export function setupLenis() {
     }
 
     requestAnimationFrame(raf);
+
+    // Expose lenis for other modules if needed
+    window.__lenis = lenis;
+
     return lenis;
 }

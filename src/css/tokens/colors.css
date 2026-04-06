@@ -1,35 +1,19 @@
-/* TOKENS: Colors - Replicated Aesthetic */
+/* TOKENS: Colors — Fight Club Beautiful & Fast */
 :root {
-    /* Core Backgrounds */
-    --bg-dark: #000000;
-    --bg-light-container: #FDFCF7;
-    /* The warm off-white works container */
-    --bg-avatar-card: #C7D2FE;
-    /* Light purple for avatar background */
-    --bg-pink-card: #FCE7F3;
-    /* Pink block in about */
+    --bg-dark: #050505;          /* Deep void */
+    --bg-card: #0A0A0A;          /* Slightly lighter for contrast */
+    --bg-surface: #111111;       /* Raised surface */
 
-    /* Vibrant Accents */
-    --accent-blue: #4F46E5;
-    /* Indigo/blue for hero card and 'works' pill */
-    --accent-green: #D9F99D;
-    /* Neon green 'myself' pill */
-    --accent-lime: #BEF264;
-    /* Branding lime square */
-    --accent-orange: #FB923C;
-    /* A sun icon orange */
+    --accent-primary: #F28B82;   /* Tyler's Soap Pink */
+    --accent-hover: #FFA39E;
+    --accent-danger: #D32F2F;    /* Blood */
+    
+    --text-primary: #EBEBEB;     /* Crisp white */
+    --text-secondary: #808080;   /* Muted concrete */
+    --text-muted: #4A4A4A;
 
-    /* Text Colors - Dark Context */
-    --text-dark-primary: #FFFFFF;
-    --text-dark-secondary: #A1A1AA;
+    --border: rgba(255, 255, 255, 0.08); /* Crisp visible lines */
+    --border-hover: rgba(242, 139, 130, 0.4);
 
-    /* Text Colors - Light Context */
-    --text-light-primary: #18181B;
-    --text-light-secondary: #52525B;
-    --text-light-muted: #A1A1AA;
-
-    /* Borders and UI */
-    --border-dark: rgba(255, 255, 255, 0.1);
-    --glass-dark: rgba(255, 255, 255, 0.05);
-    /* Nav pill bg */
+    --skill-accent: #F28B82;
 }

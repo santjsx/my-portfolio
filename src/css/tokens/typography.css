@@ -1,38 +1,30 @@
-/* TOKENS: Typography - Replicated Style */
+/* TOKENS: Typography — Brutalist */
 :root {
-    /* Fonts */
     --font-sans: 'Inter', -apple-system, sans-serif;
-    --font-serif: 'Newsreader', 'Playfair Display', Georgia, serif;
-    /* For the italicized 'user experiences', 'innovation' */
-    --font-mono: monospace;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 
-    /* Scale */
     --text-xs: 0.75rem;
-    /* Tags, navigation */
     --text-sm: 0.875rem;
     --text-base: 1rem;
     --text-lg: 1.125rem;
     --text-xl: 1.25rem;
     --text-2xl: 1.5rem;
-    /* Project titles */
     --text-3xl: 2rem;
-    /* Section headers */
-    --text-4xl: 3rem;
-    /* Hero text mobile/tablet */
-    --text-5xl: 4rem;
-    /* Large Hero Text */
+    --text-4xl: 2.75rem;
+    --text-5xl: 4.5rem;
+    --text-huge: 7rem; /* Added for impact */
 
-    /* Weights */
     --weight-regular: 400;
     --weight-medium: 500;
     --weight-semibold: 600;
+    --weight-bold: 800;
 
-    /* Tracking (Letter Spacing) */
-    --tracking-tight: -0.03em;
-    --tracking-normal: 0;
+    --tracking-tight: -0.04em;
+    --tracking-normal: -0.01em;
+    --tracking-wide: 0.1em;
 
-    /* Leading (Line Height) */
-    --leading-tight: 1.1;
+    --leading-tight: 1.05;
     --leading-snug: 1.25;
     --leading-normal: 1.5;
 }

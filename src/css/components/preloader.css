@@ -1,8 +1,8 @@
-/* PRELOADER STYLES */
+/* ═══════════════════════════════════════════
+   PRELOADER
+   ═══════════════════════════════════════════ */
 
-.mobile-only-loader {
-    display: none; /* Hidden by default on desktop */
-}
+.mobile-only-loader { display: none; }
 
 @media (max-width: 768px) {
     .mobile-only-loader {
@@ -10,21 +10,19 @@
         position: fixed;
         inset: 0;
         width: 100%;
-        height: 100vh;
         height: 100dvh;
-        background-color: #050505; /* Deep premium black */
+        background-color: var(--bg-dark);
         z-index: 99999;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        /* The shutter transition */
-        clip-path: inset(0 0 0 0);
-        transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
-        will-change: clip-path;
+        /* Hardware accelerated wipe */
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        transition: clip-path 0.8s var(--ease-in-out);
     }
 
     .mobile-only-loader.loaded {
-        clip-path: inset(0 0 100% 0); /* Slide up shutter effect */
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
         pointer-events: none;
     }
 
@@ -32,74 +30,35 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 12px;
-        opacity: 1;
-        transform: translateY(0);
-        transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .mobile-only-loader.loaded .loader-content {
-        opacity: 0;
-        transform: translateY(-20px);
+        gap: 16px;
     }
 
     .loader-counter {
-        font-family: var(--font-serif);
-        font-size: 5rem;
-        font-weight: 300;
-        color: #fff;
+        font-family: var(--font-mono);
+        font-size: 4rem;
+        font-weight: var(--weight-bold);
+        color: var(--text-primary);
         line-height: 1;
         letter-spacing: -0.05em;
-        font-style: italic;
         display: flex;
         align-items: flex-start;
     }
 
     .loader-symbol {
-        font-family: var(--font-sans);
         font-size: 1.5rem;
-        font-style: normal;
         margin-top: 8px;
-        margin-left: 4px;
-        opacity: 0.5;
+        color: var(--accent-primary);
     }
 
     .loader-label {
         font-family: var(--font-mono);
-        font-size: 10px;
+        font-size: 11px;
+        font-weight: var(--weight-bold);
         text-transform: uppercase;
-        letter-spacing: 0.2em;
-        color: rgba(255, 255, 255, 0.6); /* Slightly brighter for readilbity over gradient */
-        transition: opacity 0.3s ease-in-out;
-        opacity: 1;
+        letter-spacing: 0.3em;
+        color: var(--text-secondary);
+        transition: opacity 0.3s ease;
     }
 
-    .loader-label.fade-out {
-        opacity: 0;
-    }
-
-    /* Premium Noise Background */
-    .noise-bg-loader::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        /* Cosmic Aurora Gradient */
-        background:
-            radial-gradient(ellipse at 0% 0%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
-            radial-gradient(ellipse at 100% 100%, rgba(14, 165, 233, 0.15) 0%, transparent 50%);
-        z-index: 0;
-        pointer-events: none;
-    }
-
-    .noise-bg-loader::after {
-        content: '';
-        position: absolute;
-        inset: -50px;
-        /* Clean SVG Noise Texture blended */
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.25' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        opacity: 0.06;
-        mix-blend-mode: overlay;
-        z-index: 0;
-        pointer-events: none;
-    }
+    .loader-label.fade-out { opacity: 0; }
 }

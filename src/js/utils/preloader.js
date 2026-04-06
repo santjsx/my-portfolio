@@ -15,9 +15,9 @@ export function initPreloader() {
     let loadProgress = 0;
     let targetProgress = 0;
     
-    // Dynamic Text Logic
+    // Dynamic Text Logic — Fight Club themed
     const dynamicTextEl = document.getElementById('loader-dynamic-text');
-    const titles = ['Creative Developer', 'Pixel Perfectionist', 'UX Engineer', 'Santhosh Reddy'];
+    const titles = ['First Rule', 'Second Rule', 'You Do Not Talk About It', 'Santhosh Reddy'];
     let titleIndex = 0;
     let textInterval = null;
 
@@ -33,8 +33,8 @@ export function initPreloader() {
                 
                 // Fade back in
                 dynamicTextEl.classList.remove('fade-out');
-            }, 300); // 300ms matches the CSS transition ease
-        }, 800); // Rotate every 800ms
+            }, 300);
+        }, 800);
     }
 
     // Smooth counter animation
@@ -42,14 +42,13 @@ export function initPreloader() {
     const updateCounter = () => {
         if (loadProgress < targetProgress) {
             loadProgress++;
-            // Pad to always be 2 digits (01, 05, 99)
             percentEl.textContent = loadProgress.toString().padStart(2, '0');
         }
 
         if (loadProgress < 100) {
             requestAnimationFrame(updateCounter);
         } else if (loadProgress >= 100 && !hasLoaded) {
-            hasLoaded = true; // Prevent running multiple times
+            hasLoaded = true;
             
             // Clean up text interval
             if (textInterval) clearInterval(textInterval);
@@ -57,7 +56,7 @@ export function initPreloader() {
             // Unveil the website
             loader.classList.add('loaded');
             setTimeout(() => {
-                document.body.style.overflow = ''; // Unlock scroll
+                document.body.style.overflow = '';
                 setTimeout(() => loader.remove(), 1200);
             }, 500);
         }
@@ -66,15 +65,15 @@ export function initPreloader() {
     // Start animation loop
     requestAnimationFrame(updateCounter);
 
-    // Initial bumps to show it's working, but NEVER downgrade the target
+    // Initial bumps
     setTimeout(() => { targetProgress = Math.max(targetProgress, 35); }, 100);
     setTimeout(() => { targetProgress = Math.max(targetProgress, 60); }, 500);
     setTimeout(() => { targetProgress = Math.max(targetProgress, 85); }, 1200);
 
-    // Promise 1: Fetch the PDF to cache it natively (silent background)
+    // Promise 1: Fetch the PDF to cache it natively
     fetch('/Santhosh%20Reddy%20Resume.pdf').catch(() => null);
 
-    // Promise 2: Await Window Load (all images/css done)
+    // Promise 2: Await Window Load
     const windowLoad = new Promise(resolve => {
         if (document.readyState === 'complete') {
             resolve();
@@ -83,10 +82,10 @@ export function initPreloader() {
         }
     });
 
-    // Failsafe: Maximum time we will ever force the user to wait (2.5 seconds)
+    // Failsafe: Maximum 2.5 seconds wait
     const absoluteFailsafe = new Promise(resolve => setTimeout(resolve, 2500));
 
-    // Resolve when Window loads OR 2.5 seconds pass (whichever is faster)
+    // Resolve when Window loads OR 2.5 seconds pass
     Promise.race([windowLoad, absoluteFailsafe]).then(() => {
         targetProgress = 100;
     });

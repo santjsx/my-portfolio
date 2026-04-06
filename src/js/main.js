@@ -7,36 +7,33 @@ import { initResumeDrawer } from './utils/drawer.js';
 import { initPreloader } from './utils/preloader.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 0. Initialize Premium Mobile Preloader
+    // 0. Preloader (mobile only)
     initPreloader();
 
-    // 1. Initialize smooth scrolling
+    // 1. Lenis smooth scrolling
     setupLenis();
 
-    // Initialize browser tab title animation
+    // 2. Title typewriter animation
     initTitleAnimation();
 
-    // Initialize Resume Drawer
+    // 3. Resume drawer
     initResumeDrawer();
 
-    // 2. Initialize intersection observers for fade-up reveals
+    // 4. Scroll reveal observer
     initScrollObserver();
 
-    // 3. Header Scroll Effect
+    // 5. Header scroll effect
     const header = document.getElementById('header');
     if (header) {
+        let ticking = false;
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    header.classList.toggle('scrolled', window.scrollY > 40);
+                    ticking = false;
+                });
+                ticking = true;
             }
-        });
-    }
-
-    // 4. Update copyright year
-    const yearEl = document.getElementById('year');
-    if (yearEl) {
-        yearEl.textContent = new Date().getFullYear();
+        }, { passive: true });
     }
 });

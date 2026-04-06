@@ -5,12 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Santhosh Reddy</title>
+  <meta name="description" content="Santhosh Reddy — Developer portfolio. Clean code. Brutal honesty. No decoration.">
 
-  <!-- Fonts: Inter / Newsreader for the replicated typographic system -->
+  <!-- Fonts: Inter / Playfair Display / JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&family=Special+Elite&display=swap"
     rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -23,15 +24,15 @@
   <div id="premium-preloader" class="mobile-only-loader noise-bg-loader">
     <div class="loader-content">
       <div class="loader-counter"><span id="loader-percent">00</span><span class="loader-symbol">%</span></div>
-      <div class="loader-label" id="loader-dynamic-text">Initializing Experience</div>
+      <div class="loader-label" id="loader-dynamic-text">Initializing</div>
     </div>
   </div>
 
-  <!-- Premium Editorial Header -->
+  <!-- Header -->
   <header class="site-header" id="header">
     <div class="header-container">
-      <a href="#home" class="site-logo">
-        Santhosh <span class="serif-italic" style="color: rgba(255,255,255,0.6);">Reddy</span>
+      <a href="#home" class="fight-club-logo">
+        SANTHOSH REDDY
       </a>
 
       <nav class="nav-links">
@@ -46,11 +47,15 @@
   <main>
     <!-- 1. Hero Section -->
     <section class="hero" id="hero">
-      <div class="container">
+      <div class="hero-cinematic-bg">
+        <img src="/images/fc/fight-club-movies-vector-wallpaper-1d1e88add711ad028f1a8b933f0feef3.jpg" class="cinematic-layer" alt="Classified Atmosphere">
+        <div class="cinematic-overlay"></div>
+      </div>
+      <div class="container container-relative">
 
         <div class="hero-top-row">
           <div class="hero-intro">
-            <span class="emoji">👋🏽</span> Nice to meet you !
+            // first rule of clean code
           </div>
           <button class="mobile-resume-btn js-open-resume">
             <span>Resume</span>
@@ -65,45 +70,50 @@
         </div>
 
         <h1 class="hero-title">
-          I'm Santhosh, a Developer crafting seamless
-          <span class="serif-italic">user experiences</span> with thoughtful code,
-          where <span class="serif-italic">innovation</span> meets usability.
+          I'm Santhosh, a Developer who doesn't build what you
+          <span class="serif-italic">want</span> — I build what you
+          <span class="serif-italic">need.</span> Where <span class="highlight-raw">destruction meets creation.</span>
         </h1>
 
-        <!-- The minimal feature card -->
-        <div class="hero-feature-card">
-          <h2 class="feature-title">How do I engineer <span class="serif-italic"
-              style="color: rgba(255,255,255,0.7);">ideas</span><br>into robust architectures</h2>
+        <!-- The feature card -->
+        <div class="hero-feature-card fade-up">
+          <div class="feature-header-row">
+            <div class="feature-id-badge">
+              <img src="/images/fc/cbd998cb55bd19d0c52e7a50cfe21b76.jpg" alt="ID Profile">
+            </div>
+            <h2 class="feature-title">How I tear down <span class="serif-italic"
+                style="color: var(--accent-primary);">complexity</span><br>into clean systems</h2>
+          </div>
 
-          <!-- Engineered Pipeline Layout -->
+          <!-- Pipeline Layout -->
           <div class="feature-ui-layer">
 
             <div class="ui-pill glass" style="display: flex; align-items: center; gap: 8px;">
-              <span style="opacity: 0.6;">01</span> Idea
+              <span style="opacity: 0.6;">01</span> Deconstruct
             </div>
 
-            <span style="color: rgba(255,255,255,0.4); font-size: 12px;">→</span>
+            <span style="color: var(--text-dark-secondary); font-size: 12px; opacity: 0.4;">→</span>
 
             <div class="ui-pill glass" style="display: flex; align-items: center; gap: 8px;">
-              <span style="opacity: 0.6;">02</span> Architecture
+              <span style="opacity: 0.6;">02</span> Architect
             </div>
 
-            <span style="color: rgba(255,255,255,0.4); font-size: 12px;">→</span>
+            <span style="color: var(--text-dark-secondary); font-size: 12px; opacity: 0.4;">→</span>
 
             <div class="ui-pill lime" style="display: flex; align-items: center; gap: 8px; font-weight: 700;">
-              <span style="opacity: 0.6;">03</span> Frontend
+              <span style="opacity: 0.6;">03</span> Build
             </div>
 
-            <span style="color: rgba(255,255,255,0.4); font-size: 12px;">→</span>
+            <span style="color: var(--text-dark-secondary); font-size: 12px; opacity: 0.4;">→</span>
 
             <div class="ui-pill glass" style="display: flex; align-items: center; gap: 8px;">
-              <span style="opacity: 0.6;">04</span> Performance
+              <span style="opacity: 0.6;">04</span> Optimize
             </div>
 
-            <span style="color: rgba(255,255,255,0.4); font-size: 12px;">→</span>
+            <span style="color: var(--text-dark-secondary); font-size: 12px; opacity: 0.4;">→</span>
 
             <div class="ui-pill glass" style="display: flex; align-items: center; gap: 8px; border-style: dashed;">
-              <span style="opacity: 0.6;">05</span> Deployment
+              <span style="opacity: 0.6;">05</span> Ship
             </div>
 
           </div>
@@ -115,114 +125,82 @@
     <!-- 2. Projects Block -->
     <div class="container">
       <section class="noise-container" id="work">
-        <header class="works-header fade-up"
-          style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border-dark); padding-bottom: var(--space-4); margin-bottom: var(--space-8);">
-          <h2 class="works-title"
-            style="font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 400; letter-spacing: -0.04em; color: var(--text-dark-primary); margin: 0; line-height: 1;">
-            Selected <span class="serif-italic"
-              style="color: var(--text-dark-secondary); font-style: italic; font-family: var(--font-serif);">Works</span>
+        <header class="works-header fade-up">
+          <h2 class="works-title">
+            Project <span class="serif-italic" style="color: var(--accent-primary);">Files</span>
           </h2>
+          <div class="title-pill dark" style="border-color: var(--accent-primary); color: var(--accent-primary);">05 Records</div>
         </header>
 
-        <div class="projects-grid-v2">
+        <div class="project-ledger">
           <!-- Project 1: The Hustle Planner -->
-          <div class="project-card-v2 p-accent-purple fade-up">
-            <div class="card-bg"></div>
-            <div class="card-noise"></div>
-            <div class="card-content">
-              <div class="card-header">
-                <span class="p-num">01</span>
-                <span class="p-arrow">→</span>
-              </div>
-              <h3 class="p-title">The Hustle<br><span class="serif-italic">Planner</span></h3>
-              <p class="p-desc">A productivity tool that brings focus to daily goals through clean management.</p>
-              <div class="card-footer">
-                <div class="p-links">
-                  <a href="https://the-hustle-planner.vercel.app/" target="_blank" class="p-link">Live Link</a>
-                  <a href="https://github.com/santjsx/The-Hustle-Planner" target="_blank" class="p-link">Repo Link</a>
-                </div>
-              </div>
+          <div class="project-row fade-up">
+            <div class="p-row-num">01</div>
+            <div class="p-row-info">
+              <h3 class="p-row-title">The Hustle <span class="serif-italic">Planner</span></h3>
+              <p class="p-row-desc">A productivity tool that brings focus to daily goals through clean management.</p>
             </div>
+            <div class="p-row-links">
+              <a href="https://the-hustle-planner.vercel.app/" target="_blank" class="p-row-btn">Live</a>
+              <a href="https://github.com/santjsx/The-Hustle-Planner" target="_blank" class="p-row-btn">Repo</a>
+            </div>
+            <div class="p-row-hover-bg"></div>
           </div>
 
           <!-- Project 2: Hybrid OS -->
-          <div class="project-card-v2 p-accent-cyan fade-up">
-            <div class="card-bg"></div>
-            <div class="card-noise"></div>
-            <div class="card-content">
-              <div class="card-header">
-                <span class="p-num">02</span>
-                <span class="p-arrow">→</span>
-              </div>
-              <h3 class="p-title">Hybrid<br><span class="serif-italic">OS UI</span></h3>
-              <p class="p-desc">A browser-based operating system experience blending nostalgia with modern web tech.</p>
-              <div class="card-footer">
-                <div class="p-links">
-                  <a href="https://hybrid-os.vercel.app/" target="_blank" class="p-link">Live Link</a>
-                  <a href="https://github.com/santjsx/Hybrid_OS" target="_blank" class="p-link">Repo Link</a>
-                </div>
-              </div>
+          <div class="project-row fade-up">
+            <div class="p-row-num">02</div>
+            <div class="p-row-info">
+              <h3 class="p-row-title">Hybrid <span class="serif-italic">OS UI</span></h3>
+              <p class="p-row-desc">A browser-based operating system blending nostalgia with modern web tech.</p>
             </div>
+            <div class="p-row-links">
+              <a href="https://hybrid-os.vercel.app/" target="_blank" class="p-row-btn">Live</a>
+              <a href="https://github.com/santjsx/Hybrid_OS" target="_blank" class="p-row-btn">Repo</a>
+            </div>
+            <div class="p-row-hover-bg"></div>
           </div>
 
           <!-- Project 3: PDF Studio -->
-          <div class="project-card-v2 p-accent-magenta fade-up">
-            <div class="card-bg"></div>
-            <div class="card-noise"></div>
-            <div class="card-content">
-              <div class="card-header">
-                <span class="p-num">03</span>
-                <span class="p-arrow">→</span>
-              </div>
-              <h3 class="p-title">PDF<br><span class="serif-italic">Studio</span></h3>
-              <p class="p-desc">A streamlined toolkit for seamless PDF manipulation directly in the browser.</p>
-              <div class="card-footer">
-                <div class="p-links">
-                  <a href="https://pdf-studio-sable.vercel.app/" target="_blank" class="p-link">Live Link</a>
-                  <a href="https://github.com/santjsx" target="_blank" class="p-link">Repo Link</a>
-                </div>
-              </div>
+          <div class="project-row fade-up">
+            <div class="p-row-num">03</div>
+            <div class="p-row-info">
+              <h3 class="p-row-title">PDF <span class="serif-italic">Studio</span></h3>
+              <p class="p-row-desc">A streamlined toolkit for seamless PDF manipulation directly in the browser.</p>
             </div>
+            <div class="p-row-links">
+              <a href="https://pdf-studio-sable.vercel.app/" target="_blank" class="p-row-btn">Live</a>
+              <a href="https://github.com/santjsx" target="_blank" class="p-row-btn">Repo</a>
+            </div>
+            <div class="p-row-hover-bg"></div>
           </div>
 
           <!-- Project 4: UnoCypher -->
-          <div class="project-card-v2 p-accent-blue fade-up">
-            <div class="card-bg"></div>
-            <div class="card-noise"></div>
-            <div class="card-content">
-              <div class="card-header">
-                <span class="p-num">04</span>
-                <span class="p-arrow">→</span>
-              </div>
-              <h3 class="p-title">Uno<br><span class="serif-italic">Cypher</span></h3>
-              <p class="p-desc">Next-generation game development studio showcasing immersive mobile gaming.</p>
-              <div class="card-footer">
-                <div class="p-links">
-                  <a href="https://uno-cypher.vercel.app/" target="_blank" class="p-link">Live Link</a>
-                  <a href="https://github.com/santjsx" target="_blank" class="p-link">Repo Link</a>
-                </div>
-              </div>
+          <div class="project-row fade-up">
+            <div class="p-row-num">04</div>
+            <div class="p-row-info">
+              <h3 class="p-row-title">Uno <span class="serif-italic">Cypher</span></h3>
+              <p class="p-row-desc">Next-generation game development studio showcasing immersive mobile gaming.</p>
             </div>
+            <div class="p-row-links">
+              <a href="https://uno-cypher.vercel.app/" target="_blank" class="p-row-btn">Live</a>
+              <a href="https://github.com/santjsx" target="_blank" class="p-row-btn">Repo</a>
+            </div>
+            <div class="p-row-hover-bg"></div>
           </div>
 
           <!-- Project 5: Track A Lot -->
-          <div class="project-card-v2 p-accent-purple fade-up">
-            <div class="card-bg"></div>
-            <div class="card-noise"></div>
-            <div class="card-content">
-              <div class="card-header">
-                <span class="p-num">05</span>
-                <span class="p-arrow">→</span>
-              </div>
-              <h3 class="p-title">Track<br><span class="serif-italic">A Lot</span></h3>
-              <p class="p-desc">Your calm space for daily focus, schedule generation and habit tracking.</p>
-              <div class="card-footer">
-                <div class="p-links">
-                  <a href="https://track-a-lot.vercel.app/" target="_blank" class="p-link">Live Link</a>
-                  <a href="https://github.com/santjsx" target="_blank" class="p-link">Repo Link</a>
-                </div>
-              </div>
+          <div class="project-row fade-up">
+            <div class="p-row-num">05</div>
+            <div class="p-row-info">
+              <h3 class="p-row-title">Track <span class="serif-italic">A Lot</span></h3>
+              <p class="p-row-desc">Your calm space for daily focus, schedule generation and habit tracking.</p>
             </div>
+            <div class="p-row-links">
+              <a href="https://track-a-lot.vercel.app/" target="_blank" class="p-row-btn">Live</a>
+              <a href="https://github.com/santjsx" target="_blank" class="p-row-btn">Repo</a>
+            </div>
+            <div class="p-row-hover-bg"></div>
           </div>
         </div>
       </section>
@@ -231,116 +209,83 @@
     <!-- 3. About Section -->
     <div class="container">
       <section class="about-section" id="about" style="padding-bottom: var(--space-16);">
-        <header class="about-header">
-          <p class="about-pretitle">Something about</p>
-          <div class="title-pill dark">myself</div>
+        <header class="about-header fade-up">
+          <p class="about-pretitle">I am Jack's complete lack of</p>
+          <div class="title-pill dark">Fear / About</div>
         </header>
 
         <div class="premium-section-plate fade-up">
           <div class="about-grid">
-            <!-- Left Avatar Box -->
-            <div class="avatar-card bento-card fade-up">
-              <img src="images/santhoshhh.webp" alt="Avatar" loading="lazy" class="avatar-img-main">
-              <img src="images/Hover.webp" alt="Avatar Action" loading="lazy" class="avatar-img-hover">
+            <!-- Left Avatar Box: Dual Identity Concept -->
+            <div class="avatar-card fade-up">
+              <div class="avatar-quote-overlay">This is your life, and it's ending one minute at a time.</div>
+              <img src="images/download.jpg" alt="The Narrator" loading="lazy" class="avatar-img-main">
+              <img src="images/Fight%20club%20Icon.jpg" alt="Tyler" loading="lazy" class="avatar-img-hover">
             </div>
 
-            <!-- Right Skills Grid -->
-            <div class="skills-wrapper fade-up">
-              <!-- HTML -->
-              <div class="skill-card bento-card html-card">
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <polyline points="16,14 6,24 16,34" />
-                  <polyline points="32,14 42,24 32,34" />
-                  <line x1="28" y1="10" x2="20" y2="38" stroke="var(--skill-accent)" />
-                </svg>
-                <span>HTML</span>
-              </div>
-              <!-- CSS -->
-              <div class="skill-card bento-card css-card">
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="10" y="10" width="22" height="22" rx="4" />
-                  <rect x="16" y="16" width="22" height="22" rx="4" stroke="var(--skill-accent)" />
-                </svg>
-                <span>CSS</span>
-              </div>
-              <!-- JavaScript -->
-              <div class="skill-card bento-card js-card">
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="12" cy="24" r="4" />
-                  <circle cx="36" cy="14" r="4" stroke="var(--skill-accent)" />
-                  <circle cx="36" cy="34" r="4" />
-                  <path d="M16 24 H24 V14 H32" />
-                  <path d="M24 24 V34 H32" />
-                </svg>
-                <span>JavaScript</span>
-              </div>
-              <!-- React -->
-              <div class="skill-card bento-card react-card">
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="24" cy="24" rx="20" ry="8" transform="rotate(30 24 24)" />
-                  <ellipse cx="24" cy="24" rx="20" ry="8" transform="rotate(90 24 24)" />
-                  <ellipse cx="24" cy="24" rx="20" ry="8" transform="rotate(150 24 24)" stroke="var(--skill-accent)" />
-                  <circle cx="24" cy="24" r="4" fill="currentColor" />
-                </svg>
-                <span>React</span>
-              </div>
-              <!-- Tailwind -->
-              <div class="skill-card bento-card tailwind-card">
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8 24 C16 12, 16 24, 24 24 C32 24, 32 12, 40 12" />
-                  <path d="M8 36 C16 24, 16 36, 24 36 C32 36, 32 24, 40 24" stroke="var(--skill-accent)" />
-                </svg>
-                <span>Tailwind</span>
-              </div>
-              <!-- Git -->
-              <div class="skill-card bento-card git-card">
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="16" cy="32" r="4" />
-                  <circle cx="16" cy="16" r="4" />
-                  <circle cx="32" cy="16" r="4" stroke="var(--skill-accent)" />
-                  <line x1="16" y1="20" x2="16" y2="28" />
-                  <path d="M16 28 C16 24, 32 24, 32 20" />
-                </svg>
-                <span>Git</span>
+            <!-- Right Area: The Rules / Skills -->
+            <div class="skills-section fade-up">
+              <h3 class="rules-title">The Rules of Development</h3>
+              <div class="skills-wrapper">
+                <!-- HTML -->
+                <div class="skill-card">
+                  <span class="rule-index">1st Rule</span>
+                  <span class="rule-name">HTML</span>
+                </div>
+                <!-- CSS -->
+                <div class="skill-card">
+                  <span class="rule-index">2nd Rule</span>
+                  <span class="rule-name">CSS</span>
+                </div>
+                <!-- JS -->
+                <div class="skill-card">
+                  <span class="rule-index">3rd Rule</span>
+                  <span class="rule-name">JavaScript</span>
+                </div>
+                <!-- React -->
+                <div class="skill-card">
+                  <span class="rule-index">4th Rule</span>
+                  <span class="rule-name">React</span>
+                </div>
+                <!-- Tailwind -->
+                <div class="skill-card">
+                  <span class="rule-index">5th Rule</span>
+                  <span class="rule-name">Tailwind</span>
+                </div>
+                <!-- Git -->
+                <div class="skill-card">
+                  <span class="rule-index">6th Rule</span>
+                  <span class="rule-name">Git</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="premium-section-plate fade-up" style="margin-top: var(--space-8);">
-          <div class="about-lower-grid fade-up">
-            <div class="quote-block liquid-bubble">
-              <p class="quote-text">Focusing on strong fundamentals</p>
-              <h3 class="quote-big">“ & clean UIs ”</h3>
-              <div class="quote-profile">
-                <img src="images/Profile-2.gif" alt="Profile Animation">
-              </div>
+        <div class="premium-section-plate fade-up">
+          <div class="about-lower-grid">
+            <div class="quote-block fade-up">
+              <p class="quote-text">You are not your code</p>
+              <h3 class="quote-big">" It's only after we've lost everything<br>that we're free to build anything "</h3>
             </div>
 
-            <div class="experience-block naked-timeline">
-              <div class="exp-title">My <span class="serif-italic" style="color: rgba(255,255,255,0.6);">journey</span>
-                learning web development and crafting interfaces</div>
+            <div class="experience-block fade-up">
+              <div class="exp-title">Project Mayhem Timeline</div>
               <div class="exp-list timeline-wire">
                 <div class="exp-item data-node">
                   <span class="exp-num">01</span>
                   <span class="exp-label">B.Tech ECE</span>
-                  <span class="exp-status">Graduate</span>
+                  <span class="exp-status">Initiation</span>
                 </div>
                 <div class="exp-item active data-node">
                   <span class="exp-num">02</span>
                   <span class="exp-label">Web Dev</span>
-                  <span class="exp-status">Upskilling</span>
+                  <span class="exp-status">Deconstruction</span>
                 </div>
                 <div class="exp-item data-node">
                   <span class="exp-num">03</span>
                   <span class="exp-label">Projects</span>
-                  <span class="exp-status">Building</span>
+                  <span class="exp-status">Creation</span>
                 </div>
               </div>
             </div>
@@ -350,31 +295,40 @@
 
 
       <!-- 5. CTA Section -->
-      <div class="container">
-        <section class="cta-container fade-up bento-card" id="contact">
-          <p class="cta-pretitle">Let's connect</p>
-          <h2 class="cta-title">
-            Let's build something<br>
-            <span class="serif-italic premium-gradient-text">meaningful</span> together.
-          </h2>
+      <div style="position: relative; overflow: visible; width: 100%;">
+        <section class="cta-cinematic-section" id="contact">
+          <div class="container container-relative">
+            <div class="cta-content-wrapper fade-up">
+              
+              <div class="cta-text-col">
+                <p class="cta-pretitle">Homework Assignment</p>
+                <h2 class="cta-title">
+                  You decide your own level of<br>
+                  <span class="premium-gradient-text" style="font-size: 1.2em;">Involvement.</span>
+                </h2>
+              </div>
 
-          <div class="cta-actions">
-            <a href="mailto:heysanthoshreddy@gmail.com" class="cta-button primary">Email Me</a>
-
-            <div class="cta-links">
-              <a href="https://github.com/santjsx" target="_blank" class="cta-link">GitHub</a>
-              <span class="cta-separator"></span>
-              <a href="https://linkedin.com" target="_blank" class="cta-link">LinkedIn</a>
+              <div class="cta-actions">
+                <a href="mailto:heysanthoshreddy@gmail.com" class="cta-button primary">Start Project Mayhem</a>
+                <div class="cta-links">
+                  <a href="https://github.com/santjsx" target="_blank" class="cta-link">GitHub</a>
+                  <span class="cta-separator"></span>
+                  <a href="https://linkedin.com" target="_blank" class="cta-link">LinkedIn</a>
+                </div>
+              </div>
             </div>
           </div>
         </section>
       </div>
 
-
+      <!-- 6. Massive Footer Title -->
+      <footer class="massive-footer fade-up">
+        <h1 class="massive-footer-title">SANTHOSH REDDY</h1>
+      </footer>
 
   </main>
 
-  <!-- 6. Resume Slide-in Drawer -->
+  <!-- 7. Resume Slide-in Drawer -->
   <div class="resume-overlay js-close-resume"></div>
   <aside class="resume-drawer" id="resume-drawer">
     <div class="drawer-header">
@@ -391,7 +345,7 @@
       <!-- PDF.js Canvas Container -->
       <div id="pdf-container" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px;">
         <canvas id="pdf-canvas" style="max-width: 100%; height: auto; box-shadow: 0 4px 24px rgba(0,0,0,0.4); border-radius: 4px; display: none;"></canvas>
-        <div id="pdf-loading" style="color: rgba(255,255,255,0.6); font-family: var(--font-mono); font-size: 14px; margin-top: 40px;">
+        <div id="pdf-loading" style="color: var(--text-dark-secondary); font-family: var(--font-mono); font-size: 14px; margin-top: 40px;">
           Loading Resume...
         </div>
         

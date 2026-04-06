@@ -2,9 +2,9 @@
 export function initTitleAnimation() {
     const roles = [
         "Santhosh Reddy",
-        "Frontend Developer",
-        "UI Engineer",
-        "Creative Coder"
+        "Code Architect",
+        "UI Destructor",
+        "System Builder"
     ];
 
     let rollIndex = 0;
@@ -21,18 +21,16 @@ export function initTitleAnimation() {
         }
 
         const display = currentText.substring(0, charIndex);
-        const cursor = isDeleting ? "" : " ·"; // Premium subtle cursor
+        const cursor = isDeleting ? "" : " _"; // Monospace cursor
 
         document.title = display + (charIndex === currentText.length ? "" : cursor);
 
         let speed = isDeleting ? 40 : 120;
 
         if (!isDeleting && charIndex === currentText.length) {
-            // Pause full word
             speed = 3000;
             isDeleting = true;
         } else if (isDeleting && charIndex === 0) {
-            // Brief pause before next word
             isDeleting = false;
             rollIndex = (rollIndex + 1) % roles.length;
             speed = 500;

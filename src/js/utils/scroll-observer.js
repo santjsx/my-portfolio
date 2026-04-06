@@ -1,21 +1,24 @@
 export function initScrollObserver() {
-    const options = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.15
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+                // Stagger children with data-stagger for smoother reveals
+                const delay = entry.target.dataset.delay || 0;
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, delay);
                 observer.unobserve(entry.target);
             }
         });
-    }, options);
+    }, {
+        root: null,
+        rootMargin: '0px 0px -60px 0px',
+        threshold: 0.1
+    });
 
-    const targets = document.querySelectorAll('.fade-up');
-    targets.forEach(target => {
-        observer.observe(target);
+    document.querySelectorAll('.fade-up').forEach((el, i) => {
+        // Auto-stagger sequential elements
+        el.dataset.delay = i * 50;
+        observer.observe(el);
     });
 }
