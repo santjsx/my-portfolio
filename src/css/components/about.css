@@ -70,7 +70,8 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.8s var(--ease-out), filter 0.5s ease;
+    transition: transform 0.8s var(--ease-out), filter 0.5s var(--ease-out);
+    backface-visibility: hidden;
 }
 
 .avatar-img-main {
@@ -84,7 +85,8 @@
     filter: grayscale(100%) contrast(1.5) sepia(100%) hue-rotate(320deg) saturate(300%);
     transform: scale(1.1);
     mix-blend-mode: hard-light;
-    transition: opacity 0.4s var(--ease-in-out), transform 0.4s var(--ease-out);
+    transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+    will-change: opacity, transform;
 }
 
 .avatar-card:hover .avatar-img-main {
@@ -138,16 +140,18 @@
     left: 50%;
     transform: translateX(-50%);
     width: 100vw;
-    height: calc(100% + 200px); /* Overshoots to blend */
+    height: calc(100% + 200px);
     background-image: url('/images/fc/fight-club-edward-norton-brad-pitt-movies-wallpaper-c9f0f82d215a4d2b16e758bfa051b6ad.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* Parallax effect */
-    filter: grayscale(100%) contrast(1.4) brightness(0.12); /* Extremely dark & gritty */
+    /* Removed background-attachment:fixed — causes compositor jank */
+    filter: grayscale(100%) contrast(1.4) brightness(0.12);
     pointer-events: none;
     z-index: -2;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 /* ═══════════════════════════════════════════
@@ -308,7 +312,8 @@
     padding: var(--space-8);
     background: var(--bg-card);
     border: 1px solid var(--border);
-    transition: transform 0.4s var(--ease-out);
+    transition: transform 0.5s var(--ease-out), border-color 0.5s var(--ease-out);
+    backface-visibility: hidden;
 }
 
 .quote-block:hover {

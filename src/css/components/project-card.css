@@ -15,16 +15,18 @@
     left: 50%;
     transform: translateX(-50%);
     width: 100vw;
-    height: calc(100% + 200px); /* Overshoots to blend */
+    height: calc(100% + 200px);
     background-image: url('/images/fc/wallpaperflare.com_wallpaper.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* Parallax effect */
-    filter: grayscale(100%) contrast(1.5) brightness(0.12); /* Extremely dark & gritty */
+    /* Removed background-attachment:fixed — causes compositor jank */
+    filter: grayscale(100%) contrast(1.5) brightness(0.12);
     pointer-events: none;
     z-index: -2;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 .works-header {
@@ -80,9 +82,11 @@
     background: var(--text-primary);
     transform: scaleY(0);
     transform-origin: bottom;
-    transition: transform 0.4s var(--ease-out);
+    transition: transform 0.5s var(--ease-out);
     z-index: 0;
     pointer-events: none;
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 .project-row:hover .p-row-hover-bg {

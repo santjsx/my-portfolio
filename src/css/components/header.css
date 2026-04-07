@@ -18,7 +18,8 @@
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
     
     width: max-content;
-    transition: top 0.4s var(--ease-out), background 0.4s ease;
+    transition: top 0.5s var(--ease-out), background 0.5s var(--ease-out), border-color 0.5s var(--ease-out);
+    will-change: transform; /* GPU layer for backdrop-filter */
 }
 
 .site-header.scrolled {

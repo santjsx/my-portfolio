@@ -21,11 +21,12 @@
     background-image: url('/images/fc/wallpaperflare.com_wallpaper%20(1).jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
-    /* Insane chemical darkroom red tint - pure fight club */
+    /* Removed background-attachment:fixed — causes compositor jank */
     filter: grayscale(100%) contrast(1.6) sepia(100%) hue-rotate(315deg) saturate(400%) brightness(0.2); 
     z-index: 0;
     pointer-events: none;
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 /* Bleeds gracefully into the black areas */
@@ -141,7 +142,7 @@
     font-family: 'Arial Black', Impact, sans-serif;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    transition: transform 0.1s var(--ease-out), background 0.1s ease;
+    transition: transform 0.3s var(--ease-out), background 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
     white-space: nowrap;
     width: 100%;
     max-width: 400px;

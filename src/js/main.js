@@ -5,10 +5,14 @@ import { initScrollObserver } from './utils/scroll-observer.js';
 import { initTitleAnimation } from './utils/title-anim.js';
 import { initResumeDrawer } from './utils/drawer.js';
 import { initPreloader } from './utils/preloader.js';
+import { initHeroEffects } from './utils/hero-effects.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Preloader (mobile only)
     initPreloader();
+
+    // 0.5. Hero cinematic effects
+    initHeroEffects();
 
     // 1. Lenis smooth scrolling
     setupLenis();

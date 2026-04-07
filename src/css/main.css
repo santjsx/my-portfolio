@@ -41,6 +41,9 @@ body {
     overflow-x: hidden;
     letter-spacing: var(--tracking-normal);
     overscroll-behavior: none;
+    /* GPU rendering hints */
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* ═══════════════════════════════════════════
@@ -106,6 +109,9 @@ img {
     margin: var(--space-8) 0;
     position: relative;
     z-index: 1;
+    /* Skip layout/paint for off-screen sections */
+    content-visibility: auto;
+    contain-intrinsic-size: auto 800px;
 }
 
 /* ═══════════════════════════════════════════
@@ -114,13 +120,15 @@ img {
 .fade-up {
     opacity: 0;
     transform: translate3d(0, 40px, 0);
-    transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
     will-change: opacity, transform;
+    backface-visibility: hidden; /* Force GPU compositing layer */
 }
 
 .fade-up.visible {
     opacity: 1;
     transform: translate3d(0, 0, 0);
+    will-change: auto; /* Release GPU memory after animation completes */
 }
 
 /* Base pill structure */
