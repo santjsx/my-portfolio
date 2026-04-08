@@ -1,8 +1,8 @@
 /* ═══════════════════════════════════════════
-   SELECTED WORKS — The Project Ledger
+   CASE FILES — Classified Project Archive
    ═══════════════════════════════════════════ */
-   
-/* Massive Cinematic Parallax Background */
+
+/* Cinematic Background */
 #work {
     position: relative;
     z-index: 1;
@@ -19,7 +19,6 @@
     background-image: url('/images/fc/wallpaperflare.com_wallpaper.jpg');
     background-size: cover;
     background-position: center;
-    /* Removed background-attachment:fixed — causes compositor jank */
     filter: grayscale(100%) contrast(1.5) brightness(0.12);
     pointer-events: none;
     z-index: -2;
@@ -29,18 +28,36 @@
     backface-visibility: hidden;
 }
 
+/* ═══════════════════════════════════════════
+   HEADER — Classified Archive
+   ═══════════════════════════════════════════ */
 .works-header {
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-10);
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    border-bottom: 2px solid var(--accent-danger);
+    border-bottom: 1px solid var(--border);
     padding-bottom: var(--space-4);
 }
 
+.works-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.works-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent-danger);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+}
+
 .works-title {
-    font-size: clamp(3rem, 7vw, 5rem);
-    font-weight: var(--weight-bold);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    font-family: 'Arial Black', Impact, sans-serif;
     letter-spacing: -0.04em;
     color: var(--text-primary);
     line-height: 1;
@@ -48,6 +65,18 @@
     margin: 0;
 }
 
+.works-count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    align-self: flex-end;
+}
+
+/* ═══════════════════════════════════════════
+   LEDGER — The Case File List
+   ═══════════════════════════════════════════ */
 .project-ledger {
     display: flex;
     flex-direction: column;
@@ -58,23 +87,24 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-4);
-    /* Added horizontal padding for mobile */
     padding: var(--space-6) var(--space-4);
     border-top: 1px solid var(--border);
     position: relative;
     overflow: hidden;
     cursor: crosshair;
+    transition: border-color 0.3s ease;
 }
 
 @media (min-width: 768px) {
     .project-row {
-        grid-template-columns: 60px 1fr auto;
+        grid-template-columns: 50px 1fr auto;
         align-items: center;
         gap: var(--space-8);
-        padding: var(--space-8) var(--space-4);
+        padding: var(--space-8) var(--space-6);
     }
 }
 
+/* ── The White Flood Hover (WOW FACTOR — retained) ── */
 .p-row-hover-bg {
     position: absolute;
     inset: 0;
@@ -100,58 +130,117 @@
     z-index: 1;
 }
 
+/* ── Case Number ── */
 .p-row-num {
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: 12px;
     font-weight: var(--weight-bold);
-    color: var(--text-secondary);
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
     transition: color 0.3s ease;
-}
-
-.p-row-info {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-}
-
-.p-row-title {
-    font-family: var(--font-sans);
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
-    font-weight: var(--weight-bold);
-    color: var(--text-primary);
-    text-transform: uppercase;
-    margin: 0;
-    line-height: 1.1;
-    transition: color 0.3s ease, transform 0.3s var(--ease-out);
-}
-
-.project-row:hover .p-row-title {
-    color: var(--bg-dark);
-    transform: skewX(-5deg) translate3d(10px, 0, 0); /* Fight club lean */
 }
 
 .project-row:hover .p-row-num {
     color: var(--accent-danger);
 }
 
+/* ── Case Info Block ── */
+.p-row-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+/* Meta row: tag + status */
+.p-row-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.case-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.project-row:hover .case-tag {
+    color: var(--bg-dark);
+    border-color: rgba(0,0,0,0.2);
+}
+
+.case-status {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.case-status.deployed {
+    color: #4ade80;
+}
+
+.case-status.active {
+    color: var(--accent-danger);
+    animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.project-row:hover .case-status {
+    color: var(--bg-dark);
+}
+
+/* ── Title ── */
+.p-row-title {
+    font-family: var(--font-sans);
+    font-size: clamp(1.6rem, 3vw, 2.8rem);
+    font-weight: 900;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    transition: color 0.3s ease, transform 0.4s var(--ease-out), letter-spacing 0.4s var(--ease-out);
+}
+
+.project-row:hover .p-row-title {
+    color: var(--bg-dark);
+    transform: translate3d(8px, 0, 0);
+    letter-spacing: 0.02em;
+}
+
+/* ── Description ── */
 .p-row-desc {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--text-secondary);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     max-width: 500px;
+    margin: 0;
     transition: color 0.3s ease;
 }
 
 .project-row:hover .p-row-desc {
-    color: var(--bg-dark);
+    color: rgba(0, 0, 0, 0.5);
 }
 
+/* ── Links ── */
 .p-row-links {
     display: flex;
-    gap: var(--space-4);
-    margin-top: var(--space-4);
+    gap: var(--space-3);
+    margin-top: var(--space-3);
 }
 
 @media (min-width: 768px) {
@@ -163,15 +252,15 @@
 
 .p-row-btn {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.1em;
     color: var(--text-primary);
     background: transparent;
     border: 1px solid var(--border);
-    padding: var(--space-2) var(--space-6);
-    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    padding: var(--space-2) var(--space-5);
+    transition: all 0.3s var(--ease-out);
     text-decoration: none;
 }
 
@@ -182,6 +271,24 @@
 
 .p-row-btn:hover {
     background: var(--accent-danger) !important;
-    color: var(--bg-dark) !important;
+    color: var(--text-primary) !important;
     border-color: var(--accent-danger) !important;
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE ADJUSTMENTS
+   ═══════════════════════════════════════════ */
+@media (max-width: 767px) {
+    .works-title {
+        font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    .p-row-title {
+        font-size: clamp(1.4rem, 5vw, 2rem);
+    }
+
+    .p-row-meta {
+        flex-wrap: wrap;
+        gap: var(--space-2);
+    }
 }
