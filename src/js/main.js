@@ -10,25 +10,18 @@ import { initContactSection } from './utils/contact.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Preloader (mobile only)
-    initPreloader();
-
-    // 0.5. Hero cinematic effects
-    initHeroEffects();
+    const preloaderPromise = initPreloader();
 
     // 1. Lenis smooth scrolling
     setupLenis();
 
-    // 2. Title typewriter animation
-    initTitleAnimation();
-
     // 3. Resume drawer
     initResumeDrawer();
 
-    // 4. Scroll reveal observer
-    initScrollObserver();
-
     // 4.5. Contact section interactions
     initContactSection();
+    
+    // Header scrolled state
     const header = document.getElementById('header');
     if (header) {
         let ticking = false;
@@ -42,4 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, { passive: true });
     }
+
+    // Initialize animations after preloader finishes
+    preloaderPromise.then(() => {
+        // 0.5. Hero cinematic effects
+        initHeroEffects();
+
+        // 2. Title typewriter animation
+        initTitleAnimation();
+
+        // 4. Scroll reveal observer
+        initScrollObserver();
+    });
 });

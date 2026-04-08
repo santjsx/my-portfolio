@@ -1,13 +1,15 @@
 // src/js/utils/preloader.js
 
 export function initPreloader() {
-    const loader = document.getElementById('premium-preloader');
-    const percentEl = document.getElementById('loader-percent');
-    
-    // Only execute on mobile where the loader is visible
-    if (!loader || window.getComputedStyle(loader).display === 'none') {
-        return;
-    }
+    return new Promise((resolve) => {
+        const loader = document.getElementById('premium-preloader');
+        const percentEl = document.getElementById('loader-percent');
+        
+        // Only execute on mobile where the loader is visible
+        if (!loader || window.getComputedStyle(loader).display === 'none') {
+            resolve();
+            return;
+        }
 
     // Lock body scroll while loading
     document.body.style.overflow = 'hidden';
@@ -57,6 +59,7 @@ export function initPreloader() {
             loader.classList.add('loaded');
             setTimeout(() => {
                 document.body.style.overflow = '';
+                resolve();
                 setTimeout(() => loader.remove(), 1200);
             }, 500);
         }
@@ -88,5 +91,6 @@ export function initPreloader() {
     // Resolve when Window loads OR 2.5 seconds pass
     Promise.race([windowLoad, absoluteFailsafe]).then(() => {
         targetProgress = 100;
+    });
     });
 }
