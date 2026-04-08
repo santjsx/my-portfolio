@@ -26,52 +26,111 @@
     border-color: var(--accent-danger);
 }
 
-.premium-section-plate {
+/* Base dossiere wrapper */
+.dossier-plate {
     background: transparent;
     border-top: 1px solid var(--border);
     padding: var(--space-10) 0;
+    position: relative;
+    z-index: 2;
 }
 
-.about-grid {
+.dossier-grid {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     gap: var(--space-12);
 }
 
 @media (min-width: 1024px) {
-    .about-grid {
+    .dossier-grid {
         flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        gap: var(--space-16);
+        align-items: flex-start;
+        gap: var(--space-20);
     }
 }
 
 /* ═══════════════════════════════════════════
-   THE AVATAR — Dual Identity Glitch 
+   LEFT PANE: The Mugshot / Avatar
    ═══════════════════════════════════════════ */
-.avatar-card {
+.dossier-left {
     flex-shrink: 0;
-    aspect-ratio: 3/4;
     width: 100%;
-    max-width: 380px;
+    max-width: 320px;
     margin: 0 auto;
-    overflow: hidden;
-    position: relative;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    cursor: crosshair;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
 }
 
-.avatar-card img {
+@media (min-width: 1024px) {
+    .dossier-left {
+        position: sticky;
+        top: 100px;
+    }
+}
+
+.classified-attachment {
+    position: relative;
+    padding: var(--space-2);
+    background: #e8e8e8; /* Off-white photo paper border */
+    border: 1px solid #111;
+    transform: rotate(-2deg);
+    transition: transform 0.4s var(--ease-out);
+    aspect-ratio: 3/4;
+    overflow: hidden; /* For inner glitch */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+}
+
+.classified-attachment:hover {
+    transform: rotate(0deg);
+}
+
+/* Tape Piece */
+.tape-piece {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%) rotate(4deg);
+    width: 90px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-left: 1px dashed rgba(255,255,255,0.2);
+    border-right: 1px dashed rgba(255,255,255,0.2);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Confidential Stamp */
+.confidential-stamp {
+    position: absolute;
+    bottom: var(--space-4);
+    right: -10px;
+    font-family: 'Special Elite', monospace;
+    font-size: 26px;
+    color: var(--accent-danger);
+    font-weight: 900;
+    text-transform: uppercase;
+    transform: rotate(-15deg);
+    border: 3px solid var(--accent-danger);
+    padding: 2px 8px;
+    opacity: 0.9;
+    z-index: 5;
+    pointer-events: none;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    box-shadow: 0 0 4px rgba(0,0,0,0.3) inset;
+}
+
+/* Avatar Glitch Logic (Retained & Optimized) */
+.avatar-img-main, .avatar-img-hover {
+    position: absolute;
+    inset: var(--space-2);
+    width: calc(100% - var(--space-4));
+    height: calc(100% - var(--space-4));
     object-fit: cover;
     transition: transform 0.8s var(--ease-out), filter 0.5s var(--ease-out);
-    backface-visibility: hidden;
 }
 
 .avatar-img-main {
@@ -86,14 +145,13 @@
     transform: scale(1.1);
     mix-blend-mode: hard-light;
     transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
-    will-change: opacity, transform;
 }
 
-.avatar-card:hover .avatar-img-main {
+.classified-attachment:hover .avatar-img-main {
     filter: grayscale(100%) contrast(2) brightness(0.5);
 }
 
-.avatar-card:hover .avatar-img-hover {
+.classified-attachment:hover .avatar-img-hover {
     opacity: 1;
     transform: scale(1);
     animation: TylerGlitch 0.4s steps(4) forwards;
@@ -107,27 +165,189 @@
     100% { clip-path: inset(0 0 0 0); transform: translate3d(0, 0, 0); opacity: 1; }
 }
 
-.avatar-quote-overlay {
-    position: absolute;
-    top: var(--space-4);
-    left: var(--space-4);
-    right: var(--space-4);
-    z-index: 3;
+/* Quote Block */
+.quote-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-left: var(--space-4);
+    background: transparent;
+    border-left: 2px solid var(--accent-danger);
+    margin-top: var(--space-6);
+}
+
+.quote-text {
     font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: var(--weight-bold);
-    color: var(--accent-primary);
+    font-size: 10px;
+    color: var(--accent-danger);
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    mix-blend-mode: difference;
-    pointer-events: none;
+    margin: 0;
+}
+
+.quote-big {
+    font-family: 'Special Elite', cursive, monospace;
+    font-size: 18px;
+    color: var(--text-primary);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+    opacity: 0.8;
 }
 
 /* ═══════════════════════════════════════════
-   PREMIUM ABOUT SECTION — Project Mayhem
+   RIGHT PANE: Manifesto & Operations
    ═══════════════════════════════════════════ */
+.dossier-right {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+}
 
-/* Massive Cinematic Parallax Background */
+.dossier-title {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-6);
+    margin-top: 0;
+}
+
+/* Manifesto Block & Redacted Text */
+.manifesto-block {
+    max-width: 650px;
+}
+
+.manifesto-text {
+    font-family: var(--font-sans);
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
+    line-height: 1.6;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* WOW FACTOR: Redacted Hover Effect */
+.redacted-text {
+    background-color: var(--text-primary);
+    color: var(--text-primary);
+    padding: 2px 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+    cursor: crosshair;
+    transition: background-color 0.3s ease, color 0.3s ease, text-decoration 0.3s ease;
+    user-select: none;
+    display: inline-block;
+    line-height: 1;
+}
+
+.redacted-text:hover {
+    background-color: rgba(211, 47, 47, 0.15); /* light danger bg */
+    color: var(--accent-danger); /* reveal text in red */
+    text-decoration: line-through;
+}
+
+/* Weapons of Choice (Minimal Skills) */
+.operational-assets {
+    max-width: 650px;
+}
+
+.asset-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    font-family: var(--font-mono);
+}
+
+.asset-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.asset-name {
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.1em;
+}
+
+/* Dynamic dot leader using flex-grow and borders */
+.asset-dots {
+    flex-grow: 1;
+    border-bottom: 2px dotted rgba(255,255,255,0.15);
+    margin: 0 16px;
+    transform: translateY(-4px);
+}
+
+.asset-val {
+    color: var(--accent-danger);
+    font-weight: var(--weight-bold);
+}
+
+/* Incident Report (Timeline) */
+.incident-report {
+    max-width: 650px;
+}
+
+.log-entries {
+    display: flex;
+    flex-direction: column;
+}
+
+.log-entry {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: var(--space-6);
+    padding: var(--space-5) 0;
+    border-bottom: 1px solid var(--border);
+    transition: padding-left 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+
+.log-entry:hover {
+    padding-left: var(--space-4);
+    border-color: var(--accent-danger);
+}
+
+.log-time {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    padding-top: 2px;
+}
+
+.log-desc {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+}
+
+.log-status {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-left: 8px;
+}
+
+.active-log .log-desc {
+    color: var(--text-primary);
+    font-weight: var(--weight-bold);
+}
+
+.active-log .log-status {
+    color: var(--accent-danger);
+    font-style: normal;
+}
+
+/* Background Override for About Section */
 .about-section {
     position: relative;
     z-index: 1;
@@ -144,357 +364,9 @@
     background-image: url('/images/fc/fight-club-edward-norton-brad-pitt-movies-wallpaper-c9f0f82d215a4d2b16e758bfa051b6ad.jpg');
     background-size: cover;
     background-position: center;
-    /* Removed background-attachment:fixed — causes compositor jank */
-    filter: grayscale(100%) contrast(1.4) brightness(0.12);
+    filter: grayscale(100%) contrast(1.4) brightness(0.08); /* Darker for better text contrast */
     pointer-events: none;
     z-index: -2;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
-    will-change: transform;
-    backface-visibility: hidden;
-}
-
-/* ═══════════════════════════════════════════
-   THE RULES — Classified File Cards
-   ═══════════════════════════════════════════ */
-.skills-section {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.rules-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: var(--space-8);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: var(--space-4);
-}
-
-.rules-title {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    color: var(--accent-danger);
-    text-transform: uppercase;
-    letter-spacing: 0.25em;
-    margin: 0;
-}
-
-.rules-count {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    border: 1px solid var(--border);
-    padding: 4px 12px;
-}
-
-.skills-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-3);
-}
-
-@media (min-width: 768px) {
-    .skills-wrapper {
-        grid-template-columns: repeat(4, 1fr);
-        gap: var(--space-4);
-    }
-}
-
-/* ── Individual Skill File Card ── */
-.skill-file {
-    position: relative;
-    padding: var(--space-5);
-    background: rgba(10, 10, 10, 0.7);
-    border: 1px solid var(--border);
-    border-top: 2px solid var(--accent-danger);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    cursor: default;
-    transition: transform 0.4s var(--ease-out), border-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), background 0.4s var(--ease-out);
-    backface-visibility: hidden;
-    overflow: hidden;
-}
-
-/* Hover glow sweep */
-.skill-file::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(242, 139, 130, 0.04), transparent);
-    transition: left 0.6s var(--ease-out);
-    pointer-events: none;
-}
-
-.skill-file:hover::before {
-    left: 100%;
-}
-
-.skill-file:hover {
-    transform: translateY(-4px);
-    border-color: rgba(242, 139, 130, 0.3);
-    background: rgba(15, 15, 15, 0.9);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(242, 139, 130, 0.1);
-}
-
-/* Staggered reveal on scroll */
-.skill-file:nth-child(1) { transition-delay: 0s; }
-.skill-file:nth-child(2) { transition-delay: 0.05s; }
-.skill-file:nth-child(3) { transition-delay: 0.1s; }
-.skill-file:nth-child(4) { transition-delay: 0.15s; }
-.skill-file:nth-child(5) { transition-delay: 0.2s; }
-.skill-file:nth-child(6) { transition-delay: 0.25s; }
-.skill-file:nth-child(7) { transition-delay: 0.3s; }
-.skill-file:nth-child(8) { transition-delay: 0.35s; }
-
-/* Top row: icon + rule tag */
-.skill-file-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Skill icon box */
-.skill-icon {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border);
-    background: rgba(255, 255, 255, 0.03);
-    transition: border-color 0.3s var(--ease-out), background 0.3s var(--ease-out);
-}
-
-.skill-icon svg {
-    width: 16px;
-    height: 16px;
-    color: var(--text-secondary);
-    transition: color 0.3s var(--ease-out);
-}
-
-.skill-file:hover .skill-icon {
-    border-color: var(--accent-primary);
-    background: rgba(242, 139, 130, 0.08);
-}
-
-.skill-file:hover .skill-icon svg {
-    color: var(--accent-primary);
-}
-
-.skill-icon-accent {
-    border-color: rgba(211, 47, 47, 0.3) !important;
-}
-
-.skill-icon-accent svg {
-    color: var(--accent-danger) !important;
-}
-
-/* Rule tag */
-.skill-rule-tag {
-    font-family: var(--font-mono);
-    font-size: 8px;
-    font-weight: var(--weight-bold);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-    opacity: 0.6;
-}
-
-/* Skill name row */
-.skill-name-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-}
-
-.skill-label {
-    font-family: var(--font-sans);
-    font-size: 16px;
-    font-weight: var(--weight-bold);
-    color: var(--text-primary);
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    transition: color 0.3s var(--ease-out);
-}
-
-.skill-file:hover .skill-label {
-    color: var(--accent-primary);
-}
-
-.skill-percent {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: var(--weight-bold);
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-}
-
-/* ── Proficiency Bar ── */
-.skill-bar {
-    width: 100%;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.06);
-    overflow: hidden;
-    position: relative;
-}
-
-.skill-bar-fill {
-    height: 100%;
-    width: 0;
-    background: linear-gradient(90deg, var(--accent-primary), var(--accent-hover));
-    transition: width 1.2s var(--ease-out);
-    will-change: width;
-}
-
-.skill-bar-accent {
-    background: linear-gradient(90deg, var(--accent-danger), var(--accent-primary));
-}
-
-/* Animate bars when parent becomes visible */
-.visible .skill-bar-fill,
-.fade-up.visible .skill-bar-fill {
-    width: var(--skill-level);
-}
-
-/* Bottom category label */
-.skill-category {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: var(--text-muted);
-    opacity: 0.5;
-    transition: opacity 0.3s var(--ease-out), color 0.3s var(--ease-out);
-}
-
-.skill-file:hover .skill-category {
-    opacity: 1;
-    color: var(--text-secondary);
-}
-
-/* ═══════════════════════════════════════════
-   LOWER SECTION — Quotes & Timeline
-   ═══════════════════════════════════════════ */
-.about-lower-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-12);
-}
-
-@media (min-width: 1024px) {
-    .about-lower-grid {
-        grid-template-columns: 1.2fr 1fr;
-        align-items: start;
-        gap: var(--space-16);
-    }
-}
-
-.quote-block {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-    padding: var(--space-8);
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    transition: transform 0.5s var(--ease-out), border-color 0.5s var(--ease-out);
-    backface-visibility: hidden;
-}
-
-.quote-block:hover {
-    transform: translate3d(0, -4px, 0);
-    border-color: var(--accent-primary);
-}
-
-.quote-text {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--accent-danger);
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-}
-
-.quote-big {
-    font-family: 'Special Elite', cursive, monospace;
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    color: var(--text-primary);
-    line-height: var(--leading-tight);
-    text-shadow: 2px 2px 0 rgba(211, 47, 47, 0.4);
-    transform: rotate(-1.5deg) skewX(-5deg);
-    display: inline-block;
-}
-
-/* Timeline */
-.experience-block {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-}
-
-.exp-title {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.25em;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: var(--space-4);
-}
-
-.exp-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.exp-item {
-    display: grid;
-    grid-template-columns: 40px 1fr auto;
-    align-items: center;
-    gap: var(--space-4);
-    padding: var(--space-5) 0;
-    border-bottom: 1px solid var(--border);
-    transition: padding-left 0.3s ease, border-color 0.3s ease;
-}
-
-.exp-item:hover {
-    padding-left: var(--space-4);
-    border-color: var(--accent-primary);
-}
-
-.exp-num {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--text-secondary);
-}
-
-.exp-label {
-    font-family: var(--font-sans);
-    font-size: var(--text-base);
-    font-weight: var(--weight-bold);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-primary);
-}
-
-.exp-status {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: var(--text-sm);
-    color: var(--text-secondary);
-}
-
-.exp-item.active .exp-label {
-    color: var(--accent-primary);
-}
-
-.exp-item.active .exp-status {
-    color: var(--accent-primary);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
 }
