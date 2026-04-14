@@ -103,7 +103,7 @@ function updateWidgetUI(data) {
                  </div>
                  <div class="activity-info">
                      <span class="activity-name">${escapeHTML(track.song)}</span>
-                     <span class="activity-details">by ${escapeHTML(track.artist)}</span>
+                     <span class="activity-state">from ${escapeHTML(track.album)}</span>
                      <div class="spotify-eq">
                          <div class="eq-bar"></div>
                          <div class="eq-bar"></div>
