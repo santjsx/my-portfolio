@@ -1,210 +1,343 @@
 /* ═══════════════════════════════════════════
-   WORKS — Project Mayhem / Fight Club Minimal
+   WORKS — Mayhem Target Grid
    ═══════════════════════════════════════════ */
-.works-section.minimal-works {
-    padding: var(--space-24) 0;
+
+.works-section.mayhem-works {
+    padding: var(--space-32) 0;
     background: var(--bg-dark);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+    /* Breaking the grid container out slightly to allow edge bleeds */
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
 }
 
-.minimal-works-header {
+/* ── Cinematic Scrolling Marquee ── */
+.mayhem-marquee {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 200vw;
+    transform: translateY(-50%) rotate(-2deg);
+    display: flex;
+    white-space: nowrap;
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 0;
+    animation: scrollMarquee 40s linear infinite;
+}
+
+.mayhem-marquee span {
+    font-size: 25vw;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--text-primary);
+    text-transform: uppercase;
+}
+
+@keyframes scrollMarquee {
+    0% { transform: translateY(-50%) rotate(-2deg) translateX(0); }
+    100% { transform: translateY(-50%) rotate(-2deg) translateX(-50%); }
+}
+
+/* ── Section Header ── */
+.mayhem-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding-bottom: var(--space-6);
-    margin-bottom: var(--space-12);
+    margin-bottom: var(--space-24);
+    position: relative;
+    z-index: 2;
+    border-bottom: 2px solid var(--text-primary);
+    padding-bottom: var(--space-4);
 }
 
-.works-header-group {
+.header-left {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--space-4);
 }
 
-.works-pretitle {
+.warning-tape {
+    align-self: flex-start;
+    background: var(--accent-danger);
+    color: #000;
     font-family: var(--font-mono);
+    font-weight: 900;
     font-size: 10px;
-    color: var(--accent-primary);
-    text-transform: uppercase;
+    padding: 2px 8px;
     letter-spacing: 0.2em;
-    opacity: 0.7;
+    transform: skew(-10deg);
 }
 
-.minimal-section-title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 800;
+.mayhem-title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
     color: var(--text-primary);
     margin: 0;
-    line-height: 1;
-    text-transform: uppercase;
+    line-height: 0.9;
     letter-spacing: -0.02em;
+    text-transform: uppercase;
 }
 
-.minimal-section-title .italic-serif {
+.mayhem-title .italic-serif {
     font-family: var(--font-serif);
     font-style: italic;
     font-weight: 400;
-    text-transform: none;
     color: var(--accent-primary);
+    text-transform: none;
 }
 
-.minimal-works-count {
+.mayhem-subtitle {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    letter-spacing: 0.3em;
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-4);
+}
+
+/* Pseudo barcode using linear gradient */
+.barcode-graphic {
+    width: 60px;
+    height: 20px;
+    background: repeating-linear-gradient(
+        to right,
+        var(--text-primary),
+        var(--text-primary) 2px,
+        transparent 2px,
+        transparent 4px,
+        var(--text-primary) 4px,
+        var(--text-primary) 5px,
+        transparent 5px,
+        transparent 8px
+    );
+    opacity: 0.5;
+}
+
+.mayhem-count {
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
 }
 
-/* ── Project Row ── */
-.minimal-project-list {
+/* ═══════════════════════════════════════════
+   THE TARGET GRID
+   ═══════════════════════════════════════════ */
+.mayhem-target-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+    position: relative;
+    z-index: 2;
+}
+
+/* ── Target Cards ── */
+.mayhem-target {
+    position: relative;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px;
+    padding: var(--space-8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(10, 10, 10, 0.4);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: crosshair;
+    overflow: hidden;
 }
 
-.minimal-project-row {
+.spans-two {
+    grid-column: 1 / -1;
+    min-height: 220px;
+}
+
+/* Tactical Crosshairs (Corners) */
+.crosshair {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    z-index: 10;
+    transition: all 0.2s ease;
+}
+
+.top-left { top: 0; left: 0; border-top: 1px solid var(--accent-primary); border-left: 1px solid var(--accent-primary); }
+.top-right { top: 0; right: 0; border-top: 1px solid var(--accent-primary); border-right: 1px solid var(--accent-primary); }
+.bottom-left { bottom: 0; left: 0; border-bottom: 1px solid var(--accent-primary); border-left: 1px solid var(--accent-primary); }
+.bottom-right { bottom: 0; right: 0; border-bottom: 1px solid var(--accent-primary); border-right: 1px solid var(--accent-primary); }
+
+/* Internal Grid Structure */
+.target-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--space-8) 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    transition: all 0.4s var(--ease-out);
-    cursor: crosshair;
-    position: relative;
-}
-
-/* Fight Club hover — left pink danger border appears */
-.minimal-project-row::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 0;
-    height: 100%;
-    background: rgba(242, 139, 130, 0.06);
-    transition: width 0.6s var(--ease-out);
-    z-index: 0;
-}
-
-.minimal-project-row:hover::before {
-    width: 100%;
-}
-
-.minimal-project-row:hover {
-    padding-left: var(--space-6);
-    border-bottom-color: rgba(242, 139, 130, 0.2);
-}
-
-.p-left {
-    display: flex;
-    align-items: center;
-    gap: var(--space-8);
-    position: relative;
-    z-index: 1;
-}
-
-.p-num {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--text-muted);
-    transition: color 0.4s ease;
-}
-
-.minimal-project-row:hover .p-num {
-    color: var(--accent-primary);
-}
-
-.p-title {
-    font-size: clamp(1.4rem, 3.5vw, 2.5rem);
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: -0.01em;
-    transition: transform 0.4s var(--ease-out), color 0.4s ease;
-    position: relative;
-    z-index: 1;
-}
-
-.minimal-project-row:hover .p-title {
-    transform: translateX(12px);
-}
-
-.p-right {
-    display: flex;
-    align-items: center;
-    gap: var(--space-10);
-    position: relative;
-    z-index: 1;
-}
-
-.p-category {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--text-muted);
-    border: 1px solid var(--border);
-    padding: 3px 8px;
-}
-
-.p-links {
-    display: flex;
-    gap: var(--space-4);
-    opacity: 0;
-    transform: translateX(10px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.minimal-project-row:hover .p-links {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.minimal-link {
     font-family: var(--font-mono);
     font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
+    position: relative;
+    z-index: 2;
+}
+
+.t-id {
     color: var(--accent-primary);
+    font-weight: 700;
+}
+
+.t-cat {
+    color: var(--text-muted);
+}
+
+.t-title {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin: var(--space-8) 0;
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 2;
+}
+
+.t-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    z-index: 2;
+}
+
+.t-stamp {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 3px 8px;
+    transform: rotate(-2deg);
+    opacity: 0.6;
+}
+
+.t-links {
+    display: flex;
+    gap: var(--space-4);
+}
+
+.t-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
     text-decoration: none;
-    padding-bottom: 2px;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 6px 12px;
+    background: var(--text-primary);
+    color: var(--bg-dark);
+    transition: all 0.2s ease;
 }
 
-.minimal-link:hover {
-    border-color: var(--accent-primary);
+.t-btn.outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--text-primary);
 }
 
-/* Mobile */
+/* ═══════════════════════════════════════════
+   THE FIGHT CLUB HOVER -> SUBLIMINAL INVERSION
+   ═══════════════════════════════════════════ */
+.mayhem-target::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--text-primary); /* Solid White Flash */
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0s; /* Instant flash frame */
+    pointer-events: none;
+    mix-blend-mode: exclusion;
+}
+
+/* When Hovered -> Invert EVERYTHING inside */
+.mayhem-target:hover {
+    background: var(--text-primary);
+    border-color: var(--accent-danger);
+    transform: scale(0.99); /* slight destructive crunch */
+    box-shadow: 0 0 20px rgba(242, 139, 130, 0.2);
+}
+
+.mayhem-target:hover .t-id,
+.mayhem-target:hover .t-cat,
+.mayhem-target:hover .t-stamp {
+    color: var(--bg-dark);
+    font-weight: 900;
+    border-color: var(--bg-dark);
+}
+
+.mayhem-target:hover .t-title {
+    color: var(--accent-danger);
+    /* Subtle glitch jitter on hover */
+    animation: textJitter 0.2s infinite; 
+}
+
+@keyframes textJitter {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-1px, 1px); }
+    50% { transform: translate(1px, -1px); }
+    75% { transform: translate(-2px, 0); }
+    100% { transform: translate(1px, 1px); }
+}
+
+.mayhem-target:hover .t-btn {
+    background: var(--accent-danger);
+    color: var(--text-primary);
+}
+
+.mayhem-target:hover .t-btn.outline {
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    border-color: var(--bg-dark);
+}
+
+.mayhem-target:hover .crosshair {
+    border-color: var(--accent-danger);
+    width: 20px;
+    height: 20px;
+}
+
+/* Subliminal overlay effect */
+.mayhem-target:active::after {
+    opacity: 1; /* White exclusion mask hits hard on click */
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE
+   ═══════════════════════════════════════════ */
 @media (max-width: 768px) {
-    .minimal-project-row {
+    .mayhem-target-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+    }
+
+    .spans-two {
+        grid-column: 1 / -1;
+    }
+
+    .mayhem-title {
+        font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    .t-footer {
         flex-direction: column;
         align-items: flex-start;
-        gap: var(--space-4);
-    }
-
-    .p-right {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .p-links {
-        opacity: 1;
-        transform: none;
-    }
-
-    .p-left {
-        gap: var(--space-4);
-    }
-
-    .minimal-project-row:hover {
-        padding-left: 0;
-    }
-
-    .minimal-project-row:hover .p-title {
-        transform: none;
+        gap: var(--space-6);
     }
 }

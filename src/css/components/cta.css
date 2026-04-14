@@ -1,11 +1,26 @@
 /* ═══════════════════════════════════════════
-   CONTACT — Editorial Split / Fight Club
+   CONTACT — Cinematic Dossier Split Layout
    ═══════════════════════════════════════════ */
 .contact-section {
     padding: var(--space-32) 0;
     background: var(--bg-dark);
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
     position: relative;
+    overflow: hidden;
+}
+
+/* ── Vector Parallax Background ── */
+.contact-subliminal-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 0.15; /* Subtle enough to not overpower, vibrant enough to show the vector */
+    /* Mask out the left side heavily so the text remains 100% readable */
+    mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+    -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
 }
 
 /* ── Split Layout ── */
@@ -14,6 +29,8 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--space-16);
     align-items: start;
+    position: relative;
+    z-index: 2;
 }
 
 /* ── Left Column: Statement ── */
@@ -74,54 +91,64 @@
     max-width: 400px;
 }
 
-/* ── Right Column: Contact Cards ── */
+/* ── Right Column: Tactical Dossier Cards ── */
 .contact-right {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 12px;
 }
 
 .contact-card {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: var(--space-6) var(--space-8);
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    gap: 12px;
+    padding: var(--space-8);
+    /* Frosted glass to overlay onto the vector background */
+    background: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
     text-decoration: none;
-    transition: all 0.4s var(--ease-out);
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
     position: relative;
     overflow: hidden;
     cursor: pointer;
+    text-align: left;
+    width: 100%;
 }
 
-/* Pink sweep on hover */
+/* The Scanning Laser Line Hover Effect */
 .contact-card::before {
     content: '';
     position: absolute;
+    top: -100%; /* Start above */
     left: 0;
-    top: 0;
-    width: 3px;
-    height: 100%;
-    background: var(--accent-primary);
+    width: 100%;
+    height: 10px;
+    background: linear-gradient(to bottom, transparent, var(--accent-primary), transparent);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: top 1.5s ease-in-out, opacity 0.3s;
+    filter: blur(2px);
+    pointer-events: none;
 }
 
 .contact-card:hover {
-    background: rgba(242, 139, 130, 0.04);
-    border-color: rgba(242, 139, 130, 0.15);
-    transform: translateX(4px);
+    background: rgba(20, 20, 20, 0.8);
+    border-color: rgba(242, 139, 130, 0.3);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(242, 139, 130, 0.02);
+    transform: translateY(-2px);
 }
 
 .contact-card:hover::before {
-    opacity: 1;
+    opacity: 0.5;
+    top: 200%; /* Scan down */
 }
 
 /* Primary card — email */
 .contact-card.primary-card {
     background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.08); /* slightly higher border for primary */
 }
 
 .card-top {
@@ -174,24 +201,25 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     padding: var(--space-6) var(--space-8);
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
     margin-top: var(--space-2);
 }
 
 /* ═══════════════════════════════════════════
-   FOOTER — Fight Club Sign-off
+   FOOTER (Integrated into Cinematic Contact)
    ═══════════════════════════════════════════ */
 .minimal-footer {
+    position: relative;
+    z-index: 2; /* Keep above the subliminal background */
     padding: var(--space-8) 0;
-    background: var(--bg-dark);
+    margin-top: var(--space-16);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .minimal-footer-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    padding-top: var(--space-8);
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--text-muted);
@@ -212,21 +240,12 @@
         grid-template-columns: 1fr;
         gap: var(--space-12);
     }
-
     .contact-left {
         position: static;
     }
-
     .ch-row {
         font-size: clamp(1.8rem, 8vw, 3rem);
     }
-}
-
-@media (max-width: 768px) {
-    .contact-card {
-        padding: var(--space-4) var(--space-6);
-    }
-
     .minimal-footer-content {
         flex-direction: column;
         gap: var(--space-4);

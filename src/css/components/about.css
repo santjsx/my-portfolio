@@ -1,447 +1,542 @@
 /* ═══════════════════════════════════════════
-   ABOUT SECTION — The Fight Club Identity
+   ABOUT — Cinematic Character Introduction
    ═══════════════════════════════════════════ */
 
-.about-header {
-    margin-bottom: var(--space-16);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-}
-
-.about-pretitle {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-family: var(--font-serif);
-    font-style: italic;
-    color: var(--text-secondary);
-    margin: 0;
-    line-height: 1.1;
-    text-transform: lowercase;
-}
-
-.title-pill.dark {
-    font-size: 11px;
-    align-self: flex-start;
-    color: var(--accent-primary);
-    border-color: rgba(242, 139, 130, 0.3);
-}
-
-/* Base dossiere wrapper */
-.dossier-plate {
-    background: transparent;
-    border-top: 1px solid var(--border);
-    padding: var(--space-10) 0;
-    position: relative;
-    z-index: 2;
-}
-
-.dossier-grid {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-12);
-}
-
-@media (min-width: 1024px) {
-    .dossier-grid {
-        flex-direction: row;
-        align-items: flex-start;
-        gap: var(--space-24);
-    }
-}
-
-/* ═══════════════════════════════════════════
-   MOBILE ADJUSTMENTS
-   ═══════════════════════════════════════════ */
-@media (max-width: 900px) {
-    .dossier-grid {
-        grid-template-columns: 1fr;
-        gap: var(--space-12);
-    }
-
-    .dossier-left {
-        max-width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .avatar-card {
-        width: 250px;
-        height: 300px;
-    }
-
-    .quote-block {
-        margin-top: var(--space-8);
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .quote-text {
-        align-self: center;
-    }
-
-    .quote-big {
-        font-size: 1.5rem;
-    }
-
-    .asset-list {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 480px) {
-    .avatar-card {
-        width: 200px;
-        height: 250px;
-    }
-
-    .manifesto-text {
-        font-size: 14px;
-        line-height: var(--leading-relaxed);
-    }
-
-    .quote-big {
-        font-size: 1.25rem;
-    }
-}
-
-/* ═══════════════════════════════════════════
-   LEFT PANE: The Mugshot / Avatar
-   ═══════════════════════════════════════════ */
-.dossier-left {
-    flex-shrink: 0;
-    width: 100%;
-    max-width: 380px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-}
-
-@media (min-width: 1024px) {
-    .dossier-left {
-        position: sticky;
-        top: 100px;
-    }
-}
-
-.classified-attachment {
-    position: relative;
-    padding: var(--space-2);
-    background: #e8e8e8; /* Off-white photo paper border */
-    border: 1px solid #111;
-    transform: rotate(-2deg);
-    transition: transform 0.4s var(--ease-out);
-    aspect-ratio: 3/4;
-    overflow: hidden; /* For inner glitch */
-    box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-}
-
-.classified-attachment:hover {
-    transform: rotate(0deg);
-}
-
-/* Tape Piece */
-.tape-piece {
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%) rotate(4deg);
-    width: 90px;
-    height: 28px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-left: 1px dashed rgba(255,255,255,0.2);
-    border-right: 1px dashed rgba(255,255,255,0.2);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
-    z-index: 10;
-    pointer-events: none;
-}
-
-/* Confidential Stamp */
-.confidential-stamp {
-    position: absolute;
-    bottom: var(--space-4);
-    right: -10px;
-    font-family: 'Special Elite', monospace;
-    font-size: 26px;
-    color: var(--accent-danger);
-    font-weight: 900;
-    text-transform: uppercase;
-    transform: rotate(-15deg);
-    border: 3px solid var(--accent-danger);
-    padding: 2px 8px;
-    opacity: 0.9;
-    z-index: 5;
-    pointer-events: none;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    box-shadow: 0 0 4px rgba(0,0,0,0.3) inset;
-}
-
-/* Avatar Glitch Logic (Retained & Optimized) */
-.avatar-img-main, .avatar-img-hover {
-    position: absolute;
-    inset: var(--space-2);
-    width: calc(100% - var(--space-4));
-    height: calc(100% - var(--space-4));
-    object-fit: cover;
-    transition: transform 0.8s var(--ease-out), filter 0.5s var(--ease-out);
-}
-
-.avatar-img-main {
-    z-index: 1;
-    filter: grayscale(100%) contrast(1.2);
-}
-
-.avatar-img-hover {
-    z-index: 2;
-    opacity: 0;
-    filter: grayscale(100%) contrast(1.5) sepia(100%) hue-rotate(320deg) saturate(300%);
-    transform: scale(1.1);
-    mix-blend-mode: hard-light;
-    transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
-}
-
-.classified-attachment:hover .avatar-img-main {
-    filter: grayscale(100%) contrast(2) brightness(0.5);
-}
-
-.classified-attachment:hover .avatar-img-hover {
-    opacity: 1;
-    transform: scale(1);
-    animation: TylerGlitch 0.4s steps(4) forwards;
-}
-
-@keyframes TylerGlitch {
-    0% { clip-path: inset(10% 0 80% 0); transform: translate3d(-10px, 0, 0); opacity: 0.8; }
-    20% { clip-path: inset(50% 0 30% 0); transform: translate3d(10px, 0, 0); opacity: 1; }
-    40% { clip-path: inset(0% 0 90% 0); transform: translate3d(-10px, 0, 0); opacity: 0.9; }
-    60% { clip-path: inset(20% 0 10% 0); transform: translate3d(10px, 0, 0); opacity: 1; }
-    100% { clip-path: inset(0 0 0 0); transform: translate3d(0, 0, 0); opacity: 1; }
-}
-
-/* Quote Block */
-.quote-block {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    padding-left: var(--space-4);
-    background: transparent;
-    border-left: 2px solid var(--accent-danger);
-    margin-top: var(--space-6);
-}
-
-.quote-text {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--accent-danger);
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    margin: 0;
-}
-
-.quote-big {
-    font-family: 'Special Elite', cursive, monospace;
-    font-size: 18px;
-    color: var(--text-primary);
-    line-height: var(--leading-relaxed);
-    margin: 0;
-    opacity: 0.8;
-}
-
-/* ═══════════════════════════════════════════
-   RIGHT PANE: Manifesto & Operations
-   ═══════════════════════════════════════════ */
-.dossier-right {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-12);
-}
-
-.dossier-title {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.25em;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: var(--space-4);
-    margin-bottom: var(--space-6);
-    margin-top: 0;
-}
-
-/* Manifesto Block & Redacted Text */
-.manifesto-block {
-    max-width: 650px;
-}
-
-.manifesto-text {
-    font-family: var(--font-sans);
-    font-size: clamp(1.2rem, 2vw, 1.4rem);
-    line-height: 1.6;
-    color: var(--text-primary);
-    margin: 0;
-}
-
-/* WOW FACTOR: Redacted Hover Effect */
-.redacted-text {
-    background-color: var(--text-primary);
-    color: var(--text-primary);
-    padding: 2px 6px;
-    border-radius: 2px;
-    white-space: nowrap;
-    cursor: crosshair;
-    transition: background-color 0.3s ease, color 0.3s ease, text-decoration 0.3s ease;
-    user-select: none;
-    display: inline-block;
-    line-height: 1;
-}
-
-.redacted-text:hover {
-    background-color: rgba(211, 47, 47, 0.15); /* light danger bg */
-    color: var(--accent-danger); /* reveal text in red */
-    text-decoration: line-through;
-}
-
-/* Weapons of Choice (Minimal Skills) */
-.operational-assets {
-    max-width: 650px;
-}
-
-.asset-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    font-family: var(--font-mono);
-}
-
-.asset-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    font-size: 14px;
-    color: var(--text-primary);
-}
-
-.asset-name {
-    font-weight: var(--weight-bold);
-    letter-spacing: 0.1em;
-}
-
-/* Dynamic dot leader using flex-grow and borders */
-.asset-dots {
-    flex-grow: 1;
-    border-bottom: 2px dotted rgba(255,255,255,0.15);
-    margin: 0 16px;
-    transform: translateY(-4px);
-}
-
-.asset-val {
-    color: var(--accent-danger);
-    font-weight: var(--weight-bold);
-}
-
-/* Incident Report (Timeline) */
-.incident-report {
-    max-width: 650px;
-}
-
-.log-entries {
-    display: flex;
-    flex-direction: column;
-}
-
-.log-entry {
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: var(--space-6);
-    padding: var(--space-5) 0;
-    border-bottom: 1px solid var(--border);
-    transition: padding-left 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
-}
-
-.log-entry:hover {
-    padding-left: var(--space-4);
-    border-color: var(--accent-danger);
-}
-
-.log-time {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-    padding-top: 2px;
-}
-
-.log-desc {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: color 0.3s ease;
-}
-
-.log-status {
-    color: var(--text-muted);
-    font-style: italic;
-    margin-left: 8px;
-}
-
-.active-log .log-desc {
-    color: var(--text-primary);
-    font-weight: var(--weight-bold);
-}
-
-.active-log .log-status {
-    color: var(--accent-danger);
-    font-style: normal;
-}
-
-/* About Section — Clean Dark Match */
 .about-section {
     position: relative;
     z-index: 1;
     background: var(--bg-dark);
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
-    padding: var(--space-24) 0;
+    overflow: hidden;
+    padding: 0 0 var(--space-24);
+}
+
+/* ── Vector Wallpaper ── */
+.about-vector-bg {
+    position: absolute;
+    bottom: 0;
+    right: -5%;
+    width: 55%;
+    height: 60%;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url('/images/fc/fight-club-movies-vector-wallpaper-1d1e88add711ad028f1a8b933f0feef3.jpg');
+    background-size: contain;
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    opacity: 0.05;
+    mask-image: radial-gradient(ellipse at 80% 90%, black 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at 80% 90%, black 20%, transparent 70%);
+}
+
+/* ═══════════════════════════════════════════
+   THE CINEMATIC BAND — Full-Bleed Photo + Name
+   ═══════════════════════════════════════════ */
+.character-band {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 70vh;
+    position: relative;
+    z-index: 2;
+}
+
+.character-photo {
+    position: relative;
     overflow: hidden;
 }
 
-/* Subtle grid — matches hero */
-.about-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background-image:
-        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse 60% 60% at 30% 40%, black 10%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 60% 60% at 30% 40%, black 10%, transparent 100%);
+.character-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.3);
+    transition: filter 0.6s ease;
 }
 
-/* Ambient pink glow — ties with hero */
-.about-section::after {
+.character-photo:hover img {
+    filter: grayscale(60%) contrast(1.1);
+}
+
+.character-photo::after {
     content: '';
     position: absolute;
-    bottom: -20%;
-    left: -10%;
-    width: 50vw;
-    height: 50vw;
-    background: radial-gradient(circle, rgba(242, 139, 130, 0.04) 0%, transparent 65%);
-    border-radius: 50%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    background: linear-gradient(to left, var(--bg-dark), transparent);
     pointer-events: none;
-    z-index: -1;
-    filter: blur(60px);
+}
+
+.character-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-16) var(--space-16) var(--space-16) var(--space-8);
+    position: relative;
+    z-index: 2;
+    margin-left: calc(var(--space-16) * -1);
+}
+
+.character-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent-primary);
+    letter-spacing: 0.15em;
+    text-transform: lowercase;
+    margin-bottom: var(--space-6);
+}
+
+.character-name {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.character-name span {
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+}
+
+.character-name-accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400 !important;
+    color: var(--accent-primary) !important;
+    letter-spacing: -0.02em !important;
+}
+
+.character-role {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.character-oneliner {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    line-height: 1.8;
+    margin-top: var(--space-8);
+    max-width: 400px;
+    opacity: 0.9;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+/* ═══════════════════════════════════════════
+   THE INTEL BRIEFING — Cinematic Panels
+   ═══════════════════════════════════════════ */
+.intel-briefing {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    margin-top: 80px;
+    position: relative;
+    z-index: 2;
+    padding-bottom: 80px;
+}
+
+/* ═════════════════════════════════════
+   1. MANIFESTO — Magazine Editorial Spread
+   ═════════════════════════════════════ */
+.intel-manifesto {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    background: rgba(255, 255, 255, 0.01);
+}
+
+.intel-vertical-title {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    margin: 0;
+    padding: 24px 16px;
+    background: rgba(242, 139, 130, 0.05);
+    border-left: 2px solid var(--accent-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: 50px;
+}
+
+.intel-manifesto-text {
+    font-family: var(--font-serif);
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--text-primary);
+    margin: 0;
+    padding: 40px;
+    flex: 1;
+}
+
+/* Redacted — subtle dark bars with red hint */
+.redacted-harsh {
+    background: rgba(255, 255, 255, 0.08);
+    color: transparent;
+    padding: 2px 6px;
+    cursor: crosshair;
+    transition: all 0.3s ease;
+    user-select: none;
+    border-bottom: 2px solid var(--accent-danger);
+}
+
+.redacted-harsh:hover {
+    background: rgba(211, 47, 47, 0.15);
+    color: var(--accent-danger);
+    border-bottom-color: transparent;
+}
+
+/* ═════════════════════════════════════
+   2. WEAPONS — Tactical HUD Status Bars
+   ═════════════════════════════════════ */
+.intel-weapons {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.weapon-bar {
+    position: relative;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.weapon-bar:hover {
+    background: rgba(255, 255, 255, 0.035);
+    border-color: rgba(242, 139, 130, 0.15);
+}
+
+.weapon-bg-text {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.12);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    line-height: 1;
+    transition: color 0.3s ease;
+}
+
+.weapon-bar:hover .weapon-bg-text {
+    color: rgba(255, 255, 255, 0.18);
+}
+
+/* Foreground label */
+.weapon-info {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-left: 20px;
+}
+
+.weapon-name {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--text-primary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.weapon-class {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    opacity: 0.6;
+}
+
+.weapon-tape {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-danger), var(--accent-primary));
+    z-index: 1;
+    transition: height 0.3s ease, box-shadow 0.3s ease;
+}
+
+.weapon-bar:hover .weapon-tape {
+    height: 5px;
+    box-shadow: 0 0 15px rgba(242, 139, 130, 0.5);
+}
+
+.weapon-val {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--accent-danger);
+    letter-spacing: 0.1em;
+    z-index: 2;
+    opacity: 0.8;
+}
+
+/* ═════════════════════════════════════
+   3. PHASES — Cinematic Chapter Cards
+   ═════════════════════════════════════ */
+.intel-phases {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    width: 100%;
+}
+
+.phase-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-dark);
+    padding: 48px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 220px;
+    transition: background 0.3s ease;
+    cursor: default;
+}
+
+.phase-card:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.phase-bg-num {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-mono);
+    font-size: 10rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.04);
+    line-height: 1;
+    pointer-events: none;
+    z-index: 0;
+    transition: color 0.3s ease;
+}
+
+.phase-card:hover .phase-bg-num {
+    color: rgba(255, 255, 255, 0.07);
+}
+
+.phase-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.phase-title {
+    font-family: var(--font-mono);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-weight: 900;
+    color: var(--text-primary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.phase-desc {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+/* Phase metadata (top of card) */
+.phase-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    margin-bottom: auto;
+}
+
+.phase-year {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+}
+
+.phase-status {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    padding: 2px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.active-status {
+    color: var(--accent-danger);
+    border-color: var(--accent-danger);
+    animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Brief description */
+.phase-brief {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 8px 0 0;
+    opacity: 0.7;
+}
+
+.active-phase .phase-bg-num {
+    color: rgba(242, 139, 130, 0.07);
+}
+
+.active-phase .phase-title {
+    color: var(--accent-primary);
+}
+
+.active-phase .phase-desc {
+    color: var(--accent-danger);
+}
+
+.active-phase::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-danger);
+    box-shadow: 0 0 12px rgba(242, 139, 130, 0.5);
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE
+   ═══════════════════════════════════════════ */
+@media (max-width: 900px) {
+    .character-band {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .character-photo {
+        height: 50vh;
+    }
+
+    .character-photo::after {
+        width: 100%;
+        height: 50%;
+        top: auto;
+        bottom: 0;
+        right: 0;
+        background: linear-gradient(to top, var(--bg-dark), transparent);
+    }
+
+    .character-info {
+        margin-left: 0;
+        padding: var(--space-8) var(--space-6);
+        margin-top: -64px;
+    }
+
+    .character-name span {
+        font-size: clamp(3rem, 12vw, 5rem);
+    }
+
+    .intel-manifesto {
+        flex-direction: column;
+    }
+
+    .intel-vertical-title {
+        writing-mode: horizontal-tb;
+        transform: none;
+        border-left: none;
+        border-bottom: 2px solid var(--accent-primary);
+        padding: 12px 20px;
+        min-width: unset;
+    }
+
+    .intel-manifesto-text {
+        padding: 24px;
+        font-size: 1.1rem;
+    }
+
+    .intel-phases {
+        grid-template-columns: 1fr;
+    }
+
+    .phase-card {
+        min-height: 140px;
+        padding: 32px 24px;
+    }
+
+    .phase-bg-num {
+        font-size: 6rem;
+    }
+
+    .intel-briefing {
+        gap: 48px;
+        margin-top: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .character-photo {
+        height: 40vh;
+    }
+
+    .character-name span {
+        font-size: 2.8rem;
+    }
+
+    .weapon-bar {
+        height: 56px;
+    }
+
+    .weapon-bg-text {
+        font-size: 1.6rem;
+    }
 }

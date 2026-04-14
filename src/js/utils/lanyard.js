@@ -5,25 +5,40 @@ const API_URL = `https://api.lanyard.rest/v1/users/${DiscordID}`;
 
 export function initLanyardWidget() {
     const toggleBtn = document.getElementById('lanyard-toggle');
-    const popover = document.getElementById('lanyard-popover');
     
-    if (!toggleBtn || !popover) return;
+    if (!toggleBtn) return;
 
-    // Toggle popover visibility
+    // Toggle dynamic island expansion
     toggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        popover.classList.toggle('active');
-        if (popover.classList.contains('active')) {
+        toggleBtn.classList.toggle('active');
+        if (toggleBtn.classList.contains('active')) {
             fetchLanyardData(); // Refresh data when opened
         }
     });
 
+    // Handle close button specifically
+    const closeBtn = document.getElementById('lanyard-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleBtn.classList.remove('active');
+        });
+    }
+
     // Close when clicking outside
     document.addEventListener('click', (e) => {
-        if (!popover.contains(e.target) && !toggleBtn.contains(e.target)) {
-            popover.classList.remove('active');
+        if (!toggleBtn.contains(e.target)) {
+            toggleBtn.classList.remove('active');
         }
     });
+
+    // Close when scrolling
+    window.addEventListener('scroll', () => {
+        if (toggleBtn.classList.contains('active')) {
+            toggleBtn.classList.remove('active');
+        }
+    }, { passive: true });
 
     // Initial fetch to set color indicator on the floating button
     fetchLanyardData();
@@ -46,7 +61,7 @@ async function fetchLanyardData() {
 }
 
 function updateWidgetUI(data) {
-    const wrapper = document.getElementById('lanyard-toggle');
+    const island = document.getElementById('lanyard-toggle');
     const statusText = document.getElementById('lanyard-status-text');
     const activitiesContainer = document.getElementById('lanyard-activities');
     
@@ -54,55 +69,103 @@ function updateWidgetUI(data) {
     const status = data.discord_status;
     
     // Reset classes
-    wrapper.classList.remove('status-online', 'status-idle', 'status-dnd', 'status-offline');
-    if (statusText) statusText.parentElement.classList.remove('status-online', 'status-idle', 'status-dnd', 'status-offline');
+    island.classList.remove('status-online', 'status-idle', 'status-dnd', 'status-offline');
     
     // Apply new status
-    wrapper.classList.add(`status-${status}`);
+    island.classList.add(`status-${status}`);
     if (statusText) {
-        statusText.parentElement.classList.add(`status-${status}`);
         statusText.textContent = status.toUpperCase();
     }
     
-    // Render activities (like VS Code, Spotify, Games)
+    // Render activities
     if (activitiesContainer) {
         const activities = data.activities || [];
+        const isSpotify = data.listening_to_spotify;
         
-        if (activities.length === 0) {
+        if (activities.length === 0 && !isSpotify) {
             activitiesContainer.innerHTML = `
                 <div class="lanyard-offline-message">
-                    <span class="offline-tag">[ SYSTEM LOG ]</span>
-                    <span class="offline-text">User is currently operating in stealth mode or completely offline. Plotting the next move...</span>
+                    Not currently engaged in any active tasks. Probably grabbing a coffee or AFK.
                 </div>
             `;
             return;
         }
         
         let htmlContent = '';
+        
+        // Handle Spotify exclusively if active natively
+        if (isSpotify && data.spotify) {
+             const track = data.spotify;
+             htmlContent += `
+             <div class="lanyard-activity">
+                 <div class="activity-icon-wrapper">
+                     <img src="${track.album_art_url}" alt="Album Art" class="activity-icon">
+                 </div>
+                 <div class="activity-info">
+                     <span class="activity-name">${escapeHTML(track.song)}</span>
+                     <span class="activity-details">by ${escapeHTML(track.artist)}</span>
+                     <div class="spotify-eq">
+                         <div class="eq-bar"></div>
+                         <div class="eq-bar"></div>
+                         <div class="eq-bar"></div>
+                         <div class="eq-bar"></div>
+                     </div>
+                 </div>
+             </div>
+             `;
+             // Add divider if there are other activities
+             if (activities.length > 0 && !activities.every(a => a.name === "Spotify")) {
+                 htmlContent += `<div class="activity-divider"></div>`;
+             }
+        }
+
+        // Handle other activities
         activities.forEach((act, index) => {
+            if (act.name === 'Spotify') return; // Handled above beautifully
+            
             const isCustomStatus = act.id === 'custom' || act.type === 4;
             
-            let innerHtml = '';
             if (isCustomStatus) {
-                // If it's a discord custom status (e.g., "Working on the portfolio")
-                const emoji = act.emoji ? `${act.emoji.name} ` : '';
-                const text = act.state || '';
-                innerHtml += `<span class="activity-custom">" ${escapeHTML(emoji + text)} "</span>`;
+                const emoji = act.emoji && act.emoji.name ? act.emoji.name : '💬';
+                const text = act.state || 'Just chilling';
+                htmlContent += `
+                    <div class="activity-custom-status">
+                        <span class="activity-custom-emoji">${escapeHTML(emoji)}</span>
+                        <span class="activity-custom-text">${escapeHTML(text)}</span>
+                    </div>
+                `;
             } else {
-                // Standard Rich Presence (Games, VS Code, Music)
-                innerHtml += `<span class="activity-name">${escapeHTML(act.name)}</span>`;
-                if (act.details) {
-                    innerHtml += `<span class="activity-details">${escapeHTML(act.details)}</span>`;
+                // Try to resolve icons for standard activities
+                let iconUrl = '';
+                if (act.assets && act.assets.large_image) {
+                    const appId = act.application_id;
+                    const assetId = act.assets.large_image;
+                    // Lanyard specific format for discord assets
+                    if (assetId.startsWith('mp:external')) {
+                        // External assets are complex, fallback to standard or placeholder
+                        iconUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(act.name)}&background=f1f5f9&color=64748b&rounded=true`;
+                    } else {
+                        iconUrl = `https://cdn.discordapp.com/app-assets/${appId}/${assetId}.png`;
+                    }
+                } else {
+                    iconUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(act.name)}&background=f1f5f9&color=64748b&rounded=true`;
                 }
-                if (act.state) {
-                    innerHtml += `<span class="activity-state">${escapeHTML(act.state)}</span>`;
-                }
+
+                htmlContent += `
+                    <div class="lanyard-activity">
+                        <div class="activity-icon-wrapper">
+                            <img src="${iconUrl}" alt="${escapeHTML(act.name)}" class="activity-icon" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(act.name)}&background=f1f5f9&color=64748b&rounded=true'">
+                        </div>
+                        <div class="activity-info">
+                            <span class="activity-name">${escapeHTML(act.name)}</span>
+                            ${act.details ? `<span class="activity-details">${escapeHTML(act.details)}</span>` : ''}
+                            ${act.state ? `<span class="activity-state">${escapeHTML(act.state)}</span>` : ''}
+                        </div>
+                    </div>
+                `;
             }
             
-            htmlContent += `<div class="lanyard-activity">${innerHtml}</div>`;
-            
-            // Add a subtle divider between multiple activities
-            if (index < activities.length - 1) {
+            if (index < activities.length - 1 && document.querySelectorAll('.lanyard-activity').length > 0) {
                 htmlContent += `<div class="activity-divider"></div>`;
             }
         });
@@ -111,7 +174,6 @@ function updateWidgetUI(data) {
     }
 }
 
-// Security: basic HTML escaping for Discord string inputs
 function escapeHTML(str) {
     if (!str) return '';
     return str.replace(/[&<>'"]/g, tag => ({

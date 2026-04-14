@@ -203,37 +203,34 @@ img {
 }
 
 /* ═══════════════════════════════════════════
-   COMPACT CINEMATIC QUOTES
+   COMPACT CINEMATIC QUOTES (Movie Poster Tagline Style)
    ═══════════════════════════════════════════ */
 .compact-cinematic-quote {
     display: block;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 15px; /* Increased size */
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    line-height: 1.4;
+    font-family: var(--font-mono); /* Reverting to mono or sans for a cinematic readout */
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    line-height: 1.8;
     position: relative;
-    padding-left: var(--space-4);
+    padding-left: 0;
     
-    /* Bright, colorful, beautiful eye-catching gradient */
-    background: linear-gradient(135deg, #a8ff78 0%, #78ffd6 50%, #f28b82 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    opacity: 0.95;
-    text-shadow: 0 4px 12px rgba(120, 255, 214, 0.15); /* Soft glowing shadow */
+    /* Pure movie trailer text style */
+    color: rgba(255, 255, 255, 0.85); /* crisp off-white */
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2); /* very subtle cinematic glow */
+    opacity: 0.9;
+    /* Clean up the cheap gradient */
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    border-left: none; /* Removing the old, cheap-looking side bar */
 }
 
-.compact-cinematic-quote::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 5px;
-    width: 2px;
-    height: calc(100% - 10px);
-    background: var(--accent-primary);
-    opacity: 0.5;
+/* Add cinematic horizontal brackets instead of the line */
+.compact-cinematic-quote::before,
+.compact-cinematic-quote::after {
+    display: none; /* removing old pseudo elements */
 }
 
 .text-right {
@@ -242,12 +239,7 @@ img {
 
 .text-right .compact-cinematic-quote {
     padding-left: 0;
-    padding-right: var(--space-4);
-}
-
-.text-right .compact-cinematic-quote::before {
-    left: auto;
-    right: 0;
+    padding-right: 0;
 }
 
 .mt-2 { margin-top: var(--space-2); }

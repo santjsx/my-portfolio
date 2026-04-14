@@ -40,6 +40,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 
+    // Mobile Overlay Menu Toggle
+    const mobileToggle = document.getElementById('mobile-menu-toggle');
+    const navOverlay = document.getElementById('nav-overlay');
+    const navItemLinks = document.querySelectorAll('.nav-overlay .nav-item');
+
+    if (mobileToggle && navOverlay) {
+        mobileToggle.addEventListener('click', () => {
+            const isActive = mobileToggle.classList.contains('active');
+            mobileToggle.classList.toggle('active');
+            navOverlay.classList.toggle('active');
+            
+            // Lock background scroll when open
+            document.body.style.overflow = isActive ? '' : 'hidden';
+            if (document.documentElement.classList.contains('lenis')) {
+                 // optionally pause lenis if required, usually overflow hidden on body works
+            }
+        });
+
+        // Close menu when a link is clicked
+        navItemLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    mobileToggle.classList.remove('active');
+                    navOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+    }
+
     // Initialize animations after preloader finishes
     preloaderPromise.then(() => {
         // 0.5. Hero cinematic effects

@@ -38,26 +38,41 @@
   </div>
 
   <!-- Header -->
-  <header class="site-header minimal-header" id="header">
+  <header class="site-header cinematic-header" id="header">
     <div class="header-container">
-      <a href="#home" class="minimal-logo">
-        <span class="logo-soap">●</span> SR
+      <a href="#home" class="cinematic-logo">
+        SR <span class="desktop-only-logo">/ PAPER STREET</span>
       </a>
 
-      <nav class="nav-links">
-        <a href="#about" class="nav-item">Dossier</a>
-        <a href="#work" class="nav-item">Mayhem</a>
-        <a href="#" class="nav-item js-open-resume">Resume</a>
-        <a href="#contact" class="nav-item highlight">Initiate</a>
-      </nav>
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+
+      <div class="nav-overlay" id="nav-overlay">
+        <nav class="nav-links">
+          <a href="#about" class="nav-item">Dossier <span class="nav-num">01</span></a>
+          <a href="#work" class="nav-item">Mayhem <span class="nav-num">02</span></a>
+          <a href="#" class="nav-item js-open-resume">Resume <span class="nav-num">03</span></a>
+          <a href="#contact" class="nav-item highlight">Initiate <span class="nav-num">04</span></a>
+        </nav>
+        
+        <div class="nav-overlay-footer">
+          <span class="overlay-meta">SYSTEM <span class="active-dot"></span> ONLINE</span>
+        </div>
+      </div>
     </div>
   </header>
 
   <main>
-    <!-- 1. Hero Section -->
+    <!-- 1. Hero Section (Cinematic Redesign) -->
     <section class="hero" id="hero">
+      <!-- Interactive Mouse Spotlight Layer -->
       <div class="hero-ambient-glow"></div>
       
+      <!-- Fight club faint background image -->
+      <div class="hero-subliminal-bg" aria-hidden="true" style="background-image: url('images/fc/fight-club-edward-norton-brad-pitt-movies-wallpaper-c9f0f82d215a4d2b16e758bfa051b6ad.jpg');"></div>
+
       <!-- Crosshair grid background -->
       <div class="hero-grid-bg" aria-hidden="true"></div>
 
@@ -110,167 +125,270 @@
       </div>
     </section>
 
-    <!-- 2. Projects Block — Project Mayhem -->
-    <section class="works-section minimal-works" id="work">
+    <!-- 2. Projects Block — Project Mayhem Target List -->
+    <section class="works-section mayhem-works" id="work">
+      <!-- Scrolling background text for cinematic chaos -->
+      <div class="mayhem-marquee" aria-hidden="true">
+        <span>PROJECT MAYHEM </span><span>PROJECT MAYHEM </span><span>PROJECT MAYHEM </span>
+      </div>
+
       <div class="container container-relative">
-        <header class="minimal-works-header fade-up">
-          <div class="works-header-group">
-            <span class="works-pretitle">Assignment_</span>
-            <h2 class="minimal-section-title">Project <span class="italic-serif">Mayhem</span></h2>
+        <header class="mayhem-header fade-up">
+          <div class="header-left">
+            <span class="warning-tape">RESTRICTED_ACCESS</span>
+            <h2 class="mayhem-title">PROJECT <span class="italic-serif">MAYHEM</span></h2>
+            <p class="mayhem-subtitle">/// ASSIGNMENTS LOG</p>
           </div>
-          <div class="works-header-right text-right">
-            <span class="minimal-works-count">05 / Active</span>
-            <span class="compact-cinematic-quote mt-2">&ldquo;Get busy living, or get busy dying.&rdquo;</span>
+          <div class="header-right">
+            <div class="barcode-graphic"></div>
+            <span class="mayhem-count">05 OBJECTIVES_</span>
           </div>
         </header>
 
-        <div class="minimal-project-list">
+        <div class="mayhem-target-grid">
           
-          <div class="minimal-project-row fade-up">
-            <div class="p-left">
-              <span class="p-num">01</span>
-              <h3 class="p-title">The Hustle Planner</h3>
+          <!-- TARGET 01 -->
+          <article class="mayhem-target fade-up type-primary">
+            <div class="crosshair top-left"></div><div class="crosshair top-right"></div>
+            <div class="crosshair bottom-left"></div><div class="crosshair bottom-right"></div>
+            
+            <div class="target-header">
+              <span class="t-id">TARGET 01</span>
+              <span class="t-cat">[PRODUCTIVITY]</span>
             </div>
-            <div class="p-right">
-              <span class="p-category">Productivity</span>
-              <div class="p-links">
-                <a href="https://the-hustle-planner.vercel.app/" target="_blank" class="minimal-link">Live View</a>
-                <a href="https://github.com/santjsx/The-Hustle-Planner" target="_blank" class="minimal-link">Source</a>
+            <h3 class="t-title">THE HUSTLE PLANNER</h3>
+            <div class="t-footer">
+              <div class="t-stamp">STATUS: ACTIVE</div>
+              <div class="t-links">
+                <a href="https://the-hustle-planner.vercel.app/" target="_blank" class="t-btn">EXEC_LIVE</a>
+                <a href="https://github.com/santjsx/The-Hustle-Planner" target="_blank" class="t-btn outline">INTEL_SRC</a>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="minimal-project-row fade-up">
-            <div class="p-left">
-              <span class="p-num">02</span>
-              <h3 class="p-title">Hybrid OS</h3>
+          <!-- TARGET 02 -->
+          <article class="mayhem-target fade-up type-secondary">
+            <div class="crosshair top-left"></div><div class="crosshair top-right"></div>
+            <div class="crosshair bottom-left"></div><div class="crosshair bottom-right"></div>
+            
+            <div class="target-header">
+              <span class="t-id">TARGET 02</span>
+              <span class="t-cat">[SYSTEM UI]</span>
             </div>
-            <div class="p-right">
-              <span class="p-category">System UI</span>
-              <div class="p-links">
-                <a href="https://hybrid-os.vercel.app/" target="_blank" class="minimal-link">Live View</a>
-                <a href="https://github.com/santjsx/Hybrid_OS" target="_blank" class="minimal-link">Source</a>
+            <h3 class="t-title">HYBRID OS</h3>
+            <div class="t-footer">
+              <div class="t-stamp">STATUS: ACTIVE</div>
+              <div class="t-links">
+                <a href="https://hybrid-os.vercel.app/" target="_blank" class="t-btn">EXEC_LIVE</a>
+                <a href="https://github.com/santjsx/Hybrid_OS" target="_blank" class="t-btn outline">INTEL_SRC</a>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="minimal-project-row fade-up">
-            <div class="p-left">
-              <span class="p-num">03</span>
-              <h3 class="p-title">PDF Studio</h3>
+          <!-- TARGET 03 -->
+          <article class="mayhem-target fade-up type-tertiary">
+            <div class="crosshair top-left"></div><div class="crosshair top-right"></div>
+            <div class="crosshair bottom-left"></div><div class="crosshair bottom-right"></div>
+            
+            <div class="target-header">
+              <span class="t-id">TARGET 03</span>
+              <span class="t-cat">[TOOLING]</span>
             </div>
-            <div class="p-right">
-              <span class="p-category">Tooling</span>
-              <div class="p-links">
-                <a href="https://pdf-studio-sable.vercel.app/" target="_blank" class="minimal-link">Live View</a>
-                <a href="https://github.com/santjsx" target="_blank" class="minimal-link">Source</a>
+            <h3 class="t-title">PDF STUDIO</h3>
+            <div class="t-footer">
+              <div class="t-stamp">STATUS: COMPLETED</div>
+              <div class="t-links">
+                <a href="https://pdf-studio-sable.vercel.app/" target="_blank" class="t-btn">EXEC_LIVE</a>
+                <a href="https://github.com/santjsx" target="_blank" class="t-btn outline">INTEL_SRC</a>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="minimal-project-row fade-up">
-            <div class="p-left">
-              <span class="p-num">04</span>
-              <h3 class="p-title">Uno Cypher</h3>
+          <!-- TARGET 04 -->
+          <article class="mayhem-target fade-up type-secondary">
+            <div class="crosshair top-left"></div><div class="crosshair top-right"></div>
+            <div class="crosshair bottom-left"></div><div class="crosshair bottom-right"></div>
+            
+            <div class="target-header">
+              <span class="t-id">TARGET 04</span>
+              <span class="t-cat">[GAME DEV]</span>
             </div>
-            <div class="p-right">
-              <span class="p-category">Game Dev</span>
-              <div class="p-links">
-                <a href="https://uno-cypher.vercel.app/" target="_blank" class="minimal-link">Live View</a>
-                <a href="https://github.com/santjsx" target="_blank" class="minimal-link">Source</a>
+            <h3 class="t-title">UNO CYPHER</h3>
+            <div class="t-footer">
+              <div class="t-stamp">STATUS: CLASSIFIED</div>
+              <div class="t-links">
+                <a href="https://uno-cypher.vercel.app/" target="_blank" class="t-btn">EXEC_LIVE</a>
+                <a href="https://github.com/santjsx" target="_blank" class="t-btn outline">INTEL_SRC</a>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="minimal-project-row fade-up">
-            <div class="p-left">
-              <span class="p-num">05</span>
-              <h3 class="p-title">Track a lot</h3>
+          <!-- TARGET 05 -->
+          <article class="mayhem-target fade-up type-primary spans-two">
+            <div class="crosshair top-left"></div><div class="crosshair top-right"></div>
+            <div class="crosshair bottom-left"></div><div class="crosshair bottom-right"></div>
+            
+            <div class="target-header">
+              <span class="t-id">TARGET 05</span>
+              <span class="t-cat">[HABIT SYSTEM]</span>
             </div>
-            <div class="p-right">
-              <span class="p-category">Habit System</span>
-              <div class="p-links">
-                <a href="https://track-a-lot.vercel.app/" target="_blank" class="minimal-link">Live View</a>
-                <a href="https://github.com/santjsx" target="_blank" class="minimal-link">Source</a>
+            <h3 class="t-title">TRACK A LOT</h3>
+            <div class="t-footer">
+              <div class="t-stamp">STATUS: ACTIVE</div>
+              <div class="t-links">
+                <a href="https://track-a-lot.vercel.app/" target="_blank" class="t-btn">EXEC_LIVE</a>
+                <a href="https://github.com/santjsx" target="_blank" class="t-btn outline">INTEL_SRC</a>
               </div>
             </div>
-          </div>
+          </article>
 
         </div>
       </div>
     </section>
 
-    <!-- 3. About Section -->
+    <!-- 3. About Section — Character Introduction -->
     <section class="about-section" id="about">
-      <div class="container" style="padding-bottom: var(--space-16);">
-        <header class="about-header fade-up">
-          <p class="about-pretitle">I am Jack's complete lack of</p>
-          <div class="title-pill dark">Fear / About</div>
-        </header>
+      <div class="about-vector-bg" aria-hidden="true"></div>
 
-        <div class="dossier-plate fade-up">
-          <div class="dossier-grid">
-            <!-- Left Pane: The Mugshot -->
-            <div class="dossier-left fade-up">
-              <div class="avatar-card classified-attachment">
-                <div class="tape-piece"></div>
-                <div class="confidential-stamp">CONFIDENTIAL</div>
-                <img src="images/santhoshh.webp" alt="Santhosh" loading="lazy" class="avatar-img-main">
-                <img src="images/Fight%20club%20Icon.jpg" alt="Tyler" loading="lazy" class="avatar-img-hover">
-              </div>
-              <div class="quote-block mt-8">
-                <p class="quote-text">You are not your code</p>
-                <h3 class="quote-big">" It's only after we've lost everything<br>that we're free to build anything "</h3>
-              </div>
-            </div>
+      <!-- THE CINEMATIC BAND — Photo + Name -->
+      <div class="character-band">
+        <div class="character-photo fade-up">
+          <img src="images/santhoshh.webp" alt="Santhosh" loading="lazy">
+        </div>
+        <div class="character-info fade-up">
+          <span class="character-tag">// subject file</span>
+          <h2 class="character-name">
+            <span>Santhosh</span>
+            <span class="character-name-accent">Reddy</span>
+          </h2>
+          <span class="character-role">Frontend Developer — UI Architect</span>
+          <p class="character-oneliner">"It's only after we've lost everything that we're free to build anything."</p>
+        </div>
+      </div>
 
-            <!-- Right Pane: The Manifesto & Rules -->
-            <div class="dossier-right">
-              
-              <div class="manifesto-block fade-up">
-                <h3 class="dossier-title">MANIFESTO_</h3>
-                <p class="manifesto-text">
-                  I don't build generic templates. I tear down <span class="redacted-text">bloated corporate frameworks</span> and reconstruct clean, brutal, high-performance systems. Our industry is obsessed with <span class="redacted-text">pointless decorations and useless abstractions</span>. We don't need more complexity. We need code that <span class="redacted-text">hits hard and runs fast.</span> This is your product, and it's rendering one frame at a time.
-                </p>
-              </div>
+      <!-- THE INTEL BRIEFING PANELS -->
+      <div class="container">
+        <div class="intel-briefing">
 
-              <div class="operational-assets fade-up">
-                <h3 class="dossier-title">WEAPONS OF CHOICE_</h3>
-                <ul class="asset-list">
-                  <li><span class="asset-name">HTML/CSS</span><span class="asset-dots"></span><span class="asset-val">[95%]</span></li>
-                  <li><span class="asset-name">JAVASCRIPT</span><span class="asset-dots"></span><span class="asset-val">[88%]</span></li>
-                  <li><span class="asset-name">REACT</span><span class="asset-dots"></span><span class="asset-val">[85%]</span></li>
-                  <li><span class="asset-name">TAILWIND</span><span class="asset-dots"></span><span class="asset-val">[92%]</span></li>
-                  <li><span class="asset-name">GIT LOGIC</span><span class="asset-dots"></span><span class="asset-val">[80%]</span></li>
-                </ul>
-              </div>
-
-              <div class="incident-report fade-up">
-                <h3 class="dossier-title">INCIDENT LOG_</h3>
-                <div class="log-entries">
-                  <div class="log-entry">
-                    <span class="log-time">PHASE 01</span>
-                    <span class="log-desc">B.Tech ECE <span class="log-status">/ INITIATION</span></span>
-                  </div>
-                  <div class="log-entry active-log">
-                    <span class="log-time">PHASE 02</span>
-                    <span class="log-desc">Web Dev <span class="log-status">/ DECONSTRUCTION</span></span>
-                  </div>
-                  <div class="log-entry">
-                    <span class="log-time">PHASE 03</span>
-                    <span class="log-desc">Projects <span class="log-status">/ CREATION</span></span>
-                  </div>
-                </div>
-              </div>
-
-            </div>
+          <!-- 1. The Manifesto: Magazine Spread -->
+          <div class="intel-manifesto fade-up">
+            <h3 class="intel-vertical-title">MANIFESTO_</h3>
+            <p class="intel-manifesto-text">
+              I don't build generic templates. I tear down 
+              <span class="redacted-harsh">bloated corporate frameworks</span> 
+              and reconstruct clean, brutal, high-performance systems. We need code that 
+              <span class="redacted-harsh">hits hard and runs fast.</span>
+            </p>
           </div>
+
+          <!-- 2. The Weapons: Tactical HUD Bars -->
+          <div class="intel-weapons fade-up">
+            
+            <div class="weapon-bar">
+              <div class="weapon-bg-text" aria-hidden="true">HTML/CSS</div>
+              <div class="weapon-info">
+                <span class="weapon-name">HTML / CSS</span>
+                <span class="weapon-class">MARKUP + STYLING</span>
+              </div>
+              <div class="weapon-tape" style="width: 95%;"></div>
+              <span class="weapon-val">[95%]</span>
+            </div>
+
+            <div class="weapon-bar">
+              <div class="weapon-bg-text" aria-hidden="true">JAVASCRIPT</div>
+              <div class="weapon-info">
+                <span class="weapon-name">JAVASCRIPT</span>
+                <span class="weapon-class">ES6+ / DOM / ASYNC</span>
+              </div>
+              <div class="weapon-tape" style="width: 88%;"></div>
+              <span class="weapon-val">[88%]</span>
+            </div>
+
+            <div class="weapon-bar">
+              <div class="weapon-bg-text" aria-hidden="true">REACT.JS</div>
+              <div class="weapon-info">
+                <span class="weapon-name">REACT.JS</span>
+                <span class="weapon-class">COMPONENTS / HOOKS</span>
+              </div>
+              <div class="weapon-tape" style="width: 85%;"></div>
+              <span class="weapon-val">[85%]</span>
+            </div>
+
+            <div class="weapon-bar">
+              <div class="weapon-bg-text" aria-hidden="true">TAILWIND</div>
+              <div class="weapon-info">
+                <span class="weapon-name">TAILWIND CSS</span>
+                <span class="weapon-class">UTILITY-FIRST</span>
+              </div>
+              <div class="weapon-tape" style="width: 92%;"></div>
+              <span class="weapon-val">[92%]</span>
+            </div>
+
+            <div class="weapon-bar">
+              <div class="weapon-bg-text" aria-hidden="true">GIT LOGIC</div>
+              <div class="weapon-info">
+                <span class="weapon-name">GIT</span>
+                <span class="weapon-class">VERSION CONTROL</span>
+              </div>
+              <div class="weapon-tape" style="width: 80%;"></div>
+              <span class="weapon-val">[80%]</span>
+            </div>
+
+          </div>
+
+          <!-- 3. The Phases: Cinema Chapter Cards -->
+          <div class="intel-phases fade-up">
+            
+            <div class="phase-card">
+              <div class="phase-bg-num">01</div>
+              <div class="phase-meta">
+                <span class="phase-year">2021 — 2025</span>
+                <span class="phase-status">COMPLETED</span>
+              </div>
+              <div class="phase-content">
+                <span class="phase-title">INITIATION</span>
+                <span class="phase-desc">B.Tech ECE</span>
+                <p class="phase-brief">Foundation in electronics, circuits, and systems thinking. Learned how machines communicate before learning how humans do.</p>
+              </div>
+            </div>
+
+            <div class="phase-card active-phase">
+              <div class="phase-bg-num">02</div>
+              <div class="phase-meta">
+                <span class="phase-year">2023 — PRESENT</span>
+                <span class="phase-status active-status">IN PROGRESS</span>
+              </div>
+              <div class="phase-content">
+                <span class="phase-title">DECONSTRUCTION</span>
+                <span class="phase-desc">Frontend Development</span>
+                <p class="phase-brief">Dismantling bloated frameworks. Rebuilding with vanilla JS, React, and raw CSS. Obsessed with performance and brutalist aesthetics.</p>
+              </div>
+            </div>
+
+            <div class="phase-card">
+              <div class="phase-bg-num">03</div>
+              <div class="phase-meta">
+                <span class="phase-year">2024 — ∞</span>
+                <span class="phase-status">ONGOING</span>
+              </div>
+              <div class="phase-content">
+                <span class="phase-title">CREATION</span>
+                <span class="phase-desc">Project Mayhem</span>
+                <p class="phase-brief">Shipping real products. Every project is a controlled demolition of the old way. Code that hits hard, runs fast, looks dangerous.</p>
+              </div>
+            </div>
+
+          </div>
+
         </div>
       </div>
     </section>
 
-      <!-- 5. Contact Section — Involvement -->
+      <!-- 5. Contact Section — Minimal Cinematic Vector -->
       <section class="contact-section" id="contact">
+        <!-- Cinematic Parallax Vector Background -->
+        <div class="contact-subliminal-bg" aria-hidden="true" style="background-image: url('images/fc/fight-club-movies-vector-wallpaper-1d1e88add711ad028f1a8b933f0feef3.jpg');"></div>
+
         <div class="container contact-layout">
 
           <!-- Left: The Statement -->
@@ -290,52 +408,52 @@
           </div>
 
           <!-- Right: Contact Cards -->
-          <div class="contact-right fade-up">
+          <div class="contact-right">
 
-            <!-- Email — Primary -->
-            <a href="mailto:heysanthoshreddy@gmail.com" class="contact-card primary-card">
+            <!-- Secure Comms — Interactive Copy Button -->
+            <button id="secure-comms-btn" class="contact-card primary-card fade-up" data-copy="heysanthoshreddy@gmail.com" style="transition-delay: 0.1s;">
               <div class="card-top">
-                <span class="card-label">Direct Line</span>
+                <span class="card-label">[ SECURE_COMMS ]</span>
                 <span class="card-arrow">&rarr;</span>
               </div>
-              <span class="card-value">heysanthoshreddy@gmail.com</span>
-              <span class="card-hint">Click to compose &mdash; response &lt; 24hrs</span>
-            </a>
+              <span class="card-value glitch-text" data-text="heysanthoshreddy@gmail.com">heysanthoshreddy@gmail.com</span>
+              <span class="card-hint">Click to encrypt &amp; copy to clipboard</span>
+            </button>
 
             <!-- GitHub -->
-            <a href="https://github.com/santjsx" target="_blank" rel="noopener noreferrer" class="contact-card">
+            <a href="https://github.com/santjsx" target="_blank" rel="noopener noreferrer" class="contact-card fade-up" style="transition-delay: 0.2s;">
               <div class="card-top">
-                <span class="card-label">Codebase</span>
+                <span class="card-label">[ CODEBASE ]</span>
                 <span class="card-arrow">&rarr;</span>
               </div>
               <span class="card-value">github.com/santjsx</span>
             </a>
 
             <!-- LinkedIn -->
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="contact-card">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="contact-card fade-up" style="transition-delay: 0.3s;">
               <div class="card-top">
-                <span class="card-label">Network</span>
+                <span class="card-label">[ NETWORK ]</span>
                 <span class="card-arrow">&rarr;</span>
               </div>
               <span class="card-value">LinkedIn Profile</span>
             </a>
 
-            <div class="contact-status">
+            <div class="contact-status fade-up" style="transition-delay: 0.4s;">
               <span class="hero-status-dot"></span>
-              Currently available for freelance &amp; full-time roles
+              <span>CONNECTION SECURED — AVAILABLE</span>
             </div>
 
           </div>
         </div>
-      </section>
 
-      <!-- 6. Footer -->
-      <footer class="minimal-footer fade-up">
-        <div class="container minimal-footer-content">
-          <span class="footer-name">&copy; <span id="year">2026</span> &mdash; Santhosh Reddy</span>
-          <span class="footer-detail">Rendered one frame at a time.</span>
-        </div>
-      </footer>
+        <!-- 6. Footer (Moved inside section to span the background) -->
+        <footer class="minimal-footer fade-up">
+          <div class="container minimal-footer-content">
+            <span class="footer-name">&copy; <span id="year">2026</span> &mdash; Santhosh Reddy</span>
+            <span class="footer-detail">Rendered one frame at a time.</span>
+          </div>
+        </footer>
+      </section>
 
   </main>
 
@@ -371,23 +489,24 @@
 
   <!-- 8. Floating Lanyard Status Widget -->
   <div id="lanyard-widget" class="lanyard-container">
-    <div id="lanyard-popover" class="lanyard-popover">
-      <div class="lanyard-header">
-        <span class="lanyard-status-dot" id="lanyard-status-dot"></span>
-        <span class="lanyard-status-text" id="lanyard-status-text">Connecting...</span>
-      </div>
-      <div class="lanyard-body" id="lanyard-activities">
-        <!-- Activities will be populated here by JS -->
-      </div>
+    <div class="lanyard-hint">
+      <span class="hint-text">"Check out what Santhosh is doing"</span>
+      <span class="hint-subtext">Click to view Live</span>
     </div>
-    <div class="lanyard-trigger-group">
-      <div class="lanyard-hint">
-        <span class="hint-text">"Check out what Santhosh is doing"</span>
-        <span class="hint-subtext">Click to view Live</span>
-      </div>
-      <div class="lanyard-avatar-wrapper" id="lanyard-toggle">
-        <img src="images/pixel%20art.jpg" alt="Developer Pixel Art" class="lanyard-avatar">
+    <div class="lanyard-island" id="lanyard-toggle">
+      <div class="island-avatar-wrapper">
+        <img src="images/pixel%20art.jpg" alt="Santhosh" class="lanyard-avatar">
         <div class="lanyard-indicator" id="lanyard-indicator"></div>
+      </div>
+      <div class="island-content">
+        <div class="island-header">
+          <span class="island-status-dot" id="lanyard-status-dot"></span>
+          <span class="island-status-text" id="lanyard-status-text">Connecting...</span>
+          <button class="island-close-btn" id="lanyard-close" aria-label="Close widget">&times;</button>
+        </div>
+        <div class="island-activities" id="lanyard-activities">
+          <!-- Activities will be populated here by JS -->
+        </div>
       </div>
     </div>
   </div>

@@ -4,7 +4,7 @@
 const FC_CHARS = '!@#$%^&*()_+-=[]{}|;:,.<>?/01';
 
 /**
- * Staggered reveal of headline rows with a cinematic delay
+ * Staggered cinematic Blur Reveal of headline rows
  */
 function initHeadlineReveal() {
     const rows = document.querySelectorAll('.headline-row, .headline-divider');
@@ -12,17 +12,18 @@ function initHeadlineReveal() {
 
     rows.forEach((row, i) => {
         row.style.opacity = '0';
-        row.style.transform = 'translateY(30px)';
-        row.style.transition = `opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)`;
-        row.style.transitionDelay = `${0.3 + i * 0.12}s`;
+        row.style.filter = 'blur(12px)';
+        row.style.transform = 'translateY(15px) scale(0.98)';
+        row.style.transition = `opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1), filter 1.2s cubic-bezier(0.19, 1, 0.22, 1), transform 1.2s cubic-bezier(0.19, 1, 0.22, 1)`;
+        row.style.transitionDelay = `${0.3 + i * 0.15}s`;
     });
 
-    // Trigger after a frame so CSS kicks in
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
             rows.forEach(row => {
                 row.style.opacity = '1';
-                row.style.transform = 'translateY(0)';
+                row.style.filter = 'blur(0)';
+                row.style.transform = 'translateY(0) scale(1)';
             });
         });
     });
@@ -59,10 +60,12 @@ function initRuleTagScramble() {
 }
 
 /**
- * Subliminal Tyler Flash — randomly fires a full-screen pink flash
- * with a Fight Club quote for exactly 1-2 frames
+ * Subliminal Tyler Flash
+ * (Disabled per user request as the full-screen pink flashes were disruptive)
  */
 function initSubliminalFlash() {
+    return; // Fast exit to disable feature
+    
     const flashEl = document.getElementById('subliminal-flash');
     if (!flashEl) return;
 
@@ -83,23 +86,18 @@ function initSubliminalFlash() {
             flashEl.classList.remove('active');
         }, 100);
 
-        // Next flash: 12-30 seconds
         setTimeout(triggerFlash, 12000 + Math.random() * 18000);
     }
 
-    // First flash after 6-14 seconds
     setTimeout(triggerFlash, 6000 + Math.random() * 8000);
 }
 
 /**
- * Ambient glow follows cursor (desktop only)
+ * Cinematic Mouse tracking (Flashlight Spotlight via CSS Variables)
  */
 function initGlowTracking() {
-    const glow = document.querySelector('.hero-ambient-glow');
-    if (!glow || window.innerWidth < 900) return;
-
     const hero = document.querySelector('.hero');
-    if (!hero) return;
+    if (!hero || window.innerWidth < 900) return;
 
     let targetX = 50, targetY = 50, currentX = 50, currentY = 50;
 
@@ -110,10 +108,12 @@ function initGlowTracking() {
     });
 
     function lerp() {
-        currentX += (targetX - currentX) * 0.04;
-        currentY += (targetY - currentY) * 0.04;
-        glow.style.left = `${currentX}%`;
-        glow.style.top = `${currentY}%`;
+        currentX += (targetX - currentX) * 0.08;
+        currentY += (targetY - currentY) * 0.08;
+        
+        hero.style.setProperty('--mouse-x', `${currentX}%`);
+        hero.style.setProperty('--mouse-y', `${currentY}%`);
+        
         requestAnimationFrame(lerp);
     }
     lerp();
