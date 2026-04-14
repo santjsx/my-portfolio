@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mobile Overlay Menu Toggle
     const mobileToggle = document.getElementById('mobile-menu-toggle');
     const navOverlay = document.getElementById('nav-overlay');
+    const navClose = document.getElementById('nav-close');
     const navItemLinks = document.querySelectorAll('.nav-overlay .nav-item');
 
     if (mobileToggle && navOverlay) {
@@ -53,10 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Lock background scroll when open
             document.body.style.overflow = isActive ? '' : 'hidden';
-            if (document.documentElement.classList.contains('lenis')) {
-                 // optionally pause lenis if required, usually overflow hidden on body works
-            }
         });
+
+        if (navClose) {
+            navClose.addEventListener('click', () => {
+                mobileToggle.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
 
         // Close menu when a link is clicked
         navItemLinks.forEach(link => {
