@@ -209,106 +209,75 @@
 }
 
 /* ═════════════════════════════════════
-   2. WEAPONS — Tactical HUD Status Bars
+   2. THE ARSENAL — Film Credits Style
    ═════════════════════════════════════ */
 .intel-weapons {
     display: flex;
     flex-direction: column;
-    gap: 4px;
 }
 
-.weapon-bar {
-    position: relative;
-    height: 70px;
-    background: rgba(255, 255, 255, 0.015);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.weapon-bar:hover {
-    background: rgba(255, 255, 255, 0.035);
-    border-color: rgba(242, 139, 130, 0.15);
-}
-
-.weapon-bg-text {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+.arsenal-title {
     font-family: var(--font-mono);
-    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-size: 11px;
     font-weight: 900;
-    color: rgba(255, 255, 255, 0.12);
+    color: var(--text-muted);
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    letter-spacing: -0.02em;
+    margin: 0 0 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.arsenal-row {
+    display: flex;
+    align-items: baseline;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.arsenal-row:hover {
+    padding-left: 8px;
+    border-bottom-color: rgba(242, 139, 130, 0.2);
+}
+
+.arsenal-name {
+    font-family: var(--font-mono);
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-weight: 900;
+    color: var(--text-primary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
     white-space: nowrap;
-    pointer-events: none;
-    z-index: 0;
-    line-height: 1;
     transition: color 0.3s ease;
 }
 
-.weapon-bar:hover .weapon-bg-text {
-    color: rgba(255, 255, 255, 0.18);
+.arsenal-row:hover .arsenal-name {
+    color: var(--accent-primary);
 }
 
-/* Foreground label */
-.weapon-info {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding-left: 20px;
+/* The extending dotted line */
+.arsenal-line {
+    flex: 1;
+    border-bottom: 1px dotted rgba(255, 255, 255, 0.1);
+    margin: 0 20px;
+    transform: translateY(-4px);
 }
 
-.weapon-name {
+.arsenal-level {
     font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 900;
-    color: var(--text-primary);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-}
-
-.weapon-class {
-    font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
+    font-weight: 700;
     color: var(--text-muted);
     letter-spacing: 0.2em;
-    opacity: 0.6;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: color 0.3s ease;
 }
 
-.weapon-tape {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-danger), var(--accent-primary));
-    z-index: 1;
-    transition: height 0.3s ease, box-shadow 0.3s ease;
-}
-
-.weapon-bar:hover .weapon-tape {
-    height: 5px;
-    box-shadow: 0 0 15px rgba(242, 139, 130, 0.5);
-}
-
-.weapon-val {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 900;
+.arsenal-row:hover .arsenal-level {
     color: var(--accent-danger);
-    letter-spacing: 0.1em;
-    z-index: 2;
-    opacity: 0.8;
 }
 
 /* ═════════════════════════════════════
