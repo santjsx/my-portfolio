@@ -102,6 +102,7 @@
     display: flex;
     flex-direction: column;
     margin-bottom: var(--space-12);
+    position: relative; /* Crucial for absolute arrow */
 }
 
 .headline-row {
@@ -131,6 +132,44 @@
     background-clip: text;
     color: transparent;
 }
+
+/* ── Hero Correction Animation Styles ── */
+.hero-strike-target {
+    position: relative;
+    display: inline-block;
+}
+
+.hero-strike-target::after {
+    content: '';
+    position: absolute;
+    left: -5%;
+    top: 50%;
+    width: 0;
+    height: 3px;
+    background: var(--accent-primary);
+    transform: translateY(-50%) rotate(-2deg);
+    transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: 2;
+    pointer-events: none;
+    border-radius: 4px;
+}
+
+.hero-strike-target.active::after {
+    width: 110%;
+}
+
+.hero-point-target {
+    position: relative;
+    display: inline-block;
+    transition: transform 0.4s var(--ease-spring), color 0.4s ease;
+}
+
+.hero-point-target.highlight {
+    transform: scale(1.1);
+    color: var(--accent-primary);
+}
+
+
 
 /* The thin horizontal accent divider */
 .headline-divider {

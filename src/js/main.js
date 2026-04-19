@@ -8,6 +8,7 @@ import { initHeroEffects } from './utils/hero-effects.js';
 import { initContactSection } from './utils/contact.js';
 import { initLanyardWidget } from './utils/lanyard.js';
 import { initGSAPAnimations } from './utils/gsap-animations.js';
+import { initHeroCorrection } from './utils/hero-correction.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Preloader (mobile only)
@@ -86,6 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 3. Initialize Parallax & Interactions via GSAP
         initGSAPAnimations();
+        
+        // 3.5. Hero correction sequence (Strike + Arrow)
+        initHeroCorrection();
 
         // 4. Scroll reveal observer (now using GSAP ScrollTrigger batches)
         initScrollObserver();
