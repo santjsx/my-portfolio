@@ -218,6 +218,7 @@
     position: relative;
     overflow: hidden;
     z-index: 1;
+    border-radius: 100px;
 }
 
 .hero-cta-link::before {

@@ -154,6 +154,7 @@
     transition: all 0.5s var(--ease-spring);
     cursor: crosshair;
     overflow: hidden;
+    border-radius: 24px;
 }
 
 .spans-two {
@@ -243,6 +244,7 @@
     background: var(--text-primary);
     color: var(--bg-dark);
     transition: all 0.2s ease;
+    border-radius: 100px;
 }
 
 .t-btn.outline {

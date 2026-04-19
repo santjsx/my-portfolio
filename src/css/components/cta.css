@@ -55,18 +55,17 @@
 .contact-right {
     display: flex;
     flex-direction: column;
-    gap: 0; /* Stack them with exact borders */
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    gap: var(--space-4);
 }
 
 .contact-card {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: var(--space-6) 0;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--space-8);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
     text-decoration: none;
     transition: all 0.5s var(--ease-spring);
     cursor: pointer;
@@ -106,9 +105,9 @@
 
 /* Harsh Minimal Hover: Invert colors / slide arrow */
 .contact-card:hover {
-    padding-left: var(--space-4);
-    padding-right: var(--space-4);
     background: var(--text-primary);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 .contact-card:hover .card-label,
