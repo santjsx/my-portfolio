@@ -407,7 +407,12 @@
 
 @media (max-width: 768px) {
     .lanyard-island.active {
-        width: 280px;
+        width: 270px; /* Tighter for very small phones */
+        padding: 14px;
+    }
+
+    .island-content {
+        width: 242px; /* 270 - 28 (padding) */
     }
     .lanyard-hint {
         display: none;
