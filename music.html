@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Frequency — Santhosh Reddy</title>
+  <meta name="description" content="Spotify Listening History — Santhosh Reddy">
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <!-- Fonts: Inter / Playfair Display / JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&family=Special+Elite&display=swap"
+    rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script type="module" src="/src/js/main.js"></script>
+</head>
+
+<body class="dark-container">
+
+  <!-- Film Grain Overlay -->
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="site-header cinematic-header scrolled" id="header">
+    <div class="header-container">
+      <a href="index.html" class="cinematic-logo">
+        SR
+      </a>
+
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+
+      <nav class="desktop-nav">
+        <div class="nav-links">
+          <a href="index.html#about" class="nav-item">About <span class="nav-num">01</span></a>
+          <a href="index.html#work" class="nav-item">Projects <span class="nav-num">02</span></a>
+          <a href="music.html" class="nav-item active">Music <span class="nav-num">03</span></a>
+          <a href="#" class="nav-item js-open-resume">Resume <span class="nav-num">04</span></a>
+          <a href="index.html#contact" class="nav-item highlight">Contact <span class="nav-num">05</span></a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Premium Navigation Overlay -->
+  <div class="nav-overlay" id="nav-overlay">
+    <button class="nav-close-btn" id="nav-close" aria-label="Close menu">&times;</button>
+    <nav class="nav-links">
+      <a href="index.html#about" class="nav-item">About <span class="nav-num">01</span></a>
+      <a href="index.html#work" class="nav-item">Projects <span class="nav-num">02</span></a>
+      <a href="music.html" class="nav-item active">Music <span class="nav-num">03</span></a>
+      <a href="#" class="nav-item js-open-resume">Resume <span class="nav-num">04</span></a>
+      <a href="index.html#contact" class="nav-item highlight">Contact <span class="nav-num">05</span></a>
+    </nav>
+  </div>
+
+  <main class="music-page-wrapper">
+    <section class="container music-content-section">
+      <div class="music-breadcrumb fade-up">
+        <a href="index.html" class="back-home-link">← BACK TO ARCHIVE</a>
+      </div>
+
+      <div class="music-hero-header fade-up">
+        <h1 class="music-page-title">THE FREQUENCY</h1>
+        <p class="music-page-tagline">A real-time sonic log of current rotations and cinematic pulses.</p>
+      </div>
+
+      <div class="music-history-container">
+        <div id="track-list" class="frequency-list">
+          <div class="frequency-loading">Initializing Pulse...</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="minimal-footer fade-up">
+    <div class="container">
+      <div class="mega-footer-name">
+        <span class="name-solid">santhosh</span>
+        <span class="name-hollow">reddy</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 7. Resume Slide-in Drawer -->
+  <div class="resume-overlay js-close-resume"></div>
+  <aside class="resume-drawer" id="resume-drawer">
+    <div class="drawer-header">
+      <h3 class="drawer-title">Curriculum Vitae</h3>
+      <button class="drawer-close js-close-resume" aria-label="Close Resume">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="drawer-content">
+      <div id="pdf-container" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px;">
+        <canvas id="pdf-canvas" style="max-width: 100%; height: auto; box-shadow: 0 4px 24px rgba(0,0,0,0.4); border-radius: 4px; display: none;"></canvas>
+        <div id="pdf-loading" style="color: var(--text-dark-secondary); font-family: var(--font-mono); font-size: 14px; margin-top: 40px;">
+          Loading Resume...
+        </div>
+        <div class="pdf-fallback" style="margin-top: 20px; text-align: center;">
+          <a href="/Santhosh%20Reddy%20Resume.pdf" class="cta-button primary" download="Santhosh_Reddy_Resume.pdf" target="_blank" rel="noopener noreferrer">
+            Download PDF
+          </a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 8. Floating Lanyard Status Widget -->
+  <div id="lanyard-widget" class="lanyard-container">
+    <div class="lanyard-island" id="lanyard-toggle">
+      <div class="island-avatar-wrapper">
+        <img src="images/pixel%20art.jpg" alt="Santhosh" class="lanyard-avatar">
+        <div class="lanyard-indicator" id="lanyard-indicator"></div>
+      </div>
+      <div class="island-content">
+        <div class="island-header">
+          <span class="island-status-dot" id="lanyard-status-dot"></span>
+          <span class="island-status-text" id="lanyard-status-text">Connecting...</span>
+        </div>
+        <div class="island-activities" id="lanyard-activities"></div>
+      </div>
+      <button class="island-close-btn" id="lanyard-close">&times;</button>
+    </div>
+  </div>
+
+</body>
+
+</html>

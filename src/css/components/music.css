@@ -5,6 +5,53 @@
     flex-direction: column;
 }
 
+/* Standalone Page Layout */
+.music-page-wrapper {
+    padding-top: 140px;
+    padding-bottom: 100px;
+    min-height: 80vh;
+}
+
+.music-breadcrumb {
+    margin-bottom: 40px;
+}
+
+.back-home-link {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.back-home-link:hover {
+    color: var(--accent-primary);
+}
+
+.music-hero-header {
+    margin-bottom: 80px;
+}
+
+.music-page-title {
+    font-family: var(--font-sans);
+    font-size: clamp(3rem, 10vw, 8rem);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    margin: 0 0 20px;
+    color: var(--text-primary);
+}
+
+.music-page-tagline {
+    font-family: var(--font-serif);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-style: italic;
+    color: var(--text-muted);
+    max-width: 600px;
+}
+
 .frequency-title {
     font-family: var(--font-mono);
     font-size: 11px;

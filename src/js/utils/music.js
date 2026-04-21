@@ -2,7 +2,7 @@ import gsap from 'gsap';
 
 const LASTFM_API_KEY = 'a403d71a4af1bacfddab789750be1c18';
 const LASTFM_USER = 'santhoshh25';
-const FETCH_LIMIT = 10;
+const FETCH_LIMIT = 30;
 
 /**
  * Initializes the music history (Recently Played) section.
