@@ -85,6 +85,7 @@ async function fetchLanyardData() {
         if (json.success && json.data) {
             updateWidgetUI(json.data);
             updateMoodDisplay(json.data.kv);
+            updateHeroQuote(json.data.kv);
         }
     } catch (error) {
         console.error('Failed to fetch Lanyard data:', error);
@@ -209,6 +210,50 @@ function updateWidgetUI(data) {
  * Updates the custom mood display using Lanyard KV data
  * @param {Object} kv - Key-value pairs from Lanyard
  */
+/**
+ * Updates the hero section quote using Lanyard KV data
+ * @param {Object} kv - Key-value pairs from Lanyard
+ */
+function updateHeroQuote(kv) {
+    const quoteEl = document.getElementById('hero-quote');
+    if (!quoteEl) return;
+
+    const newQuote = kv ? kv.hero_quote : null;
+
+    // Only update if we have a new quote and it's different from the fallback/current
+    // We check against textContent which strips entities, so we handle both.
+    if (newQuote) {
+        const escaped = escapeHTML(newQuote);
+        const formattedHTML = `&ldquo;${escaped}&rdquo;`;
+        
+        // Simple check to avoid redundant animations if nothing changed
+        // Create a temp div to compare innerHTML if needed, or just compare text
+        const temp = document.createElement('div');
+        temp.innerHTML = formattedHTML;
+        if (quoteEl.textContent === temp.textContent) return;
+
+        if (typeof gsap !== 'undefined') {
+            gsap.to(quoteEl, {
+                opacity: 0,
+                x: 10,
+                duration: 0.5,
+                ease: "power2.in",
+                onComplete: () => {
+                    quoteEl.innerHTML = formattedHTML;
+                    gsap.to(quoteEl, {
+                        opacity: 0.9,
+                        x: 0,
+                        duration: 0.8,
+                        ease: "power2.out"
+                    });
+                }
+            });
+        } else {
+            quoteEl.innerHTML = formattedHTML;
+        }
+    }
+}
+
 function updateMoodDisplay(kv) {
     const moodContainer = document.getElementById('mood-block');
     const moodDisplay = document.getElementById('status-display');

@@ -104,6 +104,7 @@
     text-transform: uppercase;
     color: var(--text-primary);
     display: inline-block;
+    white-space: nowrap;
 }
 
 /* Helper class for text splitting script */
