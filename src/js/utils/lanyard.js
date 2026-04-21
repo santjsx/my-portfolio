@@ -88,6 +88,7 @@ async function fetchLanyardData() {
             updateHeroQuote(json.data.kv);
             updateCustomColors(json.data.kv);
             updateAboutPhoto(json.data.kv);
+            updateSkills(json.data.kv);
         }
     } catch (error) {
         console.error('Failed to fetch Lanyard data:', error);
@@ -382,6 +383,89 @@ function transitionImage(imgEl, src) {
     } else {
         imgEl.src = src;
         imgEl.dataset.currentSrc = src;
+    }
+}
+
+/**
+ * Updates the arsenal (skills) section based on Lanyard KV data
+ * @param {Object} kv - Key-value pairs from Lanyard
+ */
+function updateSkills(kv) {
+    const listContainer = document.getElementById('arsenal-list');
+    if (!listContainer) return;
+
+    const skillsStr = kv ? kv.skills : null;
+    const titleHTML = `<h3 class="arsenal-title">THE ARSENAL_</h3>`;
+    
+    // Fallback original HTML structure
+    const originalSkillsHTML = `
+        <div class="arsenal-row"><span class="arsenal-name">HTML / CSS</span><span class="arsenal-line"></span><span class="arsenal-level">EXPERT</span></div>
+        <div class="arsenal-row"><span class="arsenal-name">JAVASCRIPT</span><span class="arsenal-line"></span><span class="arsenal-level">ADVANCED</span></div>
+        <div class="arsenal-row"><span class="arsenal-name">REACT.JS</span><span class="arsenal-line"></span><span class="arsenal-level">ADVANCED</span></div>
+        <div class="arsenal-row"><span class="arsenal-name">TAILWIND</span><span class="arsenal-line"></span><span class="arsenal-level">EXPERT</span></div>
+        <div class="arsenal-row"><span class="arsenal-name">GIT</span><span class="arsenal-line"></span><span class="arsenal-level">PROFICIENT</span></div>
+    `;
+
+    let targetHTML = '';
+
+    if (skillsStr && skillsStr.trim() !== '') {
+        const items = skillsStr.split(',').map(s => s.trim()).filter(s => s !== '');
+        items.forEach(item => {
+            const [name, level] = item.split(':').map(part => part.trim());
+            if (name) {
+                targetHTML += `
+                    <div class="arsenal-row">
+                        <span class="arsenal-name">${escapeHTML(name)}</span>
+                        <span class="arsenal-line"></span>
+                        <span class="arsenal-level">${escapeHTML(level || 'PRO')}</span>
+                    </div>
+                `;
+            }
+        });
+    }
+
+    // Decide if we should update or fallback
+    if (!targetHTML) {
+        if (!listContainer.dataset.dynamic) return; // Already showing fallback
+        targetHTML = originalSkillsHTML;
+        delete listContainer.dataset.dynamic;
+    } else {
+        listContainer.dataset.dynamic = 'true';
+    }
+
+    // Comparison for redundancy
+    const currentRowsRaw = listContainer.innerHTML.replace(titleHTML, '').trim();
+    if (currentRowsRaw === targetHTML.trim()) return;
+
+    const oldRows = listContainer.querySelectorAll('.arsenal-row');
+
+    if (typeof gsap !== 'undefined' && oldRows.length > 0) {
+        gsap.to(oldRows, {
+            opacity: 0,
+            x: -20,
+            duration: 0.4,
+            stagger: 0.05,
+            ease: "power2.in",
+            onComplete: () => {
+                listContainer.innerHTML = titleHTML + targetHTML;
+                const newRows = listContainer.querySelectorAll('.arsenal-row');
+                gsap.fromTo(newRows, 
+                    { opacity: 0, x: -30 },
+                    { 
+                        opacity: 1, 
+                        x: 0, 
+                        duration: 0.6, 
+                        stagger: 0.08, 
+                        ease: "power2.out",
+                        onComplete: () => {
+                            // Re-trigger magnetism if necessary or just let it be
+                        }
+                    }
+                );
+            }
+        });
+    } else {
+        listContainer.innerHTML = titleHTML + targetHTML;
     }
 }
 
