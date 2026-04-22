@@ -31,17 +31,15 @@ export function initContactSection() {
             textNode.style.color = 'var(--accent-primary)';
             btn.style.borderColor = 'var(--accent-primary)';
             
-            // Decrypt Out To Copied
-            glitchText(textNode, originalText, '// CONNECTION ESTABLISHED // (COPIED)', () => {
-                // Wait 2.5s then revert
-                setTimeout(() => {
-                    glitchText(textNode, '// CONNECTION ESTABLISHED // (COPIED)', originalText, () => {
-                        textNode.classList.remove('is-copying');
-                        textNode.style.color = '';
-                        btn.style.borderColor = '';
-                    });
-                }, 2500);
-            });
+            // Simple, professional feedback swap
+            textNode.textContent = 'Email copied to clipboard';
+            
+            setTimeout(() => {
+                textNode.textContent = originalText;
+                textNode.classList.remove('is-copying');
+                textNode.style.color = '';
+                btn.style.borderColor = '';
+            }, 2000);
 
         } catch (err) {
             console.error('Failed to copy', err);
@@ -49,30 +47,4 @@ export function initContactSection() {
     });
 }
 
-function glitchText(element, fromText, toText, callback) {
-    let iteration = 0;
-    const maxIterations = Math.max(fromText.length, toText.length);
-    let interval = null;
 
-    clearInterval(interval);
-    
-    interval = setInterval(() => {
-        element.innerText = toText
-            .split('')
-            .map((letter, index) => {
-                if (index < iteration) {
-                    return toText[index];
-                }
-                return GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
-            })
-            .join('');
-        
-        if (iteration >= maxIterations) {
-            clearInterval(interval);
-            element.innerText = toText;
-            if (callback) callback();
-        }
-        
-        iteration += 1/3; // Speed of decryption
-    }, 20);
-}
