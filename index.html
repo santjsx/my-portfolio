@@ -433,7 +433,18 @@
   <div class="resume-overlay js-close-resume"></div>
   <aside class="resume-drawer" id="resume-drawer">
     <div class="drawer-header">
-      <h3 class="drawer-title">Curriculum Vitae</h3>
+      <h3 class="drawer-title">Resume</h3>
+      
+      <div class="drawer-toolbar">
+        <button id="zoom-out" class="toolbar-btn" aria-label="Zoom Out" title="Zoom Out">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
+        <button id="zoom-reset" class="toolbar-btn reset" aria-label="Reset Zoom">80%</button>
+        <button id="zoom-in" class="toolbar-btn" aria-label="Zoom In" title="Zoom In">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
+      </div>
+
       <button class="drawer-close js-close-resume" aria-label="Close Resume">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
@@ -442,7 +453,7 @@
         </svg>
       </button>
     </div>
-    <div class="drawer-content">
+    <div class="drawer-content" data-lenis-prevent>
       <!-- PDF.js Canvas Container -->
       <div id="pdf-container" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px;">
         <canvas id="pdf-canvas" style="max-width: 100%; height: auto; box-shadow: 0 4px 24px rgba(0,0,0,0.4); border-radius: 4px; display: none;"></canvas>
