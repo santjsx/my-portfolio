@@ -14,22 +14,16 @@ import { initMusicHistory } from './utils/music.js';
 import { initNavHighlighter } from './utils/nav-highlighter.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 0. Preloader (mobile only)
+    // Force scroll to top on reload
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
+    // 0. Preloader (Mobile & Desktop)
     const preloaderPromise = initPreloader();
 
-    // 1. Lenis smooth scrolling
-    setupLenis();
-
-    // 3. Resume drawer
-    initResumeDrawer();
-
-    // 4.5. Contact section interactions
-    initContactSection();
-    
-    // Initialize Discord Lanyard Status Widget
-    initLanyardWidget();
-    
-    // 1. Lenis smooth scrolling
+    // 1. Lenis smooth scrolling (Single initialization)
     const lenis = setupLenis();
     
     // Header scrolled state
