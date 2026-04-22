@@ -75,7 +75,6 @@ export function initGSAPAnimations() {
             gsap.to(aboutPhoto, {
                 scale: 1.15,
                 yPercent: 10,
-                filter: "grayscale(60%) contrast(1.1)",
                 ease: "none",
                 scrollTrigger: {
                     trigger: ".character-band",
