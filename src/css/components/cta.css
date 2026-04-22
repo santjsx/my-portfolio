@@ -159,12 +159,12 @@
 }
 
 .name-solid {
-    color: var(--text-primary);
+    color: var(--accent-primary);
 }
 
 .name-hollow {
     color: transparent;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--accent-primary) 40%, transparent);
 }
 
 .mega-footer-name:hover .name-solid {
@@ -174,7 +174,7 @@
 
 .mega-footer-name:hover .name-hollow {
     transform: translateX(-20px);
-    color: var(--text-primary);
+    color: var(--accent-primary);
     -webkit-text-stroke: 1px transparent;
 }
 

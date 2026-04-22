@@ -282,9 +282,9 @@
 /* When Hovered -> Invert EVERYTHING inside */
 .mayhem-target:hover {
     background: var(--text-primary);
-    border-color: var(--accent-danger);
+    border-color: var(--accent-primary);
     transform: scale(0.99); /* slight destructive crunch */
-    box-shadow: 0 0 20px rgba(242, 139, 130, 0.2);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent-primary) 20%, transparent);
 }
 
 .mayhem-target:hover .t-id,
@@ -296,7 +296,7 @@
 }
 
 .mayhem-target:hover .t-title {
-    color: var(--accent-danger);
+    color: var(--accent-primary);
     /* Subtle glitch jitter on hover */
     animation: textJitter 0.2s infinite; 
 }
@@ -310,7 +310,7 @@
 }
 
 .mayhem-target:hover .t-btn {
-    background: var(--accent-danger);
+    background: var(--accent-primary);
     color: var(--text-primary);
 }
 
@@ -321,7 +321,7 @@
 }
 
 .mayhem-target:hover .crosshair {
-    border-color: var(--accent-danger);
+    border-color: var(--accent-primary);
     width: 20px;
     height: 20px;
 }
