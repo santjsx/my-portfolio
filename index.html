@@ -11,11 +11,12 @@
   <!-- Fonts: Inter / Playfair Display / JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&family=Special+Elite&display=swap">
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&family=Special+Elite&display=swap"
     rel="stylesheet">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer async></script>
     <script type="module" src="/src/js/main.js"></script>
   </head>
   
@@ -443,7 +444,7 @@
     </div>
     <div class="lanyard-island" id="lanyard-toggle">
       <div class="island-avatar-wrapper">
-        <img src="images/santhoshh.webp" alt="Santhosh" class="lanyard-avatar" id="lanyard-avatar-img">
+        <img src="images/santhoshh.webp" alt="Santhosh" class="lanyard-avatar" id="lanyard-avatar-img" loading="lazy" decoding="async">
         <div class="lanyard-indicator" id="lanyard-indicator"></div>
       </div>
       <div class="island-content">
