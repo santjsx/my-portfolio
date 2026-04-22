@@ -29,21 +29,62 @@ export function initMusicHistory() {
  */
 async function fetchMediaLog() {
     try {
-        const tracks = await fetchRecentTracks();
-        renderMediaLog(tracks);
+        // Parallel fetch for speed
+        const [recentData, topData] = await Promise.all([
+            fetchNowPlaying(),
+            fetchTopTracks()
+        ]);
+
+        const mergedTracks = mergeMusicLogs(recentData, topData);
+        renderMediaLog(mergedTracks);
     } catch (error) {
         console.error('Media log sync failed:', error);
     }
 }
 
 /**
- * Fetches recent music from Last.fm.
+ * Fetches the most recent track to check for Live status.
  */
-async function fetchRecentTracks() {
-    const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=${FETCH_LIMIT}`;
+async function fetchNowPlaying() {
+    const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=1`;
     const response = await fetch(url);
     const data = await response.json();
-    return data.recenttracks.track;
+    return data.recenttracks.track[0] || null;
+}
+
+/**
+ * Fetches top tracks from a specified period (overall).
+ */
+async function fetchTopTracks() {
+    const url = `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=${FETCH_LIMIT}&period=overall`;
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.toptracks.track || [];
+}
+
+/**
+ * Merges Now Playing status with Top 30 list, avoiding duplicates.
+ */
+function mergeMusicLogs(nowPlaying, topTracks) {
+    const isLive = nowPlaying && nowPlaying['@attr'] && nowPlaying['@attr'].nowplaying === 'true';
+    
+    if (!isLive) return topTracks.map(t => ({ ...t, isLive: false }));
+
+    // If live, clean the top list of the live track if it exists there to avoid doubles
+    const filteredTop = topTracks.filter(t => 
+        !(t.name.toLowerCase() === nowPlaying.name.toLowerCase() && 
+          t.artist.name.toLowerCase() === nowPlaying.artist['#text'].toLowerCase())
+    );
+
+    // Standardize nowPlaying to match topTrack schema for easier rendering
+    const standardizedLive = {
+        name: nowPlaying.name,
+        artist: { name: nowPlaying.artist['#text'] },
+        album: nowPlaying.album['#text'],
+        isLive: true
+    };
+
+    return [standardizedLive, ...filteredTop].slice(0, 31);
 }
 
 /**
@@ -56,10 +97,14 @@ function renderMediaLog(tracks) {
 
     tracks.forEach((track) => {
         const name = track.name;
-        const artist = track.artist['#text'];
-        const album = track.album?.['#text'] || 'Single';
-        const isNowPlaying = track['@attr'] && track['@attr'].nowplaying === 'true';
-        const dateText = isNowPlaying ? '<span class="live-tag">LIVE</span>' : formatDate(track.date ? track.date['#text'] : null);
+        const artist = track.artist.name;
+        const album = track.album || 'COLLECTION';
+        const isNowPlaying = track.isLive;
+        const playCount = track.playcount;
+        
+        const metaText = isNowPlaying 
+            ? '<span class="live-tag">LIVE</span>' 
+            : `<span class="play-count">${playCount} PLAYS</span>`;
         
         htmlContent += `
             <div class="media-card ${isNowPlaying ? 'is-live' : ''}">
@@ -72,12 +117,12 @@ function renderMediaLog(tracks) {
                     
                     <div class="card-meta-box">
                         <div class="card-meta-item">
-                            <span class="card-meta-label">COLLECTION:</span>
-                            ${escapeHTML(album)}
+                            <span class="card-meta-label">STATUS:</span>
+                            ${metaText}
                         </div>
                         <div class="card-meta-item">
-                            <span class="card-meta-label">STAMP:</span>
-                            ${dateText}
+                            <span class="card-meta-label">SOURCE:</span>
+                            ${escapeHTML(album)}
                         </div>
                     </div>
                 </div>

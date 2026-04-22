@@ -29,7 +29,7 @@
 
 .music-page-title {
     font-family: var(--font-sans);
-    font-size: clamp(3rem, 12vw, 10rem);
+    font-size: clamp(3rem, 10vw, 7.5rem);
     font-weight: 900;
     line-height: 0.85;
     letter-spacing: -0.06em;
@@ -87,7 +87,7 @@
 
 .media-card:hover .card-icon-header {
     color: var(--accent-primary);
-    background: rgba(242, 139, 130, 0.1);
+    background: color-mix(in srgb, var(--accent-primary), transparent 90%);
 }
 
 .card-icon-header svg {
@@ -163,6 +163,12 @@
 @keyframes liveFlash {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.4; }
+}
+
+.play-count {
+    font-weight: 800;
+    color: var(--text-primary);
+    opacity: 0.9;
 }
 
 /* RESPONSIVE */
