@@ -80,7 +80,7 @@
 }
 
 /* The Punch-hole Camera (Android Style) */
-.lanyard-island.active::before {
+.lanyard-island::before {
     content: '';
     position: absolute;
     top: 18px;
@@ -94,6 +94,13 @@
     box-shadow: 
         0 0 0 2px rgba(255, 255, 255, 0.05),
         inset 0 0 3px rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.lanyard-island.active::before {
+    opacity: 1;
 }
 
 /* Volume Buttons (Moved to Right for Android) */
