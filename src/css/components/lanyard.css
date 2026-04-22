@@ -476,7 +476,6 @@
     letter-spacing: 0;
 }
 
-.lanyard-container:hover .lanyard-hint,
 .lanyard-island.active ~ .lanyard-hint,
 .lanyard-container:has(.lanyard-island.active) .lanyard-hint {
     opacity: 0;
