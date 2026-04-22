@@ -70,6 +70,17 @@ export function initLanyardWidget() {
             });
         }
     });
+    
+    // Also allow clicking the hint bubble to open the island
+    const hintBubble = document.querySelector('.lanyard-hint');
+    if (hintBubble) {
+        hintBubble.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!toggleBtn.classList.contains('active')) {
+                toggleBtn.click();
+            }
+        });
+    }
 
     // Handle close button specifically
     const closeBtn = document.getElementById('lanyard-close');

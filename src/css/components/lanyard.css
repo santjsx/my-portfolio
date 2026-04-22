@@ -418,7 +418,8 @@
     animation: wobbleHint 4s ease-in-out infinite;
     transition: opacity 0.3s ease, transform 0.4s var(--ease-spring), visibility 0.3s ease;
     user-select: none;
-    pointer-events: none;
+    pointer-events: auto;
+    cursor: pointer;
     z-index: -1;
 }
 
