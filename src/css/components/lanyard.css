@@ -56,25 +56,105 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    border: 6px solid rgba(255, 255, 255, 0.05); /* The Bezel */
-    background: linear-gradient(180deg, rgba(20, 20, 22, 0.95), rgba(10, 10, 12, 0.98));
+    border: 7px solid #1a1a1c; /* Thick Realistic Bezel */
+    background: #000; /* True Black Screen Background */
     box-shadow: 
         0 24px 64px rgba(0, 0, 0, 0.8),
-        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 0 10px rgba(255, 255, 255, 0.05);
+    overflow: hidden;
 }
 
-/* The Dynamic Island Notch */
+/* Glass Reflection Overlay */
+.lanyard-island.active::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 20;
+    transform: rotate(10deg);
+}
+
+/* The Dynamic Island Notch & Speaker */
 .lanyard-island.active::before {
     content: '';
     position: absolute;
-    top: 12px;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 76px;
+    height: 22px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 25;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Notch Details (Speaker Grille) */
+.lanyard-island.active::before {
+    background-image: radial-gradient(#1a1a1c 1px, transparent 1px);
+    background-size: 3px 3px;
+}
+
+/* Volume Buttons */
+.lanyard-container:has(.lanyard-island.active)::before {
+    content: '';
+    position: absolute;
+    bottom: 340px;
+    right: 253px; /* Adjusted to stick out from the left side of the phone */
+    width: 3px;
+    height: 40px;
+    background: #1a1a1c;
+    border-radius: 2px 0 0 2px;
+    z-index: 5;
+    box-shadow: -1px 0 2px rgba(0,0,0,0.5);
+}
+
+.lanyard-container:has(.lanyard-island.active)::after {
+    content: '';
+    position: absolute;
+    bottom: 290px;
+    right: 253px;
+    width: 3px;
+    height: 40px;
+    background: #1a1a1c;
+    border-radius: 2px 0 0 2px;
+    z-index: 5;
+    box-shadow: -1px 0 2px rgba(0,0,0,0.5);
+}
+
+/* Power Button */
+.lanyard-island.active .island-content::after {
+    content: '';
+    position: absolute;
+    top: 140px;
+    right: -26px;
+    width: 3px;
+    height: 60px;
+    background: #1a1a1c;
+    border-radius: 0 2px 2px 0;
+    z-index: 5;
+}
+
+/* Home Indicator Bar */
+.lanyard-island.active .island-content::before {
+    content: '';
+    position: absolute;
+    bottom: -150px; /* Positioned at the bottom of the phone screen */
     left: 50%;
     transform: translateX(-50%);
     width: 80px;
-    height: 20px;
-    background: #000;
-    border-radius: 20px;
-    z-index: 10;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    z-index: 30;
 }
 
 /* ── Avatar ── */
@@ -152,6 +232,8 @@
     margin-top: 40px; /* Leave space for notch and status */
     gap: 20px;
     width: 100%;
+    position: relative; /* For home bar and power button */
+    z-index: 22;
 }
 
 /* ── Specific Sections ── */
