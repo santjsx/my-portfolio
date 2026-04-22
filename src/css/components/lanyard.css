@@ -368,13 +368,15 @@
 .island-activities {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    max-height: 200px;
+    gap: 10px;
+    max-height: 220px; /* Increased room */
     overflow-y: auto;
-    padding-right: 4px;
+    padding-right: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }
 
-.island-activities::-webkit-scrollbar { width: 4px; }
+.island-activities::-webkit-scrollbar { width: 3px; }
 .island-activities::-webkit-scrollbar-track { background: transparent; }
 .island-activities::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.1);
@@ -384,15 +386,15 @@
 .lanyard-activity {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    gap: 12px;
+    align-items: center; /* Centered vertically for compactness */
+    gap: 10px;
 }
 
 .activity-icon-wrapper {
-    width: 48px;
-    height: 48px;
+    width: 36px; /* Reduced from 48px */
+    height: 36px;
     flex-shrink: 0;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
     background: var(--bg-dark);
     position: relative;
@@ -404,24 +406,21 @@
     height: 100%;
     object-fit: cover;
     border-radius: inherit;
-    filter: grayscale(60%);
+    filter: grayscale(40%);
     transition: filter 0.3s;
-}
-.lanyard-activity:hover .activity-icon {
-    filter: grayscale(0%);
 }
 
 .activity-info {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 2px;
+    gap: 1px;
 }
 
 .activity-name {
     font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 11px; /* Reduced from 13px */
+    font-weight: 700;
     color: var(--text-primary);
     text-transform: uppercase;
 }
@@ -429,8 +428,9 @@
 .activity-details,
 .activity-state {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 9px; /* Reduced from 11px */
     color: var(--text-muted);
+    line-height: 1.2;
 }
 
 .activity-custom-status {
@@ -438,19 +438,19 @@
     align-items: center;
     gap: 8px;
     background: rgba(255, 255, 255, 0.03);
-    padding: 10px 14px;
+    padding: 8px 12px;
     border-left: 2px solid var(--accent-primary);
     border-radius: 0 10px 10px 0;
 }
 
 .activity-custom-emoji {
-    font-size: 16px;
-    filter: grayscale(50%);
+    font-size: 14px;
+    filter: grayscale(30%);
 }
 
 .activity-custom-text {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 10px;
     color: var(--text-primary);
 }
 
@@ -494,8 +494,13 @@
 
 @keyframes smoothEq {
     0% { height: 2px; }
-    50% { height: 12px; }
-    100% { height: 6px; }
+    50% { height: 10px; }
+    100% { height: 4px; }
+}
+
+/* Ensure content doesn't clip with the home bar */
+.lanyard-island.active .island-content {
+    padding-bottom: 20px;
 }
 
 /* ── Floating Hint Bubble ── */
