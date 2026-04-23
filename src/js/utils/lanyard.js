@@ -21,16 +21,17 @@ export function initLanyardWidget() {
         if (isOpening) {
             toggleBtn.classList.add('active');
             fetchLanyardData(); // Refresh data
+            updatePhoneClock(); // Set live clock
 
             gsap.fromTo(toggleBtn, 
                 { height: 68, width: 68, padding: 6, borderRadius: 22 }, 
-                { height: 480, width: 260, padding: 20, borderRadius: 40, duration: 0.8, ease: "expo.out", clearProps: "all", onComplete: () => isAnimating = false }
+                { height: 600, width: 300, padding: 0, borderRadius: 44, duration: 0.8, ease: "expo.out", clearProps: "all", onComplete: () => isAnimating = false }
             );
 
             const avatarWrapper = toggleBtn.querySelector('.island-avatar-wrapper');
             gsap.to(avatarWrapper, {
-                top: 40,
-                left: 20,
+                top: 36,
+                left: 16,
                 width: 32,
                 height: 32,
                 borderRadius: 10,
@@ -62,6 +63,7 @@ export function initLanyardWidget() {
                 duration: 0.6, 
                 delay: 0.1,
                 ease: "expo.out", 
+                clearProps: "all",
                 onComplete: () => {
                     toggleBtn.classList.remove('active');
                     gsap.set(content, { clearProps: "all" });
@@ -118,6 +120,10 @@ export function initLanyardWidget() {
     
     // Poll every 30 seconds
     setInterval(fetchLanyardData, 30000);
+
+    // Keep phone clock updated every minute
+    updatePhoneClock();
+    setInterval(updatePhoneClock, 30000);
 }
 
 async function fetchLanyardData() {
@@ -491,6 +497,15 @@ function updateSkills(kv) {
     } else {
         listContainer.innerHTML = titleHTML + targetHTML;
     }
+}
+
+function updatePhoneClock() {
+    const el = document.getElementById('phone-time');
+    if (!el) return;
+    const now = new Date();
+    const h = now.getHours();
+    const m = now.getMinutes().toString().padStart(2, '0');
+    el.textContent = `${h}:${m}`;
 }
 
 function escapeHTML(str) {
