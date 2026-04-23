@@ -195,6 +195,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     flex: 1;
+    padding-top: 36px; /* Clear the absolutely-positioned avatar */
     padding-bottom: 28px;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -280,7 +281,7 @@
     gap: 0;
     width: 100%;
     flex: 1;
-    padding: 6px 16px 0;
+    padding: 0 16px;
     position: relative;
     z-index: 22;
     overflow: hidden;
@@ -408,8 +409,9 @@
 .lanyard-section:has(.island-header) {
     background: transparent;
     border: none;
-    padding: 0 4px;
-    margin-top: -10px;
+    padding: 6px 4px 0;
+    margin-top: -30px; /* Sit beside the avatar */
+    padding-left: 44px; /* Clear the 32px avatar + gap */
     order: -1; /* Move status to the very top */
 }
 
