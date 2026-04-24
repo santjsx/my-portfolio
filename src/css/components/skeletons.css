@@ -33,14 +33,16 @@
 /* Music Skeleton */
 .skeleton-row {
     display: grid;
-    grid-template-columns: 40px 1fr 150px 80px;
+    grid-template-columns: 35px 36px 1fr 150px 80px;
     gap: 20px;
     padding: 16px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    align-items: center;
 }
 
 @media (max-width: 768px) {
     .skeleton-row {
-        grid-template-columns: 40px 1fr 60px;
+        grid-template-columns: 35px 32px 1fr 60px;
+        gap: 12px;
     }
 }

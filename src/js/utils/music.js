@@ -51,13 +51,15 @@ async function fetchMediaLog() {
                 const artistName = (track.artist && track.artist.name) ? track.artist.name : (track.artist ? track.artist['#text'] : 'Unknown Artist');
                 const count = track.playcount || '0';
                 const albumName = extractAlbumFromTitle(name) || 'COLLECTION';
+                const albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
                 
                 return {
                     name: name,
                     artist: { name: artistName },
                     album: albumName,
                     playcount: count,
-                    isLive: false
+                    isLive: false,
+                    album_art_url: albumArt
                 };
             });
 
@@ -103,12 +105,20 @@ async function fetchMediaLog() {
         // Inject Live track if active
         if (isLive && nowPlaying) {
             const liveArtist = nowPlaying.artist['#text'] || (nowPlaying.artist ? nowPlaying.artist.name : 'Unknown Artist');
+            let liveAlbumArt = nowPlaying.image ? nowPlaying.image[nowPlaying.image.length - 1]['#text'] : null;
+            
+            // Fallback to iTunes for Live track if Last.fm fails
+            if (!liveAlbumArt || liveAlbumArt === '' || liveAlbumArt.includes('default_album_medium')) {
+                liveAlbumArt = await fetchiTunesAlbumArt(nowPlaying.name, liveArtist);
+            }
+
             const liveTrack = {
                 name: nowPlaying.name,
                 artist: { name: liveArtist },
                 album: (nowPlaying.album && nowPlaying.album['#text']) ? nowPlaying.album['#text'] : 'NOW PLAYING',
                 isLive: true,
-                playcount: 'LIVE'
+                playcount: 'LIVE',
+                album_art_url: liveAlbumArt
             };
 
             // Remove the same track from the list if it exists and inject at top
@@ -140,6 +150,7 @@ function renderMusicGrid(container, tracks) {
         <div class="spotify-playlist fade-up" style="opacity: 0;">
             <div class="playlist-header">
                 <span class="col-index">#</span>
+                <span class="col-art"></span>
                 <span class="col-title">TITLE</span>
                 <span class="col-album">ALBUM</span>
                 <span class="col-plays">PLAYS</span>
@@ -165,9 +176,16 @@ function renderMusicGrid(container, tracks) {
             playcountDisplay = !isNaN(count) ? count.toLocaleString() : track.playcount;
         }
 
+        const trackArt = track.album_art_url || 'https://www.transparenttextures.com/patterns/carbon-fibre.png';
+
         htmlContent += `
             <div class="track-row ${isLive ? 'is-live' : ''}">
                 <div class="track-col col-index">${indexContent}</div>
+                <div class="track-col col-art">
+                    <div class="track-art-wrapper">
+                        <img src="${trackArt}" alt="Art" class="archive-track-art" loading="lazy">
+                    </div>
+                </div>
                 <div class="track-col col-title">
                     <div class="track-info">
                         <span class="track-name">${escapeHTML(trackName)}</span>
@@ -210,10 +228,11 @@ function injectSkeletons(container) {
             <div class="playlist-rows">
                 ${Array(12).fill(0).map(() => `
                     <div class="skeleton-row">
-                        <div class="skeleton" style="height: 16px; width: 20px;"></div>
-                        <div class="skeleton" style="height: 16px; width: 100%;"></div>
-                        <div class="skeleton" style="height: 16px; width: 100%;"></div>
-                        <div class="skeleton" style="height: 16px; width: 40px; justify-self: end;"></div>
+                        <div class="skeleton" style="height: 14px; width: 20px; border-radius: 4px;"></div>
+                        <div class="skeleton" style="height: 36px; width: 36px; border-radius: 6px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 100%; border-radius: 4px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 100%; border-radius: 4px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 40px; justify-self: end; border-radius: 4px;"></div>
                     </div>
                 `).join('')}
             </div>
@@ -252,4 +271,26 @@ function escapeHTML(str) {
     const p = document.createElement("p");
     p.textContent = str;
     return p.innerHTML;
+}
+
+/**
+ * Fetches high-resolution album art from iTunes Search API with fallback
+ */
+async function fetchiTunesAlbumArt(song, artist) {
+    const cleanSong = song.replace(/\(.*\)|- .*|feat\..*/gi, '').trim();
+    const search = async (query) => {
+        try {
+            const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=1`);
+            const json = await res.json();
+            if (json.results && json.results.length > 0) {
+                return json.results[0].artworkUrl100.replace(/100x100bb\.jpg|100x100\.jpg|100x100/g, '600x600bb.jpg');
+            }
+        } catch (e) {
+            console.warn('iTunes search failed for query:', query, e);
+        }
+        return null;
+    };
+    let art = await search(`${cleanSong} ${artist}`);
+    if (!art) art = await search(cleanSong);
+    return art;
 }
