@@ -25,6 +25,13 @@
     background: rgba(20, 20, 22, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    
+    /* Performance optimizations */
+    will-change: width, height, border-radius, transform, opacity;
+    transform: translate3d(0,0,0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    contain: layout; /* Helps browser optimize content within the card */
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 22px;
     padding: 6px;
@@ -42,11 +49,6 @@
     transition:
         border-color 0.4s ease,
         box-shadow 0.4s ease;
-    
-    will-change: width, height, border-radius, transform;
-    transform: translate3d(0,0,0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
 }
 
 /* Performance Mode: Simplify styles during active animation */
@@ -992,6 +994,9 @@
         /* Mobile-specific avatar position */
         --expanded-avatar-top: 54px;
         --expanded-avatar-left: 18px;
+        backdrop-filter: blur(12px); /* Snappier on mobile */
+        -webkit-backdrop-filter: blur(12px);
+        contain: layout size; /* Strict containment for faster rendering */
     }
 
     .lanyard-island.active .island-content {
