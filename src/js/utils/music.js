@@ -46,13 +46,26 @@ async function fetchMediaLog() {
             const tracksData = (topData && topData.toptracks && topData.toptracks.track) ? 
                                (Array.isArray(topData.toptracks.track) ? topData.toptracks.track : [topData.toptracks.track]) : [];
             
-            finalTracks = tracksData.map((track) => {
+            // 2. Fetch High-Res Art for ALL tracks in parallel
+            const trackPromises = tracksData.map(async (track) => {
                 const name = track.name || 'Unknown Track';
                 const artistName = (track.artist && track.artist.name) ? track.artist.name : (track.artist ? track.artist['#text'] : 'Unknown Artist');
                 const count = track.playcount || '0';
                 const albumName = extractAlbumFromTitle(name) || 'COLLECTION';
-                const albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
                 
+                // Try Last.fm image first
+                let albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
+                
+                // Force iTunes search for ALL tracks to ensure 600x600 high-res quality
+                if (!albumArt || albumArt === '' || albumArt.includes('default_album_medium')) {
+                    albumArt = await fetchiTunesAlbumArt(name, artistName);
+                } else if (albumArt.includes('lastfm.freetls.fastly.net')) {
+                    // Even if Last.fm has an image, iTunes is usually much higher resolution (600x600 vs Last.fm's small thumbnails)
+                    // Let's try to upgrade it
+                    const highResArt = await fetchiTunesAlbumArt(name, artistName);
+                    if (highResArt) albumArt = highResArt;
+                }
+
                 return {
                     name: name,
                     artist: { name: artistName },
@@ -62,6 +75,8 @@ async function fetchMediaLog() {
                     album_art_url: albumArt
                 };
             });
+
+            finalTracks = await Promise.all(trackPromises);
 
             setCache(finalTracks);
         }
