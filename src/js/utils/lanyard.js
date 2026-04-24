@@ -260,11 +260,22 @@ async function fetchLanyardData() {
                 if (track && track['@attr'] && track['@attr'].nowplaying === 'true') {
                     const trackName = track.name;
                     const artistName = track.artist['#text'] || track.artist.name;
-                    let albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
+
+                    // Priority 1: High-Res iTunes (600x600)
+                    let albumArt = await fetchiTunesAlbumArt(trackName, artistName);
                     
-                    // Fallback to iTunes if Last.fm has no image or low quality/placeholder star
-                    if (!albumArt || albumArt === '' || albumArt.includes('default_album') || albumArt.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
-                        albumArt = await fetchiTunesAlbumArt(trackName, artistName);
+                    // Priority 2: Last.fm Fallback
+                    if (!albumArt) {
+                        albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
+                    }
+                    
+                    // Filter placeholders
+                    if (albumArt && (
+                        albumArt.includes('default_album') || 
+                        albumArt.includes('2a96cbd8b46e442fc41c2b86b821562f') ||
+                        albumArt.includes('noimage')
+                    )) {
+                        albumArt = null;
                     }
 
                     lastfmTrack = {

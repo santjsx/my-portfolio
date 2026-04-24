@@ -53,18 +53,21 @@ async function fetchMediaLog() {
                 const count = track.playcount || '0';
                 const albumName = extractAlbumFromTitle(name) || 'COLLECTION';
                 
-                // Try Last.fm image first
-                let albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
+                // Priority 1: High-Res iTunes (600x600)
+                let albumArt = await fetchiTunesAlbumArt(name, artistName);
                 
-                // Force iTunes search for ALL tracks to ensure 600x600 high-res quality
-                // Also check for the common Last.fm "star" placeholder (2a96cbd8b46e442fc41c2b86b821562f)
-                if (!albumArt || albumArt === '' || albumArt.includes('default_album') || albumArt.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
-                    albumArt = await fetchiTunesAlbumArt(name, artistName);
-                } else if (albumArt.includes('lastfm.freetls.fastly.net')) {
-                    // Even if Last.fm has an image, iTunes is usually much higher resolution (600x600 vs Last.fm's small thumbnails)
-                    // Let's try to upgrade it
-                    const highResArt = await fetchiTunesAlbumArt(name, artistName);
-                    if (highResArt) albumArt = highResArt;
+                // Priority 2: Last.fm Fallback
+                if (!albumArt) {
+                    albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
+                }
+                
+                // Clean up: If we still have a placeholder star, discard it
+                if (albumArt && (
+                    albumArt.includes('default_album') || 
+                    albumArt.includes('2a96cbd8b46e442fc41c2b86b821562f') || 
+                    albumArt.includes('noimage')
+                )) {
+                    albumArt = null;
                 }
 
                 return {
