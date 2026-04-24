@@ -225,12 +225,12 @@
 .phone-screen-scroll {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 18px; /* More breathing room between sections */
     overflow-y: auto;
     overflow-x: hidden;
     flex: 1;
-    padding-top: 36px; /* Clear the absolutely-positioned avatar */
-    padding-bottom: 80px;
+    padding-top: 64px; /* Increased to clear the status bar and avatar area */
+    padding-bottom: 90px;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
@@ -326,11 +326,20 @@
 .lanyard-section {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 16px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.lanyard-section:hover {
+    border-color: rgba(255, 255, 255, 0.1);
     background: rgba(255, 255, 255, 0.04);
-    padding: 12px 14px;
-    border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .lanyard-section-label {
@@ -347,14 +356,15 @@
 }
 
 .msg-bubble {
-    background: #1a73e8; /* Google Blue */
-    padding: 14px 18px;
-    border-radius: 24px 24px 4px 24px; /* Android Messages shape */
+    background: linear-gradient(135deg, #1a73e8, #1557b0);
+    padding: 16px 20px;
+    border-radius: 22px 22px 4px 22px;
     max-width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
+    gap: 12px;
+    box-shadow: 0 8px 24px rgba(26, 115, 232, 0.25);
+    position: relative;
 }
 
 .island-greeting {
@@ -365,22 +375,27 @@
 }
 
 .msg-contact-btn {
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(4px);
     color: #ffffff;
     text-decoration: none;
-    font-size: 10px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 800;
     text-transform: uppercase;
-    padding: 6px 12px;
-    border-radius: 20px;
+    padding: 8px 20px;
+    border-radius: 100px;
     align-self: flex-start;
-    transition: background 0.2s ease;
-    letter-spacing: 0.05em;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    letter-spacing: 0.1em;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .msg-contact-btn:hover {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.15em;
 }
 
 .island-header {
@@ -393,36 +408,43 @@
 
 .island-status-text {
     font-family: var(--font-mono);
-    font-size: 9px;
-    font-weight: 700;
+    font-size: 10px;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--accent-primary);
-    background: transparent;
-    border: none;
-    padding: 0;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.4);
     display: flex;
     align-items: center;
-    gap: 4px;
-    box-shadow: none;
-    margin-left: 0;
-}
-
-.lanyard-section:has(.island-header) {
-    background: transparent;
-    border: none;
-    padding: 6px 4px 0;
-    margin-top: -30px; /* Sit beside the avatar */
-    padding-left: 44px; /* Clear the 32px avatar + gap */
-    order: -1; /* Move status to the very top */
+    gap: 6px;
 }
 
 .status-prefix {
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.3);
 }
 
 .status-value {
     color: var(--accent-primary);
+    text-shadow: 0 0 15px color-mix(in srgb, var(--accent-primary), transparent 50%);
+}
+
+.mood-section {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0 4px;
+    margin-top: 0;
+    backdrop-filter: none;
+}
+
+.mood-section .island-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 56px;
+}
+.status-value {
+    color: var(--accent-primary);
+    text-shadow: 0 0 15px color-mix(in srgb, var(--accent-primary), transparent 50%);
 }
 
 .island-status-dot {
@@ -460,15 +482,34 @@
     background: rgba(255, 255, 255, 0.04);
 }
 
+.lanyard-activity {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: all 0.3s ease;
+}
+
+.lanyard-activity:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.08);
+    transform: scale(1.02);
+}
+
 .activity-icon-wrapper {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     flex-shrink: 0;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
-    background: var(--bg-dark);
+    background: #111;
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .activity-icon {
@@ -476,7 +517,7 @@
     height: 100%;
     object-fit: cover;
     border-radius: inherit;
-    filter: grayscale(40%);
+    filter: grayscale(20%);
     transition: filter 0.3s;
 }
 
@@ -484,19 +525,20 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 1px;
+    gap: 4px;
 }
 
 .activity-name {
     font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 800;
+    color: #fff;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 170px;
+    max-width: 180px;
 }
 
 .activity-details,
