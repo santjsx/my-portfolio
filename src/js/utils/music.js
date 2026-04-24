@@ -9,7 +9,7 @@ const LASTFM_API_KEY = 'a403d71a4af1bacfddab789750be1c18';
 const LASTFM_USER = 'santhoshh25';
 const FETCH_LIMIT = 30;
 
-const CACHE_KEY = 'music_archive_v6';
+const CACHE_KEY = 'music_archive_v7';
 const CACHE_TTL = 30 * 60 * 1000; // 30 Minutes
 
 /**
