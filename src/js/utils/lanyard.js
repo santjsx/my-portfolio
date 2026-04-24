@@ -35,6 +35,9 @@ export function initLanyardWidget() {
             const fetchAfter = () => {
                 fetchLanyardData();
                 updatePhoneClock();
+                // Ensure close button is visible for next time
+                const closeBtnEl = toggleBtn.querySelector('.lanyard-close-minimal');
+                if (closeBtnEl) gsap.set(closeBtnEl, { clearProps: "all" });
             };
 
             // Read the CSS-computed target size (respects media queries)
@@ -75,6 +78,13 @@ export function initLanyardWidget() {
             });
         } else {
             const content = toggleBtn.querySelector('.island-content');
+            const closeBtnEl = toggleBtn.querySelector('.lanyard-close-minimal');
+            
+            // Instantly hide close button for a cleaner "collapse" start
+            if (closeBtnEl) {
+                gsap.to(closeBtnEl, { opacity: 0, scale: 0.8, duration: 0.15, ease: "power2.in" });
+            }
+            
             gsap.to(content, { opacity: 0, y: -10, duration: 0.2, ease: "power2.in" });
             
             const avatarWrapper = toggleBtn.querySelector('.island-avatar-wrapper');
@@ -114,6 +124,8 @@ export function initLanyardWidget() {
                         toggleBtn.classList.remove('active');
                         gsap.set(toggleBtn, { clearProps: "all" });
                         gsap.set(content, { clearProps: "all" });
+                        const closeBtnEl = toggleBtn.querySelector('.lanyard-close-minimal');
+                        if (closeBtnEl) gsap.set(closeBtnEl, { clearProps: "all" });
                         isAnimating = false;
                     }
                 });
@@ -131,6 +143,8 @@ export function initLanyardWidget() {
                         toggleBtn.classList.remove('active');
                         gsap.set(toggleBtn, { clearProps: "all" });
                         gsap.set(content, { clearProps: "all" });
+                        const closeBtnEl = toggleBtn.querySelector('.lanyard-close-minimal');
+                        if (closeBtnEl) gsap.set(closeBtnEl, { clearProps: "all" });
                         isAnimating = false;
                     }
                 });
