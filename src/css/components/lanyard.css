@@ -11,6 +11,10 @@
     flex-direction: column;
     align-items: flex-end;
     gap: var(--space-4);
+    
+    /* Configurable Expanded State positions */
+    --expanded-avatar-top: 36px;
+    --expanded-avatar-left: 16px;
 }
 
 /* ── The Island — Soft Glassmorphic Pill ── */
@@ -689,6 +693,10 @@
         border-radius: 40px;
         border-width: 4px;
         z-index: 1001;
+
+        /* Mobile-specific avatar position */
+        --expanded-avatar-top: 54px;
+        --expanded-avatar-left: 18px;
     }
 
     .lanyard-island.active .island-content {
@@ -697,12 +705,12 @@
     }
 
     .lanyard-island.active .phone-status-bar {
-        padding: 14px 22px 6px;
+        padding: 18px 22px 10px; /* More breathing room for status bar icons/time */
     }
 
     .lanyard-island.active .phone-screen-scroll {
         gap: 14px;
-        padding-top: 40px;
+        padding-top: 56px; /* Increased to clear the shifted avatar */
     }
 
     .lanyard-island.active .phone-nav-bar {
@@ -747,6 +755,15 @@
 
     .lanyard-island.active .lanyard-section {
         padding: 14px 16px;
+    }
+
+    .lanyard-island.active .lanyard-section:has(.island-header) {
+        margin-top: -42px; /* Re-align with shifted mobile avatar */
+        padding-left: 48px;
+    }
+
+    .lanyard-island.active .island-status-text {
+        font-size: 10px; /* Slightly more readable on mobile */
     }
 
     .lanyard-hint {

@@ -42,9 +42,12 @@ export function initLanyardWidget() {
             );
 
             const avatarWrapper = toggleBtn.querySelector('.island-avatar-wrapper');
+            const expandedTop = getComputedStyle(toggleBtn).getPropertyValue('--expanded-avatar-top').trim() || "36px";
+            const expandedLeft = getComputedStyle(toggleBtn).getPropertyValue('--expanded-avatar-left').trim() || "16px";
+
             gsap.to(avatarWrapper, {
-                top: 36,
-                left: 16,
+                top: expandedTop,
+                left: expandedLeft,
                 width: 32,
                 height: 32,
                 borderRadius: 10,
