@@ -132,7 +132,13 @@ function renderMusicGrid(container, tracks) {
         const trackName = track.name || 'Unknown Track';
         const artistName = (track.artist && track.artist.name) ? track.artist.name : 'Unknown Artist';
         const albumName = track.album || 'COLLECTION';
-        const playcount = track.playcount || '0';
+        
+        // Format playcount with commas
+        let playcountDisplay = '0';
+        if (track.playcount) {
+            const count = parseInt(track.playcount, 10);
+            playcountDisplay = !isNaN(count) ? count.toLocaleString() : track.playcount;
+        }
 
         htmlContent += `
             <div class="track-row ${isLive ? 'is-live' : ''}">
@@ -145,7 +151,7 @@ function renderMusicGrid(container, tracks) {
                 </div>
                 <div class="track-col col-album">${escapeHTML(albumName)}</div>
                 <div class="track-col col-plays">
-                    ${isLive ? '<span class="live-tag">LIVE</span>' : playcount}
+                    ${isLive ? '<span class="live-tag">LIVE</span>' : playcountDisplay}
                 </div>
             </div>
         `;
