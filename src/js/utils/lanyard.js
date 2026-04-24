@@ -29,8 +29,11 @@ export function initLanyardWidget() {
                 hintDismissed = true;
                 gsap.to(hintBubble, { opacity: 0, scale: 0.8, duration: 0.3, onComplete: () => hintBubble.style.visibility = 'hidden' });
             }
-            fetchLanyardData(); // Refresh data
-            updatePhoneClock(); // Set live clock
+            // Defer data fetch until after animation for smoothness
+            const fetchAfter = () => {
+                fetchLanyardData();
+                updatePhoneClock();
+            };
 
             // Read the CSS-computed target size (respects media queries)
             const computed = getComputedStyle(toggleBtn);
@@ -42,9 +45,13 @@ export function initLanyardWidget() {
                 { height: 68, width: 68, padding: 6, borderRadius: 22 }, 
                 { 
                     height: targetH, width: targetW, padding: 0, borderRadius: targetR, 
-                    duration: 0.8, ease: "expo.out", 
+                    duration: 0.5, ease: "power4.inOut", 
+                    force3D: true,
+                    onStart: () => toggleBtn.classList.add('lanyard-animating'),
                     onComplete: () => {
+                        toggleBtn.classList.remove('lanyard-animating');
                         gsap.set(toggleBtn, { clearProps: "width,height,padding,borderRadius,inset,top,left,right,bottom,transform" });
+                        fetchAfter();
                         isAnimating = false;
                     }
                 }
@@ -60,8 +67,9 @@ export function initLanyardWidget() {
                 width: 32,
                 height: 32,
                 borderRadius: 10,
-                duration: 0.8,
-                ease: "expo.out"
+                duration: 0.6,
+                ease: "power4.inOut",
+                force3D: true
             });
         } else {
             const content = toggleBtn.querySelector('.island-content');
@@ -95,9 +103,12 @@ export function initLanyardWidget() {
                     width: 68, 
                     padding: 6,
                     borderRadius: 22, 
-                    duration: 0.7, 
-                    ease: "expo.inOut", 
+                    duration: 0.5, 
+                    ease: "power4.inOut", 
+                    force3D: true,
+                    onStart: () => toggleBtn.classList.add('lanyard-animating'),
                     onComplete: () => {
+                        toggleBtn.classList.remove('lanyard-animating');
                         toggleBtn.classList.remove('active');
                         gsap.set(toggleBtn, { clearProps: "all" });
                         gsap.set(content, { clearProps: "all" });
@@ -112,7 +123,8 @@ export function initLanyardWidget() {
                     padding: 6,
                     borderRadius: 22, 
                     duration: 0.5, 
-                    ease: "expo.out", 
+                    ease: "power4.inOut", 
+                    force3D: true,
                     onComplete: () => {
                         toggleBtn.classList.remove('active');
                         gsap.set(toggleBtn, { clearProps: "all" });

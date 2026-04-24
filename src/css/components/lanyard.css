@@ -42,6 +42,19 @@
     transition:
         border-color 0.4s ease,
         box-shadow 0.4s ease;
+    
+    will-change: width, height, border-radius, transform;
+    transform: translate3d(0,0,0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* Performance Mode: Simplify styles during active animation */
+.lanyard-island.lanyard-animating {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    will-change: width, height, border-radius;
 }
 
 .lanyard-island:hover {
