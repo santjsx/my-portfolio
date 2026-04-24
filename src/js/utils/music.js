@@ -29,62 +29,60 @@ export function initMusicHistory() {
  */
 async function fetchMediaLog() {
     try {
-        // Parallel fetch for speed
-        const [recentData, topData] = await Promise.all([
-            fetchNowPlaying(),
-            fetchTopTracks()
-        ]);
+        // 1. Fetch Top Tracks (The 30 most played)
+        const topUrl = `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=${FETCH_LIMIT}&period=overall`;
+        const topRes = await fetch(topUrl);
+        const topData = await topRes.json();
+        const topTracks = topData.toptracks.track || [];
 
-        const mergedTracks = mergeMusicLogs(recentData, topData);
-        renderMediaLog(mergedTracks);
+        // 2. Fetch Now Playing (To check for Live status)
+        const recentUrl = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=1`;
+        const recentRes = await fetch(recentUrl);
+        const recentData = await recentRes.json();
+        const nowPlaying = recentData.recenttracks.track[0] || null;
+        const isLive = nowPlaying && nowPlaying['@attr'] && nowPlaying['@attr'].nowplaying === 'true';
+
+        // 3. Parallel fetch for Album Info (Last.fm toptracks doesn't include albums)
+        // We limit this to Top 15 for performance, or fetch all if really needed.
+        // Let's try to get albums for all 30.
+        const tracksWithAlbums = await Promise.all(topTracks.map(async (track) => {
+            try {
+                const infoUrl = `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=${LASTFM_API_KEY}&artist=${encodeURIComponent(track.artist.name)}&track=${encodeURIComponent(track.name)}&user=${LASTFM_USER}&format=json`;
+                const infoRes = await fetch(infoUrl);
+                const infoData = await infoRes.json();
+                return {
+                    name: track.name,
+                    artist: { name: track.artist.name },
+                    album: (infoData.track && infoData.track.album) ? infoData.track.album.title : extractAlbumFromTitle(track.name),
+                    playcount: track.playcount,
+                    isLive: false
+                };
+            } catch (e) {
+                return { ...track, album: extractAlbumFromTitle(track.name), isLive: false };
+            }
+        }));
+
+        // 4. Handle Live Track (Inject at the top if active)
+        let finalTracks = tracksWithAlbums;
+        if (isLive) {
+            const liveTrack = {
+                name: nowPlaying.name,
+                artist: { name: nowPlaying.artist['#text'] },
+                album: nowPlaying.album['#text'] || 'NOW PLAYING',
+                isLive: true,
+                playcount: 'LIVE'
+            };
+            // Remove duplicates of the live track from the top list
+            finalTracks = [liveTrack, ...tracksWithAlbums.filter(t => 
+                !(t.name.toLowerCase() === nowPlaying.name.toLowerCase() && 
+                  t.artist.name.toLowerCase() === nowPlaying.artist['#text'].toLowerCase())
+            )].slice(0, 30);
+        }
+
+        renderMediaLog(finalTracks);
     } catch (error) {
         console.error('Media log sync failed:', error);
     }
-}
-
-/**
- * Fetches the most recent track to check for Live status.
- */
-async function fetchNowPlaying() {
-    const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=1`;
-    const response = await fetch(url);
-    const data = await response.json();
-    return data.recenttracks.track[0] || null;
-}
-
-/**
- * Fetches top tracks from a specified period (overall).
- */
-async function fetchTopTracks() {
-    const url = `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=${FETCH_LIMIT}&period=overall`;
-    const response = await fetch(url);
-    const data = await response.json();
-    return data.toptracks.track || [];
-}
-
-/**
- * Merges Now Playing status with Top 30 list, avoiding duplicates.
- */
-function mergeMusicLogs(nowPlaying, topTracks) {
-    const isLive = nowPlaying && nowPlaying['@attr'] && nowPlaying['@attr'].nowplaying === 'true';
-    
-    if (!isLive) return topTracks.map(t => ({ ...t, isLive: false }));
-
-    // If live, clean the top list of the live track if it exists there to avoid doubles
-    const filteredTop = topTracks.filter(t => 
-        !(t.name.toLowerCase() === nowPlaying.name.toLowerCase() && 
-          t.artist.name.toLowerCase() === nowPlaying.artist['#text'].toLowerCase())
-    );
-
-    // Standardize nowPlaying to match topTrack schema for easier rendering
-    const standardizedLive = {
-        name: nowPlaying.name,
-        artist: { name: nowPlaying.artist['#text'] },
-        album: nowPlaying.album['#text'],
-        isLive: true
-    };
-
-    return [standardizedLive, ...filteredTop].slice(0, 31);
 }
 
 /**
@@ -93,44 +91,49 @@ function mergeMusicLogs(nowPlaying, topTracks) {
 function renderMediaLog(tracks) {
     const listContainer = document.getElementById('track-list');
     
-    let htmlContent = `<div class="media-log-grid">`;
+    let htmlContent = `
+        <div class="spotify-playlist">
+            <div class="playlist-header">
+                <span class="col-index">#</span>
+                <span class="col-title">TITLE</span>
+                <span class="col-album">ALBUM</span>
+                <span class="col-plays">PLAYS</span>
+            </div>
+            <div class="playlist-rows">
+    `;
 
-    tracks.forEach((track) => {
+    tracks.forEach((track, index) => {
         const name = track.name;
         const artist = track.artist.name;
         const album = track.album || 'COLLECTION';
         const isNowPlaying = track.isLive;
-        const playCount = track.playcount;
+        const playCount = track.playcount || '-';
         
-        const metaText = isNowPlaying 
-            ? '<span class="live-tag">LIVE</span>' 
-            : `<span class="play-count">${playCount} PLAYS</span>`;
+        const indexContent = isNowPlaying 
+            ? '<div class="live-eq"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></div>' 
+            : (index + 1);
         
         htmlContent += `
-            <div class="media-card ${isNowPlaying ? 'is-live' : ''}">
-                <div class="card-icon-header">
-                    ${ICONS.music}
-                </div>
-                <div class="card-details">
-                    <h4 class="card-title">${escapeHTML(name)}</h4>
-                    <p class="card-creator">by ${escapeHTML(artist)}</p>
-                    
-                    <div class="card-meta-box">
-                        <div class="card-meta-item">
-                            <span class="card-meta-label">STATUS:</span>
-                            ${metaText}
-                        </div>
-                        <div class="card-meta-item">
-                            <span class="card-meta-label">SOURCE:</span>
-                            ${escapeHTML(album)}
-                        </div>
+            <div class="track-row ${isNowPlaying ? 'is-live' : ''}">
+                <div class="track-col col-index">${indexContent}</div>
+                <div class="track-col col-title">
+                    <div class="track-info">
+                        <span class="track-name">${escapeHTML(name)}</span>
+                        <span class="track-artist">${escapeHTML(artist)}</span>
                     </div>
+                </div>
+                <div class="track-col col-album">${escapeHTML(album)}</div>
+                <div class="track-col col-plays">
+                    ${isNowPlaying ? '<span class="live-tag">LIVE</span>' : playCount}
                 </div>
             </div>
         `;
     });
 
-    htmlContent += '</div>';
+    htmlContent += `
+            </div>
+        </div>
+    `;
 
     // Hash check for efficient updating
     const currentHash = btoa(unescape(encodeURIComponent(htmlContent))).slice(0, 32);
@@ -176,6 +179,16 @@ function formatDate(dateStr) {
 /**
  * Sanitizes HTML.
  */
+function extractAlbumFromTitle(title) {
+    if (!title) return '—';
+    // Improved regex to handle "(From Movie)", "- From Movie", "from Movie", etc.
+    const fromMatch = title.match(/(?:From|from|Movie)\s+["']?([^"'\)]+)["']?/i);
+    if (fromMatch && fromMatch[1]) {
+        return fromMatch[1].trim().toUpperCase();
+    }
+    return '—';
+}
+
 function escapeHTML(str) {
     if (!str) return "";
     const p = document.createElement("p");

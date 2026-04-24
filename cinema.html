@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Music — Santhosh Reddy</title>
-  <meta name="description" content="A curated collection of favorite tracks and current rotations — Santhosh Reddy">
+  <title>Cinema — Santhosh Reddy</title>
+  <meta name="description" content="A curated collection of favorite films and watchlists — Santhosh Reddy">
   <link rel="icon" type="image/png" href="/favicon.png">
 
   <!-- Fonts: Inter / Playfair Display / JetBrains Mono -->
@@ -88,17 +88,39 @@
       </div>
 
       <div class="music-hero-header fade-up">
-        <h1 class="music-page-title">MUSIC</h1>
-        <p class="music-page-tagline">My most played songs</p>
+        <h1 class="music-page-title">CINEMA</h1>
+        <p class="music-page-tagline">A curated collection of favorite films and watchlists.</p>
       </div>
 
-      <div class="media-log-container" id="sonic">
-        <div id="track-list">
-          <div class="frequency-loading">Accessing Log...</div>
+
+
+      <!-- Cinema Archive Section -->
+      <div class="cinema-archive-section fade-up mt-16" id="cinema">
+        
+        <!-- Tab Navigation -->
+        <div class="archive-tabs">
+          <button class="archive-tab active" data-tab="watched">WATCHED & LOVED</button>
+          <button class="archive-tab" data-tab="watchlist">WANT TO WATCH</button>
+        </div>
+
+        <div class="archive-content">
+          <!-- Watched Tab -->
+          <div class="archive-panel active" id="panel-watched">
+            <div id="favorites-reel-full" class="favorites-grid-full">
+              <!-- Populated via lanyard.js -->
+              <div class="reel-loading">ACCESSING ARCHIVE...</div>
+            </div>
+          </div>
+
+          <!-- Watchlist Tab -->
+          <div class="archive-panel" id="panel-watchlist">
+            <div id="watchlist-grid" class="watchlist-grid-full">
+              <!-- Populated via lanyard.js -->
+              <div class="reel-loading">ACCESSING QUEUE...</div>
+            </div>
+          </div>
         </div>
       </div>
-
-
     </section>
   </main>
 

@@ -1,0 +1,128 @@
+/* VIBE PORTAL — Minimal & Cool Selection */
+.vibe-portal {
+    position: fixed;
+    inset: 0;
+    z-index: 11000;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+    padding: 2rem;
+}
+
+.vibe-portal.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+.portal-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1000px;
+    align-items: center;
+}
+
+.portal-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    group: hover;
+}
+
+.portal-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.5em;
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+}
+
+.portal-title {
+    font-family: var(--font-sans);
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+}
+
+/* Minimalist Hover Effects */
+.portal-card:hover .portal-title {
+    color: var(--text-primary);
+    -webkit-text-stroke: 1px var(--text-primary);
+    transform: scale(1.05);
+}
+
+.portal-card:hover .portal-label {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.portal-desc {
+    display: none; /* Hide description for minimalism */
+}
+
+/* A subtle dividing line */
+.portal-divider {
+    width: 1px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 2rem 0;
+}
+
+.portal-close {
+    position: absolute;
+    top: 3rem;
+    right: 3rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    cursor: pointer;
+    padding: 1rem;
+    transition: color 0.3s ease;
+    z-index: 11001;
+}
+
+.portal-close:hover {
+    color: var(--accent-primary);
+}
+
+@media (max-width: 768px) {
+    .portal-container {
+        gap: 3rem;
+    }
+    
+    .portal-title {
+        font-size: clamp(2.5rem, 10vw, 4rem);
+        white-space: normal;
+        text-align: center;
+    }
+
+    .portal-divider {
+        display: none;
+    }
+}

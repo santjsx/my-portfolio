@@ -17,6 +17,7 @@
     rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer async></script>
+    <link rel="stylesheet" href="/src/css/main.css">
     <script type="module" src="/src/js/main.js"></script>
   </head>
   
@@ -79,7 +80,7 @@
         <div class="nav-links">
           <a href="#about" class="nav-item">About <span class="nav-num">01</span></a>
           <a href="#work" class="nav-item">Projects <span class="nav-num">02</span></a>
-          <a href="music.html" class="nav-item">My Vibe <span class="nav-num">03</span></a>
+          <a href="#" class="nav-item js-open-vibe-portal">My Vibe <span class="nav-num">03</span></a>
           <a href="#" class="nav-item js-open-resume">Resume <span class="nav-num">04</span></a>
           <a href="#contact" class="nav-item highlight">Contact <span class="nav-num">05</span></a>
         </div>
@@ -87,17 +88,36 @@
     </div>
   </header>
 
+  <!-- Vibe Portal Choice Overlay -->
+  <div id="vibe-portal" class="vibe-portal">
+    <button id="portal-close" class="portal-close">CLOSE_</button>
+    <div class="portal-container">
+      <!-- Cinema Choice -->
+      <a href="cinema.html" class="portal-card" id="portal-cinema">
+        <span class="portal-label">SECTION_01</span>
+        <h2 class="portal-title">Cinema</h2>
+      </a>
+      
+      <div class="portal-divider"></div>
+      
+      <!-- Music Choice -->
+      <a href="music.html" class="portal-card" id="portal-music">
+        <span class="portal-label">SECTION_02</span>
+        <h2 class="portal-title">Music</h2>
+      </a>
+    </div>
+  </div>
+
   <!-- Mobile Premium Navigation Overlay -->
   <div class="nav-overlay" id="nav-overlay">
     <button class="nav-close-btn" id="nav-close" aria-label="Close menu">&times;</button>
     <nav class="nav-links">
       <a href="#about" class="nav-item">About <span class="nav-num">01</span></a>
       <a href="#work" class="nav-item">Projects <span class="nav-num">02</span></a>
-      <a href="music.html" class="nav-item">My Vibe <span class="nav-num">03</span></a>
+      <a href="#" class="nav-item js-open-vibe-portal">My Vibe <span class="nav-num">03</span></a>
       <a href="#" class="nav-item js-open-resume">Resume <span class="nav-num">04</span></a>
       <a href="#contact" class="nav-item highlight">Contact <span class="nav-num">05</span></a>
     </nav>
-
   </div>
 
   <main>
@@ -510,29 +530,6 @@
           <div class="lanyard-section watching-section" id="lanyard-watching" style="display: none;">
             <span class="lanyard-section-label">WATCHING</span>
             <div id="watching-content"></div>
-          </div>
-          <div class="lanyard-section vibe-section" id="lanyard-vibe" style="display: none;">
-            <div class="vibe-header">
-              <span class="lanyard-section-label">MY VIBE</span>
-              <div class="vibe-tabs">
-                <button class="vibe-tab active" data-tab="movies">Cinema</button>
-                <button class="vibe-tab" data-tab="music">Audio</button>
-                <div class="vibe-tab-indicator"></div>
-              </div>
-            </div>
-            
-            <div class="vibe-panes">
-              <!-- Movies Pane -->
-              <div class="vibe-pane active" id="pane-movies">
-                <div id="favorites-reel" class="favorites-reel"></div>
-                <div id="watchlist-queue" class="watchlist-queue mt-4"></div>
-              </div>
-              
-              <!-- Music Pane -->
-              <div class="vibe-pane" id="pane-music">
-                <div id="curated-music-list" class="curated-music-list"></div>
-              </div>
-            </div>
           </div>
           <div class="lanyard-section activity-section">
             <span class="lanyard-section-label">ACTIVITIES</span>

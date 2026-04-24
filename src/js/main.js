@@ -1,4 +1,3 @@
-import '../css/main.css';
 import { setupLenis } from './utils/lenis-setup.js';
 import { initScrollObserver } from './utils/scroll-observer.js';
 import { initTitleAnimation } from './utils/title-anim.js';
@@ -11,6 +10,7 @@ import { initGSAPAnimations } from './utils/gsap-animations.js';
 import { initAboutReveal } from './utils/about-reveal.js';
 import { initMusicHistory } from './utils/music.js';
 import { initNavHighlighter } from './utils/nav-highlighter.js';
+import { initVibePortal } from './utils/vibe-portal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Force scroll to top on reload
@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initResumeDrawer();
     initContactSection();
     initLanyardWidget();
+    initVibePortal();
     
     // Header scrolled state
     const header = document.getElementById('header');
