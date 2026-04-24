@@ -35,9 +35,14 @@ export function initLanyardWidget() {
             const fetchAfter = () => {
                 fetchLanyardData();
                 updatePhoneClock();
-                // Ensure close button is visible for next time
+                // Fade in close button ONLY after phone is fully open
                 const closeBtnEl = toggleBtn.querySelector('.lanyard-close-minimal');
-                if (closeBtnEl) gsap.set(closeBtnEl, { clearProps: "all" });
+                if (closeBtnEl) {
+                    gsap.fromTo(closeBtnEl, 
+                        { opacity: 0, scale: 0.8, y: 10 },
+                        { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" }
+                    );
+                }
             };
 
             // Read the CSS-computed target size (respects media queries)
@@ -45,6 +50,10 @@ export function initLanyardWidget() {
             const targetW = parseFloat(computed.width);
             const targetH = parseFloat(computed.height);
             const targetR = parseFloat(computed.borderRadius) || 44;
+
+            // Pre-hide close button so it doesn't pop in early
+            const initialCloseBtn = toggleBtn.querySelector('.lanyard-close-minimal');
+            if (initialCloseBtn) gsap.set(initialCloseBtn, { opacity: 0 });
 
             gsap.fromTo(toggleBtn, 
                 { height: 68, width: 68, padding: 6, borderRadius: 22 }, 
