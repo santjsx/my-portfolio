@@ -9,6 +9,9 @@ export function initLanyardWidget() {
     if (!toggleBtn) return;
 
     let isAnimating = false;
+    let hintShown = false;
+    let hintDismissed = false;
+    const hintBubble = document.querySelector('.lanyard-hint');
 
     // Toggle dynamic island expansion with GSAP physics
     toggleBtn.addEventListener('click', (e) => {
@@ -20,6 +23,10 @@ export function initLanyardWidget() {
 
         if (isOpening) {
             toggleBtn.classList.add('active');
+            if (hintBubble && !hintDismissed) {
+                hintDismissed = true;
+                gsap.to(hintBubble, { opacity: 0, scale: 0.8, duration: 0.3, onComplete: () => hintBubble.style.visibility = 'hidden' });
+            }
             fetchLanyardData(); // Refresh data
             updatePhoneClock(); // Set live clock
 
@@ -115,11 +122,35 @@ export function initLanyardWidget() {
         }
     });
     
-    // Also allow clicking the hint bubble to open the island
-    const hintBubble = document.querySelector('.lanyard-hint');
+    // Hint bubble logic: show only after scroll and hide permanently once used
     if (hintBubble) {
+        // Hide initially
+        gsap.set(hintBubble, { opacity: 0, scale: 0.8, visibility: 'hidden' });
+
+        const showHint = () => {
+            if (hintDismissed || hintShown || toggleBtn.classList.contains('active')) return;
+            hintShown = true;
+            gsap.to(hintBubble, { 
+                opacity: 1, 
+                scale: 1, 
+                visibility: 'visible',
+                duration: 0.6, 
+                ease: "back.out(1.7)" 
+            });
+        };
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 200) {
+                showHint();
+            }
+        }, { passive: true });
+
         hintBubble.addEventListener('click', (e) => {
             e.stopPropagation();
+            if (!hintDismissed) {
+                hintDismissed = true;
+                gsap.to(hintBubble, { opacity: 0, scale: 0.8, duration: 0.3, onComplete: () => hintBubble.style.visibility = 'hidden' });
+            }
             if (!toggleBtn.classList.contains('active')) {
                 toggleBtn.click();
             }
