@@ -9,7 +9,7 @@ const LASTFM_API_KEY = 'a403d71a4af1bacfddab789750be1c18';
 const LASTFM_USER = 'santhoshh25';
 const FETCH_LIMIT = 30;
 
-const CACHE_KEY = 'music_archive_v7';
+const CACHE_KEY = 'music_archive_v8';
 const CACHE_TTL = 30 * 60 * 1000; // 30 Minutes
 
 /**
@@ -57,7 +57,8 @@ async function fetchMediaLog() {
                 let albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
                 
                 // Force iTunes search for ALL tracks to ensure 600x600 high-res quality
-                if (!albumArt || albumArt === '' || albumArt.includes('default_album_medium')) {
+                // Also check for the common Last.fm "star" placeholder (2a96cbd8b46e442fc41c2b86b821562f)
+                if (!albumArt || albumArt === '' || albumArt.includes('default_album') || albumArt.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
                     albumArt = await fetchiTunesAlbumArt(name, artistName);
                 } else if (albumArt.includes('lastfm.freetls.fastly.net')) {
                     // Even if Last.fm has an image, iTunes is usually much higher resolution (600x600 vs Last.fm's small thumbnails)
