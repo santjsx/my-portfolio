@@ -32,9 +32,9 @@ export function initLanyardWidget() {
         const isMobile = window.innerWidth <= 768;
         isAnimating = true;
 
-        // Snappier settings for mobile to feel more responsive
-        const duration = isMobile ? 0.35 : 0.5;
-        const ease = isMobile ? "expo.out" : "power4.inOut";
+        // Optimized timing: Opening is fast/snappy, Closing is smooth/graceful
+        const duration = isOpening ? (isMobile ? 0.35 : 0.5) : (isMobile ? 0.45 : 0.5);
+        const ease = isOpening ? (isMobile ? "expo.out" : "power4.inOut") : (isMobile ? "power3.inOut" : "power4.inOut");
 
         if (isOpening) {
             toggleBtn.classList.add('active');
@@ -118,8 +118,8 @@ export function initLanyardWidget() {
                 width: 54,
                 height: 54,
                 borderRadius: 16,
-                duration: 0.5,
-                ease: "expo.out",
+                duration: duration,
+                ease: ease,
                 clearProps: "all"
             });
 
