@@ -3,6 +3,8 @@ import gsap from 'gsap';
 const DiscordID = '1284925883240550552';
 const API_URL = `https://api.lanyard.rest/v1/users/${DiscordID}`;
 const LANYARD_API_KEY = 'bc6ba6a2b964e5c0610729a5c973b1d6'; // Used for KV management/auth
+const TMDB_API_KEY = '15511e43224695bd75148dab05bc81fb'; // Add your TMDb API Key here
+let lastMovieId = null;
 
 export function initLanyardWidget() {
     const toggleBtn = document.getElementById('lanyard-toggle');
@@ -220,6 +222,8 @@ function updateWidgetUI(data) {
     const island = document.getElementById('lanyard-toggle');
     const statusText = document.getElementById('lanyard-status-text');
     const activitiesContainer = document.getElementById('lanyard-activities');
+    const watchingSection = document.getElementById('lanyard-watching');
+    const watchingContent = document.getElementById('watching-content');
     
     let mood = data.kv ? data.kv.mood : null;
     if (mood) mood = mood.replace(/^"|"$/g, '');
@@ -229,8 +233,26 @@ function updateWidgetUI(data) {
 
     // Determine resolved status
     let status = data.discord_status;
-    if (!mood && activities.length === 0 && !isSpotify) {
+    const watchingAct = activities.find(a => 
+        a.name.toLowerCase().includes('watching') || 
+        (a.details && a.details.toLowerCase().includes('watching')) ||
+        a.name.toLowerCase() === 'netflix' ||
+        a.name.toLowerCase() === 'prime video'
+    );
+    const kvTMDBId = data.kv ? data.kv.tmdb_id : null;
+
+    if (!mood && activities.length === 0 && !isSpotify && !watchingAct && !kvTMDBId) {
         status = 'inactive';
+    }
+    
+    // Handle Watching integration
+    if (watchingSection && watchingContent) {
+        if (watchingAct || kvTMDBId) {
+            handleWatchingIntegration(watchingAct, kvTMDBId, watchingSection, watchingContent);
+        } else {
+            watchingSection.style.display = 'none';
+            lastMovieId = null;
+        }
     }
     
     // Reset classes
@@ -569,6 +591,83 @@ function updateSkills(kv) {
         });
     } else {
         listContainer.innerHTML = titleHTML + targetHTML;
+    }
+}
+
+async function handleWatchingIntegration(activity, kvId, section, content) {
+    let query = '';
+    let type = 'movie'; // default
+
+    if (kvId) {
+        query = kvId; // Assume it's an ID or exact title
+    } else if (activity) {
+        // Extract title: "Watching Inception" -> "Inception"
+        query = activity.details || activity.state || activity.name;
+        query = query.replace(/Watching\s+/i, '').trim();
+    }
+
+    if (!query || query === lastMovieId) return;
+    
+    // If no API key, we can't do much but show the text
+    if (!TMDB_API_KEY) {
+        section.style.display = 'block';
+        content.innerHTML = `
+            <div class="movie-card">
+                <div class="movie-info">
+                    <span class="movie-title">${escapeHTML(query)}</span>
+                    <span class="movie-meta">TMDb API Key Required</span>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    try {
+        let movieData = null;
+        
+        // If it's a numeric ID (from KV)
+        if (kvId && /^\d+$/.test(kvId)) {
+            const res = await fetch(`https://api.themoviedb.org/3/movie/${kvId}?api_key=${TMDB_API_KEY}`);
+            movieData = await res.json();
+        } else {
+            // Search by title
+            const res = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`);
+            const searchResults = await res.json();
+            if (searchResults.results && searchResults.results.length > 0) {
+                movieData = searchResults.results[0];
+            }
+        }
+
+        if (movieData && !movieData.status_message) {
+            lastMovieId = query;
+            section.style.display = 'block';
+            
+            const title = movieData.title || movieData.name;
+            const year = (movieData.release_date || movieData.first_air_date || '').split('-')[0];
+            const poster = movieData.poster_path ? `https://image.tmdb.org/t/p/w200${movieData.poster_path}` : 'https://via.placeholder.com/60x90?text=No+Poster';
+            const rating = movieData.vote_average ? `★ ${movieData.vote_average.toFixed(1)}` : '';
+
+            content.innerHTML = `
+                <div class="movie-card">
+                    <div class="movie-poster-wrapper">
+                        <img src="${poster}" alt="${escapeHTML(title)}" class="movie-poster">
+                    </div>
+                    <div class="movie-info">
+                        <span class="movie-title">${escapeHTML(title)}</span>
+                        <div class="movie-meta">
+                            <span>${year}</span>
+                            ${rating ? `<span style="margin-left: 8px; color: #ffca28;">${rating}</span>` : ''}
+                        </div>
+                        <p class="movie-overview">${escapeHTML(movieData.overview || '')}</p>
+                    </div>
+                </div>
+            `;
+        } else {
+            section.style.display = 'none';
+        }
+    } catch (err) {
+        console.error('TMDb Fetch Error:', err);
+        section.style.display = 'none';
     }
 }
 
