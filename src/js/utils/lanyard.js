@@ -4,6 +4,8 @@ const DiscordID = '1284925883240550552';
 const API_URL = `https://api.lanyard.rest/v1/users/${DiscordID}`;
 const LANYARD_API_KEY = 'bc6ba6a2b964e5c0610729a5c973b1d6'; // Used for KV management/auth
 const TMDB_API_KEY = '15511e43224695bd75148dab05bc81fb'; // Add your TMDb API Key here
+const LASTFM_API_KEY = 'a403d71a4af1bacfddab789750be1c18';
+const LASTFM_USER = 'santhoshh25';
 let lastMovieId = null;
 
 export function initLanyardWidget() {
@@ -215,22 +217,42 @@ export function initLanyardWidget() {
 
 async function fetchLanyardData() {
     try {
-        const response = await fetch(API_URL);
-        const json = await response.json();
+        // Fetch Lanyard and Last.fm concurrently for maximum performance
+        const [lanyardRes, lastfmRes] = await Promise.all([
+            fetch(API_URL),
+            fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=1`)
+        ]);
+
+        const lanyardJson = await lanyardRes.json();
+        const lastfmJson = await lastfmRes.json();
         
-        if (json.success && json.data) {
-            updateWidgetUI(json.data);
-            updateHeroQuote(json.data.kv);
-            updateCustomColors(json.data.kv);
-            updateAboutPhoto(json.data.kv);
-            updateSkills(json.data.kv);
+        if (lanyardJson.success && lanyardJson.data) {
+            // Check Last.fm for Now Playing
+            let lastfmTrack = null;
+            if (lastfmJson && lastfmJson.recenttracks && lastfmJson.recenttracks.track) {
+                const track = Array.isArray(lastfmJson.recenttracks.track) ? lastfmJson.recenttracks.track[0] : lastfmJson.recenttracks.track;
+                if (track && track['@attr'] && track['@attr'].nowplaying === 'true') {
+                    lastfmTrack = {
+                        song: track.name,
+                        artist: track.artist['#text'] || track.artist.name,
+                        album: track.album['#text'],
+                        album_art_url: track.image ? track.image[track.image.length - 1]['#text'] : null
+                    };
+                }
+            }
+
+            updateWidgetUI(lanyardJson.data, lastfmTrack);
+            updateHeroQuote(lanyardJson.data.kv);
+            updateCustomColors(lanyardJson.data.kv);
+            updateAboutPhoto(lanyardJson.data.kv);
+            updateSkills(lanyardJson.data.kv);
         }
     } catch (error) {
-        console.error('Failed to fetch Lanyard data:', error);
+        console.error('Failed to sync Lanyard/Last.fm:', error);
     }
 }
 
-function updateWidgetUI(data) {
+function updateWidgetUI(data, lastfmTrack) {
     const island = document.getElementById('lanyard-toggle');
     const statusText = document.getElementById('lanyard-status-text');
     const activitiesContainer = document.getElementById('lanyard-activities');
@@ -242,13 +264,14 @@ function updateWidgetUI(data) {
 
     const activities = data.activities || [];
     const isSpotify = data.listening_to_spotify;
+    const hasLiveMusic = isSpotify || !!lastfmTrack;
 
     // Determine resolved status
     let status = data.discord_status;
     const kvTMDBId = data.kv ? data.kv.tmdb_id : null;
     const kvTMDBTitle = data.kv ? data.kv.tmdb_title : null;
 
-    if (!mood && activities.length === 0 && !isSpotify && !kvTMDBId && !kvTMDBTitle) {
+    if (!mood && activities.length === 0 && !hasLiveMusic && !kvTMDBId && !kvTMDBTitle) {
         status = 'inactive';
     }
     
@@ -292,16 +315,18 @@ function updateWidgetUI(data) {
         
         let htmlContent = '';
         
-        // Handle Spotify exclusively if active natively
-        if (isSpotify && data.spotify) {
-             const track = data.spotify;
+        // Handle Spotify/Last.fm Music
+        if (hasLiveMusic) {
+             const track = isSpotify ? data.spotify : lastfmTrack;
+             const albumArt = track.album_art_url || 'https://www.transparenttextures.com/patterns/carbon-fibre.png';
+             
              htmlContent += `
-             <div class="lanyard-activity">
+             <div class="lanyard-activity music-active">
                  <div class="activity-icon-wrapper">
-                     <img src="${track.album_art_url}" alt="Album Art" class="activity-icon">
+                     <img src="${albumArt}" alt="Album Art" class="activity-icon">
                  </div>
                  <div class="activity-info">
-                     <span class="activity-name">${escapeHTML(track.song)}</span>
+                     <span class="activity-name">${escapeHTML(track.song || track.name)}</span>
                      <span class="activity-state">from ${escapeHTML(track.album)}</span>
                      <div class="spotify-eq">
                          <div class="eq-bar"></div>
