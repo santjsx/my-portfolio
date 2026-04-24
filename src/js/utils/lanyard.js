@@ -20,6 +20,9 @@ export function initLanyardWidget() {
     // Randomize greeting message on initialization
     randomizeGreeting();
 
+    // Initialize Chat functionality
+    initChatSystem();
+
     // Toggle dynamic island expansion with GSAP physics
     toggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -785,6 +788,97 @@ function randomizeGreeting() {
 
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
     greetingEl.innerHTML = randomMessage;
+}
+
+/**
+ * Initializes the in-phone messaging system
+ */
+function initChatSystem() {
+    const replyBtn = document.getElementById('lanyard-reply-btn');
+    const chatScreen = document.getElementById('lanyard-chat-screen');
+    const mainScreen = document.querySelector('.island-content');
+    const backBtn = document.getElementById('chat-back');
+    const doneBtn = document.getElementById('chat-done');
+    const chatForm = document.getElementById('lanyard-chat-form');
+    const successMsg = document.getElementById('chat-success');
+
+    if (!replyBtn || !chatScreen || !mainScreen) return;
+
+    // Open Chat
+    replyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        gsap.to(mainScreen, { opacity: 0, x: -20, duration: 0.4, ease: "power2.inOut", onComplete: () => {
+            mainScreen.style.display = 'none';
+            chatScreen.style.display = 'flex';
+            gsap.fromTo(chatScreen, 
+                { opacity: 0, x: 20, pointerEvents: 'none' },
+                { opacity: 1, x: 0, pointerEvents: 'all', duration: 0.4, ease: "power2.out" }
+            );
+        }});
+    });
+
+    // Back to Main
+    const closeChat = () => {
+        gsap.to(chatScreen, { opacity: 0, x: 20, duration: 0.4, ease: "power2.inOut", onComplete: () => {
+            chatScreen.style.display = 'none';
+            mainScreen.style.display = 'block';
+            gsap.fromTo(mainScreen, 
+                { opacity: 0, x: -20 },
+                { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" }
+            );
+            // Reset form if success was shown
+            chatForm.style.display = 'flex';
+            successMsg.style.display = 'none';
+            chatForm.reset();
+        }});
+    };
+
+    backBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeChat();
+    });
+
+    doneBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeChat();
+    });
+
+    // Form Submission
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const sendBtn = chatForm.querySelector('.chat-send-btn');
+        const originalContent = sendBtn.innerHTML;
+        
+        sendBtn.disabled = true;
+        sendBtn.innerHTML = '<span class="loading-spinner"></span>';
+
+        try {
+            const formData = new FormData(chatForm);
+            const response = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                gsap.to(chatForm, { opacity: 0, scale: 0.9, duration: 0.4, onComplete: () => {
+                    chatForm.style.display = 'none';
+                    successMsg.style.display = 'flex';
+                    gsap.fromTo(successMsg, 
+                        { opacity: 0, scale: 0.8 },
+                        { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.7)" }
+                    );
+                }});
+            } else {
+                alert('Oops! Something went wrong. Please try again.');
+            }
+        } catch (err) {
+            console.error('Form submission error:', err);
+            alert('Submission failed. Check your connection.');
+        } finally {
+            sendBtn.disabled = false;
+            sendBtn.innerHTML = originalContent;
+        }
+    });
 }
 
 /**
