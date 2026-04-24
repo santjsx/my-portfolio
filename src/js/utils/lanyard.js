@@ -258,19 +258,28 @@ async function fetchLanyardData() {
             if (lastfmJson && lastfmJson.recenttracks && lastfmJson.recenttracks.track) {
                 const track = Array.isArray(lastfmJson.recenttracks.track) ? lastfmJson.recenttracks.track[0] : lastfmJson.recenttracks.track;
                 if (track && track['@attr'] && track['@attr'].nowplaying === 'true') {
+                    const trackName = track.name;
+                    const artistName = track.artist['#text'] || track.artist.name;
                     let albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
                     
-                    // Fallback to iTunes if Last.fm has no image
-                    if (!albumArt || albumArt === '') {
-                        albumArt = await fetchiTunesAlbumArt(track.name, track.artist['#text'] || track.artist.name);
+                    // Fallback to iTunes if Last.fm has no image or low quality
+                    if (!albumArt || albumArt === '' || albumArt.includes('default_album_medium')) {
+                        albumArt = await fetchiTunesAlbumArt(trackName, artistName);
                     }
 
                     lastfmTrack = {
-                        song: track.name,
-                        artist: track.artist['#text'] || track.artist.name,
-                        album: track.album['#text'],
+                        song: trackName,
+                        artist: artistName,
+                        album: track.album['#text'] || track.album.name || 'Unknown Album',
                         album_art_url: albumArt
                     };
+                }
+            }
+
+            // Also check Spotify for missing covers (rare but possible)
+            if (lanyardJson.data.listening_to_spotify && lanyardJson.data.spotify) {
+                if (!lanyardJson.data.spotify.album_art_url) {
+                    lanyardJson.data.spotify.album_art_url = await fetchiTunesAlbumArt(lanyardJson.data.spotify.song, lanyardJson.data.spotify.artist);
                 }
             }
 
@@ -745,21 +754,34 @@ function updatePhoneClock() {
 }
 
 /**
- * Fetches high-resolution album art from iTunes Search API
+ * Fetches high-resolution album art from iTunes Search API with fallback
  */
 async function fetchiTunesAlbumArt(song, artist) {
-    try {
-        const query = encodeURIComponent(`${song} ${artist}`);
-        const res = await fetch(`https://itunes.apple.com/search?term=${query}&entity=song&limit=1`);
-        const json = await res.json();
-        if (json.results && json.results.length > 0) {
-            // Upgrade artwork size to 600x600
-            return json.results[0].artworkUrl100.replace('100x100bb.jpg', '600x600bb.jpg').replace('100x100', '600x600');
+    // Clean up song title for better search (remove "feat.", "remaster", etc.)
+    const cleanSong = song.replace(/\(.*\)|- .*|feat\..*/gi, '').trim();
+    
+    const search = async (query) => {
+        try {
+            const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=1`);
+            const json = await res.json();
+            if (json.results && json.results.length > 0) {
+                return json.results[0].artworkUrl100.replace(/100x100bb\.jpg|100x100\.jpg|100x100/g, '600x600bb.jpg');
+            }
+        } catch (e) {
+            console.warn('iTunes search failed for query:', query, e);
         }
-    } catch (e) {
-        console.warn('iTunes Search fallback failed:', e);
+        return null;
+    };
+
+    // Try primary search (Song + Artist)
+    let art = await search(`${cleanSong} ${artist}`);
+    
+    // Secondary search (just Song) if primary fails
+    if (!art) {
+        art = await search(cleanSong);
     }
-    return null;
+    
+    return art;
 }
 
 /**
