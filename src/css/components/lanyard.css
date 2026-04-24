@@ -97,29 +97,81 @@
     transform: rotate(10deg);
 }
 
-/* The Punch-hole Camera (Android Style) */
-.lanyard-island::before {
-    content: '';
+/* The Hyper-Realistic Camera Module */
+.phone-camera-module {
     position: absolute;
     top: 14px;
     left: 50%;
     transform: translateX(-50%);
-    width: 10px;
-    height: 10px;
-    background: #0a0a0a;
-    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Distance between lens and IR sensor */
     z-index: 25;
-    box-shadow: 
-        0 0 0 2px rgba(255, 255, 255, 0.04),
-        inset 0 0 4px rgba(255, 255, 255, 0.15);
     opacity: 0;
+    transition: opacity 0.3s ease;
     pointer-events: none;
-    transition: opacity 0.2s ease;
 }
 
-.lanyard-island.active::before {
+.lanyard-island.active .phone-camera-module {
     opacity: 1;
 }
+
+.camera-lens {
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle at 35% 35%, #1a1a2e 0%, #050505 100%);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        inset 0 0 2px rgba(255, 255, 255, 0.2),
+        inset 0 0 5px rgba(0, 0, 0, 0.9);
+}
+
+.camera-lens::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-image: 
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 15%),
+        radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.4) 2%, transparent 10%);
+}
+
+/* IR Sensor / Red Dot */
+.camera-sensor {
+    width: 4px;
+    height: 4px;
+    background: #080808;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: inset 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.camera-sensor::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background: #ff3b30;
+    border-radius: 50%;
+    opacity: 0.15;
+    filter: blur(1px);
+    animation: irBlink 3s infinite;
+}
+
+@keyframes irBlink {
+    0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 rgba(255, 59, 48, 0); }
+    50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 4px rgba(255, 59, 48, 0.6); }
+}
+
+
 
 /* Volume Buttons (Moved to Right for Android) */
 .lanyard-island.active .island-content::after {
@@ -208,7 +260,7 @@
     display: none;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 22px 4px;
+    padding: 10px 18px 4px;
     width: 100%;
     flex-shrink: 0;
     z-index: 24;
@@ -219,19 +271,137 @@
     display: flex;
 }
 
+.status-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .phone-time {
     font-family: var(--font-mono);
     font-size: 11px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.85);
+    font-weight: 700;
+    color: #fff;
     letter-spacing: 0.02em;
+}
+
+.phone-carrier {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .phone-status-icons {
     display: flex;
     align-items: center;
-    gap: 6px;
-    color: rgba(255, 255, 255, 0.7);
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* Realistic Signal Bars */
+.signal-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 10px;
+}
+
+.signal-bars .bar {
+    width: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 1px;
+    transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s ease;
+}
+
+.signal-bars .bar:nth-child(1) { height: 35%; }
+.signal-bars .bar:nth-child(2) { height: 55%; }
+.signal-bars .bar:nth-child(3) { height: 75%; }
+.signal-bars .bar:nth-child(4) { height: 100%; }
+
+.signal-bars.signal-4 .bar { 
+    background: #fff; 
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+}
+
+.signal-bars.signal-3 .bar:nth-child(4) { background: rgba(255, 255, 255, 0.2); }
+.signal-bars.signal-3 .bar:not(:nth-child(4)) { 
+    background: #fff; 
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.15);
+}
+
+/* Battery Status — Premium Glassmorphic Look */
+.battery-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.battery-percent {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: -0.02em;
+}
+
+.battery-icon {
+    position: relative;
+    width: 20px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 2.5px;
+    padding: 1px;
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.battery-icon::after {
+    content: '';
+    position: absolute;
+    right: -3.5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 0 1.5px 1.5px 0;
+}
+
+.battery-level {
+    height: 100%;
+    background: linear-gradient(to bottom, #fff 0%, #e0e0e0 100%);
+    border-radius: 1px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1), background 0.4s ease;
+}
+
+.battery-level.low { 
+    background: linear-gradient(to bottom, #ff453a 0%, #d70015 100%); 
+}
+
+.battery-level.charging { 
+    background: linear-gradient(to bottom, #32d74b 0%, #248a3d 100%); 
+}
+
+.charging-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    color: #fff;
+    filter: drop-shadow(0 0 3px rgba(0,0,0,0.8));
+    z-index: 2;
+    pointer-events: none;
+}
+
+@keyframes chargingPulse {
+    0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); }
 }
 
 /* ── Scrollable Phone Screen ── */

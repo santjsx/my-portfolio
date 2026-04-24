@@ -213,6 +213,9 @@ export function initLanyardWidget() {
     // Keep phone clock updated every minute
     updatePhoneClock();
     setInterval(updatePhoneClock, 30000);
+
+    // Realistic Status Bar Dynamics
+    initStatusBarDynamics();
 }
 
 async function fetchLanyardData() {
@@ -709,6 +712,56 @@ function updatePhoneClock() {
     const h = now.getHours();
     const m = now.getMinutes().toString().padStart(2, '0');
     el.textContent = `${h}:${m}`;
+}
+
+/**
+ * Realistic Status Bar Dynamics: Battery, Signal, Charging
+ */
+let batteryState = {
+    percent: Math.floor(Math.random() * (98 - 65 + 1)) + 65,
+    isCharging: Math.random() > 0.8 // 20% chance of charging
+};
+
+function initStatusBarDynamics() {
+    updateStatusBarUI();
+    
+    // Periodically jitter signal bars (4 to 5 bars)
+    setInterval(() => {
+        const signalContainer = document.getElementById('phone-signal');
+        if (signalContainer) {
+            const level = Math.random() > 0.1 ? 4 : 3;
+            signalContainer.className = `signal-bars signal-${level}`;
+        }
+    }, 8000);
+
+    // Slowly drain battery or stay static
+    setInterval(() => {
+        if (batteryState.isCharging) {
+            if (batteryState.percent < 100) batteryState.percent++;
+        } else {
+            // Very slow drain
+            if (Math.random() > 0.95 && batteryState.percent > 5) {
+                batteryState.percent--;
+            }
+        }
+        updateStatusBarUI();
+    }, 60000); // Check every minute
+}
+
+function updateStatusBarUI() {
+    const percentEl = document.getElementById('battery-percent');
+    const levelEl = document.getElementById('battery-level');
+    const chargingIcon = document.getElementById('charging-icon');
+
+    if (percentEl) percentEl.textContent = `${batteryState.percent}%`;
+    if (levelEl) {
+        levelEl.style.width = `${batteryState.percent}%`;
+        levelEl.classList.toggle('low', batteryState.percent <= 20);
+        levelEl.classList.toggle('charging', batteryState.isCharging);
+    }
+    if (chargingIcon) {
+        chargingIcon.style.display = batteryState.isCharging ? 'block' : 'none';
+    }
 }
 
 /**
