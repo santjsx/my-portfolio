@@ -574,13 +574,13 @@
           </button>
           <span class="chat-title">New Message</span>
         </div>
-        <form action="https://api.web3forms.com/submit" method="POST" class="chat-composer" id="lanyard-chat-form">
+        <form action="https://api.web3forms.com/submit" method="POST" class="chat-composer" id="lanyard-chat-form" autocomplete="off">
           <input type="hidden" name="access_key" value="94faa993-c934-4458-aaf6-5f43e843f547">
           <div class="chat-input-group">
-            <input type="text" name="name" placeholder="Your Name" required class="chat-input">
+            <input type="text" name="name" placeholder="Your Name" required class="chat-input" autocomplete="off" spellcheck="false">
           </div>
           <div class="chat-input-group">
-            <input type="email" name="email" placeholder="Your Email" required class="chat-input">
+            <input type="email" name="email" placeholder="Your Email" required class="chat-input" autocomplete="off" spellcheck="false" autocapitalize="none">
           </div>
           <div class="chat-message-area">
             <textarea name="message" placeholder="Type a message..." required class="chat-textarea"></textarea>
