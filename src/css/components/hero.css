@@ -363,14 +363,14 @@
     }
 
     .hero-meta {
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-direction: column;
         align-items: flex-start;
         text-align: left;
-        gap: var(--space-6);
+        gap: var(--space-4);
         width: 100%;
-        border-top: 1px solid rgba(255,255,255,0.06);
-        padding-top: var(--space-6);
+        border-top: none;
+        padding-top: 0;
+        margin-top: var(--space-8);
     }
 
     .meta-value {
@@ -380,16 +380,17 @@
     .meta-name {
         display: block;
         position: absolute;
-        bottom: 1rem;
-        right: 0;
-        font-size: clamp(2rem, 9vw, 3.2rem);
-        opacity: 0.35;
-        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+        top: 20%;
+        right: -10%;
+        font-size: clamp(4rem, 20vw, 8rem);
+        opacity: 0.08;
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
         pointer-events: none;
         z-index: -1;
         text-align: right;
-        line-height: 0.9;
+        line-height: 0.8;
         white-space: nowrap;
+        transform: rotate(-5deg);
     }
 
     .headline-row {
