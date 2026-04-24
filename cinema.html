@@ -96,8 +96,10 @@
         
         <!-- Tab Navigation -->
         <div class="archive-tabs">
-          <button class="archive-tab active" data-tab="watched">WATCHED & LOVED</button>
-          <button class="archive-tab" data-tab="watchlist">WANT TO WATCH</button>
+          <button class="archive-tab active" data-tab="watched">FAV MOVIES</button>
+          <button class="archive-tab" data-tab="watchlist">MOVIE QUEUE</button>
+          <button class="archive-tab" data-tab="series-fav">FAV SERIES</button>
+          <button class="archive-tab" data-tab="series-watchlist">SERIES QUEUE</button>
         </div>
 
         <div class="archive-content">
@@ -114,6 +116,22 @@
             <div id="watchlist-grid" class="watchlist-grid-full">
               <!-- Populated via lanyard.js -->
               <div class="reel-loading">ACCESSING QUEUE...</div>
+            </div>
+          </div>
+
+          <!-- Series Fav Tab -->
+          <div class="archive-panel" id="panel-series-fav">
+            <div id="series-fav-grid" class="favorites-grid-full">
+              <!-- Populated via lanyard.js -->
+              <div class="reel-loading">ACCESSING SERIES...</div>
+            </div>
+          </div>
+
+          <!-- Series Watchlist Tab -->
+          <div class="archive-panel" id="panel-series-watchlist">
+            <div id="series-watchlist-grid" class="watchlist-grid-full">
+              <!-- Populated via lanyard.js -->
+              <div class="reel-loading">ACCESSING SERIES QUEUE...</div>
             </div>
           </div>
         </div>

@@ -701,58 +701,75 @@ async function handleVibeIntegration() {
     // Page-specific elements
     const fullFavsReel = document.getElementById('favorites-reel-full');
     const fullWatchlistGrid = document.getElementById('watchlist-grid');
+    const fullSeriesFavGrid = document.getElementById('series-fav-grid');
+    const fullSeriesWatchlistGrid = document.getElementById('series-watchlist-grid');
     
     if (!TMDB_API_KEY) return;
-    if (!vibeSection && !fullFavsReel && !fullWatchlistGrid) return;
+    if (!vibeSection && !fullFavsReel && !fullWatchlistGrid && !fullSeriesFavGrid && !fullSeriesWatchlistGrid) return;
 
     try {
-        // 1. Fetch Cinema Data
-        const favsRes = await fetch(`https://api.themoviedb.org/3/list/8647764?api_key=${TMDB_API_KEY}`);
-        const favsData = await favsRes.json();
-        
-        const watchlistRes = await fetch(`https://api.themoviedb.org/3/list/8647767?api_key=${TMDB_API_KEY}`);
-        const watchlistData = await watchlistRes.json();
+        // 1. Fetch All Cinema Lists in Parallel
+        const lists = [
+            { id: '8647764', container: fullFavsReel },
+            { id: '8647767', container: fullWatchlistGrid },
+            { id: '8647783', container: fullSeriesFavGrid },
+            { id: '8647784', container: fullSeriesWatchlistGrid }
+        ];
 
-        // 2. Render Full Cinema Archive (if on My Vibe page)
-        if (fullFavsReel && favsData.items) {
-            fullFavsReel.innerHTML = favsData.items.map(movie => {
-                const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w342${movie.poster_path}` : '';
-                const rating = (movie.vote_average && movie.vote_average > 0) ? movie.vote_average.toFixed(1) : null;
-                const ratingHTML = rating ? `<div class="fav-rating-badge">★ ${rating}</div>` : '';
-                
-                return `
-                    <div class="fav-movie-card-full">
-                        <div class="fav-poster-wrapper-full">
-                            <img src="${poster}" alt="${escapeHTML(movie.title)}" class="fav-poster-full" loading="lazy" decoding="async">
-                            ${ratingHTML}
-                        </div>
-                        <div class="fav-info-full">
-                            <h3 class="fav-title-full">${escapeHTML(movie.title)}</h3>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
+        await Promise.all(lists.map(async (list) => {
+            if (!list.container) return;
+            
+            try {
+                let allItems = [];
+                let currentPage = 1;
+                let totalPages = 1;
 
-        if (fullWatchlistGrid && watchlistData.items) {
-            fullWatchlistGrid.innerHTML = watchlistData.items.map(movie => {
-                const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w342${movie.poster_path}` : '';
-                const rating = (movie.vote_average && movie.vote_average > 0) ? movie.vote_average.toFixed(1) : null;
-                const ratingHTML = rating ? `<div class="fav-rating-badge">★ ${rating}</div>` : '';
-                
-                return `
-                    <div class="fav-movie-card-full">
-                        <div class="fav-poster-wrapper-full">
-                            <img src="${poster}" alt="${escapeHTML(movie.title)}" class="fav-poster-full" loading="lazy" decoding="async">
-                            ${ratingHTML}
-                        </div>
-                        <div class="fav-info-full">
-                            <h3 class="fav-title-full">${escapeHTML(movie.title)}</h3>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
+                // Loop to fetch all pages
+                do {
+                    const res = await fetch(`https://api.themoviedb.org/3/list/${list.id}?api_key=${TMDB_API_KEY}&page=${currentPage}`);
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    
+                    const data = await res.json();
+                    const items = data.items || data.results || [];
+                    allItems = [...allItems, ...items];
+                    
+                    // Note: TMDB v3 list API sometimes doesn't return total_pages for simple lists
+                    // but we can check if item_count is greater than what we have
+                    const totalItems = data.item_count || 0;
+                    if (totalItems > allItems.length && items.length > 0) {
+                        currentPage++;
+                    } else {
+                        break;
+                    }
+                } while (currentPage <= 5); // Failsafe cap at 100 items (5 pages)
+
+                if (allItems.length > 0) {
+                    list.container.innerHTML = allItems.map(item => {
+                        const poster = item.poster_path ? `https://image.tmdb.org/t/p/w342${item.poster_path}` : '';
+                        const rating = (item.vote_average && item.vote_average > 0) ? item.vote_average.toFixed(1) : null;
+                        const ratingHTML = rating ? `<div class="fav-rating-badge">★ ${rating}</div>` : '';
+                        const title = item.title || item.name || 'Untitled'; 
+                        
+                        return `
+                            <div class="fav-movie-card-full">
+                                <div class="fav-poster-wrapper-full">
+                                    <img src="${poster}" alt="${escapeHTML(title)}" class="fav-poster-full" loading="lazy" decoding="async">
+                                    ${ratingHTML}
+                                </div>
+                                <div class="fav-info-full">
+                                    <h3 class="fav-title-full">${escapeHTML(title)}</h3>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    list.container.innerHTML = '<div class="reel-loading">NO ITEMS FOUND</div>';
+                }
+            } catch (err) {
+                console.error(`Failed to fetch list ${list.id}:`, err);
+                list.container.innerHTML = '<div class="reel-loading">FAILED TO LOAD</div>';
+            }
+        }));
 
         if (vibeSection) vibeSection.style.display = 'block';
         vibeDataLoaded = true;
