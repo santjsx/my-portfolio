@@ -37,8 +37,8 @@ async function fetchMediaLog() {
         let finalTracks = getCache();
 
         if (!finalTracks) {
-            // Fetch Top Tracks
-            const topUrl = `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=${FETCH_LIMIT}&period=7day`;
+            // Fetch Top Tracks (All-time for "Most Played")
+            const topUrl = `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=${FETCH_LIMIT}&period=overall`;
             const topRes = await fetch(topUrl);
             const topData = await topRes.json();
             console.log('🎵 TOP TRACKS RESPONSE:', topData);
@@ -47,14 +47,18 @@ async function fetchMediaLog() {
             let isLive = false;
             let nowPlaying = null;
             try {
-                const recentUrl = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=1`;
+                const recentUrl = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=2`;
                 const recentRes = await fetch(recentUrl);
                 const recentData = await recentRes.json();
-                console.log('📻 RECENT TRACKS RESPONSE:', recentData);
                 
-                nowPlaying = (recentData && recentData.recenttracks && recentData.recenttracks.track) ? 
-                             (Array.isArray(recentData.recenttracks.track) ? recentData.recenttracks.track[0] : recentData.recenttracks.track) : null;
+                const tracks = (recentData && recentData.recenttracks && recentData.recenttracks.track) ? 
+                               (Array.isArray(recentData.recenttracks.track) ? recentData.recenttracks.track : [recentData.recenttracks.track]) : [];
+                
+                // The current track is always at index 0
+                nowPlaying = tracks[0] || null;
                 isLive = nowPlaying && nowPlaying['@attr'] && nowPlaying['@attr'].nowplaying === 'true';
+                
+                console.log('📻 LIVE CHECK:', { isLive, track: nowPlaying?.name });
             } catch (err) {
                 console.warn('Now Playing fetch failed:', err);
             }
@@ -64,29 +68,35 @@ async function fetchMediaLog() {
             
             finalTracks = tracksData.map((track) => {
                 const name = track.name || 'Unknown Track';
-                const artist = (track.artist && track.artist.name) ? track.artist.name : (track.artist ? track.artist['#text'] : 'Unknown Artist');
+                const artistName = (track.artist && track.artist.name) ? track.artist.name : (track.artist ? track.artist['#text'] : 'Unknown Artist');
+                // gettoptracks provides playcount for the period
+                const count = track.playcount || '0';
                 const albumName = extractAlbumFromTitle(name) || 'COLLECTION';
                 
                 return {
                     name: name,
-                    artist: { name: artist },
+                    artist: { name: artistName },
                     album: albumName,
-                    playcount: track.playcount || '0',
+                    playcount: count,
                     isLive: false
                 };
             });
 
             // Inject Live track if active
             if (isLive && nowPlaying) {
+                const liveArtist = nowPlaying.artist['#text'] || (nowPlaying.artist ? nowPlaying.artist.name : 'Unknown Artist');
                 const liveTrack = {
                     name: nowPlaying.name,
-                    artist: { name: nowPlaying.artist['#text'] || (nowPlaying.artist ? nowPlaying.artist.name : 'Unknown Artist') },
+                    artist: { name: liveArtist },
                     album: (nowPlaying.album && nowPlaying.album['#text']) ? nowPlaying.album['#text'] : 'NOW PLAYING',
                     isLive: true,
                     playcount: 'LIVE'
                 };
+
+                // Remove the same track from the list if it exists (check both name and artist)
                 finalTracks = [liveTrack, ...finalTracks.filter(t => 
-                    !(t.name.toLowerCase() === nowPlaying.name.toLowerCase())
+                    !(t.name.toLowerCase() === liveTrack.name.toLowerCase() && 
+                      t.artist.name.toLowerCase() === liveTrack.artist.name.toLowerCase())
                 )].slice(0, FETCH_LIMIT);
             }
 
