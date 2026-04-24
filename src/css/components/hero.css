@@ -120,7 +120,7 @@
 
 .headline-row {
     display: block;
-    font-size: clamp(2.6rem, 6vw, 5.5rem);
+    font-size: clamp(2.2rem, 5.2vw, 4.2rem);
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -0.03em;
@@ -141,6 +141,13 @@
 
 .serif-accent.danger {
     background: linear-gradient(135deg, #F28B82 0%, #E53935 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero-accent-text {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, #ff8a80 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
