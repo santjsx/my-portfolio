@@ -205,14 +205,43 @@
 }
 
 @media (max-width: 768px) {
-    .playlist-header .col-album,
-    .track-row .col-album {
-        display: none;
+    .playlist-header .col-album {
+        display: none; /* Hide album column in header to save space */
     }
     
-    .playlist-header,
+    .playlist-header {
+        grid-template-columns: 40px 1fr 60px;
+        padding: 0 16px 12px;
+    }
+
     .track-row {
-        grid-template-columns: 40px 1fr 80px;
+        grid-template-columns: 40px 1fr 60px;
+        padding: 16px;
+        gap: 4px 12px;
+        display: grid;
+        align-items: flex-start;
+    }
+
+    .track-col.col-index { grid-column: 1; grid-row: 1 / span 2; align-self: center; }
+    .track-col.col-title { grid-column: 2; }
+    .track-col.col-album { 
+        display: block;
+        grid-column: 2;
+        font-size: 11px;
+        color: var(--accent-primary);
+        opacity: 0.8;
+        padding: 0;
+        margin: 0;
+        letter-spacing: 0.05em;
+    }
+    .track-col.col-plays { grid-column: 3; grid-row: 1 / span 2; align-self: center; }
+
+    .track-name {
+        font-size: 16px;
+    }
+
+    .track-artist {
+        font-size: 11px;
     }
 }
 
