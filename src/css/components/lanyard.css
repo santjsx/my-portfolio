@@ -903,3 +903,98 @@
         border-width: 3px;
     }
 }
+
+/* ── Cinema Module ── */
+.cinema-section {
+    padding: 12px 14px;
+    gap: 8px;
+}
+
+.cinema-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.favorites-reel {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+}
+
+.favorites-reel::-webkit-scrollbar {
+    display: none;
+}
+
+.fav-movie-card {
+    flex: 0 0 50px;
+    scroll-snap-align: start;
+    transition: transform 0.3s ease;
+}
+
+.fav-movie-card:hover {
+    transform: translateY(-4px) scale(1.05);
+}
+
+.fav-poster {
+    width: 50px;
+    height: 75px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.watchlist-queue {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.watchlist-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.watchlist-item:last-child {
+    border-bottom: none;
+}
+
+.watchlist-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.watchlist-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 800;
+    color: #fff;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.watchlist-meta {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--accent-primary);
+}
+
+.watchlist-rating {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: #f5c518; /* IMDb Gold */
+    font-weight: 800;
+}

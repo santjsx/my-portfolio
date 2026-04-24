@@ -261,6 +261,9 @@ function updateWidgetUI(data) {
             lastMovieId = null;
         }
     }
+
+    // Cinema Module (Favorites & Watchlist)
+    handleCinemaIntegration();
     
     // Reset classes
     island.classList.remove('status-online', 'status-idle', 'status-dnd', 'status-offline', 'status-inactive');
@@ -681,6 +684,72 @@ function updatePhoneClock() {
     const h = now.getHours();
     const m = now.getMinutes().toString().padStart(2, '0');
     el.textContent = `${h}:${m}`;
+}
+
+/**
+ * Cinema Module: Personal Favorites & Watchlist
+ */
+let cinemaDataLoaded = false;
+async function handleCinemaIntegration() {
+    if (cinemaDataLoaded) return; // Only load once per session or manually refresh
+    
+    const cinemaSection = document.getElementById('lanyard-cinema');
+    const favsReel = document.getElementById('favorites-reel');
+    const watchlistQueue = document.getElementById('watchlist-queue');
+    
+    if (!cinemaSection || !TMDB_API_KEY) return;
+
+    try {
+        // Fetch Favorites List (8647764)
+        const favsRes = await fetch(`https://api.themoviedb.org/3/list/8647764?api_key=${TMDB_API_KEY}`);
+        const favsData = await favsRes.json();
+        
+        // Fetch Watchlist List (8647767)
+        const watchlistRes = await fetch(`https://api.themoviedb.org/3/list/8647767?api_key=${TMDB_API_KEY}`);
+        const watchlistData = await watchlistRes.json();
+
+        let hasContent = false;
+
+        // Render Favorites
+        if (favsData && favsData.items && favsData.items.length > 0) {
+            hasContent = true;
+            favsReel.innerHTML = favsData.items.map(movie => {
+                const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://via.placeholder.com/50x75?text=N/A';
+                const title = movie.title || movie.name;
+                return `
+                    <div class="fav-movie-card" title="${escapeHTML(title)}">
+                        <img src="${poster}" alt="${escapeHTML(title)}" class="fav-poster">
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render Watchlist
+        if (watchlistData && watchlistData.items && watchlistData.items.length > 0) {
+            hasContent = true;
+            watchlistQueue.innerHTML = watchlistData.items.slice(0, 5).map(movie => {
+                const title = movie.title || movie.name;
+                const year = (movie.release_date || movie.first_air_date || '').split('-')[0];
+                const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
+                return `
+                    <div class="watchlist-item">
+                        <div class="watchlist-info">
+                            <span class="watchlist-title">${escapeHTML(title)}</span>
+                            <span class="watchlist-meta">${year}</span>
+                        </div>
+                        <span class="watchlist-rating">★ ${rating}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        if (hasContent) {
+            cinemaSection.style.display = 'block';
+            cinemaDataLoaded = true;
+        }
+    } catch (err) {
+        console.error('Cinema Fetch Error:', err);
+    }
 }
 
 function escapeHTML(str) {
