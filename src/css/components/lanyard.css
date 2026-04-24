@@ -140,24 +140,54 @@
     box-shadow: 1px 0 3px rgba(0,0,0,0.6);
 }
 
-/* Android Gesture Bar (now an HTML element) */
-.phone-gesture-bar {
+/* ── Minimal Close Button ── */
+.lanyard-close-minimal {
     display: none;
-}
-
-.lanyard-island.active .phone-gesture-bar {
-    display: block;
-    width: 100px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.35);
-    border-radius: 4px;
-    margin: 0 auto;
-    flex-shrink: 0;
     position: absolute;
-    bottom: 10px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 8px 24px;
+    cursor: pointer;
     z-index: 30;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.lanyard-island.active .lanyard-close-minimal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lanyard-close-minimal span {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+}
+
+.lanyard-close-minimal:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.lanyard-close-minimal:hover span {
+    color: #fff;
+    letter-spacing: 0.25em;
+}
+
+.lanyard-close-minimal:active {
+    transform: translateX(-50%) translateY(0) scale(0.95);
 }
 
 /* ── Android Status Bar ── */
@@ -200,7 +230,7 @@
     overflow-x: hidden;
     flex: 1;
     padding-top: 36px; /* Clear the absolutely-positioned avatar */
-    padding-bottom: 28px;
+    padding-bottom: 80px;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
@@ -360,40 +390,6 @@
     position: relative;
 }
 
-/* ── Phone Navigation Bar (Android 3-button) ── */
-.phone-nav-bar {
-    display: none;
-    align-items: center;
-    justify-content: space-evenly;
-    width: 100%;
-    padding: 8px 0 4px;
-    flex-shrink: 0;
-    z-index: 26;
-}
-
-.lanyard-island.active .phone-nav-bar {
-    display: flex;
-}
-
-.phone-nav-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: transparent;
-    border: none;
-    color: rgba(255, 255, 255, 0.45);
-    cursor: pointer;
-    padding: 0;
-    transition: all 0.2s ease;
-}
-
-.phone-nav-btn:hover {
-    color: rgba(255, 255, 255, 0.8);
-    background: rgba(255, 255, 255, 0.06);
-}
 
 .island-status-text {
     font-family: var(--font-mono);
@@ -713,19 +709,9 @@
         padding-top: 56px; /* Increased to clear the shifted avatar */
     }
 
-    .lanyard-island.active .phone-nav-bar {
-        padding: 10px 0 6px;
-    }
-
-    .lanyard-island.active .phone-nav-btn {
-        width: 42px;
-        height: 42px;
-    }
-
-    .lanyard-island.active .phone-gesture-bar {
-        width: 120px;
-        height: 5px;
-        bottom: 8px;
+    .lanyard-island.active .lanyard-close-minimal {
+        bottom: 20px;
+        padding: 10px 32px;
     }
 
     .lanyard-island.active .msg-bubble {
