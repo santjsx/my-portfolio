@@ -151,7 +151,7 @@
 .marquee-track {
     display: flex;
     width: max-content;
-    animation: marqueeScroll 40s linear infinite;
+    will-change: transform;
 }
 
 .mega-footer-name {
@@ -164,34 +164,31 @@
 
 .mega-footer-name span {
     display: block;
-    line-height: 1;
+    line-height: 0.9;
     text-transform: uppercase;
-    font-weight: 800;
-    font-size: clamp(2rem, 8vw, 6rem);
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
-    transition: all 0.6s var(--ease-spring);
+    font-weight: 900;
+    font-size: clamp(3rem, 15vw, 10rem);
+    letter-spacing: -0.05em;
+    color: inherit; /* Allow .name-solid and .name-hollow to control color */
+    transition: all 0.4s var(--ease-out);
     white-space: nowrap;
 }
 
-.name-solid {
+.mega-footer-name .name-solid {
     color: var(--accent-primary);
 }
 
-.name-hollow {
+.mega-footer-name .name-hollow {
     color: transparent;
-    -webkit-text-stroke: 1px color-mix(in srgb, var(--accent-primary) 40%, transparent);
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
 }
 
-.mega-footer-name:hover .name-solid {
-    transform: translateX(20px);
-    opacity: 0.5;
+.mega-footer-name:hover span {
+    /* Hover effect removed as per user request */
 }
 
 .mega-footer-name:hover .name-hollow {
-    transform: translateY(-10px);
-    color: var(--accent-primary);
-    -webkit-text-stroke: 1px transparent;
+    /* Hover effect removed as per user request */
 }
 
 @keyframes marqueeScroll {

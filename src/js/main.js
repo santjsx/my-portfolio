@@ -14,6 +14,7 @@ import { initVibePortal } from './utils/vibe-portal.js';
 import { initAstrosWidget } from './utils/astros.js';
 import { initWaves } from './utils/waves-bg.js';
 import { initStaggeredMenu } from './utils/staggered-menu.js';
+import { initFooterMarquee } from './utils/footer-marquee.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('⚡ ARCHIVE BOOT: DOM READY');
@@ -87,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { fn: initContactSection, delay: 1000 },
             { fn: initLanyardWidget, delay: 1200 },
             { fn: initAstrosWidget, delay: 1400 },
+            { fn: initFooterMarquee, delay: 1500 },
             { 
                 fn: () => {
                     window.heroWaves = initWaves('hero-waves-container', {
