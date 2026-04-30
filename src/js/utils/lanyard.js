@@ -547,12 +547,14 @@ function updateCustomColors(kv) {
                 root.style.setProperty('--accent-primary', colorTarget.color);
                 root.style.setProperty('--skill-accent', colorTarget.color);
                 root.style.setProperty('--border-hover', `color-mix(in srgb, ${colorTarget.color}, transparent 60%)`);
+                if (window.heroWaves) window.heroWaves.updateOptions({ lineColor: colorTarget.color });
             }
         });
     } else {
         root.style.setProperty('--accent-primary', accentColor);
         root.style.setProperty('--skill-accent', accentColor);
         root.style.setProperty('--border-hover', `color-mix(in srgb, ${accentColor}, transparent 60%)`);
+        if (window.heroWaves) window.heroWaves.updateOptions({ lineColor: accentColor });
     }
 }
 

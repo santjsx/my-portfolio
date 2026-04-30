@@ -12,6 +12,7 @@ import { initMusicHistory } from './utils/music.js';
 import { initNavHighlighter } from './utils/nav-highlighter.js';
 import { initVibePortal } from './utils/vibe-portal.js';
 import { initAstrosWidget } from './utils/astros.js';
+import { initWaves } from './utils/waves-bg.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('⚡ ARCHIVE BOOT: DOM READY');
@@ -78,7 +79,25 @@ document.addEventListener('DOMContentLoaded', () => {
             { fn: initResumeDrawer, delay: 800 },
             { fn: initContactSection, delay: 1000 },
             { fn: initLanyardWidget, delay: 1200 },
-            { fn: initAstrosWidget, delay: 1400 }
+            { fn: initAstrosWidget, delay: 1400 },
+            { 
+                fn: () => {
+                    window.heroWaves = initWaves('hero-waves-container', {
+                        lineColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim() || "#F28B82",
+                        backgroundColor: "transparent",
+                        waveSpeedX: 0.02,
+                        waveSpeedY: 0.01,
+                        waveAmpX: 40,
+                        waveAmpY: 20,
+                        friction: 0.9,
+                        tension: 0.01,
+                        maxCursorMove: 120,
+                        xGap: 12,
+                        yGap: 36
+                    });
+                }, 
+                delay: 1500 
+            }
         ];
 
         deferredModules.forEach(({ fn, delay }) => {
