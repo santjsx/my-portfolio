@@ -1,15 +1,15 @@
 /* TOKENS: Colors — Fight Club Beautiful & Fast */
 :root {
-    --bg-dark: #050505;          /* Deep void */
-    --bg-card: #0A0A0A;          /* Slightly lighter for contrast */
-    --bg-surface: #111111;       /* Raised surface */
+    --bg-dark: #0A0A0A;          /* Softer off-black */
+    --bg-card: #121212;          /* Lighter card base */
+    --bg-surface: #1A1A1A;       /* Raised surface */
 
     --accent-primary: #F28B82;   /* Tyler's Soap Pink */
     --accent-hover: #FFA39E;
     --accent-danger: #D32F2F;    /* Blood */
     
     --text-primary: #EBEBEB;     /* Crisp white */
-    --text-secondary: #808080;   /* Muted concrete */
+    --text-secondary: #999999;   /* Muted concrete - brightened for readability */
     --text-muted: #4A4A4A;
 
     --border: rgba(255, 255, 255, 0.08); /* Crisp visible lines */

@@ -72,7 +72,7 @@
 }
 
 .mayhem-title {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(2rem, 6vw, 3.5rem);
     font-weight: 900;
     color: var(--text-primary);
     margin: 0;
@@ -171,6 +171,22 @@
 .spans-two {
     grid-column: 1 / -1;
     min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.spans-two .target-header {
+    width: 100%;
+    justify-content: center;
+    gap: var(--space-12);
+}
+
+.spans-two .t-footer {
+    width: 100%;
+    justify-content: center;
+    gap: var(--space-12);
 }
 
 /* Tactical Crosshairs (Corners) */
@@ -215,8 +231,21 @@
     line-height: 0.95;
     text-transform: uppercase;
     color: var(--text-primary);
-    margin: var(--space-8) 0;
+    margin: var(--space-4) 0 var(--space-8);
     letter-spacing: -0.02em;
+    position: relative;
+    z-index: 2;
+}
+
+.t-summary {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-8);
+    opacity: 0.8;
+    transform: translateY(10px);
+    transition: all 0.4s var(--ease-out);
     position: relative;
     z-index: 2;
 }
@@ -245,13 +274,16 @@
 }
 
 .t-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    padding: 6px 12px;
+    padding: 10px 20px;
     background: var(--text-primary);
     color: var(--bg-dark);
     transition: all 0.2s ease;
@@ -261,7 +293,23 @@
 .t-btn.outline {
     background: transparent;
     color: var(--text-primary);
-    border: 1px solid var(--text-primary);
+    border: 1px solid var(--border);
+}
+
+.t-featured-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--accent-primary);
+    letter-spacing: 0.3em;
+    background: rgba(242, 139, 130, 0.1);
+    padding: 6px 16px;
+    border: 1px solid var(--accent-primary);
+    border-radius: 100px;
+    opacity: 0.6;
 }
 
 /* ═══════════════════════════════════════════
@@ -299,6 +347,12 @@
     color: var(--accent-primary);
     /* Subtle glitch jitter on hover */
     animation: textJitter 0.2s infinite; 
+}
+
+.mayhem-target:hover .t-summary {
+    color: var(--bg-dark);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 @keyframes textJitter {

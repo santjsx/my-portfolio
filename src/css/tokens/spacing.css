@@ -22,7 +22,7 @@
     --radius-lg: 0px;
     --radius-xl: 0px;
 
-    --section-padding: 8rem 0;
+    --section-padding: 12rem 0;
 
     /* Hardware accelerated easing */
     --ease-out: cubic-bezier(0.19, 1, 0.22, 1);

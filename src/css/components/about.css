@@ -124,12 +124,13 @@
 .character-role {
     font-family: var(--font-mono);
     font-size: 12px;
-    color: var(--text-muted);
+    color: var(--text-secondary);
+    font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin-top: var(--space-8);
     padding-top: var(--space-6);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .character-oneliner {
@@ -282,8 +283,8 @@
 .arsenal-level {
     font-family: var(--font-mono);
     font-size: 10px;
-    font-weight: 700;
-    color: var(--text-muted);
+    font-weight: 800;
+    color: var(--text-secondary);
     letter-spacing: 0.2em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -363,7 +364,8 @@
 .phase-desc {
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--text-muted);
+    font-weight: 700;
+    color: var(--text-secondary);
     letter-spacing: 0.2em;
     text-transform: uppercase;
 }
