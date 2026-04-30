@@ -74,16 +74,17 @@ export function initResumeDrawer() {
     if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => updateZoom(currentScale - 0.1));
     if (zoomResetBtn) zoomResetBtn.addEventListener('click', () => updateZoom(0.8));
 
-    // Open drawer
-    openBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
+    // Open drawer (using delegation to support dynamic menu items)
+    document.body.addEventListener('click', (e) => {
+        const btn = e.target.closest('.js-open-resume');
+        if (btn) {
             e.preventDefault();
             document.body.classList.add('drawer-open');
             // Pause Lenis global scroll to allow internal drawer scroll
             if (window.__lenis) window.__lenis.stop();
             
             if (!pdfLoaded) renderPage(currentScale);
-        });
+        }
     });
 
     // Close drawer logic

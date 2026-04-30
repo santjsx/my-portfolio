@@ -13,6 +13,7 @@ import { initNavHighlighter } from './utils/nav-highlighter.js';
 import { initVibePortal } from './utils/vibe-portal.js';
 import { initAstrosWidget } from './utils/astros.js';
 import { initWaves } from './utils/waves-bg.js';
+import { initStaggeredMenu } from './utils/staggered-menu.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('⚡ ARCHIVE BOOT: DOM READY');
@@ -29,20 +30,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const lenis = setupLenis();
     initVibePortal();
 
-    // Header optimized scroll listener
-    const header = document.getElementById('header');
-    if (header) {
-        let ticking = false;
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    header.classList.toggle('scrolled', window.scrollY > 40);
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
-    }
+    // Header Logic (Replaced by StaggeredMenu)
+    window.staggeredMenu = initStaggeredMenu({
+        items: [
+            { label: 'About', ariaLabel: 'About section', link: '#about' },
+            { label: 'Projects', ariaLabel: 'Projects section', link: '#work' },
+            { label: 'My Vibe', ariaLabel: 'Open vibe portal', link: '#', className: 'js-open-vibe-portal' },
+            { label: 'Resume', ariaLabel: 'Open resume', link: '#', className: 'js-open-resume' },
+            { label: 'Contact', ariaLabel: 'Contact section', link: '#contact' }
+        ],
+        socialItems: [
+            { label: 'GitHub', link: 'https://github.com/santjsx' },
+            { label: 'LinkedIn', link: 'https://linkedin.com' },
+            { label: 'Twitter', link: 'https://twitter.com' }
+        ],
+        accentColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim() || '#F28B82',
+        colors: [getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim() || '#F28B82', '#111111', '#0a0a0a'],
+        logoUrl: 'images/santhoshh.webp' // Using avatar as logo for now
+    });
 
     // 2. PHASE 1: UI INTERACTIVITY (After Preloader)
     // Failsafe: If preloader hangs for more than 7s, force-run deferred modules
@@ -107,34 +112,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Mobile Menu Optimization
-    setupMobileMenu();
+    // Mobile Menu Replaced by StaggeredMenu
 });
-
-function setupMobileMenu() {
-    const mobileToggle = document.getElementById('mobile-menu-toggle');
-    const navOverlay = document.getElementById('nav-overlay');
-    const navClose = document.getElementById('nav-close');
-    const navItemLinks = document.querySelectorAll('.nav-overlay .nav-item');
-
-    if (!mobileToggle || !navOverlay) return;
-
-    const toggleMenu = (open) => {
-        mobileToggle.classList.toggle('active', open);
-        navOverlay.classList.toggle('active', open);
-        document.body.style.overflow = open ? 'hidden' : '';
-    };
-
-    mobileToggle.addEventListener('click', () => {
-        const isOpen = navOverlay.classList.contains('active');
-        toggleMenu(!isOpen);
-    });
-
-    if (navClose) navClose.addEventListener('click', () => toggleMenu(false));
-
-    navItemLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            if (window.innerWidth <= 768) toggleMenu(false);
-        });
-    });
-}

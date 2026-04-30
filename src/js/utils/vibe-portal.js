@@ -44,9 +44,12 @@ export function initVibePortal() {
         });
     };
 
-    // Bind all "My Vibe" links
-    vibeLinks.forEach(link => {
-        link.addEventListener('click', openPortal);
+    // Bind all "My Vibe" links (using delegation to support dynamic menu items)
+    document.body.addEventListener('click', (e) => {
+        const link = e.target.closest('.js-open-vibe-portal');
+        if (link) {
+            openPortal(e);
+        }
     });
 
     // Close button
