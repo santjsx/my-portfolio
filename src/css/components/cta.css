@@ -156,21 +156,22 @@
 
 .mega-footer-name {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
+    align-items: center;
     cursor: default;
     user-select: none;
+    padding: 0 2rem;
 }
 
 .mega-footer-name span {
     display: block;
-    line-height: 0.8;
+    line-height: 1;
     text-transform: uppercase;
     font-weight: 800;
-    font-size: clamp(4rem, 15vw, 15rem);
-    letter-spacing: -0.05em;
+    font-size: clamp(2rem, 8vw, 6rem);
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
     transition: all 0.6s var(--ease-spring);
+    white-space: nowrap;
 }
 
 .name-solid {
