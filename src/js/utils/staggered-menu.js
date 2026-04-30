@@ -14,7 +14,8 @@ class StaggeredMenu {
       socialItems: options.socialItems || [],
       displaySocials: options.displaySocials !== undefined ? options.displaySocials : true,
       displayItemNumbering: options.displayItemNumbering !== undefined ? options.displayItemNumbering : true,
-      logoUrl: options.logoUrl || '/favicon.png',
+      logoUrl: options.logoUrl || null,
+      logoText: options.logoText || 'SR',
       menuButtonColor: options.menuButtonColor || '#fff',
       openMenuButtonColor: options.openMenuButtonColor || '#fff',
       accentColor: options.accentColor || '#5227FF',
@@ -45,7 +46,7 @@ class StaggeredMenu {
   }
 
   createElements() {
-    const { position, colors, items, socialItems, displaySocials, displayItemNumbering, logoUrl, accentColor } = this.options;
+    const { position, colors, items, socialItems, displaySocials, displayItemNumbering, logoUrl, logoText, accentColor } = this.options;
 
     // 1. Wrapper
     this.wrapper = document.createElement('div');
@@ -81,10 +82,16 @@ class StaggeredMenu {
     header.className = 'staggered-menu-header';
     header.setAttribute('aria-label', 'Main navigation header');
 
-    const logo = document.createElement('div');
-    logo.className = 'sm-logo';
+    const logo = document.createElement('a');
+    logo.className = 'sm-logo cinematic-logo';
+    logo.href = 'index.html?skipLoader=true';
     logo.setAttribute('aria-label', 'Logo');
-    logo.innerHTML = `<img src="${logoUrl}" alt="Logo" class="sm-logo-img" draggable="false" width="110" height="24">`;
+    
+    if (logoUrl) {
+      logo.innerHTML = `<img src="${logoUrl}" alt="Logo" class="sm-logo-img" draggable="false">`;
+    } else {
+      logo.innerHTML = logoText;
+    }
     header.appendChild(logo);
 
     this.toggleBtn = document.createElement('button');

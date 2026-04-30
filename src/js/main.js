@@ -30,14 +30,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const lenis = setupLenis();
     initVibePortal();
 
+    const isSubpage = window.location.pathname.includes('cinema.html') || window.location.pathname.includes('music.html');
+    const homePrefix = isSubpage ? 'index.html?skipLoader=true' : '';
+
     // Header Logic (Replaced by StaggeredMenu)
     window.staggeredMenu = initStaggeredMenu({
         items: [
-            { label: 'About', ariaLabel: 'About section', link: '#about' },
-            { label: 'Projects', ariaLabel: 'Projects section', link: '#work' },
+            { label: 'About', ariaLabel: 'About section', link: `${homePrefix}#about` },
+            { label: 'Projects', ariaLabel: 'Projects section', link: `${homePrefix}#work` },
             { label: 'My Vibe', ariaLabel: 'Open vibe portal', link: '#', className: 'js-open-vibe-portal' },
             { label: 'Resume', ariaLabel: 'Open resume', link: '#', className: 'js-open-resume' },
-            { label: 'Contact', ariaLabel: 'Contact section', link: '#contact' }
+            { label: 'Contact', ariaLabel: 'Contact section', link: `${homePrefix}#contact` }
         ],
         socialItems: [
             { label: 'GitHub', link: 'https://github.com/santjsx' },
@@ -45,8 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { label: 'Twitter', link: 'https://twitter.com' }
         ],
         accentColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim() || '#F28B82',
-        colors: [getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim() || '#F28B82', '#111111', '#0a0a0a'],
-        logoUrl: 'images/santhoshh.webp' // Using avatar as logo for now
+        colors: [getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim() || '#F28B82', '#111111', '#0a0a0a']
     });
 
     // 2. PHASE 1: UI INTERACTIVITY (After Preloader)
