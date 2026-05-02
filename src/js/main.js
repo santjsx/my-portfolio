@@ -43,11 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { label: 'Resume', ariaLabel: 'Open resume', link: '#', className: 'js-open-resume' },
             { label: 'Contact', ariaLabel: 'Contact section', link: `${homePrefix}#contact` }
         ],
-        socialItems: [
-            { label: 'GitHub', link: 'https://github.com/santjsx' },
-            { label: 'LinkedIn', link: 'https://linkedin.com' },
-            { label: 'Twitter', link: 'https://twitter.com' }
-        ],
+        displaySocials: false,
         accentColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim() || '#F28B82',
         colors: [getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim() || '#F28B82', '#111111', '#0a0a0a']
     });

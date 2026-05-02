@@ -93,22 +93,45 @@
 
 .portal-close {
     position: absolute;
-    top: 3rem;
-    right: 3rem;
-    background: transparent;
-    border: none;
+    top: 2.5rem;
+    right: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 100px;
     color: var(--text-secondary);
     font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.3em;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
     cursor: pointer;
-    padding: 1rem;
-    transition: color 0.3s ease;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 11001;
 }
 
 .portal-close:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent-primary);
     color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.portal-close::after {
+    content: '\2715';
+    font-size: 12px;
+    margin-left: 4px;
+    transition: transform 0.4s ease;
+}
+
+.portal-close:hover::after {
+    transform: rotate(90deg);
 }
 
 @media (max-width: 768px) {
