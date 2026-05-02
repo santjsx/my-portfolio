@@ -12,7 +12,7 @@ import { initMusicHistory } from './utils/music.js';
 import { initNavHighlighter } from './utils/nav-highlighter.js';
 import { initVibePortal } from './utils/vibe-portal.js';
 import { initAstrosWidget } from './utils/astros.js';
-import { initWaves } from './utils/waves-bg.js';
+import { initRippleGrid } from './utils/ripple-grid.js';
 import { initStaggeredMenu } from './utils/staggered-menu.js';
 import { initFooterMarquee } from './utils/footer-marquee.js';
 
@@ -78,18 +78,15 @@ document.addEventListener('DOMContentLoaded', () => {
         initTitleAnimation();
         
         // Initialize Hero Waves immediately for better perceived performance
-        window.heroWaves = initWaves('hero-waves-container', {
-            lineColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim() || "#F28B82",
-            backgroundColor: "transparent",
-            waveSpeedX: 0.02,
-            waveSpeedY: 0.01,
-            waveAmpX: 40,
-            waveAmpY: 20,
-            friction: 0.9,
-            tension: 0.01,
-            maxCursorMove: 120,
-            xGap: 12,
-            yGap: 36
+        initRippleGrid('hero-ripple-grid', {
+            enableRainbow: false,
+            gridColor: '#ffffff',
+            rippleIntensity: 0.05,
+            gridSize: 10,
+            gridThickness: 15,
+            mouseInteraction: true,
+            mouseInteractionRadius: 1.2,
+            opacity: 0.8
         });
         
         // Stagger non-critical modules to avoid long tasks
