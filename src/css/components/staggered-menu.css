@@ -30,6 +30,19 @@
   background: transparent;
   pointer-events: none;
   z-index: 20;
+  transition: background 0.4s ease, padding 0.4s ease;
+}
+
+.staggered-menu-header.scrolled {
+  background: rgba(10, 10, 10, 0.9);
+  padding: 0.8rem 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+body.lanyard-active .staggered-menu-header {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 
 .staggered-menu-header > * {

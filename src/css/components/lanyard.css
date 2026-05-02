@@ -17,6 +17,10 @@
     --expanded-avatar-left: 16px;
 }
 
+body.lanyard-active .lanyard-container {
+    z-index: 2000;
+}
+
 /* ── The Island — Soft Glassmorphic Pill ── */
 .lanyard-island {
     position: relative;
@@ -60,10 +64,10 @@
 }
 
 .lanyard-island:hover {
-    border-color: rgba(242, 139, 130, 0.3);
+    border-color: rgba(var(--accent-rgb), 0.3);
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.6),
-        0 0 20px rgba(242, 139, 130, 0.1);
+        0 0 20px rgba(var(--accent-rgb), 0.1);
 }
 
 /* Active (Expanded) State — THE PHONE */

@@ -5,6 +5,7 @@
     --bg-surface: #1A1A1A;       /* Raised surface */
 
     --accent-primary: #F28B82;   /* Tyler's Soap Pink */
+    --accent-rgb: 242, 139, 130; 
     --accent-hover: #FFA39E;
     --accent-danger: #D32F2F;    /* Blood */
     
@@ -13,7 +14,7 @@
     --text-muted: #4A4A4A;
 
     --border: rgba(255, 255, 255, 0.08); /* Crisp visible lines */
-    --border-hover: rgba(242, 139, 130, 0.4);
+    --border-hover: rgba(var(--accent-rgb), 0.4);
 
     --skill-accent: #F28B82;
 }

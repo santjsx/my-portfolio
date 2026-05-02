@@ -18,10 +18,10 @@
     font-family: var(--font-mono);
     font-size: 13px;
     color: var(--accent-primary);
-    background: rgba(242, 139, 130, 0.05);
+    background: rgba(var(--accent-rgb), 0.05);
     padding: 4px 10px;
     border-radius: 100px;
-    border: 1px solid rgba(242, 139, 130, 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.1);
 }
 
 .astros-icon {

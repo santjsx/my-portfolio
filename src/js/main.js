@@ -77,6 +77,21 @@ document.addEventListener('DOMContentLoaded', () => {
         initHeroEffects();
         initTitleAnimation();
         
+        // Initialize Hero Waves immediately for better perceived performance
+        window.heroWaves = initWaves('hero-waves-container', {
+            lineColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim() || "#F28B82",
+            backgroundColor: "transparent",
+            waveSpeedX: 0.02,
+            waveSpeedY: 0.01,
+            waveAmpX: 40,
+            waveAmpY: 20,
+            friction: 0.9,
+            tension: 0.01,
+            maxCursorMove: 120,
+            xGap: 12,
+            yGap: 36
+        });
+        
         // Stagger non-critical modules to avoid long tasks
         const deferredModules = [
             { fn: initGSAPAnimations, delay: 0 },
@@ -88,25 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { fn: initContactSection, delay: 1000 },
             { fn: initLanyardWidget, delay: 1200 },
             { fn: initAstrosWidget, delay: 1400 },
-            { fn: initFooterMarquee, delay: 1500 },
-            { 
-                fn: () => {
-                    window.heroWaves = initWaves('hero-waves-container', {
-                        lineColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim() || "#F28B82",
-                        backgroundColor: "transparent",
-                        waveSpeedX: 0.02,
-                        waveSpeedY: 0.01,
-                        waveAmpX: 40,
-                        waveAmpY: 20,
-                        friction: 0.9,
-                        tension: 0.01,
-                        maxCursorMove: 120,
-                        xGap: 12,
-                        yGap: 36
-                    });
-                }, 
-                delay: 1500 
-            }
+            { fn: initFooterMarquee, delay: 1500 }
         ];
 
         deferredModules.forEach(({ fn, delay }) => {

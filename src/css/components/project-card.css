@@ -341,7 +341,7 @@
     font-weight: 800;
     color: var(--accent-primary);
     letter-spacing: 0.3em;
-    background: rgba(242, 139, 130, 0.1);
+    background: rgba(var(--accent-rgb), 0.1);
     padding: 6px 16px 6px 20px; /* Increased left padding to balance letter-spacing */
     border: 1px solid var(--accent-primary);
     border-radius: 100px;

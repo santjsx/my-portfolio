@@ -78,9 +78,9 @@ class StaggeredMenu {
     this.wrapper.appendChild(preLayersContainer);
 
     // 3. Header
-    const header = document.createElement('header');
-    header.className = 'staggered-menu-header';
-    header.setAttribute('aria-label', 'Main navigation header');
+    this.header = document.createElement('header');
+    this.header.className = 'staggered-menu-header';
+    this.header.setAttribute('aria-label', 'Main navigation header');
 
     const logo = document.createElement('a');
     logo.className = 'sm-logo cinematic-logo';
@@ -92,7 +92,7 @@ class StaggeredMenu {
     } else {
       logo.innerHTML = logoText;
     }
-    header.appendChild(logo);
+    this.header.appendChild(logo);
 
     this.toggleBtn = document.createElement('button');
     this.toggleBtn.className = 'sm-toggle';
@@ -121,8 +121,8 @@ class StaggeredMenu {
     this.icon.appendChild(this.plusV);
     this.toggleBtn.appendChild(this.icon);
 
-    header.appendChild(this.toggleBtn);
-    this.wrapper.appendChild(header);
+    this.header.appendChild(this.toggleBtn);
+    this.wrapper.appendChild(this.header);
 
     // 4. Panel
     this.panel = document.createElement('aside');
@@ -205,6 +205,15 @@ class StaggeredMenu {
         }
       });
     }
+
+    // Scroll listener for header background
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        this.header.classList.add('scrolled');
+      } else {
+        this.header.classList.remove('scrolled');
+      }
+    }, { passive: true });
 
     // Handle internal links (close on click)
     this.panel.addEventListener('click', (e) => {

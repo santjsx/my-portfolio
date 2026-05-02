@@ -17,19 +17,19 @@ function initHeadlineReveal() {
     rows.forEach(row => {
         row.style.opacity = '0';
         row.style.transition = 'none';
-        row.style.filter = 'blur(12px)';
-        row.style.transform = 'translateY(15px) scale(0.98)';
+        row.style.filter = 'blur(10px)';
+        row.style.transform = 'translateY(10px) scale(0.98)';
     });
 
-    const tl = gsap.timeline({ delay: 0.3 });
+    const tl = gsap.timeline({ delay: 0.1 });
     
     tl.to(rows, { 
         opacity: 1, 
         filter: 'blur(0px)', 
         y: 0, 
         scale: 1, 
-        duration: 1.2, 
-        stagger: 0.15, 
+        duration: 0.8, 
+        stagger: 0.1, 
         ease: "power3.out",
         clearProps: "filter,transform,transition" 
     });
