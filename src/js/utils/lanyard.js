@@ -150,6 +150,19 @@ export function initLanyardWidget() {
                     onComplete: () => {
                         toggleBtn.classList.remove('lanyard-animating');
                         toggleBtn.classList.remove('active');
+                        
+                        // Critical: Reset Chat State on Close
+                        const chatScreen = document.getElementById('lanyard-chat-screen');
+                        if (chatScreen) {
+                            chatScreen.style.display = 'none';
+                            chatScreen.style.opacity = '0';
+                            chatScreen.style.pointerEvents = 'none';
+                        }
+                        if (content) {
+                            content.style.display = 'flex';
+                            content.style.opacity = '1';
+                        }
+                        
                         gsap.set(toggleBtn, { clearProps: "all" });
                         gsap.set(content, { clearProps: "all" });
                         const closeBtnEl = toggleBtn.querySelector('.lanyard-close-minimal');
@@ -171,6 +184,19 @@ export function initLanyardWidget() {
                     overwrite: "auto",
                     onComplete: () => {
                         toggleBtn.classList.remove('active');
+                        
+                        // Critical: Reset Chat State on Close
+                        const chatScreen = document.getElementById('lanyard-chat-screen');
+                        if (chatScreen) {
+                            chatScreen.style.display = 'none';
+                            chatScreen.style.opacity = '0';
+                            chatScreen.style.pointerEvents = 'none';
+                        }
+                        if (content) {
+                            content.style.display = 'flex';
+                            content.style.opacity = '1';
+                        }
+                        
                         gsap.set(toggleBtn, { clearProps: "all" });
                         gsap.set(content, { clearProps: "all" });
                         const closeBtnEl = toggleBtn.querySelector('.lanyard-close-minimal');
