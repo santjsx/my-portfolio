@@ -77,7 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Initialize Hero Waves immediately for better perceived performance
         initRippleGrid('hero-ripple-grid', {
             enableRainbow: false,
-            gridColor: '#ffffff',
+            color1: getComputedStyle(document.documentElement).getPropertyValue('--accent-purple').trim() || '#3A1C71',
+            color2: getComputedStyle(document.documentElement).getPropertyValue('--accent-salmon').trim() || '#FFA07A',
             rippleIntensity: 0.05,
             gridSize: 10,
             gridThickness: 15,

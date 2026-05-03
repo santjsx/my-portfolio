@@ -9,7 +9,8 @@ export function initRippleGrid(containerId, options = {}) {
 
     const {
         enableRainbow = false,
-        gridColor = '#ffffff',
+        color1 = '#3A1C71',
+        color2 = '#FFA07A',
         rippleIntensity = 0.05,
         gridSize = 10.0,
         gridThickness = 15.0,
@@ -57,7 +58,8 @@ void main() {
 uniform float iTime;
 uniform vec2 iResolution;
 uniform bool enableRainbow;
-uniform vec3 gridColor;
+uniform vec3 color1;
+uniform vec3 color2;
 uniform float rippleIntensity;
 uniform float gridSize;
 uniform float gridThickness;
@@ -138,7 +140,8 @@ void main() {
             pow(cos(iTime), 4.0)
         ) + 0.5;
     } else {
-        t = gridColor;
+        // Use gradient between color1 and color2 based on screen position
+        t = mix(color1, color2, vUv.x);
     }
 
     float finalFade = ddd * vignette;
@@ -150,7 +153,8 @@ void main() {
         iTime: { value: 0 },
         iResolution: { value: [1, 1] },
         enableRainbow: { value: enableRainbow },
-        gridColor: { value: hexToRgb(gridColor) },
+        color1: { value: hexToRgb(color1) },
+        color2: { value: hexToRgb(color2) },
         rippleIntensity: { value: rippleIntensity },
         gridSize: { value: gridSize },
         gridThickness: { value: gridThickness },
