@@ -121,7 +121,7 @@
 }
 
 .hero-accent-text {
-    background: linear-gradient(135deg, var(--accent-primary) 0%, #fff 100%);
+    background: var(--accent-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -140,7 +140,7 @@
     top: 50%;
     width: 0;
     height: 3px;
-    background: var(--accent-primary);
+    background: var(--accent-gradient);
     transform: translateY(-50%) rotate(-2deg);
     transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
     z-index: 2;
@@ -170,7 +170,7 @@
     display: block;
     width: 60px;
     height: 1px;
-    background: var(--accent-primary);
+    background: var(--accent-gradient);
     margin: var(--space-6) 0;
     opacity: 0.6;
     position: relative;
@@ -183,7 +183,7 @@
     top: -2px;
     width: 5px;
     height: 5px;
-    background: var(--accent-primary);
+    background: var(--accent-salmon);
     border-radius: 50%;
 }
 
@@ -219,7 +219,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--accent-primary);
+    background: var(--accent-gradient);
     transform: translateX(-101%);
     transition: transform 0.5s var(--ease-spring);
     z-index: -1;
@@ -304,7 +304,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--accent-primary);
+    background: var(--accent-gradient);
     box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.5);
     animation: statusPulse 2s ease-in-out infinite;
 }

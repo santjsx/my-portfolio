@@ -103,7 +103,7 @@ body.lanyard-active .staggered-menu-header {
   transform: translate(-50%, -50%);
   width: 20px;
   height: 20px;
-  background-color: var(--sm-accent, #2196F3);
+  background: var(--accent-gradient);
   border-radius: 50%;
   opacity: 0;
   transition: all 0.8s cubic-bezier(0.23, 1, 0.320, 1);
@@ -111,7 +111,7 @@ body.lanyard-active .staggered-menu-header {
 }
 
 .sm-toggle:hover {
-  box-shadow: 0 0 0 5px rgba(33, 150, 243, 0.2);
+  box-shadow: 0 0 0 5px rgba(215, 109, 119, 0.2);
   color: #ffffff;
 }
 

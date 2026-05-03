@@ -4,9 +4,12 @@
     --bg-card: #121212;          /* Lighter card base */
     --bg-surface: #1A1A1A;       /* Raised surface */
 
-    --accent-primary: #F28B82;   /* Tyler's Soap Pink */
-    --accent-rgb: 242, 139, 130; 
-    --accent-hover: #FFA39E;
+    --accent-purple: #3A1C71;   /* Royal Purple */
+    --accent-salmon: #FFA07A;   /* Light Salmon */
+    --accent-primary: #D76D77;  /* Harmonious midpoint for single-color usage */
+    --accent-rgb: 215, 109, 119; 
+    --accent-hover: #FFA07A;
+    --accent-gradient: linear-gradient(135deg, var(--accent-purple), var(--accent-salmon));
     --accent-danger: #D32F2F;    /* Blood */
     
     --text-primary: #EBEBEB;     /* Crisp white */
@@ -16,5 +19,5 @@
     --border: rgba(255, 255, 255, 0.08); /* Crisp visible lines */
     --border-hover: rgba(var(--accent-rgb), 0.4);
 
-    --skill-accent: #F28B82;
+    --skill-accent: var(--accent-primary);
 }
