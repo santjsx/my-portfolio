@@ -1635,13 +1635,15 @@ async function loadTMDB(){
     const posterUrl=m.poster_path?`https://image.tmdb.org/t/p/w200${m.poster_path}`:'';
     const mb=$('movie-body');
     if(mb){
+      const isFav = listName === 'One of My favorites';
+      const tagStyles = isFav ? 'background:#ff4d4d;color:#fff' : 'background:#ffcc33;color:#000';
       mb.innerHTML=`
         <div class="movie-body-inner">
           ${posterUrl?`<img class="movie-poster" src="${posterUrl}" alt="${esc(title)}" onerror="this.style.display='none'"/>`:''}
           <div>
             <div class="movie-title">${esc(title)}</div>
             <div class="movie-meta">
-              <span class="tag" style="background:var(--line2);color:var(--fg2)">${esc(listName)}</span> &nbsp;
+              <span class="tag" style="${tagStyles}">${esc(listName)}</span> &nbsp;
               ${(m.release_date||m.first_air_date)?'<span>'+(m.release_date||m.first_air_date).slice(0,4)+'</span> &nbsp;':''}
               <span>★ ${m.vote_average?.toFixed(1)||'—'}</span>
             </div>
