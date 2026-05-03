@@ -102,6 +102,12 @@
     100% { top: 15px; }
 }
 
+@media (max-width: 768px) {
+    .photo-scanner {
+        display: none !important; /* Disable scanning animation on mobile */
+    }
+}
+
 .photo-id-tag {
     position: absolute;
     bottom: 40px;
@@ -232,6 +238,14 @@
     border-radius: 32px;
     padding: 60px;
     overflow: hidden;
+    will-change: transform;
+}
+
+@media (max-width: 768px) {
+    .intel-weapons {
+        backdrop-filter: none;
+        background: rgba(15, 15, 25, 0.6);
+    }
 }
 
 .intel-weapons::before {

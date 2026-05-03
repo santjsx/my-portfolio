@@ -54,14 +54,22 @@
     var(--behind-glow-color) 0%,
     transparent var(--behind-glow-size)
   );
-  filter: blur(50px) saturate(1.1);
+  filter: blur(40px) saturate(1.1);
   opacity: calc(0.8 * var(--card-opacity));
   transition: opacity 200ms ease;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 1024px) {
+  .pc-behind {
+    filter: blur(20px);
+    opacity: calc(0.4 * var(--card-opacity));
+  }
 }
 
 @media (max-width: 768px) {
   .pc-behind {
-    filter: blur(20px) saturate(1.1);
+    display: none; /* Hide expensive blur on mobile */
   }
 }
 
@@ -92,12 +100,13 @@
   animation: glow-bg 12s linear infinite;
   box-shadow: rgba(0, 0, 0, 0.8) calc((var(--pointer-from-left) * 10px) - 3px)
     calc((var(--pointer-from-top) * 20px) - 6px) 20px -5px;
-  transition: transform 1s ease;
-  transform: translateZ(0) rotateX(0deg) rotateY(0deg);
+  transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+  transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
   background: rgba(0, 0, 0, 0.9);
   backface-visibility: hidden;
   overflow: hidden;
   touch-action: pan-y;
+  will-change: transform;
 }
 
 .pc-card:hover,
@@ -136,6 +145,14 @@
   animation: holo-bg 18s linear infinite;
   animation-play-state: running;
   mix-blend-mode: color-dodge;
+  will-change: background-position, filter;
+}
+
+@media (max-width: 768px) {
+  .pc-shine {
+    animation: none; /* Disable expensive animation on mobile */
+    filter: brightness(0.5) opacity(0.3);
+  }
 }
 
 .pc-shine,
@@ -304,12 +321,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   padding: 10px 14px;
   pointer-events: auto;
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .pc-user-info {
+    backdrop-filter: none; /* Disable expensive blur on mobile */
+    background: rgba(15, 15, 25, 0.8);
+  }
 }
 
 .pc-user-details {

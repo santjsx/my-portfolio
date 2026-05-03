@@ -9,7 +9,8 @@ const ANIMATION_CONFIG = {
     INITIAL_X_OFFSET: 70,
     INITIAL_Y_OFFSET: 60,
     DEVICE_BETA_OFFSET: 20,
-    ENTER_TRANSITION_MS: 180
+    ENTER_TRANSITION_MS: 180,
+    MOBILE_THRESHOLD: 768
 };
 
 const clamp = (v, min = 0, max = 100) => Math.min(Math.max(v, min), max);
@@ -145,7 +146,8 @@ export class ProfileCard {
         let targetX = 0;
         let targetY = 0;
 
-        const DEFAULT_TAU = 0.14;
+        const isMobile = window.innerWidth <= ANIMATION_CONFIG.MOBILE_THRESHOLD;
+        const DEFAULT_TAU = isMobile ? 0.25 : 0.14; // Smoother on mobile
         const INITIAL_TAU = 0.6;
         let initialUntil = 0;
 
@@ -175,6 +177,7 @@ export class ProfileCard {
                 '--rotate-y': `${round(centerY / 4)}deg`
             };
 
+            // Throttle updates on mobile if needed, or just apply
             for (const [k, v] of Object.entries(properties)) wrap.style.setProperty(k, v);
         };
 
@@ -296,22 +299,41 @@ export class ProfileCard {
         }
 
         // Mobile orientation handling
-        if (this.props.enableMobileTilt) {
+        if (this.props.enableMobileTilt || isMobile) {
             const handleOrientation = (event) => {
                 const { beta, gamma } = event;
                 if (beta == null || gamma == null) return;
 
                 const centerX = shell.clientWidth / 2;
                 const centerY = shell.clientHeight / 2;
-                const x = clamp(centerX + gamma * this.props.mobileTiltSensitivity, 0, shell.clientWidth);
+                
+                // Reduce sensitivity on mobile for stability
+                const sensitivity = isMobile ? this.props.mobileTiltSensitivity * 0.6 : this.props.mobileTiltSensitivity;
+                
+                const x = clamp(centerX + gamma * sensitivity, 0, shell.clientWidth);
                 const y = clamp(
-                    centerY + (beta - ANIMATION_CONFIG.DEVICE_BETA_OFFSET) * this.props.mobileTiltSensitivity,
+                    centerY + (beta - ANIMATION_CONFIG.DEVICE_BETA_OFFSET) * sensitivity,
                     0,
                     shell.clientHeight
                 );
 
                 this.tiltEngine.setTarget(x, y);
             };
+
+            // On mobile, we might want to start orientation automatically or on first touch
+            if (isMobile) {
+                window.addEventListener('deviceorientation', handleOrientation);
+                
+                // Pause tilt on scroll to save battery and improve FPS
+                let scrollTimeout;
+                window.addEventListener('scroll', () => {
+                    this.tiltEngine.cancel();
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(() => {
+                        this.tiltEngine.setTarget(shell.clientWidth / 2, shell.clientHeight / 2);
+                    }, 150);
+                }, { passive: true });
+            }
 
             shell.addEventListener('click', () => {
                 if (location.protocol !== 'https:') return;
@@ -324,8 +346,6 @@ export class ProfileCard {
                             }
                         })
                         .catch(console.error);
-                } else {
-                    window.addEventListener('deviceorientation', handleOrientation);
                 }
             });
         }
