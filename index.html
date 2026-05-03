@@ -1067,11 +1067,27 @@ if (typeof Lenis !== 'undefined') {
 }
 
 // Anchor link smooth scroll via Lenis
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', e => {
-    e.preventDefault();
-    lenis.scrollTo(anchor.getAttribute('href'), { offset: -60, duration: 1.4 });
+function handleAnchorClick(e) {
+  const href = this.getAttribute('href');
+  if (!href || !href.startsWith('#')) return;
+  
+  e.preventDefault();
+  
+  // If mobile menu is open, close it first
+  if (menuOpen) closeMenu();
+  
+  // Ensure lenis is started before scrolling
+  if (lenis && lenis.start) lenis.start();
+  
+  lenis.scrollTo(href, { 
+    offset: -60, 
+    duration: 1.4,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
   });
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', handleAnchorClick);
 });
 
 /* ══════════════════════════════════════════════════════════
@@ -1183,9 +1199,11 @@ function closeMenu() {
 
 toggle.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
 
+// Menu closing is now handled within handleAnchorClick for anchor links.
+// This listener remains for any non-anchor links if they were added.
 menuLinks.forEach(link => {
   link.addEventListener('click', () => {
-    if (menuOpen) closeMenu();
+    if (menuOpen && !link.getAttribute('href')?.startsWith('#')) closeMenu();
   });
 });
 
