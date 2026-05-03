@@ -24,7 +24,32 @@ export function initThemeEditor() {
         color2: '#FFA07A'
     };
 
-    // 1. Initialization
+    // 1. Secret Activation Logic
+    const isAdmin = localStorage.getItem('sm-admin-mode') === 'true' || 
+                    new URLSearchParams(window.location.search).get('admin') === 'true';
+    
+    if (isAdmin) {
+        localStorage.setItem('sm-admin-mode', 'true');
+        lab.style.display = 'flex';
+    } else {
+        lab.style.display = 'none';
+    }
+
+    // Keyboard shortcut to toggle admin mode: Shift + Alt + T
+    window.addEventListener('keydown', (e) => {
+        if (e.shiftKey && e.altKey && e.key === 'T') {
+            const currentMode = localStorage.getItem('sm-admin-mode') === 'true';
+            const newMode = !currentMode;
+            localStorage.setItem('sm-admin-mode', newMode.toString());
+            lab.style.display = newMode ? 'flex' : 'none';
+            
+            if (newMode) {
+                showToast('ADMIN MODE ENABLED');
+            }
+        }
+    });
+
+    // 2. Initialization
     const savedColor1 = localStorage.getItem('sm-theme-color-1') || DEFAULTS.color1;
     const savedColor2 = localStorage.getItem('sm-theme-color-2') || DEFAULTS.color2;
 
