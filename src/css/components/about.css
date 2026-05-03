@@ -291,18 +291,26 @@
 .intel-weapons {
     display: flex;
     flex-direction: column;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+    backdrop-filter: blur(20px);
+    border-radius: 32px;
+    padding: 80px 60px 60px;
+    overflow: hidden;
 }
 
-.arsenal-title {
-    font-family: var(--font-mono);
-    font-size: 11px;
+.intel-weapons::before {
+    content: 'T';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 300px;
     font-weight: 900;
-    color: var(--text-muted);
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    margin: 0 0 32px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.015);
+    font-family: var(--font-mono);
+    pointer-events: none;
+    line-height: 1;
 }
 
 .skills-grid {
