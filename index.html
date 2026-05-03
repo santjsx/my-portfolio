@@ -19,6 +19,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer async></script>
     <link rel="stylesheet" href="/src/css/main.css">
+    <link rel="stylesheet" href="/src/css/components/profile-card.css">
     <script type="module" src="/src/js/main.js" fetchpriority="high"></script>
   </head>
   
@@ -129,7 +130,7 @@
           </div>
           <div class="meta-block fade-up">
             <span class="meta-label">Location</span>
-            <span class="meta-value">India</span>
+            <span class="meta-value india-flag-text">India</span>
           </div>
 
           <span id="hero-quote" class="compact-cinematic-quote text-left mt-8 fade-up">&ldquo;There is a difference between knowing the path and walking the path.&rdquo;</span>
@@ -227,40 +228,20 @@
     <section class="about-section" id="about">
       <!-- THE CINEMATIC BAND — Photo + Name -->
       <div class="character-band">
-        <div class="character-photo fade-up">
-          <div class="photo-scanner"></div>
-          <img id="about-image" src="images/santhoshh.webp" alt="Santhosh" loading="lazy">
-          <div class="photo-id-tag">ID: SR-0226</div>
+        <div class="character-photo fade-up" id="profile-card-container">
+          <!-- ProfileCard will be injected here -->
         </div>
         <div class="character-info">
-          <div class="dossier-header fade-up">
-            <span class="dossier-status">STATUS: VERIFIED</span>
-            <span class="dossier-id">REF: 8503-REDDY</span>
+          <div class="manifesto-wrapper fade-up">
+            <p class="philosophy-text">
+              I'm a web developer & designer based in <span class="india-flag-text">India</span>! I specialize in <strong>Frontend Engineering</strong>, focusing on building high quality web experiences through <strong>clean code</strong> and <strong>thoughtful design</strong>.
+            </p>
+            <a href="#contact" class="get-in-touch-btn">
+              <span class="sparkle">✦</span>
+              Get in touch
+              <span class="sparkle">✦</span>
+            </a>
           </div>
-          
-          <h2 class="character-name fade-up">
-            <span class="name-first">Santhosh</span>
-            <span class="character-name-accent">Reddy</span>
-          </h2>
-
-          <div class="character-meta fade-up">
-            <div class="meta-chip">ARCHITECT</div>
-            <div class="meta-chip">DESIGNER</div>
-            <div class="meta-chip">CODER</div>
-          </div>
-
-          <div class="character-stats fade-up">
-            <div class="stat-item">
-              <span class="stat-label">ORIGIN</span>
-              <span class="stat-value">IND_V01</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">CORE</span>
-              <span class="stat-value">FRONTEND</span>
-            </div>
-          </div>
-
-          <p class="character-oneliner fade-up">"It's only after we've lost everything that we're free to build anything."</p>
         </div>
       </div>
 
@@ -268,32 +249,50 @@
       <div class="container">
         <div class="intel-briefing">
 
-          <!-- 1. The Manifesto: Magazine Spread -->
-          <div class="intel-manifesto fade-up">
-            <div class="manifesto-badge">
-              <span class="badge-text">CLASSIFIED / CORE_BELIEF</span>
-            </div>
-            <div class="manifesto-content">
-              <h3 class="manifesto-heading">PHILOSOPHY_</h3>
-              <p class="intel-manifesto-text">
-                I'm a web developer & designer based in <span class="india-flag-text">INDIA</span>! I specialize in Frontend Engineering, focusing on building high quality web experiences through clean code and thoughtful design.
-              </p>
-              <div class="manifesto-footer">
-                  <span class="manifesto-sig">SR // 2026</span>
-                  <div class="manifesto-line"></div>
-              </div>
-            </div>
-          </div>
 
           <!-- 2. The Arsenal — Film Credits Style -->
-          <div id="arsenal-list" class="intel-weapons fade-up">
+          <div id="arsenal-list-v2" class="intel-weapons fade-up">
             <div class="manifesto-badge">
-              <span class="badge-text">EQUIPMENT // LOG</span>
+              <span class="badge-text">SKILLS</span>
             </div>
             <div class="manifesto-content">
-              <h3 class="manifesto-heading">TECH LOADOUT_</h3>
               
               <div class="skills-grid">
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/Git.svg" alt="Git">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">Git</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/Linux.svg" alt="Linux">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">Linux</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/NPM.svg" alt="NPM">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">NPM</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/Node.js.svg" alt="Node.js">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">Node.js</span>
+                  </div>
+                </div>
                 <div class="skill-item">
                   <div class="skill-icon">
                     <img src="images/skills_logos/HTML5.svg" alt="HTML5">
@@ -350,7 +349,7 @@
 
                 <div class="skill-item">
                   <div class="skill-icon">
-                    <img src="images/skills_logos/Visual%20Studio%20Code%20(VS%20Code).svg" alt="VS Code">
+                    <img src="images/skills_logos/Visual Studio Code (VS Code).svg" alt="VS Code">
                   </div>
                   <div class="skill-info">
                     <span class="skill-name">VS Code</span>
@@ -383,9 +382,10 @@
                     <span class="skill-name">Vite.js</span>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
+
+              </div> <!-- skills-grid -->
+            </div> <!-- manifesto-content -->
+          </div> <!-- arsenal-list-v2 -->
 
           <!-- 3. The Phases: Cinema Chapter Cards -->
           <div class="intel-phases fade-up">

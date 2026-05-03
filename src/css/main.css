@@ -268,10 +268,12 @@ img {
 
 /* India Flag Text Effect */
 .india-flag-text {
-    background: linear-gradient(to right, #FF9933 30%, #FFFFFF 30%, #FFFFFF 70%, #138808 70%);
+    background: linear-gradient(to right, #FF9933, #FFFFFF, #138808);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-weight: 800;
+    font-weight: 600;
     display: inline-block;
-    filter: drop-shadow(0 0 2px rgba(255,255,255,0.1));
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.1));
+    letter-spacing: 0.02em;
+    font-size: 0.9em;
 }

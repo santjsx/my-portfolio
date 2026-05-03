@@ -15,6 +15,7 @@ import { initAstrosWidget } from './utils/astros.js';
 import { initRippleGrid } from './utils/ripple-grid.js';
 import { initStaggeredMenu } from './utils/staggered-menu.js';
 import { initFooterMarquee } from './utils/footer-marquee.js';
+import { ProfileCard } from './components/ProfileCard.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('⚡ ARCHIVE BOOT: DOM READY');
@@ -96,13 +97,53 @@ document.addEventListener('DOMContentLoaded', () => {
             { fn: initContactSection, delay: 1000 },
             { fn: initLanyardWidget, delay: 1200 },
             { fn: initAstrosWidget, delay: 1400 },
-            { fn: initFooterMarquee, delay: 1500 }
+            { fn: initFooterMarquee, delay: 1500 },
+            { fn: initProfileCard, delay: 1600 }
         ];
 
         deferredModules.forEach(({ fn, delay }) => {
             setTimeout(() => {
                 if (typeof fn === 'function') fn();
             }, delay);
+        });
+    }
+
+    function initProfileCard() {
+        const container = document.getElementById('profile-card-container');
+        if (!container) return;
+
+        // Custom SVG Icon Pattern for the background
+        const iconSvg = `
+            <svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="2">
+                    <path d="M50 100 L30 120 L50 140 M100 100 L120 120 L100 140" />
+                    <path d="M250 50 L230 70 L250 90 M300 50 L320 70 L300 90" />
+                    <path d="M150 300 L130 320 L150 340 M200 300 L220 320 L200 340" />
+                    <path d="M320 250 L300 270 L320 290 M370 250 L390 270 L370 290" />
+                </g>
+            </svg>
+        `.trim();
+        const iconUrl = `data:image/svg+xml;base64,${btoa(iconSvg)}`;
+
+        new ProfileCard(container, {
+            name: "Santhosh Reddy",
+            title: "Developer",
+            handle: "santjsx",
+            status: "Online",
+            contactText: "Contact",
+            avatarUrl: "images/santhoshh-removebg-preview.png",
+            iconUrl: iconUrl,
+            behindGlowEnabled: true,
+            behindGlowColor: "rgba(100, 150, 255, 0.4)", 
+            innerGradient: "linear-gradient(180deg, #16162d 0%, #08081a 100%)",
+            enableTilt: true,
+            showUserInfo: false,
+            onContactClick: () => {
+                const contactSection = document.getElementById('contact');
+                if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
         });
     }
 

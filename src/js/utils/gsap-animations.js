@@ -71,12 +71,13 @@ export function initGSAPAnimations() {
             });
         }
 
-        // About Photo subtle zoom out on scroll
+        // About Photo subtle zoom out on scroll - Disabled for ProfileCard compatibility
+        /*
         const aboutPhoto = document.querySelector('.character-photo img');
         if (aboutPhoto) {
             gsap.to(aboutPhoto, {
                 scale: 1.15,
-                yPercent: 10,
+                yPercent: 0, 
                 ease: "none",
                 scrollTrigger: {
                     trigger: ".character-band",
@@ -86,6 +87,7 @@ export function initGSAPAnimations() {
                 }
             });
         }
+        */
     });
 
     mm.add("(max-width: 900px)", () => {

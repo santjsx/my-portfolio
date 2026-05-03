@@ -5,10 +5,13 @@
 
 .contact-section {
     position: relative;
-    padding: clamp(4rem, 10vw, 6rem) 0 2rem;
+    padding: clamp(6rem, 12vw, 10rem) 0;
     background: var(--bg-dark);
     color: var(--text-primary);
     overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
 }
 
 /* Subtle Watermark Pattern */
@@ -25,16 +28,16 @@
     display: grid;
     grid-template-columns: 1fr 0.8fr 1fr;
     gap: clamp(2rem, 5vw, 3rem);
-    align-items: flex-start;
+    align-items: stretch;
     position: relative;
     z-index: 10;
 }
 
-/* ── Column 1: Intro ── */
 .contact-intro {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-3);
+    padding-top: 6px; /* Align with headers */
 }
 
 .status-badge {
@@ -52,6 +55,7 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     width: fit-content;
+    height: 28px; /* Match contact-col-header height */
 }
 
 .status-dot {
@@ -74,12 +78,15 @@
 /* ── Common Pill Styles ── */
 .contact-col-header {
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    margin-bottom: var(--space-3);
+    letter-spacing: 0.2em;
+    margin-bottom: var(--space-6);
     display: block;
+    height: 28px; /* Consistent header height */
+    display: flex;
+    align-items: center;
 }
 
 .pill-card {

@@ -36,7 +36,7 @@ export function initAboutReveal() {
     // 3. ScrollTriggered Cinematic Animation
     ScrollTrigger.create({
         trigger: ".character-band",
-        start: "top 75%",
+        start: "top 90%",
         onEnter: () => {
             gsap.to(characters, {
                 opacity: 1,

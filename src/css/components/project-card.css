@@ -5,10 +5,13 @@
 .gallery-section {
     position: relative;
     width: 100%;
-    padding: clamp(4rem, 10vw, 8rem) 0;
-    background: var(--bg-dark); /* Match the theme */
+    padding: clamp(6rem, 12vw, 10rem) 0;
+    background: var(--bg-dark); 
     color: var(--text-primary);
     overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
 }
 
 .container.projects-grid-wrap {
@@ -96,6 +99,9 @@
 
 .project-content {
     padding: 0 var(--space-2);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .project-title-row {
@@ -129,6 +135,7 @@
     color: var(--text-secondary);
     line-height: 1.6;
     font-weight: 400;
+    flex: 1;
 }
 
 /* ── Mobile ── */

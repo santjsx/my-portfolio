@@ -7,7 +7,7 @@
     align-items: center;
     position: relative;
     overflow: hidden;
-    padding: var(--nav-height) 0 var(--space-12);
+    padding: var(--nav-height) 0;
     /* Promotion to layer */
     transform: translateZ(0);
 }
