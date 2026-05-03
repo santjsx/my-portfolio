@@ -97,6 +97,50 @@ export function initArchiveEngine() {
         });
     });
 
+    // 4. Design Matrix Logic (Unified)
+    const color1Input = document.getElementById('accent-color-1');
+    const color2Input = document.getElementById('accent-color-2');
+    const hex1Text = document.getElementById('hex-1');
+    const hex2Text = document.getElementById('hex-2');
+
+    // Load saved colors or defaults
+    const DEFAULTS = { color1: '#3A1C71', color2: '#FFA07A' };
+    const savedC1 = localStorage.getItem('sm-theme-color-1') || DEFAULTS.color1;
+    const savedC2 = localStorage.getItem('sm-theme-color-2') || DEFAULTS.color2;
+    
+    applyColors(savedC1, savedC2);
+    if (color1Input) color1Input.value = savedC1;
+    if (color2Input) color2Input.value = savedC2;
+    if (hex1Text) hex1Text.textContent = savedC1;
+    if (hex2Text) hex2Text.textContent = savedC2;
+
+    color1Input?.addEventListener('input', (e) => {
+        const c1 = e.target.value;
+        const c2 = color2Input.value;
+        applyColors(c1, c2);
+        hex1Text.textContent = c1;
+        saveColors(c1, c2);
+    });
+
+    color2Input?.addEventListener('input', (e) => {
+        const c1 = color1Input.value;
+        const c2 = e.target.value;
+        applyColors(c1, c2);
+        hex2Text.textContent = c2;
+        saveColors(c1, c2);
+    });
+
+    function applyColors(c1, c2) {
+        document.documentElement.style.setProperty('--accent-purple', c1);
+        document.documentElement.style.setProperty('--accent-salmon', c2);
+        window.dispatchEvent(new CustomEvent('themeChanged', { detail: { color1: c1, color2: c2 } }));
+    }
+
+    function saveColors(c1, c2) {
+        localStorage.setItem('sm-theme-color-1', c1);
+        localStorage.setItem('sm-theme-color-2', c2);
+    }
+
     saveBtn?.addEventListener('click', () => {
         // In a real app, this would push to GitHub or a DB.
         // For this static site, we save to localStorage and notify user.

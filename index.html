@@ -657,47 +657,6 @@
   </aside>
 
 
-  <!-- 10. Theme Lab — Admin Style Controls -->
-  <div id="theme-lab" class="theme-lab">
-    <div id="theme-lab-panel" class="theme-lab-panel">
-      <div class="theme-lab-header">
-        <span class="theme-lab-title">Design Lab_</span>
-        <button id="theme-lab-close" class="theme-lab-close">CLOSE</button>
-      </div>
-      
-      <div class="theme-lab-control">
-        <span class="control-label">Accent Primary</span>
-        <div class="color-picker-row">
-          <div class="color-input-wrapper">
-            <input type="color" id="accent-color-1" value="#3A1C71">
-          </div>
-          <span class="color-hex" id="hex-1">#3A1C71</span>
-        </div>
-      </div>
-
-      <div class="theme-lab-control">
-        <span class="control-label">Accent Secondary</span>
-        <div class="color-picker-row">
-          <div class="color-input-wrapper">
-            <input type="color" id="accent-color-2" value="#FFA07A">
-          </div>
-          <span class="color-hex" id="hex-2">#FFA07A</span>
-        </div>
-      </div>
-
-      <div class="theme-lab-footer">
-        <button id="theme-reset" class="theme-btn reset">Reset</button>
-        <button id="theme-copy" class="theme-btn copy">Copy CSS</button>
-      </div>
-    </div>
-
-    <button id="theme-lab-toggle" class="theme-lab-toggle" aria-label="Open Theme Lab">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
-      </svg>
-    </button>
-  </div>
-
   <!-- 11. Archive Engine — Professional Admin Portal -->
   <div id="engine-auth" class="engine-auth">
     <div class="auth-box">
@@ -727,9 +686,28 @@
         </div>
       </div>
 
+      <!-- Section: Visual Design (Merged from Theme Lab) -->
+      <div class="engine-section">
+        <span class="engine-section-title">02. Design Matrix</span>
+        <div class="engine-field">
+          <label class="engine-label">Primary Accent (Purple)</label>
+          <div class="color-picker-row" style="background: #111; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+            <input type="color" id="accent-color-1" value="#3A1C71" style="background: none; border: none; width: 30px; height: 30px; cursor: pointer;">
+            <span class="color-hex" id="hex-1" style="font-family: var(--font-mono); font-size: 12px;">#3A1C71</span>
+          </div>
+        </div>
+        <div class="engine-field">
+          <label class="engine-label">Secondary Accent (Salmon)</label>
+          <div class="color-picker-row" style="background: #111; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+            <input type="color" id="accent-color-2" value="#FFA07A" style="background: none; border: none; width: 30px; height: 30px; cursor: pointer;">
+            <span class="color-hex" id="hex-2" style="font-family: var(--font-mono); font-size: 12px;">#FFA07A</span>
+          </div>
+        </div>
+      </div>
+
       <!-- Section: Hero Content -->
       <div class="engine-section">
-        <span class="engine-section-title">02. Hero Configuration</span>
+        <span class="engine-section-title">03. Hero Configuration</span>
         <div class="engine-field">
           <label class="engine-label">Headline Row 1</label>
           <input type="text" id="eng-hero-1" class="engine-input" placeholder="Building high-end">
@@ -742,7 +720,7 @@
 
       <!-- Section: Project Management -->
       <div class="engine-section">
-        <span class="engine-section-title">03. Project Arsenal</span>
+        <span class="engine-section-title">04. Project Arsenal</span>
         <div class="engine-list" id="eng-projects-list">
           <div class="engine-list-item">
             <div class="item-info">
@@ -759,7 +737,7 @@
 
       <!-- Section: Social Matrix -->
       <div class="engine-section">
-        <span class="engine-section-title">04. Social Matrix</span>
+        <span class="engine-section-title">05. Social Matrix</span>
         <div class="engine-field">
           <label class="engine-label">GitHub URL</label>
           <input type="text" class="engine-input" placeholder="https://github.com/santjsx">
