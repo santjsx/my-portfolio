@@ -1,823 +1,1643 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Santhosh Reddy // Developer</title>
-  <meta name="description" content="Santhosh Reddy // Developer. Clean Code.">
-  <link rel="icon" type="image/png" href="/favicon.png">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Santhosh Reddy — Frontend Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+/* ─── RESET & TOKENS ──────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050507;
+  --bg2:#0c0c10;
+  --bg3:#12121a;
+  --line:#1e1e28;
+  --line2:#2a2a38;
+  --fg:#e8e4db;
+  --fg2:#8a8590;
+  --fg3:#4a4758;
+  --accent:#7effa0;
+  --accent2:#ff6b35;
+  --accent3:#5b8cff;
+  --display:'Syne',sans-serif;
+  --mono:'Syne Mono',monospace;
+  --body:'DM Sans',sans-serif;
+  --nav-h:60px;
+}
+html{scroll-behavior:auto} /* Lenis handles smooth scroll */
+.hero-main,.contact-inner{overflow-x:clip}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--body);
+  font-weight:300;
+  line-height:1.6;
+  overflow-x:hidden;
+  cursor:none;
+}
+@media(pointer:coarse){body{cursor:auto}}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{cursor:none;border:none;background:none;font-family:inherit}
+@media(pointer:coarse){button{cursor:pointer}}
 
-  <!-- Critical Resource Preload -->
-  <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGkyMZhrib2Bg-4.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Special+Elite&display=swap">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Special+Elite&display=swap"
-    rel="stylesheet">
+/* ─── SCROLLBAR ───────────────────────────────────────────── */
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--line2);border-radius:2px}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer async></script>
-    <link rel="stylesheet" href="/src/css/main.css">
-    <link rel="stylesheet" href="/src/css/components/profile-card.css">
-    <link rel="stylesheet" href="/src/css/components/theme-editor.css">
-    <link rel="stylesheet" href="/src/css/components/engine.css">
-    <link rel="stylesheet" href="/src/css/components/navigation-v2.css">
-    <script type="module" src="/src/js/main.js" fetchpriority="high"></script>
-  </head>
-  
-  <body class="dark-container" style="padding: 0;">
-  
-  <!-- 8. Floating Lanyard Status Widget -->
-  <div id="lanyard-widget" class="lanyard-container">
-    <div class="lanyard-hint wobble-hint">
-      <div class="hint-icon-wrapper">
-        <svg class="hint-icon-svg" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+/* ─── CURSOR ──────────────────────────────────────────────── */
+#cur-dot,#cur-ring{display:none}
+@media(pointer:fine){
+  #cur-dot{
+    display:block;position:fixed;top:0;left:0;width:6px;height:6px;
+    background:var(--accent);border-radius:50%;
+    pointer-events:none;z-index:9999;
+    transform:translate(-50%,-50%);
+    transition:width .15s,height .15s,background .15s;
+  }
+  #cur-ring{
+    display:block;position:fixed;top:0;left:0;width:32px;height:32px;
+    border:1px solid rgba(126,255,160,.3);border-radius:50%;
+    pointer-events:none;z-index:9998;
+    transform:translate(-50%,-50%);
+    transition:width .2s,height .2s,border-color .2s;
+  }
+  body:has(a:hover,button:hover) #cur-dot{width:10px;height:10px;background:var(--accent2)}
+  body:has(a:hover,button:hover) #cur-ring{width:44px;height:44px;border-color:rgba(255,107,53,.4)}
+}
+
+/* ─── NOISE + SCANLINES ───────────────────────────────────── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:9000;pointer-events:none;
+  opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:160px 160px;
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:8999;pointer-events:none;
+  background:repeating-linear-gradient(to bottom,transparent 0,transparent 2px,rgba(0,0,0,.05) 2px,rgba(0,0,0,.05) 4px);
+}
+
+/* ─── HELPERS ─────────────────────────────────────────────── */
+.tag{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--fg3);
+  border:1px solid var(--line);padding:.25rem .6rem;border-radius:2px;
+}
+.tag.green{color:var(--accent);border-color:rgba(126,255,160,.2)}
+.tag.orange{color:var(--accent2);border-color:rgba(255,107,53,.2)}
+.tag.blue{color:var(--accent3);border-color:rgba(91,140,255,.2)}
+
+/* ─── PULSE ───────────────────────────────────────────────── */
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes orbit{from{transform:rotate(0deg) translateX(24px)}to{transform:rotate(360deg) translateX(24px)}}
+@keyframes eq-dance{0%{transform:scaleY(.3)}100%{transform:scaleY(1)}}
+@keyframes music-pulse{0%{opacity:.7}100%{opacity:1}}
+@keyframes slide-in{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+/* ─── SECTION PROGRESS LINE ──────────────────────────────── */
+.section-progress{
+  position:absolute;left:0;top:0;width:2px;height:0%;
+  background:var(--accent);opacity:.4;
+  pointer-events:none;z-index:10;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  height:var(--nav-h);
+  border-bottom:1px solid var(--line);
+  background:rgba(5,5,7,.88);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  height:100%;max-width:1200px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,4rem);
+  gap:1rem;
+}
+.nav-logo{
+  display:flex;align-items:center;gap:.65rem;
+  text-decoration:none;flex-shrink:0;white-space:nowrap;
+  cursor:pointer;
+}
+/* Geometric monogram mark */
+.nav-logo-mark{
+  position:relative;width:28px;height:28px;flex-shrink:0;
+}
+.nav-logo-mark svg{width:28px;height:28px;display:block;}
+/* Name block */
+.nav-logo-text{
+  display:flex;flex-direction:column;gap:.05rem;line-height:1;
+}
+.nav-logo-first{
+  font-family:var(--display);font-weight:800;font-size:.78rem;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--fg);
+  transition:color .25s;
+}
+.nav-logo-last{
+  font-family:var(--mono);font-size:.52rem;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--fg3);
+  transition:color .25s, letter-spacing .35s;
+}
+.nav-logo:hover .nav-logo-first{color:var(--accent)}
+.nav-logo:hover .nav-logo-last{color:var(--fg2);letter-spacing:.38em}
+/* SVG ring spin on hover */
+.nav-logo-mark .ring{
+  transform-origin:14px 14px;
+  transition:transform .6s cubic-bezier(.34,1.56,.64,1);
+}
+.nav-logo:hover .ring{transform:rotate(90deg)}
+/* dot pulse */
+.nav-logo-mark .dot{
+  transition:fill .25s;
+}
+.nav-logo:hover .dot{fill:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:clamp(1rem,3vw,2.5rem)}
+.nav-links a{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--fg3);
+  transition:color .2s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;
+  background:var(--accent);transition:width .2s;
+}
+.nav-links a:hover{color:var(--fg)}
+.nav-links a:hover::after{width:100%}
+.nav-status{
+  display:flex;align-items:center;gap:.5rem;
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(--accent);
+  white-space:nowrap;flex-shrink:0;
+}
+.nav-status::before{
+  content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);
+  animation:pulse-dot 2s infinite;flex-shrink:0;
+}
+.nav-toggle{
+  display:none;flex-direction:column;gap:4px;
+  width:24px;padding:4px 0;cursor:pointer;
+  background:none;border:none;
+}
+.nav-toggle span{
+  display:block;height:1px;background:var(--fg2);
+  transform-origin:center;
+  will-change:transform,opacity;
+}
+.mobile-menu{
+  display:flex;
+  position:fixed;inset:var(--nav-h) 0 0 0;z-index:499;
+  background:rgba(5,5,7,.97);backdrop-filter:blur(24px);
+  flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+  border-top:1px solid var(--line);
+  clip-path:inset(0 0 100% 0);
+  pointer-events:none;
+  will-change:clip-path;
+}
+.mobile-menu.is-open{pointer-events:all}
+.mobile-menu a{
+  font-family:var(--display);font-weight:700;font-size:2.2rem;
+  color:var(--fg3);letter-spacing:-.02em;
+  transition:color .2s;
+  opacity:0;transform:translateY(28px);
+  display:flex;align-items:center;gap:.6rem;
+}
+.mobile-menu a:hover{color:var(--fg)}
+.mobile-menu a::before{
+  content:attr(data-num);
+  font-family:var(--mono);font-size:.55rem;letter-spacing:.18em;
+  color:var(--fg3);margin-top:.15rem;
+  opacity:0;transform:translateX(-8px);
+  transition:opacity .2s,transform .2s;display:inline-block;
+}
+.mobile-menu a:hover::before{opacity:1;transform:none;color:var(--accent)}
+.menu-rule{
+  width:1px;height:0;background:var(--line2);
+  position:absolute;top:0;opacity:0;
+}
+.menu-rule.left{left:clamp(2rem,8vw,5rem)}
+.menu-rule.right{right:clamp(2rem,8vw,5rem)}
+.menu-meta{
+  position:absolute;bottom:2rem;left:0;right:0;
+  display:flex;justify-content:space-between;
+  padding:0 clamp(1.5rem,6vw,4rem);
+  font-family:var(--mono);font-size:.55rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--fg3);
+  opacity:0;
+}
+.menu-meta span{color:var(--accent)}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .nav-toggle{display:flex}
+}
+@media(max-width:400px){
+  .nav-logo-text{display:none}
+  .nav-status{display:none}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════════════ */
+.hero{
+  min-height:100svh;
+  display:flex;flex-direction:column;
+  padding-top:var(--nav-h);
+  border-bottom:1px solid var(--line);
+  overflow-x:hidden;
+}
+.hero-main{
+  flex:1;display:flex;flex-direction:column;justify-content:center;
+  padding:clamp(2.5rem,7vh,6rem) clamp(1.25rem,5vw,4rem);
+  max-width:1200px;margin:0 auto;width:100%;
+  overflow:hidden;
+}
+.hero-eyebrow{display:flex;align-items:center;gap:1rem;margin-bottom:clamp(1.5rem,3vh,2.5rem);opacity:0}
+.hero-eyebrow-line{width:2rem;height:1px;background:var(--fg3);flex-shrink:0}
+
+/* Hero name — split into chars for GSAP */
+.hero-name{
+  font-family:var(--display);
+  font-size:clamp(2.5rem,8.2vw,10.5rem);
+  font-weight:800;line-height:.9;letter-spacing:-.03em;
+  color:var(--fg);margin-bottom:.8rem;
+  overflow:visible;
+}
+.name-line{display:block;white-space:nowrap}
+.hero-name .char{display:inline-block;opacity:0;transform:translateY(110%)}
+.hero-name em{font-style:normal;-webkit-text-stroke:1px var(--fg3);color:transparent}
+.hero-name em .char{display:inline-block;opacity:0;transform:translateY(110%)}
+
+.hero-sub{
+  display:flex;align-items:flex-start;gap:clamp(1.5rem,4vw,3rem);
+  margin-top:clamp(2rem,4vh,3rem);
+  flex-wrap:wrap;
+  opacity:0;
+}
+.hero-role{
+  font-family:var(--display);font-size:clamp(.9rem,1.8vw,1.25rem);
+  font-weight:500;color:var(--fg2);max-width:480px;line-height:1.55;
+}
+.hero-role strong{color:var(--accent);font-weight:600}
+.hero-meta{
+  display:flex;flex-direction:column;gap:.5rem;
+  margin-left:auto;text-align:right;
+}
+@media(max-width:600px){
+  .hero-main{padding:clamp(2rem,6vh,4rem) clamp(1rem,4vw,2rem)}
+  .hero-name{font-size:clamp(2.2rem,10.5vw,4.8rem);letter-spacing:-.04em}
+  .hero-sub{flex-direction:column;gap:1.5rem}
+  .hero-meta{text-align:left;margin-left:0}
+}
+.hero-meta-item{
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--fg3);
+}
+.hero-meta-item span{color:var(--fg2);margin-left:.5rem}
+
+.presence-bar{
+  margin-top:clamp(2rem,4vh,3rem);
+  padding:.8rem 1rem;border:1px solid var(--line);
+  border-radius:4px;background:var(--bg2);
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  max-width:520px;
+  transition:border-color .3s;
+  opacity:0;
+}
+.presence-bar:hover{border-color:var(--line2)}
+.presence-avatar{
+  width:36px;height:36px;border-radius:50%;
+  border:1.5px solid var(--line);object-fit:cover;
+  background:var(--bg3);flex-shrink:0;
+}
+.presence-info{flex:1;min-width:0}
+.presence-name{font-family:var(--display);font-weight:600;font-size:.82rem;color:var(--fg)}
+.presence-activity{
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.06em;
+  color:var(--fg3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.presence-activity span{color:var(--accent2)}
+
+.hero-bottom{
+  border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+@media(max-width:600px){
+  .hero-bottom{grid-template-columns:repeat(2,1fr)}
+  .hero-stat:nth-child(2){border-right:none}
+  .hero-stat:nth-child(3){border-bottom:none}
+  .hero-stat:nth-child(4){border-right:none;border-bottom:none}
+}
+.hero-stat{
+  padding:1.2rem clamp(1rem,3vw,4rem);
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  transition:background .25s;
+  opacity:0;
+  transform:translateY(20px);
+}
+.hero-stat:last-child{border-right:none}
+@media(min-width:601px){.hero-stat{border-bottom:none}}
+.hero-stat:hover{background:var(--bg2)}
+.hero-stat-num{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(1.3rem,3vw,2.2rem);color:var(--fg);
+  line-height:1;margin-bottom:.25rem;
+}
+.hero-stat-label{
+  font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--fg3);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ABOUT — Magnetic / morph animation
+═══════════════════════════════════════════════════════════ */
+.about{
+  border-bottom:1px solid var(--line);
+  padding:clamp(3rem,8vh,7rem) 0;
+  position:relative;overflow:hidden;
+}
+/* Glowing orb background that moves on scroll */
+.about-orb{
+  position:absolute;width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(126,255,160,.04) 0%, transparent 70%);
+  pointer-events:none;right:-200px;top:-100px;
+  will-change:transform;
+}
+.about-inner{
+  max-width:1200px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,4rem);
+  display:grid;grid-template-columns:clamp(220px,25%,300px) 1fr;
+  gap:clamp(2rem,6vw,5rem);align-items:start;
+}
+@media(max-width:760px){
+  .about-inner{grid-template-columns:1fr;gap:2.5rem}
+}
+.about-label{
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--fg3);margin-bottom:1.2rem;
+}
+.about-phases{display:flex;flex-direction:column;gap:.7rem}
+.phase{
+  display:flex;gap:1rem;align-items:flex-start;
+  padding:.7rem .85rem;border:1px solid var(--line);border-radius:4px;
+  transition:border-color .2s,background .2s;cursor:default;
+  opacity:0; /* GSAP will animate */
+  transform:translateX(-40px);
+}
+.phase:hover{border-color:var(--line2);background:var(--bg3)}
+.phase-num{
+  font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;
+  color:var(--accent);min-width:fit-content;margin-top:2px;
+}
+.phase-text{font-size:.78rem;color:var(--fg2);line-height:1.5}
+.phase-year{font-family:var(--mono);font-size:.56rem;color:var(--fg3);display:block;margin-top:.2rem}
+
+/* Quote — typewriter via clip-path */
+.about-quote{
+  font-family:var(--display);
+  font-size:clamp(1.4rem,3vw,2.6rem);
+  font-weight:600;line-height:1.2;color:var(--fg);
+  position:relative;padding-left:1.5rem;
+  clip-path:inset(0 100% 0 0); /* revealed by GSAP */
+}
+.about-quote::before{
+  content:'"';position:absolute;top:-.6rem;left:-.2rem;
+  font-size:clamp(2.5rem,5vw,4rem);color:var(--line2);
+  font-family:var(--display);line-height:1;
+}
+.about-quote-src{
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  color:var(--fg3);margin-top:1rem;text-transform:uppercase;
+  display:block;opacity:0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SKILLS — Stagger grid with scale+fade
+═══════════════════════════════════════════════════════════ */
+.skills{border-bottom:1px solid var(--line);padding:clamp(3rem,8vh,6rem) 0;position:relative;overflow:hidden}
+.skills-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem)}
+.section-header{
+  display:flex;align-items:baseline;justify-content:space-between;
+  margin-bottom:clamp(1.5rem,4vh,3rem);gap:1rem;flex-wrap:wrap;
+}
+.section-title{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(1.6rem,4vw,3rem);letter-spacing:-.02em;
+  overflow:hidden;
+}
+.section-title .title-inner{display:block;transform:translateY(100%);opacity:0}
+
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(clamp(140px,18vw,200px),1fr));
+  gap:1px;border:1px solid var(--line);overflow:hidden;border-radius:4px;
+}
+.skill-cat{
+  padding:clamp(1rem,2.5vw,1.5rem);background:var(--bg);
+  transition:background .2s;
+  opacity:0;
+  transform:scale(.92) translateY(20px);
+}
+.skill-cat:hover{background:var(--bg2)}
+.skill-cat-name{
+  font-family:var(--mono);font-size:.56rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--fg3);margin-bottom:.9rem;
+}
+.skill-list{display:flex;flex-direction:column;gap:.4rem}
+.skill-item{
+  font-family:var(--display);font-size:.88rem;font-weight:500;
+  color:var(--fg2);display:flex;align-items:center;gap:.5rem;
+  transition:color .2s;
+}
+.skill-item:hover{color:var(--fg)}
+.skill-item::before{
+  content:'';width:4px;height:4px;border-radius:50%;
+  background:var(--line2);flex-shrink:0;transition:background .2s;
+}
+.skill-item:hover::before{background:var(--accent)}
+
+/* ═══════════════════════════════════════════════════════════
+   PROJECTS — Cinematic stagger from right
+═══════════════════════════════════════════════════════════ */
+.projects{border-bottom:1px solid var(--line);padding:clamp(3rem,8vh,6rem) 0;position:relative;overflow:hidden}
+.projects-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem)}
+.projects-list{
+  display:flex;flex-direction:column;
+  border:1px solid var(--line);border-radius:4px;overflow:hidden;
+}
+.project-row{
+  display:grid;
+  grid-template-columns:52px 1fr auto auto;
+  align-items:center;gap:clamp(.75rem,2vw,2rem);
+  padding:clamp(1rem,2.5vh,1.6rem) clamp(1rem,2.5vw,1.8rem);
+  border-bottom:1px solid var(--line);
+  background:var(--bg);
+  transition:background .25s;
+  position:relative;overflow:hidden;
+  opacity:0;
+  transform:translateX(60px);
+  clip-path:inset(0 0 0 0);
+}
+.project-row:last-child{border-bottom:none}
+.project-row::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--accent);opacity:0;transition:opacity .3s;
+}
+.project-row:hover::before{opacity:1}
+.project-row:hover{background:var(--bg2)}
+.project-num{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.15em;color:var(--fg3);
+}
+.project-info{min-width:0}
+.project-name{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(.9rem,1.8vw,1.3rem);color:var(--fg);margin-bottom:.25rem;
+}
+.project-brief{font-size:.78rem;color:var(--fg3);line-height:1.4}
+.project-tags{display:flex;gap:.4rem;flex-wrap:wrap}
+.project-link{
+  display:flex;align-items:center;gap:.4rem;
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--fg3);
+  border:1px solid var(--line);padding:.4rem .8rem;border-radius:2px;
+  transition:all .2s;white-space:nowrap;flex-shrink:0;
+}
+.project-link:hover{color:var(--accent);border-color:rgba(126,255,160,.3);background:rgba(126,255,160,.04)}
+.project-link svg{width:9px;height:9px;stroke:currentColor;fill:none;stroke-width:2}
+
+@media(max-width:640px){
+  .project-row{grid-template-columns:36px 1fr auto;gap:.75rem}
+  .project-tags{display:none}
+  .project-link{padding:.35rem .65rem}
+}
+@media(max-width:420px){
+  .project-row{grid-template-columns:28px 1fr}
+  .project-link{display:none}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LIVE WIDGETS — Radial pop-in
+═══════════════════════════════════════════════════════════ */
+.widgets{border-bottom:1px solid var(--line);padding:clamp(3rem,8vh,6rem) 0;position:relative;overflow:hidden}
+.widgets-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem)}
+.widgets-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;border:1px solid var(--line);border-radius:4px;overflow:hidden;
+}
+@media(max-width:900px){.widgets-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.widgets-grid{grid-template-columns:1fr}}
+
+.widget{
+  background:var(--bg);padding:clamp(1rem,2.5vw,1.5rem);
+  position:relative;transition:background .2s;
+  opacity:0;
+  transform:scale(.85);
+  transform-origin:center center;
+}
+.widget:hover{background:var(--bg2)}
+.widget-label{
+  font-family:var(--mono);font-size:.52rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--fg3);margin-bottom:.9rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.widget-label::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--line)}
+.widget-label.live::before{background:var(--accent);animation:pulse-dot 2s infinite}
+
+.skel{
+  background:linear-gradient(90deg,var(--bg3) 25%,var(--line) 50%,var(--bg3) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.5s infinite;
+  border-radius:2px;height:.8rem;
+}
+
+/* Now Playing */
+.now-playing-art{width:52px;height:52px;border-radius:4px;object-fit:cover;background:var(--bg3);flex-shrink:0}
+.now-playing-body{display:flex;gap:.85rem;align-items:center;margin-bottom:.75rem}
+.now-playing-track{font-family:var(--display);font-weight:600;font-size:.92rem;color:var(--fg);line-height:1.2;margin-bottom:.2rem}
+.now-playing-artist{font-family:var(--mono);font-size:.6rem;color:var(--fg3)}
+.now-playing-bar{height:2px;background:var(--line);border-radius:1px;overflow:hidden}
+.now-playing-bar-fill{height:100%;background:var(--accent);border-radius:1px;animation:music-pulse 3s ease-in-out infinite alternate}
+.not-playing{font-family:var(--mono);font-size:.68rem;color:var(--fg3);display:flex;align-items:center;gap:.5rem}
+
+.eq{display:flex;gap:2px;align-items:flex-end;height:16px;margin-left:.5rem}
+.eq-bar{width:3px;background:var(--accent);border-radius:1px;animation:eq-dance 1s ease-in-out infinite alternate}
+.eq-bar:nth-child(1){height:5px;animation-delay:0s}
+.eq-bar:nth-child(2){height:11px;animation-delay:.15s}
+.eq-bar:nth-child(3){height:16px;animation-delay:.3s}
+.eq-bar:nth-child(4){height:9px;animation-delay:.45s}
+.eq-bar:nth-child(5){height:13px;animation-delay:.6s}
+.eq.paused .eq-bar{animation:none;transform:scaleY(.3)}
+
+/* ISS */
+.iss-wrap{text-align:center;padding:.4rem 0}
+.iss-orbit{width:56px;height:56px;border:1px solid var(--line);border-radius:50%;position:relative;margin:0 auto .9rem}
+.iss-dot{position:absolute;width:6px;height:6px;background:var(--accent2);border-radius:50%;top:50%;left:50%;margin:-3px;animation:orbit 4s linear infinite;transform-origin:-21px 0}
+.iss-count{font-family:var(--display);font-weight:800;font-size:clamp(2.2rem,5vw,3.5rem);line-height:1;color:var(--fg);margin-bottom:.3rem}
+.iss-sub{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(--fg3)}
+
+/* Discord */
+.discord-user-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.8rem}
+.discord-avatar{width:40px;height:40px;border-radius:50%;background:var(--bg3);object-fit:cover;flex-shrink:0}
+.discord-name-full{font-family:var(--display);font-weight:600;font-size:.88rem;color:var(--fg)}
+.discord-handle{font-family:var(--mono);font-size:.58rem;color:var(--fg3)}
+.discord-activity-card{
+  background:var(--bg3);border:1px solid var(--line);
+  border-radius:4px;padding:.7rem;display:flex;gap:.7rem;align-items:center;
+}
+.discord-activity-img{width:38px;height:38px;border-radius:3px;object-fit:cover;background:var(--bg3);flex-shrink:0}
+.discord-activity-name{font-family:var(--display);font-weight:600;font-size:.8rem;color:var(--fg);margin-bottom:.12rem}
+.discord-activity-detail{font-family:var(--mono);font-size:.56rem;color:var(--fg3);line-height:1.5}
+
+/* Movie */
+.movie-poster{width:44px;height:66px;object-fit:cover;border-radius:3px;background:var(--bg3);flex-shrink:0}
+.movie-body-inner{display:flex;gap:.75rem;align-items:flex-start}
+.movie-title{font-family:var(--display);font-weight:600;font-size:.88rem;color:var(--fg);margin-bottom:.2rem}
+.movie-meta{font-family:var(--mono);font-size:.56rem;color:var(--fg3);line-height:1.8}
+.movie-overview{font-size:.72rem;color:var(--fg3);margin-top:.5rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+/* Recent tracks */
+.track-row{display:flex;gap:.6rem;align-items:center;animation:slide-in .3s ease both}
+.track-thumb{width:30px;height:30px;border-radius:2px;object-fit:cover;background:var(--bg3);flex-shrink:0}
+.track-name{font-family:var(--display);font-size:.76rem;font-weight:600;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track-artist{font-family:var(--mono);font-size:.54rem;color:var(--fg3)}
+
+/* KV widget */
+.kv-quote{font-family:var(--display);font-size:.88rem;color:var(--fg);line-height:1.4}
+.kv-tag{margin-top:.5rem}
+.kv-field{font-family:var(--mono);font-size:.58rem;color:var(--fg3);margin-top:.3rem}
+.kv-field span{color:var(--fg2)}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTACT — Explosive scale in
+═══════════════════════════════════════════════════════════ */
+.contact{padding:clamp(4rem,10vh,8rem) 0;border-bottom:1px solid var(--line);position:relative;overflow:visible}
+.contact-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem)}
+.contact-big{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(2rem,7.5vw,6.5rem);
+  line-height:.95;letter-spacing:-.03em;
+  margin-bottom:clamp(2rem,5vh,3rem);
+  overflow:visible;
+}
+.contact-big .line-wrap{overflow:hidden;display:block;padding-bottom:.08em}
+.contact-big .line-inner{display:block;opacity:0;transform:translateY(110%)}
+.contact-big em{font-style:normal;color:var(--accent)}
+.contact-links{display:flex;flex-wrap:wrap;gap:.75rem}
+.contact-link{
+  display:flex;align-items:center;gap:.65rem;
+  padding:.75rem 1.2rem;border:1px solid var(--line);
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--fg2);
+  transition:all .2s;border-radius:3px;
+  opacity:0;transform:translateY(20px);
+}
+.contact-link:hover{border-color:var(--accent);color:var(--accent);background:rgba(126,255,160,.04)}
+.contact-link svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.5;flex-shrink:0}
+@media(max-width:480px){
+  .contact-link{padding:.65rem 1rem;font-size:.58rem}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════════ */
+footer{
+  padding:1.5rem clamp(1.25rem,5vw,4rem);
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;
+  max-width:1200px;margin:0 auto;
+  opacity:0;
+}
+.footer-copy{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;color:var(--fg3)}
+.footer-domain{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;color:var(--fg3)}
+.footer-domain a{color:var(--accent);transition:opacity .2s}
+.footer-domain a:hover{opacity:.7}
+
+/* ─── SCROLL TO TOP ──────────────────────────────────────── */
+#scroll-top{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;
+  width:38px;height:38px;border:1px solid var(--line);
+  background:rgba(5,5,7,.85);backdrop-filter:blur(12px);
+  border-radius:3px;display:flex;align-items:center;justify-content:center;
+  color:var(--fg3);font-family:var(--mono);font-size:.7rem;
+  transition:all .2s;opacity:0;pointer-events:none;cursor:pointer;
+}
+#scroll-top.show{opacity:1;pointer-events:all}
+#scroll-top:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ─── HORIZONTAL SCROLL TICKER (skills bg deco) ─────────── */
+.skills-ticker{
+  position:absolute;bottom:0;left:0;right:0;
+  overflow:hidden;height:1.4rem;pointer-events:none;
+  border-top:1px solid var(--line);opacity:.25;
+}
+.skills-ticker-inner{
+  display:flex;gap:3rem;white-space:nowrap;
+  font-family:var(--mono);font-size:.48rem;letter-spacing:.2em;color:var(--fg3);
+  text-transform:uppercase;
+  animation:ticker-scroll 30s linear infinite;
+  padding:.4rem 0;
+}
+@keyframes ticker-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+</style>
+</head>
+<body>
+
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+
+<!-- ═══ NAV ════════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#hero" aria-label="Santhosh Reddy — home">
+      <!-- Geometric monogram: square frame + S letterform + accent dot -->
+      <div class="nav-logo-mark">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- outer square frame, partially open top-right -->
+          <path class="ring" d="M22 4 L24 4 L24 24 L4 24 L4 4 L16 4" stroke="rgba(126,255,160,0.35)" stroke-width="1" fill="none" stroke-linecap="round"/>
+          <!-- inner diagonal accent line -->
+          <line x1="8" y1="20" x2="20" y2="8" stroke="var(--line2)" stroke-width="1" stroke-linecap="round"/>
+          <!-- S letterform — two arcs -->
+          <path d="M17 10.5 C17 9 15.5 8 14 8 C12.2 8 11 9.1 11 10.5 C11 12 12.2 12.8 14 13.5 C15.8 14.2 17 15.1 17 16.5 C17 18 15.8 19.2 14 19.2 C12.2 19.2 11 18.2 11 16.8"
+            stroke="var(--fg2)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+          <!-- accent dot — top right corner -->
+          <circle class="dot" cx="23" cy="5" r="2.2" fill="var(--accent2)"/>
         </svg>
-        <span class="hint-badge">1</span>
       </div>
-      <span class="hint-text">Santhosh sent you a message</span>
+      <div class="nav-logo-text">
+        <span class="nav-logo-first">Santhosh</span>
+        <span class="nav-logo-last">Reddy&nbsp;/&nbsp;Dev</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Work</a>
+      <a href="#live">Live</a>
+      <a href="#contact">Contact</a>
     </div>
-    <div class="lanyard-island" id="lanyard-toggle">
-      <div class="island-avatar-wrapper">
-        <img src="images/santhoshh.webp" alt="Santhosh" class="lanyard-avatar" id="lanyard-avatar-img" loading="lazy" decoding="async">
-        <div class="lanyard-indicator" id="lanyard-indicator"></div>
-      </div>
-      <div class="phone-camera-module">
-        <div class="camera-lens"></div>
-        <div class="camera-sensor"></div>
-      </div>
-      <div class="phone-status-bar" id="phone-status-bar">
-        <div class="status-bar-left">
-          <span class="phone-time" id="phone-time">12:30</span>
-          <span class="phone-carrier">Airtel</span>
-        </div>
-        <div class="phone-status-icons">
-          <div class="signal-bars" id="phone-signal">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-          </div>
-          <svg class="wifi-icon" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4l2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
-          <div class="battery-status" id="phone-battery">
-            <span class="battery-percent" id="battery-percent">85%</span>
-            <div class="battery-icon">
-              <div class="battery-level" id="battery-level" style="width: 85%;"></div>
-              <svg class="charging-icon" id="charging-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="island-content">
-        <div class="phone-screen-scroll">
-          <div class="lanyard-section mood-section">
-            <span class="lanyard-section-label">MOOD</span>
-            <div class="island-header">
-              <span class="island-status-dot" id="lanyard-status-dot"></span>
-              <span class="island-status-text" id="lanyard-status-text">Connecting...</span>
-            </div>
-          </div>
-          <div class="lanyard-section message-section">
-            <span class="lanyard-section-label">MESSAGE</span>
-            <div class="island-message-box imessage-style">
-              <div class="msg-bubble">
-                <p class="island-greeting" id="lanyard-greeting">Hey! Glad you're here.<br>Digging my style? Let's make something happen.</p>
-                <button class="msg-contact-btn" id="lanyard-reply-btn">Reply</button>
-              </div>
-            </div>
-          </div>
-          <div class="lanyard-section watching-section" id="lanyard-watching" style="display: none;">
-            <span class="lanyard-section-label">WATCHING</span>
-            <div id="watching-content"></div>
-          </div>
-          <div class="lanyard-section activity-section">
-            <span class="lanyard-section-label">ACTIVITIES</span>
-            <div class="island-activities" id="lanyard-activities">
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="nav-status">Available for work</div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
 
-      <!-- Chat Screen Overlay -->
-      <div class="chat-section" id="lanyard-chat-screen" style="display: none; opacity: 0; pointer-events: none;">
-        <div class="chat-header">
-          <button class="chat-back-btn" id="chat-back">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            <span>Back</span>
-          </button>
-          <span class="chat-title">New Message</span>
-        </div>
-        <form action="https://api.web3forms.com/submit" method="POST" class="chat-composer" id="lanyard-chat-form" autocomplete="off">
-          <input type="hidden" name="access_key" value="94faa993-c934-4458-aaf6-5f43e843f547">
-          <div class="chat-input-group">
-            <input type="text" name="name" placeholder="Your Name" required class="chat-input" autocomplete="off" spellcheck="false">
-          </div>
-          <div class="chat-input-group">
-            <input type="email" name="email" placeholder="Your Email" required class="chat-input" autocomplete="off" spellcheck="false" autocapitalize="none">
-          </div>
-          <div class="chat-message-area">
-            <textarea name="message" placeholder="Type a message..." required class="chat-textarea"></textarea>
-            <button type="submit" class="chat-send-btn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-            </button>
-          </div>
-        </form>
-        <div id="chat-success" style="display: none; opacity: 0;" class="chat-success-message">
-          <div class="success-icon">✓</div>
-          <div class="success-text-content">
-            <p class="success-title">Message Delivered</p>
-            <p class="success-subtitle">Thanks for reaching out! I'll get back to you shortly via the email you provided.</p>
-          </div>
-          <button class="chat-close-btn" id="chat-done">Return to Home</button>
-        </div>
+<div class="mobile-menu" id="mobile-menu">
+  <div class="menu-rule left" id="menu-rule-l"></div>
+  <div class="menu-rule right" id="menu-rule-r"></div>
+  <a href="#about" class="mobile-link" data-num="01">About</a>
+  <a href="#skills" class="mobile-link" data-num="02">Skills</a>
+  <a href="#projects" class="mobile-link" data-num="03">Work</a>
+  <a href="#live" class="mobile-link" data-num="04">Live</a>
+  <a href="#contact" class="mobile-link" data-num="05">Contact</a>
+  <div class="menu-meta" id="menu-meta">
+    <span>@santjsx</span>
+    <span style="color:var(--fg3)">santhoshh.xyz</span>
+    <span>India ●</span>
+  </div>
+</div>
+
+<!-- ═══ HERO ═══════════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-main">
+    <div class="hero-eyebrow" id="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="tag green">Frontend Engineer — India</span>
+    </div>
+    <h1 class="hero-name" id="hero-name">
+      <span class="name-line" style="display:block">SANTHOSH</span>
+      <em class="name-line" style="display:block"><span>REDDY.</span></em>
+    </h1>
+    <div class="hero-sub" id="hero-sub">
+      <p class="hero-role">
+        Building <strong>cinematic web experiences</strong> at the intersection of motion, interaction, and engineering. React · Next.js · GSAP · WebGL.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">Handle <span>@santjsx</span></div>
+        <div class="hero-meta-item">Domain <span>santhoshh.xyz</span></div>
+        <div class="hero-meta-item">Location <span>India</span></div>
       </div>
-      <button class="lanyard-close-minimal" id="lanyard-close" aria-label="Close widget">
-        <span>CLOSE</span>
-      </button>
+    </div>
+    <div class="presence-bar" id="presence-bar">
+      <img id="presence-avatar" class="presence-avatar"
+        src="https://ui-avatars.com/api/?name=SR&background=12121a&color=7effa0&bold=true&size=80" alt="avatar"/>
+      <div class="presence-info">
+        <div class="presence-name">Santhosh Reddy</div>
+        <div class="presence-activity" id="presence-activity">Fetching presence…</div>
+      </div>
     </div>
   </div>
-
-  <!-- Film Grain Overlay -->
-  <div class="film-grain" aria-hidden="true"></div>
-
-  <!-- Subliminal Tyler Flash -->
-  <div class="subliminal-flash" id="subliminal-flash" aria-hidden="true">
-    <span>You are not your code.</span>
+  <div class="hero-bottom" id="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">3+</div><div class="hero-stat-label">Years Building</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">5</div><div class="hero-stat-label">Shipped Projects</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="stat-iss">—</div><div class="hero-stat-label">Humans in Space</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">∞</div><div class="hero-stat-label">Lines of Curiosity</div></div>
   </div>
+</section>
 
-  <!-- Cinematic Title Sequence Loader -->
-  <div id="premium-preloader" class="cinematic-loader">
-    <!-- Cinematic Shutter Panels -->
-    <div class="loader-panel panel-top"></div>
-    <div class="loader-panel panel-bottom"></div>
+<!-- ═══ ABOUT ══════════════════════════════════════════════ -->
+<section class="about" id="about">
+  <div class="about-orb" id="about-orb"></div>
+  <div class="about-inner">
+    <div>
+      <div class="about-label" id="about-label">// Professional Phases</div>
+      <div class="about-phases" id="about-phases">
+        <div class="phase">
+          <div class="phase-num">01</div>
+          <div class="phase-text">Systems engineering foundation.<span class="phase-year">2021 – 2025</span></div>
+        </div>
+        <div class="phase">
+          <div class="phase-num">02</div>
+          <div class="phase-text">High-performance web apps &amp; cinematic UIs.<span class="phase-year">2023 – Present</span></div>
+        </div>
+        <div class="phase">
+          <div class="phase-num">03</div>
+          <div class="phase-text">Shipping robust, scalable frontend solutions.<span class="phase-year">2024 – Ongoing</span></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="about-quote" id="hero-quote">
+        Every pixel is a decision. Every interaction is a story. I build the kind of web that makes people stop and look twice.
+      </div>
+      <span class="about-quote-src tag" id="about-src" style="margin-top:1.2rem">— santhoshh.xyz</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SKILLS ══════════════════════════════════════════════ -->
+<section class="skills" id="skills">
+  <div class="skills-ticker">
+    <div class="skills-ticker-inner">
+      React · Next.js · GSAP · WebGL · Firebase · MongoDB · Node.js · Vite · OGL · TypeScript · Tailwind · Git · Linux · Figma · CSS3 · HTML5 &nbsp;&nbsp;&nbsp;
+      React · Next.js · GSAP · WebGL · Firebase · MongoDB · Node.js · Vite · OGL · TypeScript · Tailwind · Git · Linux · Figma · CSS3 · HTML5 &nbsp;&nbsp;&nbsp;
+    </div>
+  </div>
+  <div class="skills-inner">
+    <div class="section-header">
+      <h2 class="section-title"><span class="title-inner" id="skills-title">Technical Arsenal</span></h2>
+      <span class="tag" id="skills-tag">// stack</span>
+    </div>
+    <div class="skills-grid" id="skills-grid">
+      <div class="skill-cat">
+        <div class="skill-cat-name">Languages</div>
+        <div class="skill-list">
+          <div class="skill-item">HTML5</div>
+          <div class="skill-item">CSS3</div>
+          <div class="skill-item">JavaScript ES6+</div>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-name">Frameworks</div>
+        <div class="skill-list">
+          <div class="skill-item">React</div>
+          <div class="skill-item">Next.js</div>
+          <div class="skill-item">Node.js</div>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-name">Tooling</div>
+        <div class="skill-list">
+          <div class="skill-item">Git / GitHub</div>
+          <div class="skill-item">Vite.js</div>
+          <div class="skill-item">Linux / NPM</div>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-name">Database</div>
+        <div class="skill-list">
+          <div class="skill-item">Firebase</div>
+          <div class="skill-item">MongoDB</div>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-name">Creative</div>
+        <div class="skill-list">
+          <div class="skill-item">GSAP</div>
+          <div class="skill-item">OGL / WebGL</div>
+          <div class="skill-item">Cinematic UI</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECTS ════════════════════════════════════════════ -->
+<section class="projects" id="projects">
+  <div class="projects-inner">
+    <div class="section-header">
+      <h2 class="section-title"><span class="title-inner" id="projects-title">Selected Work</span></h2>
+      <span class="tag" id="projects-tag">// 05 projects</span>
+    </div>
+    <div class="projects-list">
+      <div class="project-row">
+        <div class="project-num">01</div>
+        <div class="project-info">
+          <div class="project-name">The Hustle Planner</div>
+          <div class="project-brief">High-performance productivity engine for deep work.</div>
+        </div>
+        <div class="project-tags"><span class="tag green">React</span><span class="tag">Firebase</span></div>
+        <a href="https://the-hustle-planner.vercel.app/" target="_blank" rel="noopener" class="project-link">
+          Visit<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+      <div class="project-row">
+        <div class="project-num">02</div>
+        <div class="project-info">
+          <div class="project-name">Hybrid OS</div>
+          <div class="project-brief">Unified system interface harmonizing complex workflows.</div>
+        </div>
+        <div class="project-tags"><span class="tag blue">Next.js</span><span class="tag">GSAP</span></div>
+        <a href="https://hybrid-os.vercel.app/" target="_blank" rel="noopener" class="project-link">
+          Visit<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+      <div class="project-row">
+        <div class="project-num">03</div>
+        <div class="project-info">
+          <div class="project-name">PDF Studio</div>
+          <div class="project-brief">Minimalist, performance-first cloud document utility.</div>
+        </div>
+        <div class="project-tags"><span class="tag green">React</span><span class="tag">Node.js</span></div>
+        <a href="https://pdf-studio-sable.vercel.app/" target="_blank" rel="noopener" class="project-link">
+          Visit<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+      <div class="project-row">
+        <div class="project-num">04</div>
+        <div class="project-info">
+          <div class="project-name">Uno Cypher</div>
+          <div class="project-brief">Immersive interactive engine with low-latency state management.</div>
+        </div>
+        <div class="project-tags"><span class="tag orange">WebGL</span><span class="tag blue">Next.js</span></div>
+        <a href="https://uno-cypher.vercel.app/" target="_blank" rel="noopener" class="project-link">
+          Visit<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+      <div class="project-row">
+        <div class="project-num">05</div>
+        <div class="project-info">
+          <div class="project-name">Track A Lot</div>
+          <div class="project-brief">Data-driven habit tracking ecosystem with analytical insights.</div>
+        </div>
+        <div class="project-tags"><span class="tag green">React</span><span class="tag">MongoDB</span></div>
+        <a href="https://track-a-lot.vercel.app/" target="_blank" rel="noopener" class="project-link">
+          Visit<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LIVE WIDGETS ════════════════════════════════════════ -->
+<section class="widgets" id="live">
+  <div class="widgets-inner">
+    <div class="section-header">
+      <h2 class="section-title"><span class="title-inner" id="live-title">Live Feed</span></h2>
+      <span class="tag green" id="live-tag">// real-time</span>
+    </div>
+    <div class="widgets-grid" id="widgets-grid">
+      <div class="widget">
+        <div class="widget-label live">Now Playing
+          <div class="eq" id="eq-bars">
+            <div class="eq-bar"></div><div class="eq-bar"></div>
+            <div class="eq-bar"></div><div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+          </div>
+        </div>
+        <div id="now-playing-body"><div class="not-playing">— <span>Fetching…</span></div></div>
+      </div>
+      <div class="widget">
+        <div class="widget-label live">Discord Presence</div>
+        <div id="discord-widget">
+          <div class="discord-user-row">
+            <img id="dw-avatar" class="discord-avatar"
+              src="https://ui-avatars.com/api/?name=SR&background=12121a&color=7effa0&bold=true&size=80" alt="avatar"/>
+            <div>
+              <div class="discord-name-full">Santhosh Reddy</div>
+              <div class="discord-handle" id="dw-status">Loading…</div>
+            </div>
+          </div>
+          <div id="dw-activity" class="discord-activity-card" style="display:none">
+            <img id="dw-act-img" class="discord-activity-img" src="" alt="activity"/>
+            <div>
+              <div class="discord-activity-name" id="dw-act-name">—</div>
+              <div class="discord-activity-detail" id="dw-act-detail">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-label live">Humans in Orbit</div>
+        <div class="iss-wrap">
+          <div class="iss-orbit"><div class="iss-dot"></div></div>
+          <div class="iss-count" id="iss-count">—</div>
+          <div class="iss-sub">humans aboard the ISS right now</div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-label">The Super Mario Galaxy Movie</div>
+        <div id="movie-body"><div class="not-playing">— Loading…</div></div>
+      </div>
+      <div class="widget">
+        <div class="widget-label">Recent Tracks</div>
+        <div id="recent-tracks" style="display:flex;flex-direction:column;gap:.5rem">
+          <div class="not-playing">— Fetching…</div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-label">Active Right Now</div>
+        <div id="kv-widget"><div class="not-playing">— Syncing…</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═════════════════════════════════════════════ -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="contact-big" id="contact-big">
+      <span class="line-wrap"><span class="line-inner">LET'S BUILD</span></span>
+      <span class="line-wrap"><span class="line-inner">SOMETHING</span></span>
+      <span class="line-wrap"><span class="line-inner"><em>REAL.</em></span></span>
+    </div>
+    <div class="contact-links" id="contact-links">
+      <a href="mailto:heysanthoshreddy@gmail.com" class="contact-link">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email me
+      </a>
+      <a href="https://github.com/santjsx" target="_blank" rel="noopener" class="contact-link">
+        <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub
+      </a>
+      <a href="https://x.com/Santhoshh_void" target="_blank" rel="noopener" class="contact-link">
+        <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>@Santhoshh_void
+      </a>
+      <a href="https://www.instagram.com/whoissanthoshh" target="_blank" rel="noopener" class="contact-link">
+        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="footer-copy">© 2024 Santhosh Reddy. All systems nominal.</div>
+  <div class="footer-domain"><a href="https://santhoshh.xyz" target="_blank" rel="noopener">santhoshh.xyz</a></div>
+</footer>
+
+<button id="scroll-top" aria-label="Scroll to top">↑</button>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCRIPTS — Lenis + GSAP + ScrollTrigger
+════════════════════════════════════════════════════════ -->
+
+<!-- Lenis smooth scroll -->
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<!-- GSAP core + ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   LENIS — Buttery smooth scrolling
+══════════════════════════════════════════════════════════ */
+// Lenis guard — fall back gracefully if CDN fails
+let lenis;
+if (typeof Lenis !== 'undefined') {
+  lenis = new Lenis({
+    duration: 1.2,
+    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    smoothTouch: false,
+    touchMultiplier: 2,
+  });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(time => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+} else {
+  lenis = {
+    on: () => {},
+    scrollTo: (target, opts) => {
+      const el = typeof target === 'string' ? document.querySelector(target) : target;
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    raf: () => {},
+  };
+}
+
+// Anchor link smooth scroll via Lenis
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', e => {
+    e.preventDefault();
+    lenis.scrollTo(anchor.getAttribute('href'), { offset: -60, duration: 1.4 });
+  });
+});
+
+/* ══════════════════════════════════════════════════════════
+   CURSOR
+══════════════════════════════════════════════════════════ */
+if(window.matchMedia('(pointer:fine)').matches){
+  const dot = document.getElementById('cur-dot');
+  const ring = document.getElementById('cur-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
+  (function lerp(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(lerp)})();
+}
+
+/* ══════════════════════════════════════════════════════════
+   MOBILE MENU — GSAP cinematic open/close
+══════════════════════════════════════════════════════════ */
+const toggle = document.getElementById('nav-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+const menuLinks = mobileMenu.querySelectorAll('.mobile-link');
+const menuRuleL = document.getElementById('menu-rule-l');
+const menuRuleR = document.getElementById('menu-rule-r');
+const menuMeta  = document.getElementById('menu-meta');
+
+let menuOpen = false;
+let menuTl = null;
+
+function buildMenuTl(opening) {
+  if (menuTl) menuTl.kill();
+  menuTl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+
+  if (opening) {
+    // 1. Curtain drops down via clip-path
+    menuTl.to(mobileMenu, {
+      clipPath: 'inset(0 0 0% 0)',
+      duration: .65,
+      ease: 'expo.inOut',
+    }, 0)
+    // 2. Vertical rule lines grow from top
+    .to([menuRuleL, menuRuleR], {
+      height: '55%', opacity: 1,
+      duration: .55, stagger: .08,
+      ease: 'power3.out',
+    }, 0.15)
+    // 3. Links rise up and fade in with elastic bounce
+    .to(menuLinks, {
+      opacity: 1, y: 0,
+      duration: .65, stagger: .07,
+      ease: 'back.out(1.5)',
+    }, 0.28)
+    // 4. Bottom meta strip fades in
+    .to(menuMeta, {
+      opacity: 1, duration: .4,
+    }, 0.7);
+  } else {
+    // Reverse: meta out → links drop → rules shrink → curtain rises
+    menuTl.to(menuMeta, { opacity: 0, duration: .2 }, 0)
+    .to(menuLinks, {
+      opacity: 0, y: 18,
+      duration: .35, stagger: { each: .05, from: 'end' },
+      ease: 'power2.in',
+    }, 0.05)
+    .to([menuRuleL, menuRuleR], {
+      height: 0, opacity: 0,
+      duration: .35,
+      ease: 'power2.in',
+    }, 0.1)
+    .to(mobileMenu, {
+      clipPath: 'inset(0 0 100% 0)',
+      duration: .55,
+      ease: 'expo.inOut',
+      onComplete: () => mobileMenu.classList.remove('is-open'),
+    }, 0.25);
+  }
+  return menuTl;
+}
+
+// Hamburger → X morph via GSAP (smoother than CSS transitions)
+function animateToggleIcon(opening) {
+  const bars = toggle.querySelectorAll('span');
+  if (opening) {
+    gsap.to(bars[0], { rotate: 45, y: 5,  duration: .35, ease: 'expo.out' });
+    gsap.to(bars[1], { scaleX: 0, opacity: 0, duration: .2 });
+    gsap.to(bars[2], { rotate: -45, y: -5, duration: .35, ease: 'expo.out' });
+    gsap.to(bars, { background: 'var(--fg)', duration: .2 });
+  } else {
+    gsap.to(bars[0], { rotate: 0, y: 0,  duration: .35, ease: 'expo.out' });
+    gsap.to(bars[1], { scaleX: 1, opacity: 1, duration: .3, delay: .05 });
+    gsap.to(bars[2], { rotate: 0, y: 0,  duration: .35, ease: 'expo.out' });
+    gsap.to(bars, { background: 'var(--fg2)', duration: .25 });
+  }
+}
+
+function openMenu() {
+  menuOpen = true;
+  mobileMenu.classList.add('is-open');
+  animateToggleIcon(true);
+  buildMenuTl(true);
+  if (lenis) lenis.stop ? lenis.stop() : null;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMenu() {
+  menuOpen = false;
+  animateToggleIcon(false);
+  buildMenuTl(false);
+  if (lenis) lenis.start ? lenis.start() : null;
+  document.body.style.overflow = '';
+}
+
+toggle.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
+
+menuLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    if (menuOpen) closeMenu();
+  });
+});
+
+/* ══════════════════════════════════════════════════════════
+   SCROLL TO TOP
+══════════════════════════════════════════════════════════ */
+const scrollBtn = document.getElementById('scroll-top');
+lenis.on('scroll', ({ scroll }) => scrollBtn.classList.toggle('show', scroll > 400));
+scrollBtn.addEventListener('click', () => lenis.scrollTo(0, { duration: 1.6 }));
+
+/* ══════════════════════════════════════════════════════════
+   ██ HERO — Character-by-character entrance
+══════════════════════════════════════════════════════════ */
+(function initHeroAnim() {
+  // Wrap each letter in a span for char animation
+  function splitChars(el) {
+    const text = el.textContent;
+    el.innerHTML = '';
+    return [...text].map(ch => {
+      const span = document.createElement('span');
+      span.className = 'char';
+      span.textContent = ch === ' ' ? '\u00A0' : ch;
+      el.appendChild(span);
+      return span;
+    });
+  }
+
+  const nameLines = document.querySelectorAll('#hero-name .name-line');
+  let allChars = [];
+  nameLines.forEach(line => {
+    // Handle em tag
+    const em = line.querySelector('em');
+    if (em) {
+      const inner = em.querySelector('span') || em;
+      allChars = allChars.concat(splitChars(inner));
+    } else {
+      allChars = allChars.concat(splitChars(line));
+    }
+  });
+
+  // Logo entrance — draws in from left before hero
+  gsap.fromTo('.nav-logo-mark svg', 
+    { opacity: 0, scale: .6, rotate: -45 },
+    { opacity: 1, scale: 1, rotate: 0, duration: .8, ease: 'back.out(1.6)', delay: .1 }
+  );
+  gsap.fromTo('.nav-logo-first',
+    { opacity: 0, x: -12 },
+    { opacity: 1, x: 0, duration: .6, ease: 'expo.out', delay: .25 }
+  );
+  gsap.fromTo('.nav-logo-last',
+    { opacity: 0, x: -8 },
+    { opacity: 1, x: 0, duration: .6, ease: 'expo.out', delay: .35 }
+  );
+
+  const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+
+  tl.to('#hero-eyebrow', { opacity: 1, y: 0, duration: .8 }, 0.2)
+    .to(allChars, {
+      y: 0, opacity: 1, duration: 0.8, stagger: 0.025,
+      ease: 'expo.out'
+    }, 0.5)
+    .to('#hero-sub', { opacity: 1, y: 0, duration: .9 }, 1.0)
+    .to('#presence-bar', { opacity: 1, y: 0, duration: .7 }, 1.25)
+    .to('.hero-stat', {
+      opacity: 1, y: 0, duration: .7, stagger: .12,
+      ease: 'back.out(1.4)'
+    }, 1.4);
+})();
+
+/* ══════════════════════════════════════════════════════════
+   ██ ABOUT — Slide-from-left phases + clip-path quote reveal
+══════════════════════════════════════════════════════════ */
+gsap.registerPlugin(ScrollTrigger);
+
+(function initAboutAnim() {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#about',
+      start: 'top 75%',
+      toggleActions: 'play none none none',
+    }
+  });
+
+  tl.to('#about-label', { opacity: 1, x: 0, duration: .5 }, 0)
+    .to('#about-phases .phase', {
+      opacity: 1, x: 0, duration: .65,
+      stagger: .15, ease: 'power3.out'
+    }, 0.2)
+    .to('#hero-quote', {
+      clipPath: 'inset(0 0% 0 0)',
+      duration: 1.1, ease: 'expo.inOut'
+    }, 0.3)
+    .to('#about-src', { opacity: 1, y: 0, duration: .5 }, 1.0);
+
+  // Floating orb parallax
+  gsap.to('#about-orb', {
+    yPercent: -30,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#about',
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: 1.5,
+    }
+  });
+})();
+
+/* ══════════════════════════════════════════════════════════
+   ██ SKILLS — Scale + fade stagger (diagonal wave)
+══════════════════════════════════════════════════════════ */
+(function initSkillsAnim() {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#skills',
+      start: 'top 70%',
+      toggleActions: 'play none none none',
+    }
+  });
+
+  tl.to('#skills-title', { y: 0, opacity: 1, duration: .7, ease: 'expo.out' }, 0)
+    .to('#skills-tag', { opacity: 1, duration: .5 }, 0.2)
+    .to('.skill-cat', {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      duration: .65,
+      stagger: {
+        amount: 0.5,
+        from: 'start',
+        ease: 'power2.inOut',
+      },
+      ease: 'back.out(1.2)',
+    }, 0.3);
+})();
+
+/* ══════════════════════════════════════════════════════════
+   ██ PROJECTS — Cinematic slide-from-right with velocity taper
+══════════════════════════════════════════════════════════ */
+(function initProjectsAnim() {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#projects',
+      start: 'top 70%',
+      toggleActions: 'play none none none',
+    }
+  });
+
+  tl.to('#projects-title', { y: 0, opacity: 1, duration: .7, ease: 'expo.out' }, 0)
+    .to('#projects-tag', { opacity: 1, duration: .5 }, 0.2)
+    .to('.project-row', {
+      opacity: 1, x: 0,
+      duration: .8,
+      stagger: .1,
+      ease: 'expo.out',
+    }, 0.3);
+
+  // Subtle parallax on hover (per-row tilt via mousemove)
+  document.querySelectorAll('.project-row').forEach(row => {
+    row.addEventListener('mousemove', e => {
+      const rect = row.getBoundingClientRect();
+      const tx = (e.clientX - rect.left) / rect.width - 0.5;
+      gsap.to(row, { xPercent: tx * 1.5, duration: .4, ease: 'power2.out', overwrite: 'auto' });
+    });
+    row.addEventListener('mouseleave', () => {
+      gsap.to(row, { xPercent: 0, duration: .6, ease: 'elastic.out(1,.5)', overwrite: 'auto' });
+    });
+  });
+})();
+
+/* ══════════════════════════════════════════════════════════
+   ██ WIDGETS — Radial bloom: center-out pop-in
+══════════════════════════════════════════════════════════ */
+(function initWidgetsAnim() {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#live',
+      start: 'top 70%',
+      toggleActions: 'play none none none',
+    }
+  });
+
+  tl.to('#live-title', { y: 0, opacity: 1, duration: .7, ease: 'expo.out' }, 0)
+    .to('#live-tag', { opacity: 1, duration: .5 }, 0.2)
+    .to('.widget', {
+      opacity: 1,
+      scale: 1,
+      duration: .6,
+      stagger: {
+        amount: 0.5,
+        from: 'center',
+        grid: [2, 3],
+        ease: 'power2.inOut',
+      },
+      ease: 'back.out(1.3)',
+    }, 0.3);
+})();
+
+/* ══════════════════════════════════════════════════════════
+   ██ CONTACT — Line-by-line theatrical drop with skew
+══════════════════════════════════════════════════════════ */
+(function initContactAnim() {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#contact',
+      start: 'top 75%',
+      toggleActions: 'play none none none',
+    }
+  });
+
+  tl.to('.line-inner', {
+      opacity: 1, y: 0,
+      duration: .9,
+      stagger: .15,
+      ease: 'expo.out',
+    }, 0)
+    .to('.contact-link', {
+      opacity: 1, y: 0,
+      duration: .6,
+      stagger: .08,
+      ease: 'back.out(1.4)',
+    }, 0.5)
+    .to('#footer', { opacity: 1, duration: .8 }, 0.8);
+})();
+
+/* ══════════════════════════════════════════════════════════
+   ██ SECTION TITLES — Shared scrub underline progress
+══════════════════════════════════════════════════════════ */
+['#about', '#skills', '#projects', '#live', '#contact'].forEach(sel => {
+  const el = document.querySelector(sel);
+  if (!el) return;
+  // Add a subtle background color wash on deep scroll
+  gsap.fromTo(el, {
+    backgroundImage: 'linear-gradient(to bottom, transparent, transparent)'
+  }, {
+    backgroundImage: `linear-gradient(to bottom, rgba(126,255,160,0.012), transparent)`,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: el,
+      start: 'top 60%',
+      end: 'bottom 80%',
+      scrub: 2,
+    }
+  });
+});
+
+/* ══════════════════════════════════════════════════════════
+   DATA — ISS, Lanyard, Last.FM, TMDB
+══════════════════════════════════════════════════════════ */
+const DISCORD_ID = '1284925883240550552';
+const LASTFM_KEY = 'a403d71a4af1bacfddab789750be1c18';
+const TMDB_KEY = '15511e43224695bd75148dab05bc81fb';
+
+function $(id){return document.getElementById(id)}
+function setText(id,t){const el=$(id);if(el)el.textContent=t}
+function setHTML(id,h){const el=$(id);if(el)el.innerHTML=h}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+async function loadISS(){
+  try{
+    const r=await fetch('https://corsproxy.io/?http%3A%2F%2Fapi.open-notify.org%2Fastros.json');
+    const d=await r.json();
+    const n=d.number||0;
+    setText('iss-count',n);setText('stat-iss',n);
+  }catch{
+    // Fallback if API is down
+    setText('iss-count','10');setText('stat-iss','10');
+  }
+}
+loadISS();
+
+async function loadLanyard(){
+  try{
+    const r=await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+    const d=await r.json();
+    if(!d.success)return;
+    const p=d.data;
+    if(p.discord_user?.avatar){
+      const avUrl=`https://cdn.discordapp.com/avatars/${DISCORD_ID}/${p.discord_user.avatar}.png?size=128`;
+      $('presence-avatar').src=avUrl;$('dw-avatar').src=avUrl;
+    }
+    const statusMap={online:'● Online',idle:'◑ Idle',dnd:'● Do Not Disturb',offline:'○ Offline'};
+    const statusColor={online:'var(--accent)',idle:'#ffd700',dnd:'var(--accent2)',offline:'var(--fg3)'};
+    const st=p.discord_status||'offline';
+    const dwSt=$('dw-status');
+    if(dwSt){dwSt.textContent=statusMap[st]||st;dwSt.style.color=statusColor[st]||'var(--fg3)'}
+
+    // Prioritize "Playing" (0), then "Listening" (2), then "Custom" (4)
+    const act = p.activities?.find(a => a.type === 0) || 
+                p.activities?.find(a => a.type === 2) || 
+                p.activities?.find(a => a.type === 4);
     
-    <!-- Letterbox "Cinemascope" Bars -->
-    <div class="loader-letterbox lb-top" aria-hidden="true"></div>
-    <div class="loader-letterbox lb-bottom" aria-hidden="true"></div>
+    const presence=$('presence-activity');
+    if(act && presence){
+      const name = act.name === 'Custom Status' ? (act.state || act.details || '') : act.name;
+      const details = act.name === 'Custom Status' ? '' : (act.details ? ' · ' + act.details : '');
+      presence.innerHTML=`Currently — <span>${esc(name)}</span>${esc(details)}`;
+    }else if(presence){
+      presence.textContent=`Discord ${statusMap[st]||st}`;
+    }
+    if(act){
+      $('dw-activity').style.display='flex';
+      setText('dw-act-name',act.name);
+      setText('dw-act-detail',[act.details,act.state].filter(Boolean).join(' · ')||'—');
+      const actImg=$('dw-act-img');
+      if(act.assets?.large_image){
+        let imgSrc=act.assets.large_image;
+        if(imgSrc.startsWith('mp:external/')){
+          imgSrc='https://media.discordapp.net/'+imgSrc.replace('mp:','');
+        }else{
+          imgSrc=`https://cdn.discordapp.com/app-assets/${act.application_id}/${act.assets.large_image}.png`;
+        }
+        actImg.src=imgSrc;
+        actImg.onerror=()=>{actImg.src=`https://ui-avatars.com/api/?name=${encodeURIComponent(act.name[0])}&background=12121a&color=7effa0&bold=true&size=80`};
+      }else{
+        actImg.src=`https://ui-avatars.com/api/?name=${encodeURIComponent((act.name||'?')[0])}&background=12121a&color=7effa0&bold=true&size=80`;
+      }
+    }
+    const kv=p.kv||{};
+    const kvEl=$('kv-widget');
+    if(kvEl){
+      let html='<div style="display:flex;flex-direction:column;gap:.5rem">';
+      if(kv.quote){
+        html+=`<div class="kv-quote">"${esc(kv.quote)}"</div>`;
+        const hq=$('hero-quote');
+        if(hq)hq.textContent=kv.quote;
+      }
+      if(kv.currently){
+        html+=`<div class="tag kv-tag">Working on: <span style="color:var(--accent)">${esc(kv.currently)}</span></div>`;
+      }
+      const keys=Object.keys(kv).filter(k=>k!=='quote'&&k!=='currently');
+      keys.forEach(k=>{html+=`<div class="kv-field">${esc(k)}: <span>${esc(kv[k])}</span></div>`});
+      if(!Object.keys(kv).length){html+=`<div class="not-playing">— No KV data set</div>`}
+      html+='</div>';
+      kvEl.innerHTML=html;
+    }
+  }catch(e){
+    const p=$('presence-activity');
+    if(p)p.textContent='Discord presence unavailable';
+  }
+}
+loadLanyard();
+setInterval(loadLanyard,30000);
 
-    <!-- Analog Film Texture Layer -->
-    <div class="loader-grain" aria-hidden="true"></div>
+async function fetchAlbumArt(track,artist){
+  try{
+    const r=await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(track+' '+artist)}&media=music&limit=1`);
+    const d=await r.json();
+    if(d.results?.length)return d.results[0].artworkUrl100.replace('100x100','600x600');
+  }catch{}
+  return null;
+}
 
-    <div class="loader-content">
-      <div class="loader-top-meta">
-        <span class="loader-subtitle" id="loader-dynamic-text">ARCHIVE // 2026 // AD_SR</span>
-      </div>
-      
-      <div class="loader-center-title">
-        <div class="line-wrapper"><h1 class="loader-name">SANTHOSH</h1></div>
-        <div class="line-wrapper"><h1 class="loader-name accent">REDDY</h1></div>
-      </div>
-
-      <div class="loader-bottom-meta">
-        <div class="loader-counter">
-          <span class="loader-prefix">SERIAL_NO: </span>
-          <span id="loader-percent">00</span>
-          <span class="loader-symbol">%</span>
+async function loadLastFM(){
+  const users=['santhoshh25','santjsx','santhoshreddy'];
+  let data=null;
+  for(const u of users){
+    try{
+      const r=await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${u}&api_key=${LASTFM_KEY}&format=json&limit=6`);
+      const d=await r.json();
+      if(!d.error){data=d;break}
+    }catch{}
+  }
+  const np=$('now-playing-body');
+  const rt=$('recent-tracks');
+  const eq=$('eq-bars');
+  if(!data||data.error){
+    if(np)np.innerHTML='<div class="not-playing">— Last.fm unavailable</div>';
+    if(rt)rt.innerHTML='<div class="not-playing">— Unavailable</div>';
+    if(eq)eq.classList.add('paused');
+    return;
+  }
+  const tracks=data.recenttracks?.track||[];
+  if(!tracks.length){if(np)np.innerHTML='<div class="not-playing">— No recent tracks</div>';return}
+  const nowPlaying=tracks[0];
+  const isLive=nowPlaying['@attr']?.nowplaying==='true';
+  const trackName=nowPlaying.name;
+  const artistName=nowPlaying.artist?.['#text']||nowPlaying.artist;
+  const albumArt=nowPlaying.image?.find(i=>i.size==='extralarge')?.['#text']||'';
+  const itunesArt=await fetchAlbumArt(trackName,artistName);
+  const finalArt=itunesArt||albumArt||`https://ui-avatars.com/api/?name=${encodeURIComponent(trackName[0])}&background=12121a&color=7effa0&bold=true&size=120`;
+  if(eq)eq.classList.toggle('paused',!isLive);
+  if(np){
+    np.innerHTML=`
+      <div class="now-playing-body">
+        <img class="now-playing-art" src="${finalArt}" alt="${esc(trackName)}"
+          onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(trackName[0])}&background=12121a&color=7effa0&size=120'"/>
+        <div>
+          <div class="now-playing-track">${esc(trackName)}</div>
+          <div class="now-playing-artist">${esc(artistName)}</div>
+          <div style="margin-top:.4rem"><span class="tag ${isLive?'green':''}">${isLive?'● Now Playing':'Recent'}</span></div>
         </div>
       </div>
-    </div>
-  </div>
+      ${isLive?'<div class="now-playing-bar"><div class="now-playing-bar-fill" style="width:45%"></div></div>':''}
+    `;
+  }
+  if(rt){
+    const recent=tracks.slice(isLive?1:0,(isLive?1:0)+5);
+    if(!recent.length){rt.innerHTML='<div class="not-playing">— No history yet</div>';return}
+    rt.innerHTML=recent.map((t,i)=>{
+      const tn=t.name;
+      const an=t.artist?.['#text']||t.artist;
+      const sm=t.image?.find(im=>im.size==='small')?.['#text']||`https://ui-avatars.com/api/?name=${encodeURIComponent(tn[0])}&background=12121a&color=4a4758&size=40`;
+      return `<div class="track-row" style="animation-delay:${i*60}ms">
+        <img class="track-thumb" src="${sm}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(tn[0])}&background=12121a&color=4a4758&size=40'" alt=""/>
+        <div style="min-width:0">
+          <div class="track-name">${esc(tn)}</div>
+          <div class="track-artist">${esc(an)}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+loadLastFM();
 
-  <!-- Navigation System -->
-  <nav class="nav">
-    <!-- Always visible logo in top left -->
-    <div class="nav-logo">
-      <a href="/">SR</a>
-    </div>
-
-    <!-- Always visible toggle in top right -->
-    <div class="nav-toggle" id="nav-toggle">
-      <p class="menu-label">Menu</p>
-      <p class="close-label">Close</p>
-    </div>
-
-    <!-- Full screen overlay -->
-    <div class="menu" id="menu">
-      <!-- Background SVG for the wipe transition -->
-      <svg id="menu-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="menu-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#3A1C71;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#FFA07A;stop-opacity:1" />
-          </linearGradient>
-        </defs>
-        <path id="svg-path" d=""></path>
-      </svg>
-
-      <!-- Logo inside the menu -->
-      <div class="menu-logo">
-        <a href="/">SR</a>
-      </div>
-
-      <!-- Info Column (Contact, Address, etc.) -->
-      <div class="menu-column-info">
-        <p class="get-in-touch">Get in Touch</p>
-        <h6 class="info-heading">Contact Details</h6>
-        <p class="address-line">heysanthoshreddy@gmail.com</p>
-        <p class="address-line">India</p>
-      </div>
-
-      <!-- Links Column -->
-      <div class="menu-column-links">
-        <a href="#about" class="nav-link">About</a>
-        <a href="#work" class="nav-link">Projects</a>
-        <a href="#" class="nav-link js-open-vibe-portal">My Vibe</a>
-        <a href="#contact" class="nav-link">Contact</a>
-        <a href="#" class="nav-link js-open-resume">Resume</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Vibe Portal Choice Overlay -->
-  <div id="vibe-portal" class="vibe-portal">
-    <button id="portal-close" class="portal-close">CLOSE_</button>
-    <div class="portal-container">
-      <!-- Cinema Choice -->
-      <a href="cinema.html" class="portal-card" id="portal-cinema">
-        <span class="portal-label">SECTION_01</span>
-        <h2 class="portal-title">Cinema</h2>
-      </a>
-      
-      <div class="portal-divider"></div>
-      
-      <!-- Music Choice -->
-      <a href="music.html" class="portal-card" id="portal-music">
-        <span class="portal-label">SECTION_02</span>
-        <h2 class="portal-title">Music</h2>
-      </a>
-    </div>
-  </div>
-
-  <main>
-    <!-- 1. Hero Section (Cinematic Redesign) -->
-    <section class="hero" id="hero">
-      <!-- Ripple Grid Background -->
-      <div id="hero-ripple-grid" class="ripple-grid-bg" aria-hidden="true"></div>
-
-      <div class="container hero-layout">
-
-        <!-- Left: Main content block -->
-        <div class="hero-main">
-          <h1 class="hero-headline fade-up">
-            <span class="headline-row">Building high-end</span>
-            <span class="headline-row"><span class="hero-accent-text">digital products.</span></span>
-          </h1>
-
-          <div class="hero-cta-row fade-up">
-            <a href="#work" class="hero-cta-link">
-              View Work
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-            <a class="hero-cta-link ghost js-open-resume">Resume</a>
+async function loadTMDB(){
+  try{
+    // Fetch trending movies/series to get a "Cinematic Pick"
+    const r=await fetch(`https://api.themoviedb.org/3/trending/all/week?api_key=${TMDB_KEY}`);
+    const d=await r.json();
+    const items=d.results||[];
+    const m=items[Math.floor(Math.random()*Math.min(10,items.length))];
+    if(!m)return;
+    const title=m.title||m.name||'—';
+    const posterUrl=m.poster_path?`https://image.tmdb.org/t/p/w200${m.poster_path}`:'';
+    const mb=$('movie-body');
+    if(mb){
+      mb.innerHTML=`
+        <div class="movie-body-inner">
+          ${posterUrl?`<img class="movie-poster" src="${posterUrl}" alt="${esc(title)}" onerror="this.style.display='none'"/>`:''}
+          <div>
+            <div class="movie-title">${esc(title)}</div>
+            <div class="movie-meta">
+              ${(m.release_date||m.first_air_date)?'<span>'+(m.release_date||m.first_air_date).slice(0,4)+'</span> &nbsp;':''}
+              <span>★ ${m.vote_average?.toFixed(1)||'—'}</span>
+            </div>
+            <div class="movie-overview">${esc(m.overview)}</div>
           </div>
         </div>
-
-        <!-- Right: Meta sidebar -->
-        <div class="hero-meta">
-          <div class="meta-block fade-up">
-            <span class="meta-label">Status</span>
-            <span class="meta-value"><span class="hero-status-dot"></span> Available</span>
-          </div>
-          <div class="meta-block space-widget fade-up">
-            <span class="meta-label">Humans in Space</span>
-            <span class="meta-value" id="astros-count">
-                <span class="skeleton" style="width: 60px; height: 16px; display: inline-block;"></span>
-            </span>
-          </div>
-          <div class="meta-block fade-up">
-            <span class="meta-label">Focus</span>
-            <span class="meta-value">Frontend / UI</span>
-          </div>
-          <div class="meta-block fade-up">
-            <span class="meta-label">Location</span>
-            <span class="meta-value india-flag-text">India</span>
-          </div>
-
-          <span id="hero-quote" class="compact-cinematic-quote text-left mt-8 fade-up">&ldquo;There is a difference between knowing the path and walking the path.&rdquo;</span>
-        </div>
-
-      </div>
-    </section>
-
-    <div class="section-divider fade-up"></div>
-
-    <!-- 2. Projects Block — Personal Projects Grid -->
-    <section class="gallery-section" id="work">
-      <div class="container projects-grid-wrap">
-        <header class="projects-header">
-          <h2 class="projects-title fade-up">Personal Projects</h2>
-          <p class="projects-subtitle fade-up">I believe that the things I create for myself help me create better things for everyone.</p>
-        </header>
-
-        <div class="projects-grid">
-          <!-- PROJECT 01 -->
-          <a href="https://the-hustle-planner.vercel.app/" target="_blank" class="project-card fade-up">
-            <div class="project-visual">
-              <img src="images/hustle_planner.png" alt="Hustle Planner" loading="lazy">
-            </div>
-            <div class="project-content">
-              <div class="project-title-row">
-                <h3 class="project-name">The Hustle Planner</h3>
-                <svg class="project-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              </div>
-              <p class="project-description">A high-performance productivity engine designed for deep work and streamlined task management.</p>
-            </div>
-          </a>
-
-          <!-- PROJECT 02 -->
-          <a href="https://hybrid-os.vercel.app/" target="_blank" class="project-card fade-up">
-            <div class="project-visual">
-              <img src="images/Hybrid_OS.png" alt="Hybrid OS" loading="lazy">
-            </div>
-            <div class="project-content">
-              <div class="project-title-row">
-                <h3 class="project-name">Hybrid OS</h3>
-                <svg class="project-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              </div>
-              <p class="project-description">Architecting a seamless, unified system interface that harmonizes complex workflows.</p>
-            </div>
-          </a>
-
-          <!-- PROJECT 03 -->
-          <a href="https://pdf-studio-sable.vercel.app/" target="_blank" class="project-card fade-up">
-            <div class="project-visual">
-              <img src="images/pdf_studio.png" alt="PDF Studio" loading="lazy">
-            </div>
-            <div class="project-content">
-              <div class="project-title-row">
-                <h3 class="project-name">PDF Studio</h3>
-                <svg class="project-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              </div>
-              <p class="project-description">Optimizing document processing with a minimal, performance-first cloud utility.</p>
-            </div>
-          </a>
-
-          <!-- PROJECT 04 -->
-          <a href="https://uno-cypher.vercel.app/" target="_blank" class="project-card fade-up">
-            <div class="project-visual">
-              <img src="images/unocypher1.png" alt="Uno Cypher" loading="lazy">
-            </div>
-            <div class="project-content">
-              <div class="project-title-row">
-                <h3 class="project-name">Uno Cypher</h3>
-                <svg class="project-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              </div>
-              <p class="project-description">Building immersive, high-speed interactive engines with a focus on low-latency state management.</p>
-            </div>
-          </a>
-
-          <!-- PROJECT 05 -->
-          <a href="https://track-a-lot.vercel.app/" target="_blank" class="project-card fade-up">
-            <div class="project-visual">
-              <img src="images/track%20a%20lot%201.png" alt="Track A Lot" loading="lazy">
-            </div>
-            <div class="project-content">
-              <div class="project-title-row">
-                <h3 class="project-name">Track A Lot</h3>
-                <svg class="project-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              </div>
-              <p class="project-description">A data-driven habit tracking ecosystem focused on consistency and analytical insights.</p>
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider fade-up"></div>
-
-    <!-- 3. About Section — Character Introduction -->
-    <section class="about-section" id="about">
-      <!-- THE CINEMATIC BAND — Photo + Name -->
-      <div class="character-band">
-        <div class="character-photo fade-up" id="profile-card-container">
-          <!-- ProfileCard will be injected here -->
-        </div>
-        <div class="character-info">
-          <div class="manifesto-wrapper fade-up">
-            <p class="philosophy-text">
-              I'm a web developer & designer based in <span class="india-flag-text">India</span>! I specialize in <strong>Frontend Engineering</strong>, focusing on building high quality web experiences through <strong>clean code</strong> and <strong>thoughtful design</strong>.
-            </p>
-            <a href="#contact" class="get-in-touch-btn">
-              <span class="sparkle">✦</span>
-              Get in touch
-              <span class="sparkle">✦</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- THE INTEL BRIEFING PANELS -->
-      <div class="container">
-        <div class="intel-briefing">
-
-
-          <!-- 2. The Arsenal — Film Credits Style -->
-          <div id="arsenal-list-v2" class="intel-weapons">
-            <div class="manifesto-badge">
-              <span class="badge-text">SKILLS</span>
-            </div>
-            <div class="manifesto-content">
-              
-              <div class="skills-grid">
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/Git.svg" alt="Git">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">Git</span>
-                  </div>
-                </div>
-
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/Linux.svg" alt="Linux">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">Linux</span>
-                  </div>
-                </div>
-
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/NPM.svg" alt="NPM">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">NPM</span>
-                  </div>
-                </div>
-
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/Node.js.svg" alt="Node.js">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">Node.js</span>
-                  </div>
-                </div>
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/HTML5.svg" alt="HTML5">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">HTML5</span>
-                  </div>
-                </div>
-
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/CSS3.svg" alt="CSS3">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">CSS3</span>
-                  </div>
-                </div>
-
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/JavaScript.svg" alt="JavaScript">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">JavaScript</span>
-                  </div>
-                </div>
-
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/React.svg" alt="React">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">React</span>
-                  </div>
-                </div>
-
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/Firebase.svg" alt="Firebase">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">Firebase</span>
-                  </div>
-                </div>
-
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/MongoDB.svg" alt="MongoDB">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">MongoDB</span>
-                  </div>
-                </div>
-
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/Visual Studio Code (VS Code).svg" alt="VS Code">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">VS Code</span>
-                  </div>
-                </div>
-
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/GitHub.svg" alt="GitHub">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">GitHub</span>
-                  </div>
-                </div>
-
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/Next.js.svg" alt="Next.js">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">Next.js</span>
-                  </div>
-                </div>
-
-                <div class="skill-item">
-                  <div class="skill-icon">
-                    <img src="images/skills_logos/Vite.js.svg" alt="Vite.js">
-                  </div>
-                  <div class="skill-info">
-                    <span class="skill-name">Vite.js</span>
-                  </div>
-                </div>
-
-              </div> <!-- skills-grid -->
-            </div> <!-- manifesto-content -->
-          </div> <!-- arsenal-list-v2 -->
-
-          <!-- 3. The Phases: Cinema Chapter Cards -->
-          <div class="intel-phases fade-up">
-            
-            <div class="phase-card">
-              <div class="phase-bg-num">01</div>
-              <div class="phase-badge">ARCHIVED</div>
-              <div class="phase-content">
-                <span class="phase-year">2021 // 2025</span>
-                <h4 class="phase-title">EDUCATION</h4>
-                <p class="phase-brief">Systems engineering foundation with a focus on technical logic and analytical solving.</p>
-              </div>
-            </div>
-
-            <div class="phase-card active-phase">
-              <div class="phase-bg-num">02</div>
-              <div class="phase-badge badge-active">CURRENT</div>
-              <div class="phase-content">
-                <span class="phase-year">2023 // PRESENT</span>
-                <h4 class="phase-title">SPECIALIZATION</h4>
-                <p class="phase-brief">Architecting high-performance web apps and cinematic user interfaces.</p>
-              </div>
-            </div>
-
-            <div class="phase-card">
-              <div class="phase-bg-num">03</div>
-              <div class="phase-badge">ONGOING</div>
-              <div class="phase-content">
-                <span class="phase-year">2024 // ∞</span>
-                <h4 class="phase-title">APPLICATION</h4>
-                <p class="phase-brief">Shipping robust, scalable solutions with a focus on maintainable frontend systems.</p>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider fade-up"></div>
-
-      <!-- 5. Contact & Social Index — Cinematic Hybrid Redesign -->
-      <section class="contact-section" id="contact">
-        <div class="container">
-          <div class="contact-grid">
-            
-            <!-- Column 1: The Hook -->
-            <div class="contact-intro fade-up">
-              <div class="status-badge">
-                <span class="status-dot"></span>
-                Open to work
-              </div>
-              <h2 class="contact-headline-serif">Let's connect and build together.</h2>
-            </div>
-
-            <!-- Column 2: Direct Comms -->
-            <div class="contact-methods fade-up">
-              <span class="contact-col-header">Contact Me</span>
-              
-              <a href="mailto:heysanthoshreddy@gmail.com" class="pill-card">
-                <span class="pill-icon">
-                  <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                </span>
-                Email
-              </a>
-
-              <a href="#" class="pill-card">
-                <span class="pill-icon">
-                  <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                </span>
-                Download Resume
-              </a>
-            </div>
-
-            <!-- Column 3: Socials -->
-            <div class="contact-socials fade-up">
-              <span class="contact-col-header">Socials</span>
-              
-              <div class="social-pill-grid">
-                <a href="https://github.com/santjsx" target="_blank" class="pill-card">
-                  <span class="pill-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-                  </span>
-                  GitHub
-                </a>
-                <a href="https://linkedin.com" target="_blank" class="pill-card">
-                  <span class="pill-icon">
-                    <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.238 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                  </span>
-                  LinkedIn
-                </a>
-                <a href="https://x.com/Santhoshh_void" target="_blank" class="pill-card">
-                  <span class="pill-icon">
-                    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                  </span>
-                  X
-                </a>
-                <a href="https://www.instagram.com/whoissanthoshh?igsh=dHljNGpqbWIwamlx" target="_blank" class="pill-card">
-                  <span class="pill-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.558.217.957.477 1.377.896.419.42.679.819.896 1.377.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.013 3.584-.07 4.85c-.054 1.17-.249 1.805-.413 2.227-.217.558-.477.957-.896 1.377-.42.419-.819.679-1.377.896-.422.164-1.057.36-2.227.413-1.266.057-1.646.07-4.85.07s-3.584-.013-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.558-.217-.957-.477-1.377-.896-.419-.42-.679-.819-.896-1.377-.164-.422-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.013-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.217-.558.477-.957.896-1.377.42-.419.819-.679 1.377-.896.422-.164 1.057-.36 2.227-.413 1.266-.057 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-1.277.057-2.149.259-2.912.556-.788.306-1.457.715-2.122 1.38-.666.665-1.075 1.334-1.381 2.122-.297.763-.499 1.635-.556 2.912-.058 1.28-.072 1.688-.072 4.948s.014 3.668.072 4.948c.057 1.277.259 2.149.556 2.912.306.788.715 1.457 1.38 2.122.665.666 1.334 1.075 2.122 1.381.763.297 1.635.499 2.912.556 1.28.058 1.688.072 4.948.072s3.668-.014 4.948-.072c1.277-.057 2.149-.259 2.912-.556.788-.306 1.457-.715 2.122-1.38.666-.665 1.075-1.334 1.381-2.122.297-.763.499-1.635.556-2.912.058-1.28.072-1.688.072-4.948s-.014-3.668-.072-4.948c-.057-1.277-.259-2.149-.556-2.912-.306-.788-.715-1.457-1.38-2.122-.665-.666-1.334-1.075-2.122-1.381-.763-.297-1.635-.499-2.912-.556-1.28-.058-1.688-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.209-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                  </span>
-                  Instagram
-                </a>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Massive 3D Text Footer -->
-          <div class="footer-big-name-wrap scroll-reveal">
-            <h1 class="footer-big-name">Santhosh Reddy</h1>
-          </div>
-        </div>
-      </section>
-
-  </main>
-
-  <!-- 7. Resume Slide-in Drawer -->
-  <div class="resume-overlay js-close-resume"></div>
-  <aside class="resume-drawer" id="resume-drawer">
-    <div class="drawer-header">
-      <h3 class="drawer-title">Resume</h3>
-      
-      <div class="drawer-toolbar">
-        <button id="zoom-out" class="toolbar-btn" aria-label="Zoom Out" title="Zoom Out">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-        </button>
-        <button id="zoom-reset" class="toolbar-btn reset" aria-label="Reset Zoom">80%</button>
-        <button id="zoom-in" class="toolbar-btn" aria-label="Zoom In" title="Zoom In">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-        </button>
-      </div>
-
-      <button class="drawer-close js-close-resume" aria-label="Close Resume">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-    </div>
-    <div class="drawer-content" data-lenis-prevent>
-      <!-- PDF.js Canvas Container -->
-      <div id="pdf-container" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px;">
-        <canvas id="pdf-canvas" style="max-width: 100%; height: auto; box-shadow: 0 4px 24px rgba(0,0,0,0.4); border-radius: 4px; display: none;"></canvas>
-        <div id="pdf-loading" style="color: var(--text-dark-secondary); font-family: var(--font-mono); font-size: 14px; margin-top: 40px;">
-          Loading Resume...
-        </div>
-        
-        <div class="pdf-fallback" style="margin-top: 20px; text-align: center;">
-          <a href="/Santhosh%20Reddy%20Resume.pdf" class="cta-button primary" download="Santhosh_Reddy_Resume.pdf" target="_blank" rel="noopener noreferrer">
-            Download PDF
-          </a>
-        </div>
-      </div>
-    </div>
-  </aside>
-
-
-  <!-- 11. Archive Engine — Professional Admin Portal -->
-  <div id="engine-auth" class="engine-auth">
-    <div class="auth-box">
-      <span class="engine-logo">AUTHENTICATION_REQUIRED</span>
-      <input type="password" id="auth-password" class="auth-input" placeholder="••••••••">
-      <p class="meta-label">Enter Archive Secret to access Engine Mode</p>
-    </div>
-  </div>
-
-  <aside id="archive-engine" class="archive-engine">
-    <header class="engine-header">
-      <span class="engine-logo">ARCHIVE_ENGINE_V1.0</span>
-      <button id="engine-close" class="engine-close">EXIT_</button>
-    </header>
-
-    <div class="engine-scroll">
-      <!-- Section: Global Identity -->
-      <div class="engine-section">
-        <span class="engine-section-title">01. Global Identity</span>
-        <div class="engine-field">
-          <label class="engine-label">Display Name</label>
-          <input type="text" id="eng-id-name" class="engine-input" placeholder="Santhosh Reddy">
-        </div>
-        <div class="engine-field">
-          <label class="engine-label">Professional Title</label>
-          <input type="text" id="eng-id-title" class="engine-input" placeholder="Developer">
-        </div>
-      </div>
-
-      <!-- Section: Visual Design (Merged from Theme Lab) -->
-      <div class="engine-section">
-        <span class="engine-section-title">02. Design Matrix</span>
-        <div class="engine-field">
-          <label class="engine-label">Primary Accent (Purple)</label>
-          <div class="color-picker-row" style="background: #111; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
-            <input type="color" id="accent-color-1" value="#3A1C71" style="background: none; border: none; width: 30px; height: 30px; cursor: pointer;">
-            <span class="color-hex" id="hex-1" style="font-family: var(--font-mono); font-size: 12px;">#3A1C71</span>
-          </div>
-        </div>
-        <div class="engine-field">
-          <label class="engine-label">Secondary Accent (Salmon)</label>
-          <div class="color-picker-row" style="background: #111; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
-            <input type="color" id="accent-color-2" value="#FFA07A" style="background: none; border: none; width: 30px; height: 30px; cursor: pointer;">
-            <span class="color-hex" id="hex-2" style="font-family: var(--font-mono); font-size: 12px;">#FFA07A</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Section: Hero Content -->
-      <div class="engine-section">
-        <span class="engine-section-title">03. Hero Configuration</span>
-        <div class="engine-field">
-          <label class="engine-label">Headline Row 1</label>
-          <input type="text" id="eng-hero-1" class="engine-input" placeholder="Building high-end">
-        </div>
-        <div class="engine-field">
-          <label class="engine-label">Headline Row 2 (Accent)</label>
-          <input type="text" id="eng-hero-2" class="engine-input" placeholder="digital products.">
-        </div>
-      </div>
-
-      <!-- Section: Project Management -->
-      <div class="engine-section">
-        <span class="engine-section-title">04. Project Arsenal</span>
-        <div class="engine-list" id="eng-projects-list">
-          <div class="engine-list-item">
-            <div class="item-info">
-              <span class="item-title">The Hustle Planner</span>
-              <span class="item-meta">Live / React / Vercel</span>
-            </div>
-            <div class="item-actions">
-              <button class="engine-icon-btn">✎</button>
-            </div>
-          </div>
-        </div>
-        <button class="engine-add-btn">+ ADD NEW PROJECT</button>
-      </div>
-
-      <!-- Section: Social Matrix -->
-      <div class="engine-section">
-        <span class="engine-section-title">05. Social Matrix</span>
-        <div class="engine-field">
-          <label class="engine-label">GitHub URL</label>
-          <input type="text" class="engine-input" placeholder="https://github.com/santjsx">
-        </div>
-        <div class="engine-field">
-          <label class="engine-label">Twitter/X URL</label>
-          <input type="text" class="engine-input" placeholder="https://x.com/santjsx">
-        </div>
-      </div>
-    </div>
-
-    <footer class="engine-footer">
-      <button id="engine-save" class="engine-main-btn engine-save">Apply Live Changes</button>
-      <button id="engine-export" class="engine-main-btn engine-export">Export Code State</button>
-    </footer>
-  </aside>
-
-  <!-- Export Modal -->
-  <div id="engine-modal" class="engine-modal">
-    <div class="modal-content">
-      <div class="engine-header">
-        <span class="engine-logo">STATE_EXPORT</span>
-      </div>
-      <p class="meta-label mb-4">Copy this JSON to update your hardcoded data files.</p>
-      <pre id="export-pre" class="modal-pre"></pre>
-    </div>
-  </div>
-
-  <div id="copy-toast" class="copy-toast">CSS TOKENS COPIED</div>
+      `;
+    }
+  }catch{setHTML('movie-body','<div class="not-playing">— TMDb unavailable</div>')}
+}
+loadTMDB();
+</script>
 </body>
 </html>
