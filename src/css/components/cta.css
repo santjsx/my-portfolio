@@ -153,12 +153,16 @@
     background: var(--accent-gradient);
     -webkit-background-clip: text;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
     color: transparent;
-    line-height: 1.1; /* Increased to prevent clipping */
-    padding: 0.1em 0; /* Added breathing room for letters and shadows */
+    line-height: 1.2;
+    padding: 0.2em 0.5em; /* Generous padding to prevent all clipping */
     letter-spacing: -0.04em;
     white-space: nowrap;
     text-shadow: 0 10px 30px rgba(58, 28, 113, 0.2);
+    display: inline-block;
+    /* Force GPU rendering to prevent edge artifacts */
+    transform: translateZ(0);
 }
 
 /* ── Responsiveness ── */
