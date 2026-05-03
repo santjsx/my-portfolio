@@ -288,7 +288,11 @@ class StaggeredMenu {
     const socialTitle = this.panel.querySelector('.sm-socials-title');
     const socialLinks = Array.from(this.panel.querySelectorAll('.sm-socials-link'));
 
-    gsap.set(itemEls, { yPercent: 140, rotate: 10 });
+    const isMobile = window.innerWidth < 640;
+    const yVal = isMobile ? 80 : 140;
+    const rotateVal = isMobile ? 0 : 10;
+
+    gsap.set(itemEls, { yPercent: yVal, rotate: rotateVal, opacity: 0 });
     gsap.set(numberEls, { '--sm-num-opacity': 0 });
     if (socialTitle) gsap.set(socialTitle, { opacity: 0 });
     gsap.set(socialLinks, { y: 25, opacity: 0 });
@@ -308,7 +312,7 @@ class StaggeredMenu {
     tl.fromTo(this.panel, { xPercent: offscreen }, { xPercent: 0, duration: panelDuration, ease: 'power4.out' }, panelInsertTime);
 
     const itemsStart = panelInsertTime + panelDuration * 0.15;
-    tl.to(itemEls, { yPercent: 0, rotate: 0, duration: 1, ease: 'power4.out', stagger: 0.1 }, itemsStart);
+    tl.to(itemEls, { yPercent: 0, rotate: 0, opacity: 1, duration: 1, ease: 'power4.out', stagger: 0.1 }, itemsStart);
     tl.to(numberEls, { '--sm-num-opacity': 1, duration: 0.6, ease: 'power2.out', stagger: 0.08 }, itemsStart + 0.1);
 
     const socialsStart = panelInsertTime + panelDuration * 0.4;

@@ -125,6 +125,18 @@ body.lanyard-active .staggered-menu-header {
   opacity: 1;
 }
 
+/* Open state for toggle */
+body.nav-menu-open .sm-toggle-circle {
+  width: 220px;
+  height: 220px;
+  opacity: 1;
+}
+
+body.nav-menu-open .sm-toggle {
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
 .sm-toggle-textWrap {
   position: relative;
   display: inline-block;
@@ -349,8 +361,20 @@ body.lanyard-active .staggered-menu-header {
 
 @media (max-width: 640px) {
     .staggered-menu-header {
-        padding: clamp(1rem, 5vw, 1.5rem) clamp(1rem, 5vw, 1.5rem);
-        padding-top: calc(env(safe-area-inset-top, 0px) + 1rem);
+        padding: 1.5rem 1.5rem;
+        padding-top: calc(env(safe-area-inset-top, 0px) + 1.5rem);
+    }
+
+    .sm-toggle {
+        padding: 10px 20px;
+        font-size: 12px;
+        gap: 8px;
+    }
+
+    .sm-toggle-circle {
+        /* Ensure circle is centered on mobile too */
+        width: 15px;
+        height: 15px;
     }
     
     .staggered-menu-panel {
@@ -368,6 +392,10 @@ body.lanyard-active .staggered-menu-header {
         gap: 2.5rem;
         align-items: center;
     }
+
+    .sm-panel-itemWrap {
+        overflow: visible; /* Allow animation to breathe */
+    }
     
     .sm-panel-list {
         gap: 1.5rem;
@@ -376,18 +404,30 @@ body.lanyard-active .staggered-menu-header {
     }
 
     .sm-panel-item {
-        font-size: clamp(2rem, 10vw, 2.8rem);
-        padding-right: 0;
+        font-size: clamp(2.2rem, 11vw, 3.2rem);
+        padding: 0.75rem 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        width: 100%;
+        text-align: center;
+        position: relative;
+    }
+
+    .sm-panel-itemLabel {
         display: block;
+        flex: 0 1 auto;
     }
 
     .sm-panel-list[data-numbering] .sm-panel-item::after {
-        position: relative;
-        display: inline-block;
-        font-size: 0.9rem;
-        margin-left: 8px;
-        top: -1em;
-        right: auto;
+        position: static;
+        display: block;
+        font-size: 0.8rem;
+        margin: 0;
+        opacity: 0.5;
+        flex: 0 0 auto;
+        transform: translateY(0.2em);
     }
 
     .sm-socials {
