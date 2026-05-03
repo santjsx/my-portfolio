@@ -99,6 +99,10 @@ class StaggeredMenu {
     this.toggleBtn.setAttribute('aria-label', 'Open menu');
     this.toggleBtn.setAttribute('type', 'button');
     
+    // Content wrapper (z-index: 1)
+    this.contentWrap = document.createElement('span');
+    this.contentWrap.className = 'sm-toggle-content';
+
     this.textWrap = document.createElement('span');
     this.textWrap.className = 'sm-toggle-textWrap';
     this.textWrap.setAttribute('aria-hidden', 'true');
@@ -108,7 +112,7 @@ class StaggeredMenu {
     this.textWrap.appendChild(this.textInner);
     this.updateTextLines(['Menu', 'Close']); // Initial lines
 
-    this.toggleBtn.appendChild(this.textWrap);
+    this.contentWrap.appendChild(this.textWrap);
 
     this.icon = document.createElement('span');
     this.icon.className = 'sm-icon';
@@ -119,7 +123,14 @@ class StaggeredMenu {
     this.plusV.className = 'sm-icon-line sm-icon-line-v';
     this.icon.appendChild(this.plusH);
     this.icon.appendChild(this.plusV);
-    this.toggleBtn.appendChild(this.icon);
+    this.contentWrap.appendChild(this.icon);
+
+    this.toggleBtn.appendChild(this.contentWrap);
+
+    // Background hover circle (z-index: 0)
+    this.circle = document.createElement('span');
+    this.circle.className = 'sm-toggle-circle';
+    this.toggleBtn.appendChild(this.circle);
 
     this.header.appendChild(this.toggleBtn);
     this.wrapper.appendChild(this.header);
