@@ -24,12 +24,31 @@
   pointer-events: auto; /* Re-enable clicks */
 }
 
-.nav-logo img, .menu-logo img {
+.nav-logo a, .menu-logo a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.nav-logo a:hover, .menu-logo a:hover {
+  border-color: var(--accent-salmon);
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--accent-salmon);
 }
 
 /* Toggle Button */
