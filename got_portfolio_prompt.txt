@@ -1,0 +1,109 @@
+# THE MASTER BLUEPRINT: VALYRIAN_STEEL_V1 PORTFOLIO ENGINE
+
+## [0] CORE DIRECTIVE & ROLE
+You are an Elite Creative Developer and Prompt Engineer. You will build a cinematic, high-performance portfolio with a Game of Thrones / House of the Dragon theme. You must follow every step below exactly. Do not skip any data points.
+
+---
+
+## [1] THE DATA REPOSITORY (DO NOT SKIP ANY DATA)
+
+### PROFILE DATA:
+- Name: Santhosh Reddy
+- Role: Web Developer & Frontend Engineer
+- Handle: santjsx
+- Location: India (Warden of the Frontend)
+- Status: Available (Open for Conquests)
+- Domain: santhoshh.xyz
+- Email: heysanthoshreddy@gmail.com
+
+### TECHNICAL SKILLS:
+- Languages: HTML5, CSS3, JavaScript (ES6+)
+- Frameworks: React, Next.js
+- Tools: Git, Linux, NPM, Vite.js, VS Code, GitHub
+- Backend: Node.js, Firebase, MongoDB
+- Creative: GSAP (Animation), OGL (WebGL), Cinematic UI Design
+
+### PROJECT INDEX:
+1. The Hustle Planner: https://the-hustle-planner.vercel.app/ (Productivity Engine)
+2. Hybrid OS: https://hybrid-os.vercel.app/ (System Interface)
+3. PDF Studio: https://pdf-studio-sable.vercel.app/ (Cloud Utility)
+4. Uno Cypher: https://uno-cypher.vercel.app/ (Interactive Engine)
+5. Track A Lot: https://track-a-lot.vercel.app/ (Habit Tracking)
+
+### JOURNEY PHASES:
+- Phase 01 (2021-25): Systems engineering foundation at The Citadel.
+- Phase 02 (2023+): Specialization in high-performance web apps & cinematic UIs.
+- Phase 03 (Ongoing): Shipping robust, scalable frontend solutions across the Realm.
+
+### API KEYS & SECRETS:
+- Lanyard ID: 1284925883240550552 | Key: bc6ba6a2b964e5c0610729a5c973b1d6
+- Last.fm User: santhoshh25 | Key: a403d71a4af1bacfddab789750be1c18
+- TMDb Key: 15511e43224695bd75148dab05bc81fb
+
+---
+
+## [2] STEP-BY-STEP IMPLEMENTATION GUIDE
+
+### STEP 1: FOUNDATION & DESIGN TOKENS
+- Initialize a project with Vite (Vanilla JS).
+- Setup `main.css` with these tokens:
+  - `--bg-obsidian: #0A0A0A`
+  - `--bg-dragonglass: #1A1A1A`
+  - `--accent-blood: #8B0000`
+  - `--text-gold: #D4AF37` (Antique Gold)
+  - `--font-serif: 'Cinzel', serif`
+  - `--font-mono: 'JetBrains Mono', monospace`
+
+### STEP 2: ATMOSPHERIC BACKGROUND (WEBGL)
+- Create a `BackgroundEngine.js`.
+- Use **OGL** to render a high-performance particle system.
+- Particles: 300 embers, drifting upwards with a slight sine-wave wobble.
+- Interaction: Mouse movement should create a "push" force on the embers.
+
+### STEP 3: THE THRONE ROOM (HERO SECTION)
+- HTML: A full-screen `<section class="hero">`.
+- Headline: "Architect of the Seven Frameworks."
+- Sub-headline: Reveal Santhosh Reddy's handle `santjsx` with a scramble animation.
+- Visual: A large, centered "Hand of the King" or "House Sigil" (SVG) with a mouse-tracking firelight glow.
+
+### STEP 4: THE ARMORY (SKILLS GRID)
+- HTML: `<section id="armory">`.
+- UI: A grid of "Valyrian Steel" cards.
+- Effect: Glassmorphism with a subtle metallic border. On hover, the border glows `accent-blood` (#8B0000).
+- Interaction: Stagger reveal all skills using GSAP.
+
+### STEP 5: THE CONQUESTS (PROJECTS GALLERY)
+- HTML: `<section id="conquests">`.
+- Layout: A vertical editorial layout.
+- Card Design: Each project gets a "House Sigil" overlay. Use the provided URLs for clickable links.
+- Parallax: Project images should have a subtle depth effect using `gsap.to(image, { yPercent: -20 })`.
+
+### STEP 6: THE CHRONICLES (ABOUT/JOURNEY)
+- HTML: `<section id="chronicles">`.
+- Presentation: A scrolling "Archive Scroll" layout.
+- Data: Display Phase 01, 02, and 03 clearly with dates and descriptions.
+
+### STEP 7: SEND A RAVEN (CONTACT & SOCIALS)
+- HTML: `<footer id="ravens">`.
+- Socials: Icons for GitHub, X, and Instagram.
+- CTA: "Send a Raven" button that opens an email to `heysanthoshreddy@gmail.com`.
+- Interaction: A "Wax Seal" click animation that triggers the mailto link.
+
+### STEP 8: THE RAVEN SYSTEM (API INTEGRATION)
+- Lanyard: Fetch status every 30s. Map status to: "Stationed at Winterfell" (Online), "Beyond the Wall" (Offline).
+- Music: Display "Singing a Song of Ice and Fire: [Song Name]" from Last.fm. Fetch 600px album art via iTunes API.
+
+### STEP 9: NAVIGATION (STAGGERED MAP)
+- Implementation: A slide-out panel that looks like a map of Westeros.
+- Staggered Links: "The Throne Room", "The Armory", "The Conquests", "The Chronicles".
+- Animation: Use GSAP to animate the map unrolling effect.
+
+### STEP 10: BUTTER-SMOOTH OPTIMIZATION
+- Integrate **Lenis** for smooth inertia scrolling.
+- Audit for 60fps. Ensure no layout thrashing.
+- Add `Aria-labels` to all interactive sigils for accessibility.
+
+---
+
+## [3] FINAL VALIDATION
+Check that every link works, every API key is configured, and the typography is perfectly crisp. The site must look premium, feel weighted, and be worthy of the Iron Throne.

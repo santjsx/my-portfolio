@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Santhosh Reddy // Developer</title>
+  <meta name="description" content="Santhosh Reddy // Developer. Clean Code.">
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <!-- Critical Resource Preload -->
+  <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGkyMZhrib2Bg-4.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Special+Elite&display=swap">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Special+Elite&display=swap"
+    rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer async></script>
+    <link rel="stylesheet" href="/src/css/main.css">
+    <link rel="stylesheet" href="/src/css/components/profile-card.css">
+    <link rel="stylesheet" href="/src/css/components/theme-editor.css">
+    <link rel="stylesheet" href="/src/css/components/engine.css">
+    <link rel="stylesheet" href="/src/css/components/navigation-v2.css">
+    <script type="module" src="/src/js/main.js" fetchpriority="high"></script>
+  </head>
+  
+  <body class="dark-container" style="padding: 0;">
+  
+  <!-- 8. Floating Lanyard Status Widget -->
+  <div id="lanyard-widget" class="lanyard-container">
+    <div class="lanyard-hint wobble-hint">
+      <div class="hint-icon-wrapper">
+        <svg class="hint-icon-svg" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span class="hint-badge">1</span>
+      </div>
+      <span class="hint-text">Santhosh sent you a message</span>
+    </div>
+    <div class="lanyard-island" id="lanyard-toggle">
+      <div class="island-avatar-wrapper">
+        <img src="images/santhoshh.webp" alt="Santhosh" class="lanyard-avatar" id="lanyard-avatar-img" loading="lazy" decoding="async">
+        <div class="lanyard-indicator" id="lanyard-indicator"></div>
+      </div>
+      <div class="phone-camera-module">
+        <div class="camera-lens"></div>
+        <div class="camera-sensor"></div>
+      </div>
+      <div class="phone-status-bar" id="phone-status-bar">
+        <div class="status-bar-left">
+          <span class="phone-time" id="phone-time">12:30</span>
+          <span class="phone-carrier">Airtel</span>
+        </div>
+        <div class="phone-status-icons">
+          <div class="signal-bars" id="phone-signal">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <svg class="wifi-icon" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4l2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+          <div class="battery-status" id="phone-battery">
+            <span class="battery-percent" id="battery-percent">85%</span>
+            <div class="battery-icon">
+              <div class="battery-level" id="battery-level" style="width: 85%;"></div>
+              <svg class="charging-icon" id="charging-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="island-content">
+        <div class="phone-screen-scroll">
+          <div class="lanyard-section mood-section">
+            <span class="lanyard-section-label">MOOD</span>
+            <div class="island-header">
+              <span class="island-status-dot" id="lanyard-status-dot"></span>
+              <span class="island-status-text" id="lanyard-status-text">Connecting...</span>
+            </div>
+          </div>
+          <div class="lanyard-section message-section">
+            <span class="lanyard-section-label">MESSAGE</span>
+            <div class="island-message-box imessage-style">
+              <div class="msg-bubble">
+                <p class="island-greeting" id="lanyard-greeting">Hey! Glad you're here.<br>Digging my style? Let's make something happen.</p>
+                <button class="msg-contact-btn" id="lanyard-reply-btn">Reply</button>
+              </div>
+            </div>
+          </div>
+          <div class="lanyard-section watching-section" id="lanyard-watching" style="display: none;">
+            <span class="lanyard-section-label">WATCHING</span>
+            <div id="watching-content"></div>
+          </div>
+          <div class="lanyard-section activity-section">
+            <span class="lanyard-section-label">ACTIVITIES</span>
+            <div class="island-activities" id="lanyard-activities">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Screen Overlay -->
+      <div class="chat-section" id="lanyard-chat-screen" style="display: none; opacity: 0; pointer-events: none;">
+        <div class="chat-header">
+          <button class="chat-back-btn" id="chat-back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            <span>Back</span>
+          </button>
+          <span class="chat-title">New Message</span>
+        </div>
+        <form action="https://api.web3forms.com/submit" method="POST" class="chat-composer" id="lanyard-chat-form" autocomplete="off">
+          <input type="hidden" name="access_key" value="94faa993-c934-4458-aaf6-5f43e843f547">
+          <div class="chat-input-group">
+            <input type="text" name="name" placeholder="Your Name" required class="chat-input" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="chat-input-group">
+            <input type="email" name="email" placeholder="Your Email" required class="chat-input" autocomplete="off" spellcheck="false" autocapitalize="none">
+          </div>
+          <div class="chat-message-area">
+            <textarea name="message" placeholder="Type a message..." required class="chat-textarea"></textarea>
+            <button type="submit" class="chat-send-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+          </div>
+        </form>
+        <div id="chat-success" style="display: none; opacity: 0;" class="chat-success-message">
+          <div class="success-icon">✓</div>
+          <div class="success-text-content">
+            <p class="success-title">Message Delivered</p>
+            <p class="success-subtitle">Thanks for reaching out! I'll get back to you shortly via the email you provided.</p>
+          </div>
+          <button class="chat-close-btn" id="chat-done">Return to Home</button>
+        </div>
+      </div>
+      <button class="lanyard-close-minimal" id="lanyard-close" aria-label="Close widget">
+        <span>CLOSE</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Film Grain Overlay -->
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <!-- Subliminal Tyler Flash -->
+  <div class="subliminal-flash" id="subliminal-flash" aria-hidden="true">
+    <span>You are not your code.</span>
+  </div>
+
+  <!-- Cinematic Title Sequence Loader -->
+  <div id="premium-preloader" class="cinematic-loader">
+    <!-- Cinematic Shutter Panels -->
+    <div class="loader-panel panel-top"></div>
+    <div class="loader-panel panel-bottom"></div>
+    
+    <!-- Letterbox "Cinemascope" Bars -->
+    <div class="loader-letterbox lb-top" aria-hidden="true"></div>
+    <div class="loader-letterbox lb-bottom" aria-hidden="true"></div>
+
+    <!-- Analog Film Texture Layer -->
+    <div class="loader-grain" aria-hidden="true"></div>
+
+    <div class="loader-content">
+      <div class="loader-top-meta">
+        <span class="loader-subtitle" id="loader-dynamic-text">ARCHIVE // 2026 // AD_SR</span>
+      </div>
+      
+      <div class="loader-center-title">
+        <div class="line-wrapper"><h1 class="loader-name">SANTHOSH</h1></div>
+        <div class="line-wrapper"><h1 class="loader-name accent">REDDY</h1></div>
+      </div>
+
+      <div class="loader-bottom-meta">
+        <div class="loader-counter">
+          <span class="loader-prefix">SERIAL_NO: </span>
+          <span id="loader-percent">00</span>
+          <span class="loader-symbol">%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation System -->
+  <nav class="nav">
+    <!-- Always visible logo in top left -->
+    <div class="nav-logo">
+      <a href="/">SR</a>
+    </div>
+
+    <!-- Always visible toggle in top right -->
+    <div class="nav-toggle" id="nav-toggle">
+      <p class="menu-label">Menu</p>
+      <p class="close-label">Close</p>
+    </div>
+
+    <!-- Full screen overlay -->
+    <div class="menu" id="menu">
+      <!-- Background SVG for the wipe transition -->
+      <svg id="menu-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="menu-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#3A1C71;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#FFA07A;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <path id="svg-path" d=""></path>
+      </svg>
+
+      <!-- Logo inside the menu -->
+      <div class="menu-logo">
+        <a href="/">SR</a>
+      </div>
+
+      <!-- Info Column (Contact, Address, etc.) -->
+      <div class="menu-column-info">
+        <p class="get-in-touch">Get in Touch</p>
+        <h6 class="info-heading">Contact Details</h6>
+        <p class="address-line">heysanthoshreddy@gmail.com</p>
+        <p class="address-line">India</p>
+      </div>
+
+      <!-- Links Column -->
+      <div class="menu-column-links">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#work" class="nav-link">Projects</a>
+        <a href="#" class="nav-link js-open-vibe-portal">My Vibe</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a href="#" class="nav-link js-open-resume">Resume</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Vibe Portal Choice Overlay -->
+  <div id="vibe-portal" class="vibe-portal">
+    <button id="portal-close" class="portal-close">CLOSE_</button>
+    <div class="portal-container">
+      <!-- Cinema Choice -->
+      <a href="cinema.html" class="portal-card" id="portal-cinema">
+        <span class="portal-label">SECTION_01</span>
+        <h2 class="portal-title">Cinema</h2>
+      </a>
+      
+      <div class="portal-divider"></div>
+      
+      <!-- Music Choice -->
+      <a href="music.html" class="portal-card" id="portal-music">
+        <span class="portal-label">SECTION_02</span>
+        <h2 class="portal-title">Music</h2>
+      </a>
+    </div>
+  </div>
+
+  <main>
+    <!-- 1. Hero Section (Cinematic Redesign) -->
+    <section class="hero" id="hero">
+      <!-- Ripple Grid Background -->
+      <div id="hero-ripple-grid" class="ripple-grid-bg" aria-hidden="true"></div>
+
+      <div class="container hero-layout">
+
+        <!-- Left: Main content block -->
+        <div class="hero-main">
+          <h1 class="hero-headline fade-up">
+            <span class="headline-row">Building high-end</span>
+            <span class="headline-row"><span class="hero-accent-text">digital products.</span></span>
+          </h1>
+
+          <div class="hero-cta-row fade-up">
+            <a href="#work" class="hero-cta-link">
+              View Work
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+            <a class="hero-cta-link ghost js-open-resume">Resume</a>
+          </div>
+        </div>
+
+        <!-- Right: Meta sidebar -->
+        <div class="hero-meta">
+          <div class="meta-block fade-up">
+            <span class="meta-label">Status</span>
+            <span class="meta-value"><span class="hero-status-dot"></span> Available</span>
+          </div>
+          <div class="meta-block space-widget fade-up">
+            <span class="meta-label">Humans in Space</span>
+            <span class="meta-value" id="astros-count">
+                <span class="skeleton" style="width: 60px; height: 16px; display: inline-block;"></span>
+            </span>
+          </div>
+          <div class="meta-block fade-up">
+            <span class="meta-label">Focus</span>
+            <span class="meta-value">Frontend / UI</span>
+          </div>
+          <div class="meta-block fade-up">
+            <span class="meta-label">Location</span>
+            <span class="meta-value india-flag-text">India</span>
+          </div>
+
+          <span id="hero-quote" class="compact-cinematic-quote text-left mt-8 fade-up">&ldquo;There is a difference between knowing the path and walking the path.&rdquo;</span>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="section-divider fade-up"></div>
+
+    <!-- 2. Projects Block — Personal Projects Grid -->
+    <section class="gallery-section" id="work">
+      <div class="container projects-grid-wrap">
+        <header class="projects-header">
+          <h2 class="projects-title fade-up">Personal Projects</h2>
+          <p class="projects-subtitle fade-up">I believe that the things I create for myself help me create better things for everyone.</p>
+        </header>
+
+        <div class="projects-grid">
+          <!-- PROJECT 01 -->
+          <a href="https://the-hustle-planner.vercel.app/" target="_blank" class="project-card fade-up">
+            <div class="project-visual">
+              <img src="images/hustle_planner.png" alt="Hustle Planner" loading="lazy">
+            </div>
+            <div class="project-content">
+              <div class="project-title-row">
+                <h3 class="project-name">The Hustle Planner</h3>
+                <svg class="project-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </div>
+              <p class="project-description">A high-performance productivity engine designed for deep work and streamlined task management.</p>
+            </div>
+          </a>
+
+          <!-- PROJECT 02 -->
+          <a href="https://hybrid-os.vercel.app/" target="_blank" class="project-card fade-up">
+            <div class="project-visual">
+              <img src="images/Hybrid_OS.png" alt="Hybrid OS" loading="lazy">
+            </div>
+            <div class="project-content">
+              <div class="project-title-row">
+                <h3 class="project-name">Hybrid OS</h3>
+                <svg class="project-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </div>
+              <p class="project-description">Architecting a seamless, unified system interface that harmonizes complex workflows.</p>
+            </div>
+          </a>
+
+          <!-- PROJECT 03 -->
+          <a href="https://pdf-studio-sable.vercel.app/" target="_blank" class="project-card fade-up">
+            <div class="project-visual">
+              <img src="images/pdf_studio.png" alt="PDF Studio" loading="lazy">
+            </div>
+            <div class="project-content">
+              <div class="project-title-row">
+                <h3 class="project-name">PDF Studio</h3>
+                <svg class="project-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </div>
+              <p class="project-description">Optimizing document processing with a minimal, performance-first cloud utility.</p>
+            </div>
+          </a>
+
+          <!-- PROJECT 04 -->
+          <a href="https://uno-cypher.vercel.app/" target="_blank" class="project-card fade-up">
+            <div class="project-visual">
+              <img src="images/unocypher1.png" alt="Uno Cypher" loading="lazy">
+            </div>
+            <div class="project-content">
+              <div class="project-title-row">
+                <h3 class="project-name">Uno Cypher</h3>
+                <svg class="project-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </div>
+              <p class="project-description">Building immersive, high-speed interactive engines with a focus on low-latency state management.</p>
+            </div>
+          </a>
+
+          <!-- PROJECT 05 -->
+          <a href="https://track-a-lot.vercel.app/" target="_blank" class="project-card fade-up">
+            <div class="project-visual">
+              <img src="images/track%20a%20lot%201.png" alt="Track A Lot" loading="lazy">
+            </div>
+            <div class="project-content">
+              <div class="project-title-row">
+                <h3 class="project-name">Track A Lot</h3>
+                <svg class="project-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </div>
+              <p class="project-description">A data-driven habit tracking ecosystem focused on consistency and analytical insights.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider fade-up"></div>
+
+    <!-- 3. About Section — Character Introduction -->
+    <section class="about-section" id="about">
+      <!-- THE CINEMATIC BAND — Photo + Name -->
+      <div class="character-band">
+        <div class="character-photo fade-up" id="profile-card-container">
+          <!-- ProfileCard will be injected here -->
+        </div>
+        <div class="character-info">
+          <div class="manifesto-wrapper fade-up">
+            <p class="philosophy-text">
+              I'm a web developer & designer based in <span class="india-flag-text">India</span>! I specialize in <strong>Frontend Engineering</strong>, focusing on building high quality web experiences through <strong>clean code</strong> and <strong>thoughtful design</strong>.
+            </p>
+            <a href="#contact" class="get-in-touch-btn">
+              <span class="sparkle">✦</span>
+              Get in touch
+              <span class="sparkle">✦</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- THE INTEL BRIEFING PANELS -->
+      <div class="container">
+        <div class="intel-briefing">
+
+
+          <!-- 2. The Arsenal — Film Credits Style -->
+          <div id="arsenal-list-v2" class="intel-weapons">
+            <div class="manifesto-badge">
+              <span class="badge-text">SKILLS</span>
+            </div>
+            <div class="manifesto-content">
+              
+              <div class="skills-grid">
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/Git.svg" alt="Git">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">Git</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/Linux.svg" alt="Linux">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">Linux</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/NPM.svg" alt="NPM">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">NPM</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/Node.js.svg" alt="Node.js">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">Node.js</span>
+                  </div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/HTML5.svg" alt="HTML5">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">HTML5</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/CSS3.svg" alt="CSS3">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">CSS3</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/JavaScript.svg" alt="JavaScript">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">JavaScript</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/React.svg" alt="React">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">React</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/Firebase.svg" alt="Firebase">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">Firebase</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/MongoDB.svg" alt="MongoDB">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">MongoDB</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/Visual Studio Code (VS Code).svg" alt="VS Code">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">VS Code</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/GitHub.svg" alt="GitHub">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">GitHub</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/Next.js.svg" alt="Next.js">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">Next.js</span>
+                  </div>
+                </div>
+
+                <div class="skill-item">
+                  <div class="skill-icon">
+                    <img src="images/skills_logos/Vite.js.svg" alt="Vite.js">
+                  </div>
+                  <div class="skill-info">
+                    <span class="skill-name">Vite.js</span>
+                  </div>
+                </div>
+
+              </div> <!-- skills-grid -->
+            </div> <!-- manifesto-content -->
+          </div> <!-- arsenal-list-v2 -->
+
+          <!-- 3. The Phases: Cinema Chapter Cards -->
+          <div class="intel-phases fade-up">
+            
+            <div class="phase-card">
+              <div class="phase-bg-num">01</div>
+              <div class="phase-badge">ARCHIVED</div>
+              <div class="phase-content">
+                <span class="phase-year">2021 // 2025</span>
+                <h4 class="phase-title">EDUCATION</h4>
+                <p class="phase-brief">Systems engineering foundation with a focus on technical logic and analytical solving.</p>
+              </div>
+            </div>
+
+            <div class="phase-card active-phase">
+              <div class="phase-bg-num">02</div>
+              <div class="phase-badge badge-active">CURRENT</div>
+              <div class="phase-content">
+                <span class="phase-year">2023 // PRESENT</span>
+                <h4 class="phase-title">SPECIALIZATION</h4>
+                <p class="phase-brief">Architecting high-performance web apps and cinematic user interfaces.</p>
+              </div>
+            </div>
+
+            <div class="phase-card">
+              <div class="phase-bg-num">03</div>
+              <div class="phase-badge">ONGOING</div>
+              <div class="phase-content">
+                <span class="phase-year">2024 // ∞</span>
+                <h4 class="phase-title">APPLICATION</h4>
+                <p class="phase-brief">Shipping robust, scalable solutions with a focus on maintainable frontend systems.</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider fade-up"></div>
+
+      <!-- 5. Contact & Social Index — Cinematic Hybrid Redesign -->
+      <section class="contact-section" id="contact">
+        <div class="container">
+          <div class="contact-grid">
+            
+            <!-- Column 1: The Hook -->
+            <div class="contact-intro fade-up">
+              <div class="status-badge">
+                <span class="status-dot"></span>
+                Open to work
+              </div>
+              <h2 class="contact-headline-serif">Let's connect and build together.</h2>
+            </div>
+
+            <!-- Column 2: Direct Comms -->
+            <div class="contact-methods fade-up">
+              <span class="contact-col-header">Contact Me</span>
+              
+              <a href="mailto:heysanthoshreddy@gmail.com" class="pill-card">
+                <span class="pill-icon">
+                  <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                </span>
+                Email
+              </a>
+
+              <a href="#" class="pill-card">
+                <span class="pill-icon">
+                  <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                </span>
+                Download Resume
+              </a>
+            </div>
+
+            <!-- Column 3: Socials -->
+            <div class="contact-socials fade-up">
+              <span class="contact-col-header">Socials</span>
+              
+              <div class="social-pill-grid">
+                <a href="https://github.com/santjsx" target="_blank" class="pill-card">
+                  <span class="pill-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                  </span>
+                  GitHub
+                </a>
+                <a href="https://linkedin.com" target="_blank" class="pill-card">
+                  <span class="pill-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.238 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                  </span>
+                  LinkedIn
+                </a>
+                <a href="https://x.com/Santhoshh_void" target="_blank" class="pill-card">
+                  <span class="pill-icon">
+                    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  </span>
+                  X
+                </a>
+                <a href="https://www.instagram.com/whoissanthoshh?igsh=dHljNGpqbWIwamlx" target="_blank" class="pill-card">
+                  <span class="pill-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.558.217.957.477 1.377.896.419.42.679.819.896 1.377.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.013 3.584-.07 4.85c-.054 1.17-.249 1.805-.413 2.227-.217.558-.477.957-.896 1.377-.42.419-.819.679-1.377.896-.422.164-1.057.36-2.227.413-1.266.057-1.646.07-4.85.07s-3.584-.013-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.558-.217-.957-.477-1.377-.896-.419-.42-.679-.819-.896-1.377-.164-.422-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.013-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.217-.558.477-.957.896-1.377.42-.419.819-.679 1.377-.896.422-.164 1.057-.36 2.227-.413 1.266-.057 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-1.277.057-2.149.259-2.912.556-.788.306-1.457.715-2.122 1.38-.666.665-1.075 1.334-1.381 2.122-.297.763-.499 1.635-.556 2.912-.058 1.28-.072 1.688-.072 4.948s.014 3.668.072 4.948c.057 1.277.259 2.149.556 2.912.306.788.715 1.457 1.38 2.122.665.666 1.334 1.075 2.122 1.381.763.297 1.635.499 2.912.556 1.28.058 1.688.072 4.948.072s3.668-.014 4.948-.072c1.277-.057 2.149-.259 2.912-.556.788-.306 1.457-.715 2.122-1.38.666-.665 1.075-1.334 1.381-2.122.297-.763.499-1.635.556-2.912.058-1.28.072-1.688.072-4.948s-.014-3.668-.072-4.948c-.057-1.277-.259-2.149-.556-2.912-.306-.788-.715-1.457-1.38-2.122-.665-.666-1.334-1.075-2.122-1.381-.763-.297-1.635-.499-2.912-.556-1.28-.058-1.688-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.209-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                  </span>
+                  Instagram
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Massive 3D Text Footer -->
+          <div class="footer-big-name-wrap scroll-reveal">
+            <h1 class="footer-big-name">Santhosh Reddy</h1>
+          </div>
+        </div>
+      </section>
+
+  </main>
+
+  <!-- 7. Resume Slide-in Drawer -->
+  <div class="resume-overlay js-close-resume"></div>
+  <aside class="resume-drawer" id="resume-drawer">
+    <div class="drawer-header">
+      <h3 class="drawer-title">Resume</h3>
+      
+      <div class="drawer-toolbar">
+        <button id="zoom-out" class="toolbar-btn" aria-label="Zoom Out" title="Zoom Out">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
+        <button id="zoom-reset" class="toolbar-btn reset" aria-label="Reset Zoom">80%</button>
+        <button id="zoom-in" class="toolbar-btn" aria-label="Zoom In" title="Zoom In">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
+      </div>
+
+      <button class="drawer-close js-close-resume" aria-label="Close Resume">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="drawer-content" data-lenis-prevent>
+      <!-- PDF.js Canvas Container -->
+      <div id="pdf-container" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px;">
+        <canvas id="pdf-canvas" style="max-width: 100%; height: auto; box-shadow: 0 4px 24px rgba(0,0,0,0.4); border-radius: 4px; display: none;"></canvas>
+        <div id="pdf-loading" style="color: var(--text-dark-secondary); font-family: var(--font-mono); font-size: 14px; margin-top: 40px;">
+          Loading Resume...
+        </div>
+        
+        <div class="pdf-fallback" style="margin-top: 20px; text-align: center;">
+          <a href="/Santhosh%20Reddy%20Resume.pdf" class="cta-button primary" download="Santhosh_Reddy_Resume.pdf" target="_blank" rel="noopener noreferrer">
+            Download PDF
+          </a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+
+  <!-- 11. Archive Engine — Professional Admin Portal -->
+  <div id="engine-auth" class="engine-auth">
+    <div class="auth-box">
+      <span class="engine-logo">AUTHENTICATION_REQUIRED</span>
+      <input type="password" id="auth-password" class="auth-input" placeholder="••••••••">
+      <p class="meta-label">Enter Archive Secret to access Engine Mode</p>
+    </div>
+  </div>
+
+  <aside id="archive-engine" class="archive-engine">
+    <header class="engine-header">
+      <span class="engine-logo">ARCHIVE_ENGINE_V1.0</span>
+      <button id="engine-close" class="engine-close">EXIT_</button>
+    </header>
+
+    <div class="engine-scroll">
+      <!-- Section: Global Identity -->
+      <div class="engine-section">
+        <span class="engine-section-title">01. Global Identity</span>
+        <div class="engine-field">
+          <label class="engine-label">Display Name</label>
+          <input type="text" id="eng-id-name" class="engine-input" placeholder="Santhosh Reddy">
+        </div>
+        <div class="engine-field">
+          <label class="engine-label">Professional Title</label>
+          <input type="text" id="eng-id-title" class="engine-input" placeholder="Developer">
+        </div>
+      </div>
+
+      <!-- Section: Visual Design (Merged from Theme Lab) -->
+      <div class="engine-section">
+        <span class="engine-section-title">02. Design Matrix</span>
+        <div class="engine-field">
+          <label class="engine-label">Primary Accent (Purple)</label>
+          <div class="color-picker-row" style="background: #111; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+            <input type="color" id="accent-color-1" value="#3A1C71" style="background: none; border: none; width: 30px; height: 30px; cursor: pointer;">
+            <span class="color-hex" id="hex-1" style="font-family: var(--font-mono); font-size: 12px;">#3A1C71</span>
+          </div>
+        </div>
+        <div class="engine-field">
+          <label class="engine-label">Secondary Accent (Salmon)</label>
+          <div class="color-picker-row" style="background: #111; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+            <input type="color" id="accent-color-2" value="#FFA07A" style="background: none; border: none; width: 30px; height: 30px; cursor: pointer;">
+            <span class="color-hex" id="hex-2" style="font-family: var(--font-mono); font-size: 12px;">#FFA07A</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Hero Content -->
+      <div class="engine-section">
+        <span class="engine-section-title">03. Hero Configuration</span>
+        <div class="engine-field">
+          <label class="engine-label">Headline Row 1</label>
+          <input type="text" id="eng-hero-1" class="engine-input" placeholder="Building high-end">
+        </div>
+        <div class="engine-field">
+          <label class="engine-label">Headline Row 2 (Accent)</label>
+          <input type="text" id="eng-hero-2" class="engine-input" placeholder="digital products.">
+        </div>
+      </div>
+
+      <!-- Section: Project Management -->
+      <div class="engine-section">
+        <span class="engine-section-title">04. Project Arsenal</span>
+        <div class="engine-list" id="eng-projects-list">
+          <div class="engine-list-item">
+            <div class="item-info">
+              <span class="item-title">The Hustle Planner</span>
+              <span class="item-meta">Live / React / Vercel</span>
+            </div>
+            <div class="item-actions">
+              <button class="engine-icon-btn">✎</button>
+            </div>
+          </div>
+        </div>
+        <button class="engine-add-btn">+ ADD NEW PROJECT</button>
+      </div>
+
+      <!-- Section: Social Matrix -->
+      <div class="engine-section">
+        <span class="engine-section-title">05. Social Matrix</span>
+        <div class="engine-field">
+          <label class="engine-label">GitHub URL</label>
+          <input type="text" class="engine-input" placeholder="https://github.com/santjsx">
+        </div>
+        <div class="engine-field">
+          <label class="engine-label">Twitter/X URL</label>
+          <input type="text" class="engine-input" placeholder="https://x.com/santjsx">
+        </div>
+      </div>
+    </div>
+
+    <footer class="engine-footer">
+      <button id="engine-save" class="engine-main-btn engine-save">Apply Live Changes</button>
+      <button id="engine-export" class="engine-main-btn engine-export">Export Code State</button>
+    </footer>
+  </aside>
+
+  <!-- Export Modal -->
+  <div id="engine-modal" class="engine-modal">
+    <div class="modal-content">
+      <div class="engine-header">
+        <span class="engine-logo">STATE_EXPORT</span>
+      </div>
+      <p class="meta-label mb-4">Copy this JSON to update your hardcoded data files.</p>
+      <pre id="export-pre" class="modal-pre"></pre>
+    </div>
+  </div>
+
+  <div id="copy-toast" class="copy-toast">CSS TOKENS COPIED</div>
+</body>
+</html>

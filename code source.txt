@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santhosh Reddy | Architect of the Seven Frameworks</title>
+    
+    <!-- Pure GOT Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#020202',
+                        dragonglass: '#0A0A0A',
+                        bloodred: '#7A0000',
+                        antiquegold: '#C5A059',
+                        parchment: '#E1D9C5',
+                        ash: '#888888',
+                        steel: '#1A1A1A',
+                    },
+                    fontFamily: {
+                        got: ['Cinzel Decorative', 'serif'],
+                        cinzel: ['Cinzel', 'serif'],
+                        body: ['EB Garamond', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lenis & GSAP -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --mouse-x: 50vw;
+            --mouse-y: 50vh;
+        }
+
+        body {
+            background-color: #020202;
+            color: #E1D9C5;
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        /* Ambient Firelight & Noise */
+        .ambient-tracker {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 10;
+            background: radial-gradient(
+                800px circle at var(--mouse-x) var(--mouse-y), 
+                rgba(197, 160, 89, 0.04),
+                rgba(122, 0, 0, 0.02) 30%,
+                transparent 60%
+            );
+            mix-blend-mode: screen;
+        }
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: screen;
+        }
+
+        /* Blade Divider */
+        .blade-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.4), transparent);
+            position: relative;
+            margin: 2rem auto;
+            width: 100%;
+        }
+        .blade-divider::after {
+            content: "✦";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #C5A059;
+            background: #020202;
+            padding: 0 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        /* Valyrian Cards (Projects, Timeline, Links) */
+        .valyrian-card {
+            background: linear-gradient(145deg, #0A0A0A 0%, #030303 100%);
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .valyrian-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .valyrian-card:hover {
+            border-color: rgba(197, 160, 89, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(197, 160, 89, 0.02);
+        }
+        .valyrian-card:hover::before { opacity: 1; }
+
+        /* Minimal Rune Cards (Skills) */
+        .minimal-rune {
+            background: rgba(10, 10, 10, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(4px);
+        }
+        .minimal-rune:hover {
+            border-color: rgba(197, 160, 89, 0.4);
+            background: rgba(197, 160, 89, 0.02);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        .rune-icon {
+            font-size: 0.75rem;
+            color: #7A0000;
+            transition: color 0.4s ease, transform 0.4s ease;
+        }
+        .minimal-rune:hover .rune-icon {
+            color: #C5A059;
+            transform: rotate(90deg);
+        }
+
+        /* Scrollbar & Lenis */
+        html.lenis, html.lenis body { height: auto; width: 100%; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #020202; }
+        ::-webkit-scrollbar-thumb { background: #222; }
+        ::-webkit-scrollbar-thumb:hover { background: #C5A059; }
+
+        #ash-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0; pointer-events: none; opacity: 0.5;
+        }
+        .fade-up { opacity: 0; transform: translateY(30px); }
+        
+        .gold-glow-text {
+            text-shadow: 0 0 20px rgba(197, 160, 89, 0.3);
+        }
+    </style>
+</head>
+<body class="font-body antialiased selection:bg-bloodred selection:text-parchment text-lg">
+
+    <canvas id="ash-canvas"></canvas>
+    <div class="noise-overlay"></div>
+    <div class="ambient-tracker"></div>
+
+    <!-- Header -->
+    <nav class="fixed top-0 left-0 w-full p-8 z-40 flex justify-between items-center pointer-events-none mix-blend-difference">
+        <div class="font-got text-xl text-parchment tracking-widest pointer-events-auto">
+            S.R<span class="text-bloodred">.</span>
+        </div>
+        <div class="pointer-events-auto">
+            <a href="#menu" class="font-cinzel text-[10px] text-parchment uppercase tracking-[0.3em] border border-white/10 px-6 py-3 rounded-full hover:border-antiquegold hover:text-antiquegold transition-colors bg-obsidian/50 backdrop-blur-sm">
+                The Ledger
+            </a>
+        </div>
+    </nav>
+
+    <main id="smooth-wrapper" class="relative z-10 w-full">
+        
+        <!-- 1. HERO SECTION -->
+        <section class="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-24 pb-12 max-w-7xl mx-auto relative">
+            
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 lg:gap-8 w-full mt-10">
+                
+                <!-- Main Title -->
+                <div class="lg:w-2/3 hero-stagger">
+                    <h1 class="font-got text-5xl md:text-[5rem] lg:text-[6.5rem] leading-[0.95] text-parchment tracking-wide gold-glow-text uppercase">
+                        Architect<br>
+                        <span class="text-antiquegold opacity-90">of the Seven</span><br>
+                        <span class="text-bloodred opacity-80">Frameworks.</span>
+                    </h1>
+                </div>
+
+                <!-- Noble Stats Grid (From Screenshot) -->
+                <div class="lg:w-1/3 flex flex-col gap-6 hero-stagger border-l border-white/10 pl-8 pb-4">
+                    <div class="flex justify-between items-end border-b border-white/5 pb-2">
+                        <span class="font-cinzel text-[9px] text-ash tracking-[0.3em] uppercase">Status</span>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-green-700 rounded-full animate-pulse shadow-[0_0_8px_#15803d]"></span>
+                            <span class="font-cinzel text-[10px] text-parchment uppercase tracking-[0.1em]">Available</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-end border-b border-white/5 pb-2">
+                        <span class="font-cinzel text-[9px] text-ash tracking-[0.3em] uppercase">Current Station</span>
+                        <span class="font-cinzel text-[10px] text-bloodred uppercase tracking-[0.1em]">Winterfell</span>
+                    </div>
+                    <div class="flex justify-between items-end border-b border-white/5 pb-2">
+                        <span class="font-cinzel text-[9px] text-ash tracking-[0.3em] uppercase">Title</span>
+                        <span class="font-cinzel text-[10px] text-parchment uppercase tracking-[0.1em]">Frontend JS</span>
+                    </div>
+                    <div class="flex justify-between items-end border-b border-white/5 pb-2">
+                        <span class="font-cinzel text-[9px] text-ash tracking-[0.3em] uppercase">Realm</span>
+                        <span class="font-cinzel text-[10px] text-antiquegold uppercase tracking-[0.1em]">India</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons & Quote -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mt-20 gap-10 hero-stagger w-full border-t border-white/5 pt-10">
+                <div class="flex gap-4">
+                    <a href="#conquests" class="font-cinzel text-xs text-obsidian bg-parchment px-8 py-4 uppercase tracking-[0.2em] hover:bg-antiquegold transition-colors font-bold">
+                        View Conquests
+                    </a>
+                    <a href="#contact" class="font-cinzel text-xs text-parchment border border-white/20 px-8 py-4 uppercase tracking-[0.2em] hover:border-antiquegold hover:text-antiquegold transition-colors">
+                        Send Raven
+                    </a>
+                </div>
+                
+                <p class="font-body text-ash italic text-lg max-w-md md:text-right font-light leading-relaxed">
+                    "If you want to build a kingdom, do not merely gather stones and command men to toil. Instead, teach them to yearn for the vast and endless sea."
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. THE CONQUESTS (Personal Projects) -->
+        <section class="py-32 px-6 md:px-12 relative" id="conquests">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-24 fade-up">
+                    <h2 class="font-got text-4xl md:text-5xl text-parchment tracking-widest mb-4">THE CONQUESTS</h2>
+                    <p class="font-body text-ash italic text-xl">"I believe that building projects for myself is the greatest forge of mastery."</p>
+                    <div class="blade-divider max-w-md mt-8"></div>
+                </div>
+
+                <!-- Project Grid (Bento/Masonry style) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Card 1 -->
+                    <a href="https://the-hustle-planner.vercel.app/" target="_blank" class="valyrian-card p-8 flex flex-col h-[400px] group fade-up">
+                        <div class="flex-grow flex items-center justify-center border border-white/5 bg-obsidian mb-6 relative overflow-hidden group-hover:border-antiquegold/30 transition-colors">
+                            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,160,89,0.1)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <span class="font-cinzel text-antiquegold text-4xl opacity-50">H</span>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-got text-xl text-parchment tracking-wide">The Hustle Planner</h3>
+                                <span class="text-bloodred text-sm">↗</span>
+                            </div>
+                            <p class="font-body text-ash text-sm leading-relaxed">A high-performance productivity engine designed for deep work and strategic planning.</p>
+                        </div>
+                    </a>
+
+                    <!-- Card 2 -->
+                    <a href="https://hybrid-os.vercel.app/" target="_blank" class="valyrian-card p-8 flex flex-col h-[400px] group fade-up">
+                        <div class="flex-grow flex items-center justify-center border border-white/5 bg-obsidian mb-6 relative overflow-hidden group-hover:border-antiquegold/30 transition-colors">
+                            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,160,89,0.1)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <span class="font-cinzel text-ash text-4xl opacity-50">O S</span>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-got text-xl text-parchment tracking-wide">Hybrid OS</h3>
+                                <span class="text-bloodred text-sm">↗</span>
+                            </div>
+                            <p class="font-body text-ash text-sm leading-relaxed">Unified system interface harmonizing complex workflows into a singular cinematic experience.</p>
+                        </div>
+                    </a>
+
+                    <!-- Card 3 -->
+                    <a href="https://pdf-studio-sable.vercel.app/" target="_blank" class="valyrian-card p-8 flex flex-col h-[400px] group fade-up">
+                        <div class="flex-grow flex items-center justify-center border border-white/5 bg-obsidian mb-6 relative overflow-hidden group-hover:border-antiquegold/30 transition-colors">
+                            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,160,89,0.1)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <span class="font-cinzel text-parchment text-4xl opacity-30">P D F</span>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-got text-xl text-parchment tracking-wide">PDF Studio</h3>
+                                <span class="text-bloodred text-sm">↗</span>
+                            </div>
+                            <p class="font-body text-ash text-sm leading-relaxed">Minimalist, performance-first cloud document utility. Stark and lightning fast.</p>
+                        </div>
+                    </a>
+
+                    <!-- Card 4 -->
+                    <a href="https://uno-cypher.vercel.app/" target="_blank" class="valyrian-card p-8 flex flex-col h-[400px] group fade-up lg:col-span-1">
+                        <div class="flex-grow flex items-center justify-center border border-white/5 bg-obsidian mb-6 relative overflow-hidden group-hover:border-antiquegold/30 transition-colors">
+                            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,160,89,0.1)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <span class="font-got text-bloodred text-2xl opacity-70 text-center leading-tight">GAMES &<br>APPS</span>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-got text-xl text-parchment tracking-wide">Uno Cypher</h3>
+                                <span class="text-bloodred text-sm">↗</span>
+                            </div>
+                            <p class="font-body text-ash text-sm leading-relaxed">Low-latency state management with cryptographic styling.</p>
+                        </div>
+                    </a>
+
+                    <!-- Card 5 -->
+                    <a href="https://track-a-lot.vercel.app/" target="_blank" class="valyrian-card p-8 flex flex-col h-[400px] group fade-up lg:col-span-2">
+                        <div class="flex-grow flex items-center justify-center border border-white/5 bg-obsidian mb-6 relative overflow-hidden group-hover:border-antiquegold/30 transition-colors">
+                            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,160,89,0.1)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="w-full h-full p-4 flex flex-col justify-end">
+                                <div class="w-full h-1/2 border-b border-white/10 flex items-end gap-2 px-4 pb-2">
+                                    <div class="w-8 bg-bloodred/40 h-1/3"></div>
+                                    <div class="w-8 bg-antiquegold/40 h-2/3"></div>
+                                    <div class="w-8 bg-parchment/40 h-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-got text-xl text-parchment tracking-wide">Track A Lot</h3>
+                                <span class="text-bloodred text-sm">↗</span>
+                            </div>
+                            <p class="font-body text-ash text-sm leading-relaxed">Data-driven habit tracking ecosystem with analytical insights to rule your routines.</p>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. THE MAESTER (About) -->
+        <section class="py-32 px-6 md:px-12 relative" id="about">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16 lg:gap-24">
+                
+                <!-- Portrait Sigil Area -->
+                <div class="w-full md:w-5/12 fade-up relative">
+                    <div class="aspect-[3/4] valyrian-card border border-antiquegold/20 rounded-t-full flex flex-col items-center justify-center p-8 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(122,0,0,0.2)_0%,transparent_60%)]"></div>
+                        <h3 class="font-got text-3xl text-parchment tracking-widest z-10 text-center">Santhosh<br>Reddy</h3>
+                        <span class="font-cinzel text-[10px] text-ash tracking-[0.4em] mt-4 z-10 uppercase">santjsx</span>
+                        
+                        <!-- Decorative portrait placeholder -->
+                        <div class="w-32 h-40 mt-12 border-b-2 border-antiquegold/40 relative z-10 flex items-end justify-center pb-2">
+                            <svg class="w-16 h-16 text-white/10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bio Text -->
+                <div class="w-full md:w-7/12 fade-up">
+                    <h2 class="font-body text-3xl md:text-4xl lg:text-5xl text-parchment leading-tight font-light mb-10">
+                        I am a builder & designer based in <span class="text-antiquegold font-medium">India!</span><br><br>
+                        I specialize in <span class="font-got tracking-wide text-white">Frontend Engineering</span>, focusing on forging high quality web experiences through <span class="border-b border-bloodred">clean code</span> and <span class="italic text-antiquegold">thoughtful design</span>.
+                    </h2>
+                    <a href="#contact" class="inline-flex items-center gap-4 border border-white/20 rounded-full px-8 py-3 font-cinzel text-xs text-parchment uppercase tracking-[0.2em] hover:border-antiquegold hover:text-antiquegold transition-colors">
+                        <span class="text-bloodred">✦</span> Get in touch <span class="text-bloodred">✦</span>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. THE ARMORY (Skills) -->
+        <section class="py-32 px-6 md:px-12 relative" id="skills">
+            <div class="max-w-6xl mx-auto fade-up">
+                
+                <div class="text-center mb-20">
+                    <h2 class="font-got text-4xl md:text-5xl text-parchment tracking-widest mb-4">THE ARMORY</h2>
+                    <p class="font-body text-ash italic text-xl">"Tools and tongues forged in the fires of the old world."</p>
+                    <div class="blade-divider max-w-xs mt-8"></div>
+                </div>
+
+                <!-- Minimalist Bento Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">Git</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">Linux</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">NPM</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">Node.js</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">HTML5</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">CSS3</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">JavaScript</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">React</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">Firebase</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">MongoDB</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">VS Code</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">GitHub</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">Next.js</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">Vite.js</span>
+                    </div>
+
+                    <div class="minimal-rune group">
+                        <span class="rune-icon">✦</span>
+                        <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">Tailwind</span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. THE CHRONICLES (Timeline) -->
+        <section class="py-32 px-6 md:px-12 relative" id="experience">
+            <div class="max-w-7xl mx-auto">
+                
+                <div class="text-center mb-20 fade-up">
+                    <h2 class="font-got text-4xl md:text-5xl text-parchment tracking-widest mb-4">THE CHRONICLES</h2>
+                    <div class="blade-divider max-w-xs mt-6"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <!-- Era 1 -->
+                    <div class="valyrian-card p-8 lg:p-10 fade-up relative group h-full flex flex-col justify-between min-h-[340px]">
+                        <!-- Subtle Top Line -->
+                        <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:via-antiquegold/40 transition-all duration-700"></div>
+                        
+                        <!-- Background Number -->
+                        <div class="absolute top-8 right-6 font-got text-7xl text-white/[0.02] group-hover:text-antiquegold/[0.08] transition-colors duration-500 pointer-events-none leading-none">01</div>
+                        
+                        <div class="relative z-10 mt-16">
+                            <span class="font-cinzel text-[9px] text-bloodred uppercase tracking-[0.3em] block mb-4">2021 — 2023</span>
+                            <!-- Responsive text sizing to prevent overflow -->
+                            <h3 class="font-got text-xl lg:text-[1.35rem] xl:text-2xl text-parchment mb-5 tracking-widest uppercase break-words">Education</h3>
+                            <p class="font-body text-ash text-sm lg:text-base leading-relaxed pr-4">Forged the foundation of software engineering. Mastered the ancient scrolls of core web technologies.</p>
+                        </div>
+                    </div>
+
+                    <!-- Era 2 -->
+                    <div class="valyrian-card p-8 lg:p-10 fade-up relative group h-full flex flex-col justify-between min-h-[340px]">
+                        <!-- Bloodred Top Line for the active/middle era -->
+                        <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-bloodred/40 to-transparent group-hover:via-bloodred/80 transition-all duration-700"></div>
+                        
+                        <div class="absolute top-8 right-6 font-got text-7xl text-white/[0.02] group-hover:text-bloodred/[0.08] transition-colors duration-500 pointer-events-none leading-none">02</div>
+                        
+                        <div class="relative z-10 mt-16">
+                            <span class="font-cinzel text-[9px] text-bloodred uppercase tracking-[0.3em] block mb-4">2023 — 2024</span>
+                            <h3 class="font-got text-xl lg:text-[1.35rem] xl:text-2xl text-parchment mb-5 tracking-widest uppercase break-words">Specialization</h3>
+                            <p class="font-body text-ash text-sm lg:text-base leading-relaxed pr-4">Specialized in high-performance web apps and cinematic user interfaces with React and GSAP.</p>
+                        </div>
+                    </div>
+
+                    <!-- Era 3 -->
+                    <div class="valyrian-card p-8 lg:p-10 fade-up relative group h-full flex flex-col justify-between min-h-[340px]">
+                        <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:via-antiquegold/40 transition-all duration-700"></div>
+                        
+                        <div class="absolute top-8 right-6 font-got text-7xl text-white/[0.02] group-hover:text-antiquegold/[0.08] transition-colors duration-500 pointer-events-none leading-none">03</div>
+                        
+                        <div class="relative z-10 mt-16">
+                            <span class="font-cinzel text-[9px] text-bloodred uppercase tracking-[0.3em] block mb-4">2024 — Present</span>
+                            <h3 class="font-got text-xl lg:text-[1.35rem] xl:text-2xl text-parchment mb-5 tracking-widest uppercase break-words">Application</h3>
+                            <p class="font-body text-ash text-sm lg:text-base leading-relaxed pr-4">Shipping robust, scalable solutions. Expanding the empire into deep immersive web experiences.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. THE RAVENS (Contact & Links) -->
+        <section class="py-32 px-6 md:px-12 relative border-t border-white/5 mt-20" id="contact">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-16 fade-up">
+                
+                <div class="md:w-1/3">
+                    <div class="flex items-center gap-2 mb-6">
+                        <span class="w-2 h-2 bg-green-700 rounded-full animate-pulse"></span>
+                        <span class="font-cinzel text-[10px] text-parchment uppercase tracking-[0.2em]">Open To Work</span>
+                    </div>
+                    <h2 class="font-got text-4xl text-parchment leading-snug tracking-wider">
+                        Let's connect and build <span class="italic text-antiquegold font-body">together.</span>
+                    </h2>
+                </div>
+
+                <!-- Contact Grid -->
+                <div class="md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    
+                    <a href="mailto:heysanthoshreddy@gmail.com" class="valyrian-card px-6 py-5 flex items-center justify-between group">
+                        <div class="flex items-center gap-4">
+                            <span class="text-bloodred">✉</span>
+                            <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">Email</span>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/santjsx" target="_blank" class="valyrian-card px-6 py-5 flex items-center justify-between group">
+                        <div class="flex items-center gap-4">
+                            <span class="text-bloodred">♞</span>
+                            <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">Github</span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="valyrian-card px-6 py-5 flex items-center justify-between group">
+                        <div class="flex items-center gap-4">
+                            <span class="text-bloodred">✦</span>
+                            <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">Lanyard Status</span>
+                        </div>
+                    </a>
+
+                    <a href="https://linkedin.com" target="_blank" class="valyrian-card px-6 py-5 flex items-center justify-between group">
+                        <div class="flex items-center gap-4">
+                            <span class="text-bloodred">♟</span>
+                            <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">LinkedIn</span>
+                        </div>
+                    </a>
+
+                    <a href="https://x.com/Santhoshh_void" target="_blank" class="valyrian-card px-6 py-5 flex items-center justify-between group">
+                        <div class="flex items-center gap-4">
+                            <span class="text-bloodred">🐦</span>
+                            <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">X</span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.instagram.com/whoissanthoshh?igsh=dHljNGpqbWIwamlx" target="_blank" class="valyrian-card px-6 py-5 flex items-center justify-between group">
+                        <div class="flex items-center gap-4">
+                            <span class="text-bloodred">📷</span>
+                            <span class="font-cinzel text-xs text-ash tracking-widest uppercase group-hover:text-parchment transition-colors">Instagram</span>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto mt-32 flex justify-between items-center fade-up border-t border-white/5 pt-8">
+                <p class="font-cinzel text-[8px] text-ash/50 uppercase tracking-[0.4em]">
+                    © 2026 HOUSE SANTJSX.
+                </p>
+                <div class="w-8 h-8 rounded-full border border-antiquegold/40 flex items-center justify-center bg-obsidian">
+                    <span class="font-got text-xs text-antiquegold">S</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Scripts -->
+    <script>
+        // Minimal Floating Ash Canvas
+        function initAshCanvas() {
+            const canvas = document.getElementById('ash-canvas');
+            const ctx = canvas.getContext('2d');
+            let w, h;
+            let particles = [];
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * w;
+                    this.y = h + Math.random() * 100;
+                    this.size = Math.random() * 1.5 + 0.2;
+                    this.speedY = Math.random() * 0.8 + 0.2;
+                    this.speedX = (Math.random() - 0.5) * 0.5; 
+                    this.life = Math.random() * 0.5 + 0.1;
+                    const colors = ['rgba(136,136,136,', 'rgba(122,0,0,', 'rgba(197,160,89,'];
+                    this.baseColor = colors[Math.floor(Math.random() * colors.length)];
+                }
+                update() {
+                    this.y -= this.speedY;
+                    this.x += this.speedX + Math.sin(this.y * 0.005) * 0.5;
+                    this.life -= 0.001;
+                    if (this.y < 0 || this.life <= 0) this.reset();
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `${this.baseColor}${Math.max(0, this.life)})`;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Torchlight Tracking
+        function initMouseTracking() {
+            const root = document.documentElement;
+            document.addEventListener('mousemove', e => {
+                root.style.setProperty('--mouse-x', `${e.clientX}px`);
+                root.style.setProperty('--mouse-y', `${e.clientY}px`);
+            });
+        }
+
+        // GSAP & Smooth Scroll
+        function initAnimationEngine() {
+            const lenis = new Lenis({
+                duration: 2.0,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                direction: 'vertical',
+                gestureDirection: 'vertical',
+                smooth: true,
+                mouseMultiplier: 0.8,
+                smoothTouch: false,
+            });
+
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => lenis.raf(time * 1000));
+            gsap.ticker.lagSmoothing(0);
+
+            // Hero Stagger
+            gsap.fromTo('.hero-stagger', 
+                { y: 30, opacity: 0, filter: 'blur(5px)' },
+                { y: 0, opacity: 1, filter: 'blur(0px)', duration: 2, stagger: 0.2, ease: "power3.out", delay: 0.2 }
+            );
+
+            // Scroll Reveals
+            const fadeElements = document.querySelectorAll('.fade-up');
+            fadeElements.forEach((el) => {
+                gsap.fromTo(el,
+                    { y: 40, opacity: 0 },
+                    {
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 85%",
+                            toggleActions: "play none none reverse"
+                        },
+                        y: 0,
+                        opacity: 1,
+                        duration: 1.5,
+                        ease: "power2.out"
+                    }
+                );
+            });
+        }
+
+        window.onload = () => {
+            initAshCanvas();
+            initMouseTracking();
+            initAnimationEngine();
+        };
+    </script>
+</body>
+</html>

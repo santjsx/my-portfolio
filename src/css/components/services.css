@@ -1,0 +1,106 @@
+/* Main Layout */
+.services-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #111; /* Very dark tone */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 0;
+}
+
+.services {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.service {
+  position: relative;
+  width: auto;
+  height: 100px; /* Collapsed state */
+  display: flex;
+  align-items: flex-end; /* Align content toward bottom */
+  overflow: hidden;
+  will-change: height;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+/* Service Title */
+.service h1 {
+  position: relative;
+  font-family: 'Barlow Condensed', sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: bold;
+  letter-spacing: -2px;
+  line-height: 0.9;
+  color: #ff3333; /* Bright red accent */
+  background-color: #111;
+  z-index: 10;
+  margin: 0;
+  pointer-events: none;
+}
+
+/* Image Stack Container */
+.service-images {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 200px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  transform: translateY(200px); /* Pushed downward initially */
+  will-change: transform;
+}
+
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Asymmetrical Card Stack Setup */
+.image:nth-child(1) { transform-origin: bottom left; transform: translateY(200px) rotate(-5deg); }
+.image:nth-child(2) { transform-origin: bottom right; transform: translateY(200px) rotate(5deg); }
+.image:nth-child(3) { transform: translateY(200px); }
+
+/* Falling Tags */
+.tags-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.tag {
+  position: absolute;
+  font-family: 'Instrument Serif', serif;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: #222;
+  border-radius: 50px; /* Capsule shape */
+  padding: 5px 15px;
+  opacity: 0; /* Hidden initially */
+  white-space: nowrap;
+  will-change: transform, opacity;
+  font-size: 16px;
+  font-style: italic;
+}
