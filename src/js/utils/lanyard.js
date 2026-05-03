@@ -612,7 +612,9 @@ function updateSkills(kv) {
         { name: 'Firebase', tech: 'Proficient', icon: 'Firebase.svg' },
         { name: 'MongoDB', tech: 'Intermediate', icon: 'MongoDB.svg' },
         { name: 'VS Code', tech: 'Tools', icon: 'Visual Studio Code (VS Code).svg' },
-        { name: 'GitHub', tech: 'Git', icon: 'GitHub.svg' }
+        { name: 'GitHub', tech: 'Git', icon: 'GitHub.svg' },
+        { name: 'Next.js', tech: 'Expert', icon: 'Next.js.svg' },
+        { name: 'Vite.js', tech: 'Advanced', icon: 'Vite.js.svg' }
     ];
 
     let skillsData = [...defaultSkills];
@@ -636,6 +638,8 @@ function updateSkills(kv) {
         if (lowerName.includes('react')) return 'React.svg';
         if (lowerName.includes('firebase')) return 'Firebase.svg';
         if (lowerName.includes('mongo')) return 'MongoDB.svg';
+        if (lowerName.includes('next')) return 'Next.js.svg';
+        if (lowerName.includes('vite')) return 'Vite.js.svg';
         if (lowerName.includes('code') || lowerName.includes('vs')) return 'Visual Studio Code (VS Code).svg';
         if (lowerName.includes('git') || lowerName.includes('hub')) return 'GitHub.svg';
         return 'JavaScript.svg'; // Fallback
