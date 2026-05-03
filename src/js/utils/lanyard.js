@@ -182,7 +182,7 @@ export function initLanyardWidget() {
         }
     });
     
-    // Hint bubble logic: show only after scroll and hide permanently once used
+    // Hint bubble logic: show after 5 seconds of page load
     if (hintBubble) {
         // Hide initially
         gsap.set(hintBubble, { opacity: 0, scale: 0.8, visibility: 'hidden' });
@@ -199,11 +199,8 @@ export function initLanyardWidget() {
             });
         };
 
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 200) {
-                showHint();
-            }
-        }, { passive: true });
+        // Trigger after 5 seconds
+        setTimeout(showHint, 5000);
 
         hintBubble.addEventListener('click', (e) => {
             e.stopPropagation();
