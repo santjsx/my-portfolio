@@ -136,4 +136,23 @@ export function initGSAPAnimations() {
             }
         );
     }
+
+    // ── SCROLL REVEAL (For deep-page elements like Footer) ──
+    const scrollReveals = document.querySelectorAll('.scroll-reveal');
+    scrollReveals.forEach(el => {
+        gsap.fromTo(el,
+            { opacity: 0, y: 40 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 95%", // Trigger early
+                    toggleActions: "play none none none" // Only play once
+                }
+            }
+        );
+    });
 }

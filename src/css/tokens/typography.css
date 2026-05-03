@@ -1,7 +1,7 @@
 /* TOKENS: Typography — Brutalist */
 :root {
-    --font-sans: 'Inter', -apple-system, sans-serif;
-    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-sans: 'Outfit', -apple-system, sans-serif;
+    --font-serif: 'Instrument Serif', Georgia, serif;
     --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 
     --text-xs: 0.75rem;

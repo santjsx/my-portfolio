@@ -197,7 +197,8 @@ img {
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    PERFORMANCE ANIMATIONS
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
-.fade-up {
+.fade-up,
+.scroll-reveal {
     /* GSAP takes control over transform and opacity. We just prep it for GPU acceleration. */
     opacity: 0;
     will-change: opacity, transform;
