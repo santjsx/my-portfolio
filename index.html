@@ -1479,14 +1479,15 @@ async function loadLanyard(){
           let details = act.name === 'Custom Status' ? '' : (act.details || '');
           
           let imgSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent((name||'?')[0])}&background=12121a&color=7effa0&bold=true&size=80`;
-          if(act.assets?.large_image){
+          
+          if (act.name === 'Spotify' && p.spotify) {
+            imgSrc = p.spotify.album_art_url;
+          } else if(act.assets?.large_image){
             if(act.assets.large_image.startsWith('mp:external/')){
               imgSrc = 'https://media.discordapp.net/' + act.assets.large_image.replace('mp:', '');
             } else {
               imgSrc = `https://cdn.discordapp.com/app-assets/${act.application_id}/${act.assets.large_image}.png`;
             }
-          } else if (act.type === 2 && p.spotify) {
-            imgSrc = p.spotify.album_art_url;
           }
 
           return `
