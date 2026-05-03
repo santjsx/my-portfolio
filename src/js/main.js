@@ -15,6 +15,7 @@ import { initAstrosWidget } from './utils/astros.js';
 import { initRippleGrid } from './utils/ripple-grid.js';
 import { initStaggeredMenu } from './utils/staggered-menu.js';
 import { initThemeEditor } from './utils/theme-editor.js';
+import { initArchiveEngine } from './utils/engine.js';
 import { initFooterMarquee } from './utils/footer-marquee.js';
 import { ProfileCard } from './components/ProfileCard.js';
 
@@ -101,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { fn: initAstrosWidget, delay: 1400 },
             { fn: initFooterMarquee, delay: 1500 },
             { fn: initThemeEditor, delay: 1550 },
+            { fn: initArchiveEngine, delay: 1580 },
             { fn: initProfileCard, delay: 1600 }
         ];
 

@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="/src/css/main.css">
     <link rel="stylesheet" href="/src/css/components/profile-card.css">
     <link rel="stylesheet" href="/src/css/components/theme-editor.css">
+    <link rel="stylesheet" href="/src/css/components/engine.css">
     <script type="module" src="/src/js/main.js" fetchpriority="high"></script>
   </head>
   
@@ -695,6 +696,96 @@
         <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
       </svg>
     </button>
+  </div>
+
+  <!-- 11. Archive Engine — Professional Admin Portal -->
+  <div id="engine-auth" class="engine-auth">
+    <div class="auth-box">
+      <span class="engine-logo">AUTHENTICATION_REQUIRED</span>
+      <input type="password" id="auth-password" class="auth-input" placeholder="••••••••">
+      <p class="meta-label">Enter Archive Secret to access Engine Mode</p>
+    </div>
+  </div>
+
+  <aside id="archive-engine" class="archive-engine">
+    <header class="engine-header">
+      <span class="engine-logo">ARCHIVE_ENGINE_V1.0</span>
+      <button id="engine-close" class="engine-close">EXIT_</button>
+    </header>
+
+    <div class="engine-scroll">
+      <!-- Section: Global Identity -->
+      <div class="engine-section">
+        <span class="engine-section-title">01. Global Identity</span>
+        <div class="engine-field">
+          <label class="engine-label">Display Name</label>
+          <input type="text" id="eng-id-name" class="engine-input" placeholder="Santhosh Reddy">
+        </div>
+        <div class="engine-field">
+          <label class="engine-label">Professional Title</label>
+          <input type="text" id="eng-id-title" class="engine-input" placeholder="Developer">
+        </div>
+      </div>
+
+      <!-- Section: Hero Content -->
+      <div class="engine-section">
+        <span class="engine-section-title">02. Hero Configuration</span>
+        <div class="engine-field">
+          <label class="engine-label">Headline Row 1</label>
+          <input type="text" id="eng-hero-1" class="engine-input" placeholder="Building high-end">
+        </div>
+        <div class="engine-field">
+          <label class="engine-label">Headline Row 2 (Accent)</label>
+          <input type="text" id="eng-hero-2" class="engine-input" placeholder="digital products.">
+        </div>
+      </div>
+
+      <!-- Section: Project Management -->
+      <div class="engine-section">
+        <span class="engine-section-title">03. Project Arsenal</span>
+        <div class="engine-list" id="eng-projects-list">
+          <div class="engine-list-item">
+            <div class="item-info">
+              <span class="item-title">The Hustle Planner</span>
+              <span class="item-meta">Live / React / Vercel</span>
+            </div>
+            <div class="item-actions">
+              <button class="engine-icon-btn">✎</button>
+            </div>
+          </div>
+        </div>
+        <button class="engine-add-btn">+ ADD NEW PROJECT</button>
+      </div>
+
+      <!-- Section: Social Matrix -->
+      <div class="engine-section">
+        <span class="engine-section-title">04. Social Matrix</span>
+        <div class="engine-field">
+          <label class="engine-label">GitHub URL</label>
+          <input type="text" class="engine-input" placeholder="https://github.com/santjsx">
+        </div>
+        <div class="engine-field">
+          <label class="engine-label">Twitter/X URL</label>
+          <input type="text" class="engine-input" placeholder="https://x.com/santjsx">
+        </div>
+      </div>
+    </div>
+
+    <footer class="engine-footer">
+      <button id="engine-save" class="engine-main-btn engine-save">Apply Live Changes</button>
+      <button id="engine-export" class="engine-main-btn engine-export">Export Code State</button>
+    </footer>
+  </aside>
+
+  <!-- Export Modal -->
+  <div id="engine-modal" class="engine-modal">
+    <div class="modal-content">
+      <div class="engine-header">
+        <span class="engine-logo">STATE_EXPORT</span>
+      </div>
+      <p class="meta-label mb-4">Copy this JSON to update your hardcoded data files.</p>
+      <pre id="export-pre" class="modal-pre"></pre>
+    </div>
   </div>
 
   <div id="copy-toast" class="copy-toast">CSS TOKENS COPIED</div>
