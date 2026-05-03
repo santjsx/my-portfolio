@@ -964,12 +964,8 @@ footer{
               <div class="discord-handle" id="dw-status">Loading…</div>
             </div>
           </div>
-          <div id="dw-activity" class="discord-activity-card" style="display:none">
-            <img id="dw-act-img" class="discord-activity-img" src="" alt="activity"/>
-            <div>
-              <div class="discord-activity-name" id="dw-act-name">—</div>
-              <div class="discord-activity-detail" id="dw-act-detail">—</div>
-            </div>
+          <div id="dw-activities-container" style="display:flex;flex-direction:column;gap:.5rem">
+            <!-- Multiple activities will be injected here -->
           </div>
         </div>
       </div>
@@ -1472,41 +1468,53 @@ async function loadLanyard(){
     }
     const statusMap={online:'● Online',idle:'◑ Idle',dnd:'● Do Not Disturb',offline:'○ Offline'};
     const statusColor={online:'var(--accent)',idle:'#ffd700',dnd:'var(--accent2)',offline:'var(--fg3)'};
-    const st=p.discord_status||'offline';
-    const dwSt=$('dw-status');
-    if(dwSt){dwSt.textContent=statusMap[st]||st;dwSt.style.color=statusColor[st]||'var(--fg3)'}
-
-    // Prioritize "Playing" (0), then "Listening" (2), then "Custom" (4)
-    const act = p.activities?.find(a => a.type === 0) || 
-                p.activities?.find(a => a.type === 2) || 
-                p.activities?.find(a => a.type === 4);
+    const activities = p.activities || [];
+    const container = $('dw-activities-container');
+    const presence = $('presence-activity');
     
-    const presence=$('presence-activity');
-    if(act && presence){
-      const name = act.name === 'Custom Status' ? (act.state || act.details || '') : act.name;
-      const details = act.name === 'Custom Status' ? '' : (act.details ? ' · ' + act.details : '');
-      presence.innerHTML=`Currently — <span>${esc(name)}</span>${esc(details)}`;
-    }else if(presence){
-      presence.textContent=`Discord ${statusMap[st]||st}`;
-    }
-    if(act){
-      $('dw-activity').style.display='flex';
-      setText('dw-act-name',act.name);
-      setText('dw-act-detail',[act.details,act.state].filter(Boolean).join(' · ')||'—');
-      const actImg=$('dw-act-img');
-      if(act.assets?.large_image){
-        let imgSrc=act.assets.large_image;
-        if(imgSrc.startsWith('mp:external/')){
-          imgSrc='https://media.discordapp.net/'+imgSrc.replace('mp:','');
-        }else{
-          imgSrc=`https://cdn.discordapp.com/app-assets/${act.application_id}/${act.assets.large_image}.png`;
-        }
-        actImg.src=imgSrc;
-        actImg.onerror=()=>{actImg.src=`https://ui-avatars.com/api/?name=${encodeURIComponent(act.name[0])}&background=12121a&color=7effa0&bold=true&size=80`};
-      }else{
-        actImg.src=`https://ui-avatars.com/api/?name=${encodeURIComponent((act.name||'?')[0])}&background=12121a&color=7effa0&bold=true&size=80`;
+    if(container){
+      if(activities.length > 0){
+        container.innerHTML = activities.map(act => {
+          let name = act.name === 'Custom Status' ? (act.state || act.details || '') : act.name;
+          let details = act.name === 'Custom Status' ? '' : (act.details || '');
+          
+          let imgSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent((name||'?')[0])}&background=12121a&color=7effa0&bold=true&size=80`;
+          if(act.assets?.large_image){
+            if(act.assets.large_image.startsWith('mp:external/')){
+              imgSrc = 'https://media.discordapp.net/' + act.assets.large_image.replace('mp:', '');
+            } else {
+              imgSrc = `https://cdn.discordapp.com/app-assets/${act.application_id}/${act.assets.large_image}.png`;
+            }
+          } else if (act.type === 2 && p.spotify) {
+            imgSrc = p.spotify.album_art_url;
+          }
+
+          return `
+            <div class="discord-activity-card" style="margin-bottom:.5rem">
+              <img class="discord-activity-img" src="${imgSrc}" alt="" onerror="this.src='https://ui-avatars.com/api/?name=?&background=12121a&color=7effa0&size=80'"/>
+              <div>
+                <div class="discord-activity-name">${esc(name)}</div>
+                <div class="discord-activity-detail">${esc(details)}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        container.innerHTML = '<div class="not-playing">— No active sessions</div>';
       }
     }
+
+    if(presence){
+      const topAct = activities.find(a => a.type === 0) || activities[0];
+      if(topAct){
+        const n = topAct.name === 'Custom Status' ? (topAct.state || topAct.details || '') : topAct.name;
+        const d = topAct.name === 'Custom Status' ? '' : (topAct.details ? ' · ' + topAct.details : '');
+        presence.innerHTML = `Currently — <span>${esc(n)}</span>${esc(d)}`;
+      } else {
+        presence.textContent = `Discord ${statusMap[st]||st}`;
+      }
+    }
+
     const kv=p.kv||{};
     const kvEl=$('kv-widget');
     if(kvEl){
