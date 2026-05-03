@@ -42,6 +42,27 @@ export function initArchiveEngine() {
         showAuth();
     }
 
+    // 3. Foolproof Activation: Triple-click the Lanyard Avatar
+    const avatar = document.getElementById('lanyard-avatar-img');
+    let clickCount = 0;
+    let lastClick = 0;
+
+    avatar?.addEventListener('click', () => {
+        const now = Date.now();
+        if (now - lastClick < 500) {
+            clickCount++;
+        } else {
+            clickCount = 1;
+        }
+        lastClick = now;
+
+        if (clickCount === 3) {
+            console.log('🛡️ ARCHIVE ENGINE: TRIPLE-CLICK ACTIVATED');
+            showAuth();
+            clickCount = 0;
+        }
+    });
+
     function showAuth() {
         authScreen.classList.add('active');
         authInput.focus();
