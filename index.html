@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="/src/css/components/profile-card.css">
     <link rel="stylesheet" href="/src/css/components/theme-editor.css">
     <link rel="stylesheet" href="/src/css/components/engine.css">
+    <link rel="stylesheet" href="/src/css/components/navigation-v2.css">
     <script type="module" src="/src/js/main.js" fetchpriority="high"></script>
   </head>
   
@@ -179,7 +180,55 @@
     </div>
   </div>
 
-  <!-- New Staggered Navigation will be injected via JS -->
+  <!-- Navigation System -->
+  <nav class="nav">
+    <!-- Always visible logo in top left -->
+    <div class="nav-logo">
+      <a href="/"><img src="images/santhoshh.webp" alt="Logo"></a>
+    </div>
+
+    <!-- Always visible toggle in top right -->
+    <div class="nav-toggle" id="nav-toggle">
+      <p class="menu-label">Menu</p>
+      <p class="close-label">Close</p>
+    </div>
+
+    <!-- Full screen overlay -->
+    <div class="menu" id="menu">
+      <!-- Background SVG for the wipe transition -->
+      <svg id="menu-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="menu-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#3A1C71;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#FFA07A;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <path id="svg-path" d=""></path>
+      </svg>
+
+      <!-- Logo inside the menu -->
+      <div class="menu-logo">
+        <a href="/"><img src="images/santhoshh.webp" alt="Logo"></a>
+      </div>
+
+      <!-- Info Column (Contact, Address, etc.) -->
+      <div class="menu-column-info">
+        <p class="get-in-touch">Get in Touch</p>
+        <h6 class="info-heading">Contact Details</h6>
+        <p class="address-line">heysanthoshreddy@gmail.com</p>
+        <p class="address-line">India</p>
+      </div>
+
+      <!-- Links Column -->
+      <div class="menu-column-links">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#work" class="nav-link">Projects</a>
+        <a href="#" class="nav-link js-open-vibe-portal">My Vibe</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a href="#" class="nav-link js-open-resume">Resume</a>
+      </div>
+    </div>
+  </nav>
 
   <!-- Vibe Portal Choice Overlay -->
   <div id="vibe-portal" class="vibe-portal">

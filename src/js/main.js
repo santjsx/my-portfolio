@@ -13,7 +13,7 @@ import { initNavHighlighter } from './utils/nav-highlighter.js';
 import { initVibePortal } from './utils/vibe-portal.js';
 import { initAstrosWidget } from './utils/astros.js';
 import { initRippleGrid } from './utils/ripple-grid.js';
-import { initStaggeredMenu } from './utils/staggered-menu.js';
+import { initNavigationV2 } from './utils/navigation-v2.js';
 import { initArchiveEngine } from './utils/engine.js';
 import { initFooterMarquee } from './utils/footer-marquee.js';
 import { ProfileCard } from './components/ProfileCard.js';
@@ -36,19 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const isSubpage = window.location.pathname.includes('cinema.html') || window.location.pathname.includes('music.html');
     const homePrefix = isSubpage ? 'index.html?skipLoader=true' : '';
 
-    // Header Logic (Replaced by StaggeredMenu)
-    window.staggeredMenu = initStaggeredMenu({
-        items: [
-            { label: 'About', ariaLabel: 'About section', link: `${homePrefix}#about` },
-            { label: 'Projects', ariaLabel: 'Projects section', link: `${homePrefix}#work` },
-            { label: 'My Vibe', ariaLabel: 'Open vibe portal', link: '#', className: 'js-open-vibe-portal' },
-            { label: 'Resume', ariaLabel: 'Open resume', link: '#', className: 'js-open-resume' },
-            { label: 'Contact', ariaLabel: 'Contact section', link: `${homePrefix}#contact` }
-        ],
-        displaySocials: false,
-        accentColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim() || '#F28B82',
-        colors: [getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim() || '#F28B82', '#111111', '#0a0a0a']
-    });
+    // Header Logic (New Navigation V2)
+    initNavigationV2();
 
     // 2. PHASE 1: UI INTERACTIVITY (After Preloader)
     // Failsafe: If preloader hangs for more than 7s, force-run deferred modules
