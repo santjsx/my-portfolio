@@ -623,18 +623,35 @@
 }
 
 @media (max-width: 600px) {
-    .character-name .name-first,
-    .character-name .character-name-accent {
-        font-size: clamp(2.5rem, 10vw, 4rem);
-    }
-
-    .character-stats {
-        gap: 20px;
-        flex-wrap: wrap;
+    .character-info {
+        padding-left: 0;
+        border-left: none;
+        align-items: center; /* Center everything on mobile */
+        text-align: center;
     }
 
     .dossier-header {
-        justify-content: flex-start;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    .character-name {
+        margin-bottom: 20px;
+        line-height: 1; /* More breathing room */
+    }
+
+    .character-name .name-first,
+    .character-name .character-name-accent {
+        font-size: clamp(2.5rem, 10vw, 3.5rem);
+    }
+
+    .character-name .character-name-accent {
+        margin-top: 0; /* Remove negative margin on mobile */
+    }
+
+    .character-stats {
+        justify-content: center;
+        gap: 30px;
     }
 
     .intel-manifesto-text {
