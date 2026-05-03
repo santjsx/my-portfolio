@@ -4,45 +4,29 @@
  */
 
 export function initArchiveEngine() {
+    console.log('🛡️ ARCHIVE ENGINE: BOOTING...');
+    
     // 1. Core State
-    let engineState = {
-        identity: {
-            name: "Santhosh Reddy",
-            title: "Developer",
-            location: "India"
-        },
-        hero: {
-            headlineRow1: "Building high-end",
-            headlineRow2: "digital products.",
-            tagline: "ARCHIVE // 2026 // AD_SR"
-        },
-        projects: [
-            {
-                name: "The Hustle Planner",
-                description: "A high-performance productivity engine designed for deep work and streamlined task management.",
-                link: "https://the-hustle-planner.vercel.app/",
-                image: "images/hustle_planner.png"
-            },
-            {
-                name: "Hybrid OS",
-                description: "Architecting a seamless, unified system interface that harmonizes complex workflows.",
-                link: "https://hybrid-os.vercel.app/",
-                image: "images/Hybrid_OS.png"
-            }
-        ]
-    };
-
-    // 2. Auth Logic
-    const SECRET = "archive2026";
+    const lab = document.getElementById('archive-engine');
     const authScreen = document.getElementById('engine-auth');
     const authInput = document.getElementById('auth-password');
     const engineSidebar = document.getElementById('archive-engine');
 
-    // Shortcut: Ctrl + Alt + E to open Engine
+    if (!lab || !authScreen) {
+        console.warn('🛡️ ARCHIVE ENGINE: CORE ELEMENTS MISSING');
+        return;
+    }
+
+    // 2. Auth Logic
+    const SECRET = "archive2026";
+
+    // Shortcuts: Ctrl+Alt+E OR Shift+Alt+E
     window.addEventListener('keydown', (e) => {
-        // Use e.code for more reliable shortcut detection across layouts
-        if (e.ctrlKey && e.altKey && e.code === 'KeyE') {
-            e.preventDefault(); // Prevent browser default actions
+        const isEngineKey = e.code === 'KeyE' || e.code === 'KeyT';
+        const isModifier = (e.ctrlKey && e.altKey) || (e.shiftKey && e.altKey);
+
+        if (isModifier && isEngineKey) {
+            e.preventDefault();
             console.log('🛡️ ARCHIVE ENGINE: COMMAND RECEIVED');
             
             if (localStorage.getItem('sm-engine-auth') === 'true') {
@@ -52,6 +36,11 @@ export function initArchiveEngine() {
             }
         }
     });
+
+    // Support for ?engine=true in URL
+    if (new URLSearchParams(window.location.search).get('engine') === 'true') {
+        showAuth();
+    }
 
     function showAuth() {
         authScreen.classList.add('active');

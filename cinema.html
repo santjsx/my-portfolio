@@ -17,6 +17,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <link rel="stylesheet" href="/src/css/main.css">
+    <link rel="stylesheet" href="/src/css/components/theme-editor.css">
+    <link rel="stylesheet" href="/src/css/components/engine.css">
     <script type="module" src="/src/js/main.js"></script>
 </head>
 
@@ -254,6 +256,60 @@
     </div>
   </div>
 
-</body>
+  <!-- 11. Archive Engine — Professional Admin Portal -->
+  <div id="engine-auth" class="engine-auth">
+    <div class="auth-box">
+      <span class="engine-logo">AUTHENTICATION_REQUIRED</span>
+      <input type="password" id="auth-password" class="auth-input" placeholder="••••••••">
+      <p class="meta-label">Enter Archive Secret to access Engine Mode</p>
+    </div>
+  </div>
 
+  <aside id="archive-engine" class="archive-engine">
+    <header class="engine-header">
+      <span class="engine-logo">ARCHIVE_ENGINE_V1.0</span>
+      <button id="engine-close" class="engine-close">EXIT_</button>
+    </header>
+
+    <div class="engine-scroll">
+      <!-- Section: Global Identity -->
+      <div class="engine-section">
+        <span class="engine-section-title">01. Global Identity</span>
+        <div class="engine-field">
+          <label class="engine-label">Display Name</label>
+          <input type="text" id="eng-id-name" class="engine-input" placeholder="Santhosh Reddy">
+        </div>
+        <div class="engine-field">
+          <label class="engine-label">Professional Title</label>
+          <input type="text" id="eng-id-title" class="engine-input" placeholder="Developer">
+        </div>
+      </div>
+
+      <!-- Section: Visual Design (Merged from Theme Lab) -->
+      <div class="engine-section">
+        <span class="engine-section-title">02. Design Matrix</span>
+        <div class="engine-field">
+          <label class="engine-label">Primary Accent (Purple)</label>
+          <div class="color-picker-row" style="background: #111; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+            <input type="color" id="accent-color-1" value="#3A1C71" style="background: none; border: none; width: 30px; height: 30px; cursor: pointer;">
+            <span class="color-hex" id="hex-1" style="font-family: var(--font-mono); font-size: 12px;">#3A1C71</span>
+          </div>
+        </div>
+        <div class="engine-field">
+          <label class="engine-label">Secondary Accent (Salmon)</label>
+          <div class="color-picker-row" style="background: #111; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+            <input type="color" id="accent-color-2" value="#FFA07A" style="background: none; border: none; width: 30px; height: 30px; cursor: pointer;">
+            <span class="color-hex" id="hex-2" style="font-family: var(--font-mono); font-size: 12px;">#FFA07A</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="engine-footer">
+      <button id="engine-save" class="engine-main-btn engine-save">Apply Live Changes</button>
+    </footer>
+  </aside>
+
+  <div id="copy-toast" class="copy-toast">STATE_SYNCED</div>
+</body>
 </html>
