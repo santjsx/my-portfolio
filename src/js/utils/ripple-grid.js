@@ -223,11 +223,20 @@ void main() {
         request = requestAnimationFrame(render);
     };
 
+    // Live update listener for Theme Lab
+    const handleThemeChange = (e) => {
+        const { color1: c1, color2: c2 } = e.detail;
+        if (uniforms.color1) uniforms.color1.value = hexToRgb(c1);
+        if (uniforms.color2) uniforms.color2.value = hexToRgb(c2);
+    };
+    window.addEventListener('themeChanged', handleThemeChange);
+
     request = requestAnimationFrame(render);
 
     return {
         destroy: () => {
             window.removeEventListener('resize', resize);
+            window.removeEventListener('themeChanged', handleThemeChange);
             if (mouseInteraction) {
                 container.removeEventListener('mousemove', handleMouseMove);
                 container.removeEventListener('mouseenter', handleMouseEnter);

@@ -1,0 +1,206 @@
+/* ═══════════════════════════════════════════
+   THEME LAB — Premium Design Controls
+   ═══════════════════════════════════════════ */
+
+.theme-lab {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 10005; /* Above Lanyard */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.theme-lab-toggle {
+    width: 48px;
+    height: 48px;
+    background: rgba(10, 10, 10, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    cursor: pointer;
+    pointer-events: auto;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.4s var(--ease-spring);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.theme-lab-toggle:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-primary);
+    transform: rotate(45deg) scale(1.1);
+}
+
+.theme-lab-panel {
+    width: 280px;
+    background: rgba(15, 15, 18, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    transform: translateX(-120%) scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-origin: bottom left;
+}
+
+.theme-lab.active .theme-lab-panel {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.theme-lab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 12px;
+}
+
+.theme-lab-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-secondary);
+}
+
+.theme-lab-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.theme-lab-close:hover {
+    color: var(--text-primary);
+}
+
+.theme-lab-control {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.control-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.color-picker-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 8px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.color-input-wrapper {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.color-input-wrapper input {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.color-hex {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+}
+
+.theme-lab-footer {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.theme-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.theme-btn.reset {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+}
+
+.theme-btn.reset:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.theme-btn.copy {
+    background: var(--accent-gradient);
+    border: none;
+    color: #fff;
+}
+
+.theme-btn.copy:hover {
+    filter: brightness(1.2);
+    transform: translateY(-2px);
+}
+
+/* Copy notification */
+.copy-toast {
+    position: fixed;
+    bottom: 100px;
+    left: 30px;
+    background: #000;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.4s var(--ease-spring);
+    pointer-events: none;
+    z-index: 10006;
+}
+
+.copy-toast.active {
+    transform: translateY(0);
+    opacity: 1;
+}

@@ -655,6 +655,49 @@
   </aside>
 
 
-</body>
+  <!-- 10. Theme Lab — Admin Style Controls -->
+  <div id="theme-lab" class="theme-lab">
+    <div id="theme-lab-panel" class="theme-lab-panel">
+      <div class="theme-lab-header">
+        <span class="theme-lab-title">Design Lab_</span>
+        <button id="theme-lab-close" class="theme-lab-close">CLOSE</button>
+      </div>
+      
+      <div class="theme-lab-control">
+        <span class="control-label">Accent Primary</span>
+        <div class="color-picker-row">
+          <div class="color-input-wrapper">
+            <input type="color" id="accent-color-1" value="#3A1C71">
+          </div>
+          <span class="color-hex" id="hex-1">#3A1C71</span>
+        </div>
+      </div>
 
+      <div class="theme-lab-control">
+        <span class="control-label">Accent Secondary</span>
+        <div class="color-picker-row">
+          <div class="color-input-wrapper">
+            <input type="color" id="accent-color-2" value="#FFA07A">
+          </div>
+          <span class="color-hex" id="hex-2">#FFA07A</span>
+        </div>
+      </div>
+
+      <div class="theme-lab-footer">
+        <button id="theme-reset" class="theme-btn reset">Reset</button>
+        <button id="theme-copy" class="theme-btn copy">Copy CSS</button>
+      </div>
+    </div>
+
+    <button id="theme-lab-toggle" class="theme-lab-toggle" aria-label="Open Theme Lab">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div id="copy-toast" class="copy-toast">CSS TOKENS COPIED</div>
+
+  <link rel="stylesheet" href="/src/css/components/theme-editor.css">
+</body>
 </html>

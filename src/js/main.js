@@ -14,6 +14,7 @@ import { initVibePortal } from './utils/vibe-portal.js';
 import { initAstrosWidget } from './utils/astros.js';
 import { initRippleGrid } from './utils/ripple-grid.js';
 import { initStaggeredMenu } from './utils/staggered-menu.js';
+import { initThemeEditor } from './utils/theme-editor.js';
 import { initFooterMarquee } from './utils/footer-marquee.js';
 import { ProfileCard } from './components/ProfileCard.js';
 
@@ -99,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { fn: initLanyardWidget, delay: 1200 },
             { fn: initAstrosWidget, delay: 1400 },
             { fn: initFooterMarquee, delay: 1500 },
+            { fn: initThemeEditor, delay: 1550 },
             { fn: initProfileCard, delay: 1600 }
         ];
 
