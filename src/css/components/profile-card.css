@@ -59,6 +59,12 @@
   transition: opacity 200ms ease;
 }
 
+@media (max-width: 768px) {
+  .pc-behind {
+    filter: blur(20px) saturate(1.1);
+  }
+}
+
 .pc-card-wrapper:hover,
 .pc-card-wrapper.active {
   --card-opacity: 1;

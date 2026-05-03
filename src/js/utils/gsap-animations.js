@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.config({ force3D: true, nullTargetWarn: false });
 
 export function initGSAPAnimations() {
     // Media Query context for GSAP
@@ -20,7 +21,8 @@ export function initGSAPAnimations() {
                     trigger: ".hero",
                     start: "top top",
                     end: "bottom top",
-                    scrub: true
+                    scrub: true,
+                    fastScrollEnd: true
                 }
             });
         }
@@ -34,7 +36,8 @@ export function initGSAPAnimations() {
                     trigger: ".hero",
                     start: "top top",
                     end: "bottom top",
-                    scrub: true
+                    scrub: true,
+                    fastScrollEnd: true
                 }
             });
         }
@@ -66,7 +69,8 @@ export function initGSAPAnimations() {
                     trigger: ".about-section",
                     start: "top bottom",
                     end: "bottom top",
-                    scrub: 1
+                    scrub: 1,
+                    fastScrollEnd: true
                 }
             });
         }
@@ -152,7 +156,8 @@ export function initGSAPAnimations() {
             scrollTrigger: {
                 trigger: section,
                 start: "top 90%",
-                toggleActions: "play none none none"
+                toggleActions: "play none none none",
+                fastScrollEnd: true
             }
         });
     });
@@ -170,7 +175,8 @@ export function initGSAPAnimations() {
                 scrollTrigger: {
                     trigger: el,
                     start: "top 95%",
-                    toggleActions: "play none none none"
+                    toggleActions: "play none none none",
+                    fastScrollEnd: true
                 }
             }
         );

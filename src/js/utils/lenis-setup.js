@@ -12,13 +12,13 @@ export function setupLenis() {
     }
 
     const lenis = new Lenis({
-        duration: 1.2,           /* Smooth duration */
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), /* Premium easing */
+        duration: 1.5,           /* Buttery smooth duration */
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
         orientation: 'vertical',
         gestureOrientation: 'vertical',
         smoothWheel: true,
-        wheelMultiplier: 1.1,     /* Slightly increased for responsiveness with smoothness */
-        touchMultiplier: 2,
+        wheelMultiplier: 1.0,     /* Normalized for better predictability */
+        touchMultiplier: 1.5,
         infinite: false,
     });
 

@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.config({ force3D: true, nullTargetWarn: false });
 
 export function initScrollObserver() {
     // We clear typical initial CSS opacity/transform rules from main.css 
