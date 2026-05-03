@@ -1493,7 +1493,7 @@ async function loadLanyard(){
           `;
         }).join('');
       } else {
-        container.innerHTML = '<div class="not-playing">— No active sessions</div>';
+        container.innerHTML = '<div class="not-playing">— Not doing anything</div>';
       }
     }
 
@@ -1573,18 +1573,22 @@ async function loadLastFM(){
   const finalArt=itunesArt||albumArt||`https://ui-avatars.com/api/?name=${encodeURIComponent(trackName[0])}&background=12121a&color=7effa0&bold=true&size=120`;
   if(eq)eq.classList.toggle('paused',!isLive);
   if(np){
-    np.innerHTML=`
-      <div class="now-playing-body">
-        <img class="now-playing-art" src="${finalArt}" alt="${esc(trackName)}"
-          onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(trackName[0])}&background=12121a&color=7effa0&size=120'"/>
-        <div>
-          <div class="now-playing-track">${esc(trackName)}</div>
-          <div class="now-playing-artist">${esc(artistName)}</div>
-          <div style="margin-top:.4rem"><span class="tag ${isLive?'green':''}">${isLive?'● Now Playing':'Recent'}</span></div>
+    if(isLive){
+      np.innerHTML=`
+        <div class="now-playing-body">
+          <img class="now-playing-art" src="${finalArt}" alt="${esc(trackName)}"
+            onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(trackName[0])}&background=12121a&color=7effa0&size=120'"/>
+          <div>
+            <div class="now-playing-track">${esc(trackName)}</div>
+            <div class="now-playing-artist">${esc(artistName)}</div>
+            <div style="margin-top:.4rem"><span class="tag green">● Now Playing</span></div>
+          </div>
         </div>
-      </div>
-      ${isLive?'<div class="now-playing-bar"><div class="now-playing-bar-fill" style="width:45%"></div></div>':''}
-    `;
+        <div class="now-playing-bar"><div class="now-playing-bar-fill" style="width:45%"></div></div>
+      `;
+    } else {
+      np.innerHTML='<div class="not-playing">— Currently not playing anything</div>';
+    }
   }
   if(rt){
     const recent=tracks.slice(isLive?1:0,(isLive?1:0)+5);
