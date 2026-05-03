@@ -141,7 +141,9 @@
 .footer-big-name-wrap {
     margin-top: clamp(3rem, 8vw, 5rem);
     width: 100%;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     z-index: 5;
 }
