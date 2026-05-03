@@ -154,7 +154,8 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    line-height: 0.9;
+    line-height: 1.1; /* Increased to prevent clipping */
+    padding: 0.1em 0; /* Added breathing room for letters and shadows */
     letter-spacing: -0.04em;
     white-space: nowrap;
     text-shadow: 0 10px 30px rgba(58, 28, 113, 0.2);
