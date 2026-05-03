@@ -240,6 +240,7 @@ class StaggeredMenu {
     this.wrapper.setAttribute('data-open', 'true');
     this.toggleBtn.setAttribute('aria-expanded', 'true');
     this.panel.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('nav-menu-open');
     
     if (this.options.onMenuOpen) this.options.onMenuOpen();
     
@@ -255,6 +256,7 @@ class StaggeredMenu {
     this.wrapper.removeAttribute('data-open');
     this.toggleBtn.setAttribute('aria-expanded', 'false');
     this.panel.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('nav-menu-open');
 
     if (this.options.onMenuClose) this.options.onMenuClose();
 

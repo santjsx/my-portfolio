@@ -8,6 +8,10 @@
   pointer-events: none;
 }
 
+body.nav-menu-open {
+  overflow: hidden;
+}
+
 .staggered-menu-wrapper.fixed-wrapper {
   position: fixed;
   top: 0;
@@ -310,40 +314,65 @@ body.lanyard-active .staggered-menu-header {
 
 @media (max-width: 640px) {
     .staggered-menu-header {
-        padding: 1rem 1.5rem;
+        padding: clamp(1rem, 5vw, 1.5rem) clamp(1rem, 5vw, 1.5rem);
+        padding-top: calc(env(safe-area-inset-top, 0px) + 1rem);
     }
     
     .staggered-menu-panel {
-        padding: 5rem 2rem 4rem 2rem;
+        width: 100%;
+        padding: calc(env(safe-area-inset-top, 0px) + 7rem) 2rem 4rem 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
 
     .sm-panel-inner {
+        width: 100%;
         padding-top: 0;
-        gap: 2rem;
+        gap: 2.5rem;
+        align-items: center;
     }
     
     .sm-panel-list {
-        gap: 1rem;
+        gap: 1.5rem;
+        width: 100%;
+        align-items: center;
     }
 
     .sm-panel-item {
-        font-size: 2.2rem;
+        font-size: clamp(2rem, 10vw, 2.8rem);
+        padding-right: 0;
+        display: block;
+    }
+
+    .sm-panel-list[data-numbering] .sm-panel-item::after {
+        position: relative;
+        display: inline-block;
+        font-size: 0.9rem;
+        margin-left: 8px;
+        top: -1em;
+        right: auto;
     }
 
     .sm-socials {
-        margin-top: 1rem;
+        margin-top: 2rem;
         padding-top: 1.5rem;
         padding-bottom: 2rem;
-        gap: 1rem;
+        gap: 1.5rem;
+        width: 100%;
+        align-items: center;
     }
 
     .sm-socials-link {
+        font-size: 1rem;
         opacity: 1 !important;
         visibility: visible !important;
         transform: none !important;
     }
 
     .sm-socials-list {
-        gap: 1.5rem;
+        justify-content: center;
+        gap: 2rem;
     }
 }
