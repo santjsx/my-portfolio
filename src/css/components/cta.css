@@ -1,213 +1,196 @@
 /* src/css/components/cta.css */
 /* ═══════════════════════════════════════════
-   CONTACT — Pure Minimalist Fight Club Layout
+   CONTACT — Cinematic Social Index (Reference-based)
    ═══════════════════════════════════════════ */
+
 .contact-section {
-    padding: var(--space-24) 0;
+    position: relative;
+    padding: clamp(4rem, 10vw, 6rem) 0 2rem;
     background: var(--bg-dark);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.contact-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-16);
-    align-items: center;
-}
-
-.contact-left {
-    display: flex;
-    flex-direction: column;
-}
-
-.contact-headline {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: var(--space-8);
-}
-
-.ch-row {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 800;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
     color: var(--text-primary);
-    text-transform: uppercase;
+    overflow: hidden;
 }
 
-.danger-text {
-    color: var(--accent-primary);
+/* Subtle Watermark Pattern */
+.contact-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 30c0-10 10-10 10-20S30 0 30 0 20 0 20 10s10 10 10 20z' fill='%23ffffff' fill-opacity='0.02'/%3E%3C/svg%3E");
+    opacity: 0.3;
+    pointer-events: none;
 }
 
-.contact-desc {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    max-width: 400px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-left: 2px solid var(--accent-primary);
-    padding-left: var(--space-4);
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr 1fr;
+    gap: clamp(2rem, 5vw, 3rem);
+    align-items: flex-start;
+    position: relative;
+    z-index: 10;
 }
 
-/* ── Right Column ── */
-.contact-right {
+/* ── Column 1: Intro ── */
+.contact-intro {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
 }
 
-.contact-card {
-    display: flex;
-    flex-direction: column;
+.status-badge {
+    display: inline-flex;
+    align-items: center;
     gap: 8px;
-    padding: var(--space-8);
+    padding: 6px 14px;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    text-decoration: none;
-    transition: all 0.5s var(--ease-spring);
-    cursor: pointer;
-    text-align: left;
-    width: 100%;
-}
-
-.card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.card-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.2em;
-    transition: color 0.4s ease;
-}
-
-.card-arrow {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    color: var(--text-muted);
-    transition: transform 0.5s var(--ease-spring), color 0.4s ease;
-}
-
-.card-value {
-    font-family: var(--font-sans);
-    font-size: 20px;
-    font-weight: 600;
     color: var(--text-primary);
-    letter-spacing: -0.01em;
-    transition: color 0.4s ease;
-}
-
-/* Harsh Minimal Hover: Invert colors / slide arrow */
-.contact-card:hover {
-    background: var(--text-primary);
-    transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.contact-card:hover .card-label,
-.contact-card:hover .card-value {
-    color: var(--bg-dark);
-}
-
-.contact-card:hover .card-arrow {
-    color: var(--accent-danger);
-    transform: translateX(10px);
-}
-
-/* Status row */
-.contact-status {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--font-mono);
+    border-radius: 100px;
     font-size: 11px;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    width: fit-content;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #22c55e;
+}
+
+.contact-headline-serif {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.2;
+    color: #fff;
+    font-style: italic;
+}
+
+/* ── Common Pill Styles ── */
+.contact-col-header {
+    font-family: var(--font-mono);
+    font-size: 9px;
     color: var(--text-muted);
-    letter-spacing: 0.1em;
-    padding: var(--space-6) 0;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: var(--space-3);
+    display: block;
 }
 
-/* Footer - Mega Typographic Sign Off */
-.minimal-footer {
-    padding: var(--space-32) 0 var(--space-24);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.footer-marquee {
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    overflow: hidden;
-}
-
-.marquee-track {
-    display: flex;
-    width: max-content;
-    will-change: transform;
-}
-
-.mega-footer-name {
+.pill-card {
     display: flex;
     align-items: center;
-    cursor: default;
-    user-select: none;
-    padding: 0 2rem;
-}
-
-.mega-footer-name span {
-    display: block;
-    line-height: 0.9;
+    gap: 12px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-family: var(--font-mono); /* On brand mono */
     text-transform: uppercase;
-    font-weight: 900;
-    font-size: clamp(3rem, 15vw, 10rem);
-    letter-spacing: -0.05em;
-    color: inherit; /* Allow .name-solid and .name-hollow to control color */
-    transition: all 0.4s var(--ease-out);
-    white-space: nowrap;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    margin-bottom: 8px;
+    transition: all 0.4s var(--ease-spring);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
-.mega-footer-name .name-solid {
+.pill-card:hover {
+    background: rgba(var(--accent-rgb), 0.1);
+    border-color: var(--accent-primary);
     color: var(--accent-primary);
+    transform: translateY(-3px);
 }
 
-.mega-footer-name .name-hollow {
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+.pill-icon {
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: all 0.3s ease;
 }
 
-.mega-footer-name:hover span {
-    /* Hover effect removed as per user request */
+.pill-card:hover .pill-icon {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
-.mega-footer-name:hover .name-hollow {
-    /* Hover effect removed as per user request */
+.pill-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
 }
 
-@keyframes marqueeScroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+/* ── Footer Big Name ── */
+.footer-big-name-wrap {
+    margin-top: clamp(3rem, 8vw, 5rem);
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 5;
 }
 
-@media (max-width: 900px) {
-    .contact-layout {
+.footer-big-name {
+    font-size: clamp(3rem, 12vw, 8rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+    text-shadow: 
+        0px 1px 0px #b0655e,
+        0px 2px 0px #b0655e,
+        0px 3px 0px #b0655e,
+        0px 4px 1px rgba(0,0,0,.15);
+}
+
+/* ── Responsiveness ── */
+@media (max-width: 1024px) {
+    .contact-section {
+        padding: 4rem 0;
+    }
+
+    .contact-grid {
         grid-template-columns: 1fr;
-        gap: var(--space-16);
+        text-align: center;
+        gap: var(--space-12);
     }
-    
-    .ch-row {
-        font-size: clamp(2rem, 10vw, 3.5rem);
+
+    .status-badge, .contact-intro, .contact-bottom-row {
+        align-items: center;
+        margin: 0 auto;
     }
-    
-    .mega-footer-name span {
-        font-size: clamp(3rem, 16vw, 5.5rem);
-        letter-spacing: -0.04em;
+
+    .contact-headline-serif {
+        max-width: 100%;
+    }
+
+    .pill-card {
+        justify-content: center;
+    }
+
+    .footer-big-name {
+        font-size: clamp(2rem, 10vw, 5rem); /* Smaller on mobile to keep it on one line */
+        letter-spacing: -0.02em;
+    }
+}
+
+@media (max-width: 480px) {
+    .social-pill-grid {
+        grid-template-columns: 1fr; /* Single column for very small screens */
+    }
+
+    .footer-big-name {
+        font-size: clamp(1.5rem, 9vw, 3rem);
     }
 }

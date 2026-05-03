@@ -39,17 +39,19 @@ export function initGSAPAnimations() {
             });
         }
 
-        // 2. Mayhem Marquee Scrub Control
-        const marquee = document.querySelector('.mayhem-marquee');
-        if (marquee) {
-            gsap.to(marquee, {
-                xPercent: -30,
-                ease: "none",
+        // 2. Project Grid Entrance
+        const projects = document.querySelectorAll('.project-card');
+        if (projects.length > 0) {
+            gsap.from(projects, {
+                opacity: 0,
+                y: 60,
+                stagger: 0.15,
+                duration: 1,
+                ease: "power3.out",
                 scrollTrigger: {
-                    trigger: ".mayhem-works",
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 1.5 // Smooth scrubbing
+                    trigger: ".projects-grid",
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
                 }
             });
         }
@@ -92,7 +94,7 @@ export function initGSAPAnimations() {
     });
 
     // Magnetic Cursor interactions for specific buttons
-    const magneticItems = document.querySelectorAll('.t-btn, .hero-cta-link, .nav-item, .contact-card');
+    const magneticItems = document.querySelectorAll('.t-btn, .hero-cta-link, .nav-item, .contact-card, .gallery-cta');
     magneticItems.forEach(item => {
         item.addEventListener('mousemove', (e) => {
             const bound = item.getBoundingClientRect();
