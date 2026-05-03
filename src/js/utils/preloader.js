@@ -65,8 +65,8 @@ export function initPreloader() {
             console.log('🔢 LOADER: Starting counter crawl');
             counterTl = gsap.to(counterObj, {
                 value: 90,
-                duration: 4, // Slower crawl for better visibility
-                ease: "none", // Linear for better number counting feel
+                duration: 2.5, // Faster crawl
+                ease: "none", 
                 onUpdate: () => {
                     if (percentEl) {
                         percentEl.textContent = Math.floor(counterObj.value).toString().padStart(2, '0');
@@ -83,7 +83,7 @@ export function initPreloader() {
             if (counterTl) counterTl.kill();
             gsap.to(counterObj, {
                 value: 100,
-                duration: 1.2, // Slower zip to 100 for visibility
+                duration: 0.6, // Faster zip to 100
                 ease: "power2.out",
                 onUpdate: () => {
                     if (percentEl) {
@@ -110,7 +110,7 @@ export function initPreloader() {
         Promise.race([windowLoad, failsafe]).then((res) => {
             console.log('🎬 LOADER: Window load or failsafe triggered');
             // Once loaded, we wait a beat for the entrance to finish, then hit 100
-            setTimeout(triggerExit, 1000);
+            setTimeout(triggerExit, 400); // Shorter delay
         });
 
         // ── 4. Exit Sequence (The "Wow" Moment) ──

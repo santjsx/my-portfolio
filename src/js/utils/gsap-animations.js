@@ -150,12 +150,12 @@ export function initGSAPAnimations() {
     sections.forEach(section => {
         gsap.from(section, {
             opacity: 0,
-            y: 20,
-            duration: 1.5,
+            y: 15,
+            duration: 1.0, // Faster duration
             ease: "expo.out",
             scrollTrigger: {
                 trigger: section,
-                start: "top 90%",
+                start: "top 95%", // Trigger earlier
                 toggleActions: "play none none none",
                 fastScrollEnd: true
             }

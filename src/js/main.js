@@ -92,16 +92,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Stagger non-critical modules to avoid long tasks
         const deferredModules = [
             { fn: initGSAPAnimations, delay: 0 },
-            { fn: initAboutReveal, delay: 100 },
-            { fn: initScrollObserver, delay: 200 },
-            { fn: initMusicHistory, delay: 400 },
-            { fn: initNavHighlighter, delay: 600 },
-            { fn: initResumeDrawer, delay: 800 },
-            { fn: initContactSection, delay: 1000 },
-            { fn: initLanyardWidget, delay: 1200 },
-            { fn: initAstrosWidget, delay: 1400 },
-            { fn: initFooterMarquee, delay: 1500 },
-            { fn: initProfileCard, delay: 1600 }
+            { fn: initAboutReveal, delay: 50 },
+            { fn: initScrollObserver, delay: 100 },
+            { fn: initMusicHistory, delay: 150 },
+            { fn: initNavHighlighter, delay: 200 },
+            { fn: initResumeDrawer, delay: 250 },
+            { fn: initContactSection, delay: 300 },
+            { fn: initLanyardWidget, delay: 350 },
+            { fn: initAstrosWidget, delay: 400 },
+            { fn: initFooterMarquee, delay: 450 },
+            { fn: initProfileCard, delay: 500 }
         ];
 
         deferredModules.forEach(({ fn, delay }) => {
