@@ -25,20 +25,20 @@ export function initScrollObserver() {
         start: "top 90%", // Trigger slightly before it comes fully into view
     });
 
-    // 2. Arsenal Rows (Skill bars) Stagger
-    gsap.set(".arsenal-row", { x: -30, opacity: 0 });
+    // 2. Skill Items (Arsenal Grid) Stagger
+    gsap.set(".skill-item", { y: 20, opacity: 0 });
     
-    ScrollTrigger.batch(".arsenal-row", {
+    ScrollTrigger.batch(".skill-item", {
         onEnter: batch => gsap.to(batch, {
             opacity: 1,
-            x: 0,
-            stagger: 0.12,
+            y: 0,
+            stagger: 0.1,
             duration: 0.7,
             ease: "power2.out",
             overwrite: true,
             clearProps: "transform"
         }),
-        start: "top 85%"
+        start: "top 90%"
     });
 
     // 3. Project Cards (Mayhem Grid) Sequence Reveal

@@ -601,70 +601,112 @@ function updateSkills(kv) {
     if (!listContainer) return;
 
     const skillsStr = kv ? kv.skills : null;
-    const titleHTML = `<h3 class="arsenal-title">THE ARSENAL_</h3>`;
+    const skillsGrid = listContainer.querySelector('.skills-grid');
     
-    const originalSkillsHTML = `
-        <div class="arsenal-row"><span class="arsenal-name">HTML / CSS</span><span class="arsenal-line"></span><span class="arsenal-level">EXPERT</span></div>
-        <div class="arsenal-row"><span class="arsenal-name">JAVASCRIPT</span><span class="arsenal-line"></span><span class="arsenal-level">ADVANCED</span></div>
-        <div class="arsenal-row"><span class="arsenal-name">REACT.JS</span><span class="arsenal-line"></span><span class="arsenal-level">ADVANCED</span></div>
-        <div class="arsenal-row"><span class="arsenal-name">TAILWIND</span><span class="arsenal-line"></span><span class="arsenal-level">EXPERT</span></div>
-        <div class="arsenal-row"><span class="arsenal-name">GIT</span><span class="arsenal-line"></span><span class="arsenal-level">PROFICIENT</span></div>
-    `;
+    // Default skills data with icons mapping (aligned with index.html)
+    const defaultSkills = [
+        { name: 'HTML5', tech: 'Expert', icon: 'HTML5.svg' },
+        { name: 'CSS3', tech: 'Expert', icon: 'CSS3.svg' },
+        { name: 'JavaScript', tech: 'Advanced', icon: 'JavaScript.svg' },
+        { name: 'React', tech: 'Advanced', icon: 'React.svg' },
+        { name: 'Firebase', tech: 'Proficient', icon: 'Firebase.svg' },
+        { name: 'MongoDB', tech: 'Intermediate', icon: 'MongoDB.svg' },
+        { name: 'VS Code', tech: 'Tools', icon: 'Visual Studio Code (VS Code).svg' },
+        { name: 'GitHub', tech: 'Git', icon: 'GitHub.svg' }
+    ];
 
-    let dynamicSkillsHTML = '';
+    let skillsData = [...defaultSkills];
 
     if (skillsStr && skillsStr.trim() !== '') {
         const items = skillsStr.split(',').map(s => s.trim()).filter(s => s !== '');
         items.forEach(item => {
-            const [name, level] = item.split(':').map(part => part.trim());
+            const [name, tech] = item.split(':').map(part => part.trim());
             if (name) {
-                dynamicSkillsHTML += `
-                    <div class="arsenal-row">
-                        <span class="arsenal-name">${escapeHTML(name)}</span>
-                        <span class="arsenal-line"></span>
-                        <span class="arsenal-level">${escapeHTML(level || 'PRO')}</span>
-                    </div>
-                `;
+                const icon = findIcon(name);
+                skillsData.push({ name, tech: tech || 'PRO', icon });
             }
         });
     }
 
-    // Always include original skills, then add dynamic ones
-    const targetHTML = originalSkillsHTML + dynamicSkillsHTML;
+    function findIcon(name) {
+        const lowerName = name.toLowerCase();
+        if (lowerName.includes('html')) return 'HTML5.svg';
+        if (lowerName.includes('css')) return 'CSS3.svg';
+        if (lowerName.includes('javascript') || lowerName.includes('js')) return 'JavaScript.svg';
+        if (lowerName.includes('react')) return 'React.svg';
+        if (lowerName.includes('firebase')) return 'Firebase.svg';
+        if (lowerName.includes('mongo')) return 'MongoDB.svg';
+        if (lowerName.includes('code') || lowerName.includes('vs')) return 'Visual Studio Code (VS Code).svg';
+        if (lowerName.includes('git') || lowerName.includes('hub')) return 'GitHub.svg';
+        return 'JavaScript.svg'; // Fallback
+    }
 
-    // Comparison for redundancy
-    const currentRowsRaw = listContainer.innerHTML.replace(titleHTML, '').trim();
-    if (currentRowsRaw === targetHTML.trim()) return;
+    const generateSkillHTML = (skill) => `
+        <div class="skill-item">
+            <div class="skill-icon">
+                <img src="images/skills_logos/${skill.icon}" alt="${skill.name}">
+            </div>
+            <div class="skill-info">
+                <span class="skill-name">${escapeHTML(skill.name)}</span>
+            </div>
+        </div>
+    `;
 
-    const oldRows = listContainer.querySelectorAll('.arsenal-row');
+    const targetHTML = skillsData.map(generateSkillHTML).join('');
 
-    if (typeof gsap !== 'undefined' && oldRows.length > 0) {
-        // If we are just adding/subtracting, a full fade-out might be jarring, 
-        // but for now, we'll use the cinematic transition logic.
-        gsap.to(oldRows, {
-            opacity: 0,
-            x: -20,
-            duration: 0.3,
-            stagger: 0.03,
-            ease: "power2.in",
-            onComplete: () => {
-                listContainer.innerHTML = titleHTML + targetHTML;
-                const newRows = listContainer.querySelectorAll('.arsenal-row');
-                gsap.fromTo(newRows, 
-                    { opacity: 0, x: -30 },
-                    { 
-                        opacity: 1, 
-                        x: 0, 
-                        duration: 0.5, 
-                        stagger: 0.05, 
-                        ease: "power2.out"
-                    }
-                );
-            }
-        });
+    // If grid doesn't exist (legacy markup), we recreate the whole section
+    if (!skillsGrid) {
+        listContainer.innerHTML = `
+            <h3 class="arsenal-title">TECH LOADOUT_</h3>
+            <div class="skills-grid">
+                ${targetHTML}
+            </div>
+        `;
+        // Re-attach mouse listeners if we just created them
+        attachSkillListeners(listContainer.querySelectorAll('.skill-item'));
     } else {
-        listContainer.innerHTML = titleHTML + targetHTML;
+        // Check if content actually changed to avoid flickering
+        const currentHTML = skillsGrid.innerHTML.trim();
+        // Simple heuristic check: compare name strings
+        if (currentHTML.length !== targetHTML.length || !currentHTML.includes(skillsData[0].name)) {
+            if (typeof gsap !== 'undefined') {
+                const oldItems = skillsGrid.querySelectorAll('.skill-item');
+                gsap.to(oldItems, {
+                    opacity: 0,
+                    y: 10,
+                    stagger: 0.02,
+                    duration: 0.3,
+                    onComplete: () => {
+                        skillsGrid.innerHTML = targetHTML;
+                        const newItems = skillsGrid.querySelectorAll('.skill-item');
+                        attachSkillListeners(newItems);
+                        gsap.fromTo(newItems, 
+                            { opacity: 0, y: 15, filter: 'blur(4px)' },
+                            { opacity: 1, y: 0, filter: 'blur(0px)', stagger: 0.04, duration: 0.6, ease: "power2.out" }
+                        );
+                    }
+                });
+            } else {
+                skillsGrid.innerHTML = targetHTML;
+                attachSkillListeners(skillsGrid.querySelectorAll('.skill-item'));
+            }
+        }
     }
+}
+
+/**
+ * Re-attaches mouse movement spotlight listeners to dynamic skill items
+ */
+function attachSkillListeners(items) {
+    items.forEach(item => {
+        item.addEventListener('mousemove', (e) => {
+            const rect = item.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            item.style.setProperty('--mouse-x', `${x}%`);
+            item.style.setProperty('--mouse-y', `${y}%`);
+        });
+    });
 }
 
 async function handleWatchingIntegration(query, section, content) {

@@ -80,4 +80,15 @@ export function initAboutReveal() {
             stagger: 0.02
         });
     });
+    // 4. Skill Items Mouse Tracker (Spotlight Effect)
+    const skillItems = document.querySelectorAll('.skill-item');
+    skillItems.forEach(item => {
+        item.addEventListener('mousemove', (e) => {
+            const rect = item.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            item.style.setProperty('--mouse-x', `${x}%`);
+            item.style.setProperty('--mouse-y', `${y}%`);
+        });
+    });
 }
