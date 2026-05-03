@@ -1614,8 +1614,16 @@ loadLastFM();
 
 async function loadTMDB(){
   try{
-    const listIds = ['8647764', '8647767', '8647783', '8647784'];
-    const lid = listIds[Math.floor(Math.random()*listIds.length)];
+    const listMap = {
+      '8647764': 'Fav Movie',
+      '8647767': 'Watchlist',
+      '8647783': 'Fav Series',
+      '8647784': 'Watchlist'
+    };
+    const ids = Object.keys(listMap);
+    const lid = ids[Math.floor(Math.random()*ids.length)];
+    const listName = listMap[lid];
+    
     const r=await fetch(`https://api.themoviedb.org/3/list/${lid}?api_key=${TMDB_KEY}&language=en-US`);
     const d=await r.json();
     const items=d.items||[];
@@ -1632,6 +1640,7 @@ async function loadTMDB(){
           <div>
             <div class="movie-title">${esc(title)}</div>
             <div class="movie-meta">
+              <span class="tag" style="background:var(--line2);color:var(--fg2)">${esc(listName)}</span> &nbsp;
               ${(m.release_date||m.first_air_date)?'<span>'+(m.release_date||m.first_air_date).slice(0,4)+'</span> &nbsp;':''}
               <span>★ ${m.vote_average?.toFixed(1)||'—'}</span>
             </div>
