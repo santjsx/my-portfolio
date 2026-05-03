@@ -36,7 +36,7 @@
   perspective: 500px;
   transform: translate3d(0, 0, 0.1px);
   position: relative;
-  touch-action: none;
+  touch-action: pan-y;
   width: 100%;
   height: 100%;
   display: flex;
@@ -72,6 +72,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: pan-y;
 }
 
 .pc-card {
@@ -90,6 +91,7 @@
   background: rgba(0, 0, 0, 0.9);
   backface-visibility: hidden;
   overflow: hidden;
+  touch-action: pan-y;
 }
 
 .pc-card:hover,
@@ -273,7 +275,7 @@
   backface-visibility: hidden;
   will-change: transform;
   transition: transform 120ms ease-out;
-  filter: grayscale(0.2) contrast(1.1) brightness(1) drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+  filter: grayscale(1) contrast(1.1) brightness(1) drop-shadow(0 10px 20px rgba(0,0,0,0.5));
 }
 
 .pc-avatar-content::before {
@@ -324,6 +326,7 @@
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
+  filter: grayscale(1);
 }
 
 .pc-user-text {

@@ -53,7 +53,7 @@
     flex-shrink: 0;
     border-radius: 30px; /* Match card radius */
     overflow: visible; /* Allow glow to bleed out */
-    /* box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5); */
+    touch-action: pan-y;
 }
 
 .photo-image-container {
