@@ -3,10 +3,10 @@
    ═══════════════════════════════════════════ */
 
 .lanyard-container {
-    position: fixed;
+    position: fixed !important;
     bottom: var(--space-8);
     right: var(--space-8);
-    z-index: 1000;
+    z-index: 10002; /* Significantly higher to stay above film grain and other overlays */
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -18,7 +18,7 @@
 }
 
 body.lanyard-active .lanyard-container {
-    z-index: 2000;
+    z-index: 10003;
 }
 
 /* ── The Island — Soft Glassmorphic Pill ── */

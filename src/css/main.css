@@ -52,8 +52,6 @@ body {
     /* GPU rendering hints */
     text-rendering: optimizeLegibility;
     -webkit-tap-highlight-color: transparent;
-    backface-visibility: hidden; /* Prevent flickering */
-    transform-style: preserve-3d;
 }
 
 /* ──────────────────────────────────────────────

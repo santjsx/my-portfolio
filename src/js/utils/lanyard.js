@@ -241,12 +241,14 @@ export function initLanyardWidget() {
         }
     });
 
-    // Close when scrolling
+    /* Removed auto-close on scroll to ensure it stays "sticky" as requested */
+    /* 
     window.addEventListener('scroll', () => {
         if (toggleBtn.classList.contains('active') && !isAnimating) {
             toggleBtn.click();
         }
     }, { passive: true });
+    */
 
     // Initial fetch to set color indicator on the floating button
     fetchLanyardData();

@@ -24,6 +24,117 @@
   </head>
   
   <body class="dark-container" style="padding: 0;">
+  
+  <!-- 8. Floating Lanyard Status Widget -->
+  <div id="lanyard-widget" class="lanyard-container">
+    <div class="lanyard-hint wobble-hint">
+      <div class="hint-icon-wrapper">
+        <svg class="hint-icon-svg" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span class="hint-badge">1</span>
+      </div>
+      <span class="hint-text">Santhosh sent you a message</span>
+    </div>
+    <div class="lanyard-island" id="lanyard-toggle">
+      <div class="island-avatar-wrapper">
+        <img src="images/santhoshh.webp" alt="Santhosh" class="lanyard-avatar" id="lanyard-avatar-img" loading="lazy" decoding="async">
+        <div class="lanyard-indicator" id="lanyard-indicator"></div>
+      </div>
+      <div class="phone-camera-module">
+        <div class="camera-lens"></div>
+        <div class="camera-sensor"></div>
+      </div>
+      <div class="phone-status-bar" id="phone-status-bar">
+        <div class="status-bar-left">
+          <span class="phone-time" id="phone-time">12:30</span>
+          <span class="phone-carrier">Airtel</span>
+        </div>
+        <div class="phone-status-icons">
+          <div class="signal-bars" id="phone-signal">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <svg class="wifi-icon" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4l2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+          <div class="battery-status" id="phone-battery">
+            <span class="battery-percent" id="battery-percent">85%</span>
+            <div class="battery-icon">
+              <div class="battery-level" id="battery-level" style="width: 85%;"></div>
+              <svg class="charging-icon" id="charging-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="island-content">
+        <div class="phone-screen-scroll">
+          <div class="lanyard-section mood-section">
+            <span class="lanyard-section-label">MOOD</span>
+            <div class="island-header">
+              <span class="island-status-dot" id="lanyard-status-dot"></span>
+              <span class="island-status-text" id="lanyard-status-text">Connecting...</span>
+            </div>
+          </div>
+          <div class="lanyard-section message-section">
+            <span class="lanyard-section-label">MESSAGE</span>
+            <div class="island-message-box imessage-style">
+              <div class="msg-bubble">
+                <p class="island-greeting" id="lanyard-greeting">Hey! Glad you're here.<br>Digging my style? Let's make something happen.</p>
+                <button class="msg-contact-btn" id="lanyard-reply-btn">Reply</button>
+              </div>
+            </div>
+          </div>
+          <div class="lanyard-section watching-section" id="lanyard-watching" style="display: none;">
+            <span class="lanyard-section-label">WATCHING</span>
+            <div id="watching-content"></div>
+          </div>
+          <div class="lanyard-section activity-section">
+            <span class="lanyard-section-label">ACTIVITIES</span>
+            <div class="island-activities" id="lanyard-activities">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Screen Overlay -->
+      <div class="chat-section" id="lanyard-chat-screen" style="display: none; opacity: 0; pointer-events: none;">
+        <div class="chat-header">
+          <button class="chat-back-btn" id="chat-back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            <span>Back</span>
+          </button>
+          <span class="chat-title">New Message</span>
+        </div>
+        <form action="https://api.web3forms.com/submit" method="POST" class="chat-composer" id="lanyard-chat-form" autocomplete="off">
+          <input type="hidden" name="access_key" value="94faa993-c934-4458-aaf6-5f43e843f547">
+          <div class="chat-input-group">
+            <input type="text" name="name" placeholder="Your Name" required class="chat-input" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="chat-input-group">
+            <input type="email" name="email" placeholder="Your Email" required class="chat-input" autocomplete="off" spellcheck="false" autocapitalize="none">
+          </div>
+          <div class="chat-message-area">
+            <textarea name="message" placeholder="Type a message..." required class="chat-textarea"></textarea>
+            <button type="submit" class="chat-send-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+          </div>
+        </form>
+        <div id="chat-success" style="display: none; opacity: 0;" class="chat-success-message">
+          <div class="success-icon">✓</div>
+          <div class="success-text-content">
+            <p class="success-title">Message Delivered</p>
+            <p class="success-subtitle">Thanks for reaching out! I'll get back to you shortly via the email you provided.</p>
+          </div>
+          <button class="chat-close-btn" id="chat-done">Return to Home</button>
+        </div>
+      </div>
+      <button class="lanyard-close-minimal" id="lanyard-close" aria-label="Close widget">
+        <span>CLOSE</span>
+      </button>
+    </div>
+  </div>
 
   <!-- Film Grain Overlay -->
   <div class="film-grain" aria-hidden="true"></div>
@@ -543,116 +654,6 @@
     </div>
   </aside>
 
-  <!-- 8. Floating Lanyard Status Widget -->
-  <div id="lanyard-widget" class="lanyard-container">
-    <div class="lanyard-hint wobble-hint">
-      <div class="hint-icon-wrapper">
-        <svg class="hint-icon-svg" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-        <span class="hint-badge">1</span>
-      </div>
-      <span class="hint-text">Santhosh sent you a message</span>
-    </div>
-    <div class="lanyard-island" id="lanyard-toggle">
-      <div class="island-avatar-wrapper">
-        <img src="images/santhoshh.webp" alt="Santhosh" class="lanyard-avatar" id="lanyard-avatar-img" loading="lazy" decoding="async">
-        <div class="lanyard-indicator" id="lanyard-indicator"></div>
-      </div>
-      <div class="phone-camera-module">
-        <div class="camera-lens"></div>
-        <div class="camera-sensor"></div>
-      </div>
-      <div class="phone-status-bar" id="phone-status-bar">
-        <div class="status-bar-left">
-          <span class="phone-time" id="phone-time">12:30</span>
-          <span class="phone-carrier">Airtel</span>
-        </div>
-        <div class="phone-status-icons">
-          <div class="signal-bars" id="phone-signal">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-          </div>
-          <svg class="wifi-icon" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4l2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
-          <div class="battery-status" id="phone-battery">
-            <span class="battery-percent" id="battery-percent">85%</span>
-            <div class="battery-icon">
-              <div class="battery-level" id="battery-level" style="width: 85%;"></div>
-              <svg class="charging-icon" id="charging-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="island-content">
-        <div class="phone-screen-scroll">
-          <div class="lanyard-section mood-section">
-            <span class="lanyard-section-label">MOOD</span>
-            <div class="island-header">
-              <span class="island-status-dot" id="lanyard-status-dot"></span>
-              <span class="island-status-text" id="lanyard-status-text">Connecting...</span>
-            </div>
-          </div>
-          <div class="lanyard-section message-section">
-            <span class="lanyard-section-label">MESSAGE</span>
-            <div class="island-message-box imessage-style">
-              <div class="msg-bubble">
-                <p class="island-greeting" id="lanyard-greeting">Hey! Glad you're here.<br>Digging my style? Let's make something happen.</p>
-                <button class="msg-contact-btn" id="lanyard-reply-btn">Reply</button>
-              </div>
-            </div>
-          </div>
-          <div class="lanyard-section watching-section" id="lanyard-watching" style="display: none;">
-            <span class="lanyard-section-label">WATCHING</span>
-            <div id="watching-content"></div>
-          </div>
-          <div class="lanyard-section activity-section">
-            <span class="lanyard-section-label">ACTIVITIES</span>
-            <div class="island-activities" id="lanyard-activities">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Chat Screen Overlay -->
-      <div class="chat-section" id="lanyard-chat-screen" style="display: none; opacity: 0; pointer-events: none;">
-        <div class="chat-header">
-          <button class="chat-back-btn" id="chat-back">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            <span>Back</span>
-          </button>
-          <span class="chat-title">New Message</span>
-        </div>
-        <form action="https://api.web3forms.com/submit" method="POST" class="chat-composer" id="lanyard-chat-form" autocomplete="off">
-          <input type="hidden" name="access_key" value="94faa993-c934-4458-aaf6-5f43e843f547">
-          <div class="chat-input-group">
-            <input type="text" name="name" placeholder="Your Name" required class="chat-input" autocomplete="off" spellcheck="false">
-          </div>
-          <div class="chat-input-group">
-            <input type="email" name="email" placeholder="Your Email" required class="chat-input" autocomplete="off" spellcheck="false" autocapitalize="none">
-          </div>
-          <div class="chat-message-area">
-            <textarea name="message" placeholder="Type a message..." required class="chat-textarea"></textarea>
-            <button type="submit" class="chat-send-btn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-            </button>
-          </div>
-        </form>
-        <div id="chat-success" style="display: none; opacity: 0;" class="chat-success-message">
-          <div class="success-icon">✓</div>
-          <div class="success-text-content">
-            <p class="success-title">Message Delivered</p>
-            <p class="success-subtitle">Thanks for reaching out! I'll get back to you shortly via the email you provided.</p>
-          </div>
-          <button class="chat-close-btn" id="chat-done">Return to Home</button>
-        </div>
-      </div>
-      <button class="lanyard-close-minimal" id="lanyard-close" aria-label="Close widget">
-        <span>CLOSE</span>
-      </button>
-    </div>
-  </div>
 
 </body>
 
