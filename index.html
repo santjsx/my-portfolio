@@ -535,19 +535,20 @@ nav{
 .widgets-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:1px;border:1px solid var(--line);border-radius:4px;overflow:hidden;
+  gap:1.5rem;
 }
-@media(max-width:900px){.widgets-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.widgets-grid{grid-template-columns:1fr}}
+@media(max-width:900px){.widgets-grid{grid-template-columns:repeat(2,1fr);gap:1rem}}
+@media(max-width:560px){.widgets-grid{grid-template-columns:1fr;gap:1rem}}
 
 .widget{
-  background:var(--bg);padding:clamp(1rem,2.5vw,1.5rem);
-  position:relative;transition:background .2s;
+  background:var(--bg2);padding:clamp(1rem,2.5vw,1.5rem);
+  border:1px solid var(--line);border-radius:6px;
+  position:relative;transition:all .3s ease;
   opacity:0;
   transform:scale(.85);
   transform-origin:center center;
 }
-.widget:hover{background:var(--bg2)}
+.widget:hover{background:var(--bg3);border-color:var(--line2);transform:translateY(-4px)}
 .widget-label{
   font-family:var(--mono);font-size:.52rem;letter-spacing:.2em;
   text-transform:uppercase;color:var(--fg3);margin-bottom:.9rem;
