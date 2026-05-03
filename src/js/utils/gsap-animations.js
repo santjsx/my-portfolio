@@ -96,19 +96,18 @@ export function initGSAPAnimations() {
     });
 
     // Magnetic Cursor interactions for specific buttons
-    const magneticItems = document.querySelectorAll('.t-btn, .hero-cta-link, .nav-item, .contact-card, .gallery-cta');
+    const magneticItems = document.querySelectorAll('.t-btn, .hero-cta-link, .nav-item, .contact-card, .gallery-cta, .pill-card');
     magneticItems.forEach(item => {
         item.addEventListener('mousemove', (e) => {
             const bound = item.getBoundingClientRect();
             const x = e.clientX - bound.left - bound.width / 2;
             const y = e.clientY - bound.top - bound.height / 2;
             
-            // Limit magnetism effect strength
             gsap.to(item, {
-                x: x * 0.15,
-                y: y * 0.15,
-                duration: 1,
-                ease: "power3.out"
+                x: x * 0.2,
+                y: y * 0.2,
+                duration: 0.8,
+                ease: "power2.out"
             });
         });
         
@@ -116,8 +115,8 @@ export function initGSAPAnimations() {
             gsap.to(item, {
                 x: 0,
                 y: 0,
-                duration: 1.5,
-                ease: "elastic.out(1, 0.4)" // Soft spring snapback
+                duration: 1.2,
+                ease: "elastic.out(1, 0.3)" 
             });
         });
     });
@@ -126,33 +125,52 @@ export function initGSAPAnimations() {
     const fadeUps = document.querySelectorAll('.fade-up');
     if (fadeUps.length > 0) {
         gsap.fromTo(fadeUps, 
-            { opacity: 0, y: 30 },
+            { opacity: 0, y: 40 },
             {
                 opacity: 1,
                 y: 0,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: "power3.out",
-                delay: 0.1,
+                duration: 1.2,
+                stagger: {
+                    amount: 0.5,
+                    ease: "power2.inOut"
+                },
+                ease: "expo.out",
+                delay: 0.2,
                 clearProps: "all"
             }
         );
     }
 
-    // ── SCROLL REVEAL (For deep-page elements like Footer) ──
+    // ── GLOBAL SECTION SMOOTHNESS ──
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        gsap.from(section, {
+            opacity: 0,
+            y: 20,
+            duration: 1.5,
+            ease: "expo.out",
+            scrollTrigger: {
+                trigger: section,
+                start: "top 90%",
+                toggleActions: "play none none none"
+            }
+        });
+    });
+
+    // ── SCROLL REVEAL (For specific elements) ──
     const scrollReveals = document.querySelectorAll('.scroll-reveal');
     scrollReveals.forEach(el => {
         gsap.fromTo(el,
-            { opacity: 0, y: 40 },
+            { opacity: 0, y: 50 },
             {
                 opacity: 1,
                 y: 0,
-                duration: 1,
-                ease: "power3.out",
+                duration: 1.5,
+                ease: "expo.out",
                 scrollTrigger: {
                     trigger: el,
-                    start: "top 95%", // Trigger early
-                    toggleActions: "play none none none" // Only play once
+                    start: "top 95%",
+                    toggleActions: "play none none none"
                 }
             }
         );

@@ -28,9 +28,9 @@ function initHeadlineReveal() {
         filter: 'blur(0px)', 
         y: 0, 
         scale: 1, 
-        duration: 0.8, 
-        stagger: 0.1, 
-        ease: "power3.out",
+        duration: 1.2, 
+        stagger: 0.15, 
+        ease: "expo.out",
         clearProps: "filter,transform,transition" 
     });
 }

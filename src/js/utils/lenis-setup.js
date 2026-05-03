@@ -12,15 +12,14 @@ export function setupLenis() {
     }
 
     const lenis = new Lenis({
-        lerp: 0.1,               /* Silky smooth */
-        wheelMultiplier: 1.0,     /* Standard wheel multiplier */
-        smoothWheel: true,
-        smoothTouch: false,       /* Disable smooth touch for native feel */
-        touchMultiplier: 1.5,
+        duration: 1.2,           /* Smooth duration */
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), /* Premium easing */
+        orientation: 'vertical',
         gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1.1,     /* Slightly increased for responsiveness with smoothness */
+        touchMultiplier: 2,
         infinite: false,
-        autoResize: true,
-        syncTouch: false,         /* Don't sync touch on mobile/desktop */
     });
 
     // Synchronize Lenis with ScrollTrigger
