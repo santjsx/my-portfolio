@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { fn: initAstrosWidget, delay: 1400 },
             { fn: initFooterMarquee, delay: 1500 },
             { fn: initThemeEditor, delay: 1550 },
-            { fn: initArchiveEngine, delay: 1580 },
+            { fn: initArchiveEngine, delay: 0 },
             { fn: initProfileCard, delay: 1600 }
         ];
 

@@ -40,7 +40,11 @@ export function initArchiveEngine() {
 
     // Shortcut: Ctrl + Alt + E to open Engine
     window.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.altKey && e.key === 'e') {
+        // Use e.code for more reliable shortcut detection across layouts
+        if (e.ctrlKey && e.altKey && e.code === 'KeyE') {
+            e.preventDefault(); // Prevent browser default actions
+            console.log('🛡️ ARCHIVE ENGINE: COMMAND RECEIVED');
+            
             if (localStorage.getItem('sm-engine-auth') === 'true') {
                 toggleEngine();
             } else {
