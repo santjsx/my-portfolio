@@ -545,7 +545,7 @@
         width: 100%;
         height: auto;
         aspect-ratio: 3/4;
-        max-width: 320px;
+        max-width: 200px;
     }
 
     .intel-briefing {
