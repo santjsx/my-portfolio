@@ -1457,7 +1457,7 @@ function esc(s){const d=document.createElement('div');d.textContent=s;return d.i
 
 async function loadISS(){
   try{
-    const r=await fetch('https://corsproxy.io/?http%3A%2F%2Fapi.open-notify.org%2Fastros.json');
+    const r=await fetch('https://api.allorigins.win/raw?url=http%3A%2F%2Fapi.open-notify.org%2Fastros.json');
     const d=await r.json();
     const n=d.number||0;
     setText('iss-count',n);setText('stat-iss',n);
