@@ -1614,11 +1614,13 @@ loadLastFM();
 
 async function loadTMDB(){
   try{
-    // Fetch trending movies/series to get a "Cinematic Pick"
-    const r=await fetch(`https://api.themoviedb.org/3/trending/all/week?api_key=${TMDB_KEY}`);
+    const listIds = ['8647764', '8647767', '8647783', '8647784'];
+    const lid = listIds[Math.floor(Math.random()*listIds.length)];
+    const r=await fetch(`https://api.themoviedb.org/3/list/${lid}?api_key=${TMDB_KEY}&language=en-US`);
     const d=await r.json();
-    const items=d.results||[];
-    const m=items[Math.floor(Math.random()*Math.min(10,items.length))];
+    const items=d.items||[];
+    if(!items.length)return;
+    const m=items[Math.floor(Math.random()*items.length)];
     if(!m)return;
     const title=m.title||m.name||'—';
     const posterUrl=m.poster_path?`https://image.tmdb.org/t/p/w200${m.poster_path}`:'';
