@@ -22,6 +22,18 @@
 .archive-engine.active {
     transform: translateX(0);
     pointer-events: auto;
+    overscroll-behavior: contain;
+}
+
+.engine-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    -webkit-overflow-scrolling: touch; /* Smooth scroll for iOS */
 }
 
 /* Custom Scrollbar for the Engine */
@@ -66,15 +78,6 @@
 }
 
 .engine-close:hover { color: #fff; }
-
-.engine-scroll {
-    flex: 1;
-    overflow-y: auto;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-}
 
 /* Section Styling */
 .engine-section-title {
