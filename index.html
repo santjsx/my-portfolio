@@ -702,25 +702,8 @@ footer{
 <!-- ═══ NAV ════════════════════════════════════════════════ -->
 <nav>
   <div class="nav-inner">
-    <a class="nav-logo" href="#hero" aria-label="Santhosh Reddy — home">
-      <!-- Geometric monogram: square frame + S letterform + accent dot -->
-      <div class="nav-logo-mark">
-        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- outer square frame, partially open top-right -->
-          <path class="ring" d="M22 4 L24 4 L24 24 L4 24 L4 4 L16 4" stroke="rgba(126,255,160,0.35)" stroke-width="1" fill="none" stroke-linecap="round"/>
-          <!-- inner diagonal accent line -->
-          <line x1="8" y1="20" x2="20" y2="8" stroke="var(--line2)" stroke-width="1" stroke-linecap="round"/>
-          <!-- S letterform — two arcs -->
-          <path d="M17 10.5 C17 9 15.5 8 14 8 C12.2 8 11 9.1 11 10.5 C11 12 12.2 12.8 14 13.5 C15.8 14.2 17 15.1 17 16.5 C17 18 15.8 19.2 14 19.2 C12.2 19.2 11 18.2 11 16.8"
-            stroke="var(--fg2)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-          <!-- accent dot — top right corner -->
-          <circle class="dot" cx="23" cy="5" r="2.2" fill="var(--accent2)"/>
-        </svg>
-      </div>
-      <div class="nav-logo-text">
-        <span class="nav-logo-first">Santhosh</span>
-        <span class="nav-logo-last">Reddy&nbsp;/&nbsp;Dev</span>
-      </div>
+    <a class="nav-logo" href="#hero" aria-label="Santhosh — home">
+      <span class="nav-logo-first">Santhoshhh</span>
     </a>
     <div class="nav-links">
       <a href="#about">About</a>
@@ -1244,18 +1227,9 @@ scrollBtn.addEventListener('click', () => lenis.scrollTo(0, { duration: 1.6 }));
     }
   });
 
-  // Logo entrance — draws in from left before hero
-  gsap.fromTo('.nav-logo-mark svg', 
-    { opacity: 0, scale: .6, rotate: -45 },
-    { opacity: 1, scale: 1, rotate: 0, duration: .8, ease: 'back.out(1.6)', delay: .1 }
-  );
   gsap.fromTo('.nav-logo-first',
     { opacity: 0, x: -12 },
     { opacity: 1, x: 0, duration: .6, ease: 'expo.out', delay: .25 }
-  );
-  gsap.fromTo('.nav-logo-last',
-    { opacity: 0, x: -8 },
-    { opacity: 1, x: 0, duration: .6, ease: 'expo.out', delay: .35 }
   );
 
   const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
