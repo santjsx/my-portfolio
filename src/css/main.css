@@ -264,3 +264,13 @@ img {
 .mt-4 { margin-top: var(--space-4); }
 .mt-6 { margin-top: var(--space-6); }
 .mt-8 { margin-top: var(--space-8); }
+
+/* India Flag Text Effect */
+.india-flag-text {
+    background: linear-gradient(to right, #FF9933 30%, #FFFFFF 30%, #FFFFFF 70%, #138808 70%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    display: inline-block;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.1));
+}
