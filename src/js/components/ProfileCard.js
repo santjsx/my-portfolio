@@ -53,6 +53,7 @@ export class ProfileCard {
         this.tiltEngine = null;
         this.enterTimer = null;
         this.leaveRaf = null;
+        this.isMobile = window.innerWidth <= ANIMATION_CONFIG.MOBILE_THRESHOLD;
 
         this.render();
         this.initTiltEngine();
@@ -146,8 +147,7 @@ export class ProfileCard {
         let targetX = 0;
         let targetY = 0;
 
-        const isMobile = window.innerWidth <= ANIMATION_CONFIG.MOBILE_THRESHOLD;
-        const DEFAULT_TAU = isMobile ? 0.25 : 0.14; // Smoother on mobile
+        const DEFAULT_TAU = this.isMobile ? 0.25 : 0.14; // Smoother on mobile
         const INITIAL_TAU = 0.6;
         let initialUntil = 0;
 
@@ -299,7 +299,7 @@ export class ProfileCard {
         }
 
         // Mobile orientation handling
-        if (this.props.enableMobileTilt || isMobile) {
+        if (this.props.enableMobileTilt || this.isMobile) {
             const handleOrientation = (event) => {
                 const { beta, gamma } = event;
                 if (beta == null || gamma == null) return;
@@ -308,7 +308,7 @@ export class ProfileCard {
                 const centerY = shell.clientHeight / 2;
                 
                 // Reduce sensitivity on mobile for stability
-                const sensitivity = isMobile ? this.props.mobileTiltSensitivity * 0.6 : this.props.mobileTiltSensitivity;
+                const sensitivity = this.isMobile ? this.props.mobileTiltSensitivity * 0.6 : this.props.mobileTiltSensitivity;
                 
                 const x = clamp(centerX + gamma * sensitivity, 0, shell.clientWidth);
                 const y = clamp(
@@ -321,7 +321,7 @@ export class ProfileCard {
             };
 
             // On mobile, we might want to start orientation automatically or on first touch
-            if (isMobile) {
+            if (this.isMobile) {
                 window.addEventListener('deviceorientation', handleOrientation);
                 
                 // Pause tilt on scroll to save battery and improve FPS
