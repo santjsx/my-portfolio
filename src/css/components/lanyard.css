@@ -1063,8 +1063,13 @@ body.lanyard-active .lanyard-container {
 
     .lanyard-hint {
         display: flex;
-        transform: scale(0.85);
-        bottom: calc(100% + 8px);
+        transform: scale(0.7); /* Smaller scale */
+        bottom: calc(100% + 4px);
+        transform-origin: right bottom;
+    }
+
+    .hint-text {
+        font-size: 10px; /* Smaller text */
     }
 
     /* Hide side buttons on mobile */

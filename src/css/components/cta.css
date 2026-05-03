@@ -178,40 +178,64 @@
 /* ── Responsiveness ── */
 @media (max-width: 1024px) {
     .contact-section {
-        padding: 4rem 0;
+        padding: 6rem 0;
+        min-height: auto;
     }
 
     .contact-grid {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: var(--space-12);
+        gap: 3rem;
     }
 
-    .status-badge, .contact-intro, .contact-bottom-row {
+    .status-badge, .contact-intro {
         align-items: center;
         margin: 0 auto;
     }
 
     .contact-headline-serif {
         max-width: 100%;
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+    }
+
+    .contact-col-header {
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .social-pill-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     .pill-card {
         justify-content: center;
+        margin-bottom: 0;
+        padding: 10px;
+        font-size: 11px;
     }
 
     .footer-big-name {
-        font-size: clamp(2rem, 10vw, 5rem); /* Smaller on mobile to keep it on one line */
-        letter-spacing: -0.02em;
+        font-size: clamp(2rem, 18vw, 6rem);
+        letter-spacing: -0.04em;
+        margin-bottom: 100px; /* Space for lanyard widget */
+        margin-top: 2rem;
     }
 }
 
 @media (max-width: 480px) {
     .social-pill-grid {
-        grid-template-columns: 1fr; /* Single column for very small screens */
+        grid-template-columns: repeat(2, 1fr); /* Keep 2 columns even on small screens */
+    }
+
+    .contact-methods .pill-card {
+        width: 100%;
     }
 
     .footer-big-name {
-        font-size: clamp(1.5rem, 9vw, 3rem);
+        font-size: 14vw;
+        margin-bottom: 100px;
     }
 }
