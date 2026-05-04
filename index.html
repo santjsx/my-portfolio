@@ -618,10 +618,33 @@ nav{
     height: 60vh;
     position: relative;
   }
-  .project-image-card {
-    width: 85vw;
-    height: 45vh;
-  }
+}
+.project-subtitle {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--fg3);
+}
+.subtitle-accent {
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(126, 255, 160, 0.4);
+}
+.subtitle-text {
+  position: relative;
+}
+.subtitle-text::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 20px;
+  height: 1px;
+  background: var(--line);
 }
 .projects-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem)}
 .projects-list{
@@ -684,10 +707,12 @@ nav{
 .widgets{border-bottom:1px solid var(--line);padding:clamp(3rem,8vh,6rem) 0;position:relative;overflow:hidden}
 .widgets-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem)}
 .widgets-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:1px;border:1px solid var(--line);border-radius:4px;overflow:hidden;
-  background:rgba(126,255,160,.15); /* Accent lines via gap */
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--line); /* Thin dividers */
+  border: 1px solid rgba(126, 255, 160, 0.3); /* Thin green border for the whole block */
+  border-radius: 4px;
+  overflow: hidden;
 }
 @media(max-width:900px){.widgets-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.widgets-grid{grid-template-columns:1fr}}
@@ -1042,7 +1067,10 @@ footer{
           </div>
         </div>
       </div>
-      <div class="mt-4 font-mono text-[10px] tracking-[0.4em] uppercase text-zinc-500">// Selected Work</div>
+      <div class="project-subtitle">
+        <span class="subtitle-accent">//</span>
+        <span class="subtitle-text">Selected Work</span>
+      </div>
     </div>
 
     <!-- Right Side: Horizontal Strip -->
