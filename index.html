@@ -470,34 +470,48 @@ nav{
 }
 .section-title .title-inner{display:block;transform:translateY(100%);opacity:0}
 
-.skills-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(clamp(140px,18vw,200px),1fr));
-  gap:1px;border:1px solid var(--line);overflow:hidden;border-radius:4px;
+/* ─── SKILLS MARQUEE ─────────────────────────────────────── */
+.skills-marquee {
+  width: 100%;
+  overflow: hidden;
+  padding: 2rem 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+  white-space: nowrap;
+  position: relative;
 }
-.skill-cat{
-  padding:clamp(1rem,2.5vw,1.5rem);background:var(--bg);
-  transition:background .2s;
-  opacity:0;
-  transform:scale(.92) translateY(20px);
+.skills-marquee-track {
+  display: inline-flex;
+  gap: 4rem;
+  animation: marquee-scroll 40s linear infinite;
 }
-.skill-cat:hover{background:var(--bg2)}
-.skill-cat-name{
-  font-family:var(--mono);font-size:.56rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--fg3);margin-bottom:.9rem;
+.skill-marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--fg2);
+  filter: grayscale(1) brightness(0.8);
+  opacity: 0.6;
+  transition: all 0.3s ease;
 }
-.skill-list{display:flex;flex-direction:column;gap:.4rem}
-.skill-item{
-  font-family:var(--display);font-size:.88rem;font-weight:500;
-  color:var(--fg2);display:flex;align-items:center;gap:.5rem;
-  transition:color .2s;
+.skill-marquee-item:hover {
+  filter: grayscale(0) brightness(1.1);
+  opacity: 1;
+  color: var(--accent);
 }
-.skill-item:hover{color:var(--fg)}
-.skill-item::before{
-  content:'';width:4px;height:4px;border-radius:50%;
-  background:var(--line2);flex-shrink:0;transition:background .2s;
+.skill-marquee-item img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
-.skill-item:hover::before{background:var(--accent)}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
 
 /* Skill Pills */
 .skill-item{
@@ -526,13 +540,14 @@ nav{
   position: relative;
   width: 100%;
   border-bottom: 1px solid var(--line);
-  padding: clamp(1.5rem, 4vh, 3rem) 0;
+  padding: clamp(3rem, 6vh, 5rem) 0;
   cursor: pointer;
   overflow: hidden;
   transition: background 0.3s ease;
 }
 .distorted-project:hover {
   background: rgba(126,255,160,0.02);
+  z-index: 10;
 }
 .distorted-title-wrap {
   display: flex;
@@ -551,27 +566,62 @@ nav{
 }
 @media(max-width: 768px) {
   .distorted-title-wrap {
-    font-size: clamp(0.9rem, 6vw, 1.4rem);
-    letter-spacing: 0.02em;
+    flex-direction: column;
+    height: auto;
+    gap: 1rem !important;
+    white-space: normal;
+    text-align: center;
+    font-size: clamp(1.2rem, 8vw, 1.8rem);
   }
 }
 .title-side {
   display: inline-block;
   will-change: transform;
 }
-.title-media-container {
+.distorted-center-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 0;
-  height: clamp(40px, 7vw, 75px);
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.8);
+  will-change: width, opacity, transform;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+@media(max-width: 768px) {
+  .distorted-center-stage {
+    width: 100% !important;
+    opacity: 1 !important;
+    transform: scale(1) !important;
+    overflow: visible;
+  }
+}
+.distorted-meta-top {
+  font-family: var(--mono);
+  font-size: 0.45rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+}
+.title-media-container {
+  width: 240px;
+  height: 135px;
   overflow: hidden;
   position: relative;
   background: var(--bg3);
   border-radius: 4px;
-  transform: scale(0.8);
-  opacity: 0;
-  margin: 0;
-  will-change: width, transform, opacity;
   box-shadow: 0 0 20px rgba(126, 255, 160, 0);
   transition: box-shadow 0.6s ease;
+}
+@media(max-width: 768px) {
+  .title-media-container {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+  }
 }
 .distorted-project:hover .title-media-container {
   box-shadow: 0 0 30px rgba(126, 255, 160, 0.15);
@@ -584,93 +634,52 @@ nav{
   filter: saturate(1.2) contrast(1.1);
 }
 .distorted-tags {
-  position: absolute;
-  top: calc(50% + 2rem);
-  left: 50%;
-  transform: translateX(-50%) translateY(5px);
   display: flex;
-  gap: 0.5rem;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-}
-.distorted-project:hover .distorted-tags {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  gap: 0.4rem;
+  margin-top: 0.75rem;
 }
 .distorted-tag {
   font-family: var(--mono);
-  font-size: 0.48rem;
+  font-size: 0.4rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--accent);
-  padding: 0.2rem 0.5rem;
-  border: 1px solid rgba(126, 255, 160, 0.2);
-  border-radius: 2px;
-  background: rgba(126, 255, 160, 0.02);
-}
-@media(max-width: 480px) {
-  .distorted-tags { display: none; }
-}
-.distorted-meta {
-  position: absolute;
-  bottom: 1rem;
-  left: clamp(1.25rem, 5vw, 4rem);
-  font-family: var(--mono);
-  font-size: 0.55rem;
-  letter-spacing: 0.2em;
   color: var(--fg3);
-  text-transform: uppercase;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.4s ease;
+  padding: 0.15rem 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
 }
-.distorted-project:hover .distorted-meta {
-  opacity: 1;
-  transform: translateY(0);
-}
-.distorted-num {
-  position: absolute;
-  top: 1rem;
-  right: clamp(1.25rem, 5vw, 4rem);
-  font-family: var(--mono);
-  font-size: 0.6rem;
-  color: var(--line2);
-}
-
-/* Distorted Hover Links */
-.distorted-links {
-  position: absolute;
-  bottom: 1rem;
-  right: clamp(1.25rem, 5vw, 4rem);
+.distorted-links-bottom {
   display: flex;
-  gap: 1rem;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  pointer-events: none;
-}
-.distorted-project:hover .distorted-links {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
 }
 .distorted-link {
   font-family: var(--mono);
-  font-size: 0.52rem;
+  font-size: 0.45rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--fg);
   border: 1px solid var(--line2);
-  padding: 0.4rem 0.8rem;
+  padding: 0.3rem 0.6rem;
   border-radius: 2px;
   transition: all 0.25s ease;
-  background: var(--bg);
+  pointer-events: auto;
 }
 .distorted-link:hover {
   border-color: var(--accent);
   color: var(--accent);
   background: rgba(126, 255, 160, 0.05);
+}
+.distorted-num {
+  position: absolute;
+  top: 1.5rem;
+  right: clamp(1.25rem, 5vw, 4rem);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--line2);
+}
+@media(max-width: 768px) {
+  .distorted-num { display: none; }
 }
 .projects-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem)}
 .projects-list{
@@ -1025,37 +1034,36 @@ footer{
       <h2 class="section-title"><span class="title-inner" id="skills-title">Technical Arsenal</span></h2>
       <span class="tag" id="skills-tag">// stack</span>
     </div>
-    <div class="skills-grid" id="skills-grid">
-      <!-- Logic: Mapping each skill from public/images/skills_logos/ -->
-      <div class="skill-cat">
-        <div class="skill-list">
-          <div class="skill-item"><img src="public/images/skills_logos/HTML5.svg" width="14" alt=""/> HTML5</div>
-          <div class="skill-item"><img src="public/images/skills_logos/CSS3.svg" width="14" alt=""/> CSS3</div>
-          <div class="skill-item"><img src="public/images/skills_logos/JavaScript.svg" width="14" alt=""/> JavaScript</div>
-          <div class="skill-item"><img src="public/images/skills_logos/React.svg" width="14" alt=""/> React</div>
-        </div>
-      </div>
-      <div class="skill-cat">
-        <div class="skill-list">
-          <div class="skill-item"><img src="public/images/skills_logos/Next.js.svg" width="14" alt=""/> Next.js</div>
-          <div class="skill-item"><img src="public/images/skills_logos/Node.js.svg" width="14" alt=""/> Node.js</div>
-          <div class="skill-item"><img src="public/images/skills_logos/Vite.js.svg" width="14" alt=""/> Vite.js</div>
-          <div class="skill-item"><img src="public/images/skills_logos/Firebase.svg" width="14" alt=""/> Firebase</div>
-        </div>
-      </div>
-      <div class="skill-cat">
-        <div class="skill-list">
-          <div class="skill-item"><img src="public/images/skills_logos/MongoDB.svg" width="14" alt=""/> MongoDB</div>
-          <div class="skill-item"><img src="public/images/skills_logos/Git.svg" width="14" alt=""/> Git</div>
-          <div class="skill-item"><img src="public/images/skills_logos/GitHub.svg" width="14" alt=""/> GitHub</div>
-          <div class="skill-item"><img src="public/images/skills_logos/Linux.svg" width="14" alt=""/> Linux</div>
-        </div>
-      </div>
-      <div class="skill-cat">
-        <div class="skill-list">
-          <div class="skill-item"><img src="public/images/skills_logos/NPM.svg" width="14" alt=""/> NPM</div>
-          <div class="skill-item"><img src="public/images/skills_logos/Visual Studio Code (VS Code).svg" width="14" alt=""/> VS Code</div>
-        </div>
+    <div class="skills-marquee">
+      <div class="skills-marquee-track">
+        <!-- Set 1 -->
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/HTML5.svg" alt=""/> HTML5</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/CSS3.svg" alt=""/> CSS3</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/JavaScript.svg" alt=""/> JavaScript</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/React.svg" alt=""/> React</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/Next.js.svg" alt=""/> Next.js</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/Node.js.svg" alt=""/> Node.js</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/Vite.js.svg" alt=""/> Vite.js</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/Firebase.svg" alt=""/> Firebase</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/MongoDB.svg" alt=""/> MongoDB</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/Git.svg" alt=""/> Git</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/GitHub.svg" alt=""/> GitHub</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/Linux.svg" alt=""/> Linux</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/NPM.svg" alt=""/> NPM</div>
+        <!-- Set 2 (Duplicate for seamless loop) -->
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/HTML5.svg" alt=""/> HTML5</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/CSS3.svg" alt=""/> CSS3</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/JavaScript.svg" alt=""/> JavaScript</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/React.svg" alt=""/> React</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/Next.js.svg" alt=""/> Next.js</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/Node.js.svg" alt=""/> Node.js</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/Vite.js.svg" alt=""/> Vite.js</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/Firebase.svg" alt=""/> Firebase</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/MongoDB.svg" alt=""/> MongoDB</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/Git.svg" alt=""/> Git</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/GitHub.svg" alt=""/> GitHub</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/Linux.svg" alt=""/> Linux</div>
+        <div class="skill-marquee-item"><img src="public/images/skills_logos/NPM.svg" alt=""/> NPM</div>
       </div>
     </div>
   </div>
@@ -1304,45 +1312,45 @@ function initDistortedProjects() {
     const mediaUrl = item.getAttribute('data-media');
     const liveUrl = item.getAttribute('data-live');
     const codeUrl = item.getAttribute('data-code');
-
-    const wrap = document.createElement('div');
-    wrap.className = 'distorted-title-wrap';
-    wrap.innerHTML = `
-      <span class="title-side left">${leftText}</span>
-      <div class="title-media-container">
-        <img src="${mediaUrl}" alt=""/>
-      </div>
-      <span class="title-side right">${rightText}</span>
-    `;
-    item.appendChild(wrap);
-
+    const meta = item.querySelector('.distorted-meta').textContent;
     const tagStr = item.getAttribute('data-tags') || '';
-    if (tagStr) {
-      const tags = document.createElement('div');
-      tags.className = 'distorted-tags';
-      tags.innerHTML = tagStr.split(',').map(t => `<span class="distorted-tag">${t.trim()}</span>`).join('');
-      item.appendChild(tags);
-    }
 
-    const links = document.createElement('div');
-    links.className = 'distorted-links';
-    links.innerHTML = `
-      <a href="${liveUrl}" target="_blank" class="distorted-link">Live Link</a>
-      <a href="${codeUrl}" target="_blank" class="distorted-link">Code Link</a>
+    item.innerHTML = `
+      <div class="distorted-num">${item.querySelector('.distorted-num').textContent}</div>
+      <div class="distorted-title-wrap">
+        <span class="title-side left">${leftText}</span>
+        <div class="distorted-center-stage">
+          <div class="distorted-meta-top">${meta}</div>
+          <div class="title-media-container">
+            <img src="${mediaUrl}" alt=""/>
+          </div>
+          <div class="distorted-tags">
+            ${tagStr.split(',').map(t => `<span class="distorted-tag">${t.trim()}</span>`).join('')}
+          </div>
+          <div class="distorted-links-bottom">
+            <a href="${liveUrl}" target="_blank" class="distorted-link">Live Link</a>
+            <a href="${codeUrl}" target="_blank" class="distorted-link">Code Link</a>
+          </div>
+        </div>
+        <span class="title-side right">${rightText}</span>
+      </div>
     `;
-    item.appendChild(links);
 
-    const media = wrap.querySelector('.title-media-container');
-    const left = wrap.querySelector('.left');
-    const right = wrap.querySelector('.right');
+    const stage = item.querySelector('.distorted-center-stage');
+    const left = item.querySelector('.left');
+    const right = item.querySelector('.right');
 
     const tl = gsap.timeline({ paused: true, defaults: { duration: 0.6, ease: "expo.out" } });
-    tl.to(media, { width: 240, opacity: 1, scale: 1, margin: "0 1.5rem" })
-      .to(left, { x: -10 }, 0)
-      .to(right, { x: 10 }, 0);
+    
+    // Only animate split if not on mobile
+    if (!window.matchMedia('(max-width: 768px)').matches) {
+      tl.to(stage, { width: 280, opacity: 1, scale: 1, margin: "0 2rem" })
+        .to(left, { x: -10 }, 0)
+        .to(right, { x: 10 }, 0);
 
-    item.addEventListener('mouseenter', () => tl.play());
-    item.addEventListener('mouseleave', () => tl.reverse());
+      item.addEventListener('mouseenter', () => tl.play());
+      item.addEventListener('mouseleave', () => tl.reverse());
+    }
   });
 }
 
