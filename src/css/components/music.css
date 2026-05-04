@@ -63,6 +63,7 @@
     font-weight: 500;
     background: linear-gradient(135deg, var(--accent-primary) 0%, #fff 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     max-width: 600px;
     opacity: 0.9;
