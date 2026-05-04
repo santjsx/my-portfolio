@@ -470,61 +470,34 @@ nav{
 }
 .section-title .title-inner{display:block;transform:translateY(100%);opacity:0}
 
-/* ─── SKILLS MARQUEE ─────────────────────────────────────── */
-.skills-marquee {
-  width: 100%;
-  overflow: hidden;
-  padding: 2rem 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  background: var(--bg);
-  white-space: nowrap;
-  position: relative;
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(clamp(140px,18vw,200px),1fr));
+  gap:1px;border:1px solid var(--line);overflow:hidden;border-radius:4px;
 }
-.skills-marquee-track {
-  display: inline-flex;
-  gap: 4rem;
-  animation: marquee-scroll 40s linear infinite;
+.skill-cat{
+  padding:clamp(1rem,2.5vw,1.5rem);background:var(--bg);
+  transition:background .2s;
+  opacity:0;
+  transform:scale(.92) translateY(20px);
 }
-.skill-marquee-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: var(--display);
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--fg2);
-  filter: grayscale(1) brightness(0.8);
-  opacity: 0.6;
-  transition: all 0.3s ease;
+.skill-cat:hover{background:var(--bg2)}
+.skill-cat-name{
+  font-family:var(--mono);font-size:.56rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--fg3);margin-bottom:.9rem;
 }
-.skill-marquee-item:hover {
-  filter: grayscale(0) brightness(1.1);
-  opacity: 1;
-  color: var(--accent);
-}
-.skill-marquee-item img {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-}
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-/* Skill Pills */
+.skill-list{display:flex;flex-direction:row;flex-wrap:wrap;gap:.5rem}
 .skill-item{
+  font-family:var(--display);font-size:.72rem;font-weight:500;
+  color:var(--fg2);display:flex;align-items:center;gap:.5rem;
   background:var(--bg3);padding:.4rem .8rem;border-radius:100px;
-  border:1px solid var(--line);font-size:.72rem;
+  border:1px solid var(--line);
   transition:all .3s cubic-bezier(.23,1,.32,1);
 }
 .skill-item:hover{
   background:var(--accent);color:var(--bg);border-color:var(--accent);
   transform:translateY(-2px);
 }
-.skill-item::before{display:none}
-.skill-list{flex-direction:row;flex-wrap:wrap;gap:.5rem}
 .skill-cat{border-bottom:1px solid var(--line)}
 .skill-cat:last-child{border-bottom:none}
 
@@ -1034,36 +1007,37 @@ footer{
       <h2 class="section-title"><span class="title-inner" id="skills-title">Technical Arsenal</span></h2>
       <span class="tag" id="skills-tag">// stack</span>
     </div>
-    <div class="skills-marquee">
-      <div class="skills-marquee-track">
-        <!-- Set 1 -->
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/HTML5.svg" alt=""/> HTML5</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/CSS3.svg" alt=""/> CSS3</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/JavaScript.svg" alt=""/> JavaScript</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/React.svg" alt=""/> React</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/Next.js.svg" alt=""/> Next.js</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/Node.js.svg" alt=""/> Node.js</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/Vite.js.svg" alt=""/> Vite.js</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/Firebase.svg" alt=""/> Firebase</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/MongoDB.svg" alt=""/> MongoDB</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/Git.svg" alt=""/> Git</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/GitHub.svg" alt=""/> GitHub</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/Linux.svg" alt=""/> Linux</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/NPM.svg" alt=""/> NPM</div>
-        <!-- Set 2 (Duplicate for seamless loop) -->
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/HTML5.svg" alt=""/> HTML5</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/CSS3.svg" alt=""/> CSS3</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/JavaScript.svg" alt=""/> JavaScript</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/React.svg" alt=""/> React</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/Next.js.svg" alt=""/> Next.js</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/Node.js.svg" alt=""/> Node.js</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/Vite.js.svg" alt=""/> Vite.js</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/Firebase.svg" alt=""/> Firebase</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/MongoDB.svg" alt=""/> MongoDB</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/Git.svg" alt=""/> Git</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/GitHub.svg" alt=""/> GitHub</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/Linux.svg" alt=""/> Linux</div>
-        <div class="skill-marquee-item"><img src="public/images/skills_logos/NPM.svg" alt=""/> NPM</div>
+    <div class="skills-grid" id="skills-grid">
+      <!-- Logic: Mapping each skill from public/images/skills_logos/ -->
+      <div class="skill-cat">
+        <div class="skill-list">
+          <div class="skill-item"><img src="public/images/skills_logos/HTML5.svg" width="14" alt=""/> HTML5</div>
+          <div class="skill-item"><img src="public/images/skills_logos/CSS3.svg" width="14" alt=""/> CSS3</div>
+          <div class="skill-item"><img src="public/images/skills_logos/JavaScript.svg" width="14" alt=""/> JavaScript</div>
+          <div class="skill-item"><img src="public/images/skills_logos/React.svg" width="14" alt=""/> React</div>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-list">
+          <div class="skill-item"><img src="public/images/skills_logos/Next.js.svg" width="14" alt=""/> Next.js</div>
+          <div class="skill-item"><img src="public/images/skills_logos/Node.js.svg" width="14" alt=""/> Node.js</div>
+          <div class="skill-item"><img src="public/images/skills_logos/Vite.js.svg" width="14" alt=""/> Vite.js</div>
+          <div class="skill-item"><img src="public/images/skills_logos/Firebase.svg" width="14" alt=""/> Firebase</div>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-list">
+          <div class="skill-item"><img src="public/images/skills_logos/MongoDB.svg" width="14" alt=""/> MongoDB</div>
+          <div class="skill-item"><img src="public/images/skills_logos/Git.svg" width="14" alt=""/> Git</div>
+          <div class="skill-item"><img src="public/images/skills_logos/GitHub.svg" width="14" alt=""/> GitHub</div>
+          <div class="skill-item"><img src="public/images/skills_logos/Linux.svg" width="14" alt=""/> Linux</div>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-list">
+          <div class="skill-item"><img src="public/images/skills_logos/NPM.svg" width="14" alt=""/> NPM</div>
+          <div class="skill-item"><img src="public/images/skills_logos/Visual Studio Code (VS Code).svg" width="14" alt=""/> VS Code</div>
+        </div>
       </div>
     </div>
   </div>
