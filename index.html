@@ -541,12 +541,19 @@ nav{
   gap: 0;
   font-family: var(--display);
   font-weight: 800;
-  font-size: clamp(1.2rem, 4.5vw, 3.2rem);
+  font-size: clamp(1rem, 4.2vw, 2.8rem);
   text-transform: uppercase;
   white-space: nowrap;
   pointer-events: none;
   color: var(--fg);
   letter-spacing: -0.01em;
+  transition: gap 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+@media(max-width: 768px) {
+  .distorted-title-wrap {
+    font-size: clamp(0.9rem, 6vw, 1.4rem);
+    letter-spacing: 0.02em;
+  }
 }
 .title-side {
   display: inline-block;
@@ -554,7 +561,7 @@ nav{
 }
 .title-media-container {
   width: 0;
-  height: clamp(45px, 8vw, 85px);
+  height: clamp(40px, 7vw, 75px);
   overflow: hidden;
   position: relative;
   background: var(--bg3);
@@ -563,6 +570,11 @@ nav{
   opacity: 0;
   margin: 0;
   will-change: width, transform, opacity;
+  box-shadow: 0 0 20px rgba(126, 255, 160, 0);
+  transition: box-shadow 0.6s ease;
+}
+.distorted-project:hover .title-media-container {
+  box-shadow: 0 0 30px rgba(126, 255, 160, 0.15);
 }
 .title-media-container img,
 .title-media-container video {
@@ -570,6 +582,35 @@ nav{
   height: 100%;
   object-fit: cover;
   filter: saturate(1.2) contrast(1.1);
+}
+.distorted-tags {
+  position: absolute;
+  top: calc(50% + 2rem);
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.distorted-project:hover .distorted-tags {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.distorted-tag {
+  font-family: var(--mono);
+  font-size: 0.48rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 0.2rem 0.5rem;
+  border: 1px solid rgba(126, 255, 160, 0.2);
+  border-radius: 2px;
+  background: rgba(126, 255, 160, 0.02);
+}
+@media(max-width: 480px) {
+  .distorted-tags { display: none; }
 }
 .distorted-meta {
   position: absolute;
@@ -1031,37 +1072,42 @@ footer{
       <div class="distorted-project" 
            data-media="public/images/hustle_planner.png" 
            data-text="Hustle Planner"
-           data-live="#" data-code="#">
+           data-tags="React, Firebase, GSAP"
+           data-live="https://the-hustle-planner.vercel.app/" data-code="#">
         <div class="distorted-num">01</div>
-        <div class="distorted-meta">Productivity · React</div>
+        <div class="distorted-meta">Productivity · UI/UX</div>
       </div>
       <div class="distorted-project" 
            data-media="public/images/Hybrid_OS.png" 
            data-text="Hybrid OS"
-           data-live="#" data-code="#">
+           data-tags="Next.js, Framer, Node"
+           data-live="https://hybrid-os.vercel.app/" data-code="#">
         <div class="distorted-num">02</div>
-        <div class="distorted-meta">System · Next.js</div>
+        <div class="distorted-meta">System · Interface</div>
       </div>
       <div class="distorted-project" 
            data-media="public/images/pdf_studio.png" 
            data-text="PDF Studio"
-           data-live="#" data-code="#">
+           data-tags="React, Node.js, AWS"
+           data-live="https://pdf-studio-sable.vercel.app/" data-code="#">
         <div class="distorted-num">03</div>
-        <div class="distorted-meta">Utility · Node.js</div>
+        <div class="distorted-meta">Utility · Workflow</div>
       </div>
       <div class="distorted-project" 
            data-media="public/images/unocypher1.png" 
            data-text="Uno Cypher"
-           data-live="#" data-code="#">
+           data-tags="WebGL, OGL, React"
+           data-live="https://uno-cypher.vercel.app/" data-code="#">
         <div class="distorted-num">04</div>
-        <div class="distorted-meta">Crypto · WebGL</div>
+        <div class="distorted-meta">Crypto · Graphics</div>
       </div>
       <div class="distorted-project" 
            data-media="public/images/track a lot 1.png" 
            data-text="Track A Lot"
-           data-live="#" data-code="#">
+           data-tags="MongoDB, Express, React"
+           data-live="https://track-a-lot.vercel.app/" data-code="#">
         <div class="distorted-num">05</div>
-        <div class="distorted-meta">Habit Tracking · MongoDB</div>
+        <div class="distorted-meta">Analytics · Habits</div>
       </div>
     </div>
   </div>
@@ -1269,6 +1315,14 @@ function initDistortedProjects() {
       <span class="title-side right">${rightText}</span>
     `;
     item.appendChild(wrap);
+
+    const tagStr = item.getAttribute('data-tags') || '';
+    if (tagStr) {
+      const tags = document.createElement('div');
+      tags.className = 'distorted-tags';
+      tags.innerHTML = tagStr.split(',').map(t => `<span class="distorted-tag">${t.trim()}</span>`).join('');
+      item.appendChild(tags);
+    }
 
     const links = document.createElement('div');
     links.className = 'distorted-links';
