@@ -501,183 +501,127 @@ nav{
 .skill-cat{border-bottom:1px solid var(--line)}
 .skill-cat:last-child{border-bottom:none}
 
-/* ─── DISTORTED PROJECT HOVER ────────────────────────────── */
-/* ─── PROJECTS ───────────────────────────────────────────── */
-.projects{border-bottom:1px solid var(--line);padding:clamp(3rem,8vh,6rem) 0;position:relative;overflow:hidden}
-.projects-list-distorted {
+/* ─── HORIZONTAL SPLIT SCROLL ────────────────────────────── */
+.projects-split-section {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.projects-split-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+}
+.projects-left-side {
+  width: 50%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--line);
-}
-.distorted-project {
+  justify-content: center;
+  align-items: center;
+  background: var(--bg);
+  z-index: 20;
+  border-right: 1px solid var(--line);
   position: relative;
+}
+.project-titles-window {
+  position: relative;
+  height: 120px;
   width: 100%;
-  border-bottom: 1px solid var(--line);
-  padding: clamp(3rem, 6vh, 5rem) 0;
-  cursor: pointer;
   overflow: hidden;
-  transition: background 0.3s ease;
+  text-align: center;
 }
-.distorted-project:hover {
-  background: rgba(126,255,160,0.02);
-  z-index: 10;
-}
-.distorted-title-wrap {
+.project-titles-track {
+  position: absolute;
+  inset: 0;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.project-title-block {
+  height: 120px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0;
+  width: 100%;
+}
+.project-title-block h2 {
   font-family: var(--display);
-  font-weight: 800;
-  font-size: clamp(1rem, 4.2vw, 2.8rem);
+  font-size: clamp(1.5rem, 4vw, 3.5rem);
+  font-weight: 900;
   text-transform: uppercase;
-  white-space: nowrap;
-  pointer-events: none;
   color: var(--fg);
-  letter-spacing: -0.01em;
-  transition: gap 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  line-height: 1;
 }
-@media(max-width: 768px) {
-  .distorted-title-wrap {
-    flex-direction: column;
-    height: auto;
-    gap: 1rem !important;
-    white-space: nowrap;
-    text-align: center;
-    padding: 2.5rem 0;
-  }
-  .title-text-group {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.25rem;
-    margin-bottom: 1.5rem;
-  }
-  .title-side {
-    display: inline-block;
-    font-size: clamp(1.8rem, 10vw, 2.8rem);
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-  }
-}
-.title-side {
-  display: inline-block;
-  will-change: transform;
-}
-.distorted-center-stage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 0;
-  overflow: hidden;
-  opacity: 0;
-  transform: scale(0.8);
-  will-change: width, opacity, transform;
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-}
-@media(max-width: 768px) {
-  .distorted-center-stage {
-    width: 100% !important;
-    opacity: 1 !important;
-    transform: scale(1) !important;
-    overflow: visible;
-    margin: 1rem 0;
-  }
-}
-.distorted-meta-top {
+.project-title-block .project-num {
   font-family: var(--mono);
-  font-size: 0.45rem;
-  letter-spacing: 0.2em;
+  font-size: 0.6rem;
   color: var(--accent);
-  text-transform: uppercase;
   margin-bottom: 0.5rem;
-  white-space: nowrap;
+  letter-spacing: 0.2em;
 }
-.title-media-container {
-  width: 240px;
-  height: 135px;
+
+.projects-right-side {
+  width: 50%;
+  height: 100vh;
   overflow: hidden;
-  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  background: var(--bg2);
+}
+.projects-horizontal-track {
+  display: flex;
+  padding-left: 10vw;
+  align-items: center;
+}
+.project-image-card {
+  flex-shrink: 0;
+  width: 60vw;
+  height: 60vh;
+  margin-right: 10vw;
   background: var(--bg3);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  position: relative;
   border-radius: 4px;
-  box-shadow: 0 0 20px rgba(126, 255, 160, 0);
-  transition: box-shadow 0.6s ease;
 }
-@media(max-width: 768px) {
-  .title-media-container {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    aspect-ratio: 16/9;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(126, 255, 160, 0.1);
-  }
-}
-.distorted-project:hover .title-media-container {
-  box-shadow: 0 0 30px rgba(126, 255, 160, 0.15);
-}
-.title-media-container img,
-.title-media-container video {
+.project-image-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(1.2) contrast(1.1);
+  opacity: 0.8;
+  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease;
 }
-.distorted-tags {
-  display: flex;
-  gap: 0.4rem;
-  margin-top: 0.75rem;
-}
-.distorted-tag {
-  font-family: var(--mono);
-  font-size: 0.4rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--fg3);
-  padding: 0.15rem 0.4rem;
-  border: 1px solid var(--line);
-  border-radius: 2px;
-}
-.distorted-links-bottom {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
-}
-.distorted-link {
-  font-family: var(--mono);
-  font-size: 0.45rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--fg);
-  border: 1px solid var(--line2);
-  padding: 0.3rem 0.6rem;
-  border-radius: 2px;
-  transition: all 0.25s ease;
-  pointer-events: auto;
-}
-.distorted-link:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(126, 255, 160, 0.05);
-}
-.distorted-num {
-  position: absolute;
-  top: 1.5rem;
-  right: clamp(1.25rem, 5vw, 4rem);
-  font-family: var(--mono);
-  font-size: 0.6rem;
-  color: var(--line2);
-  opacity: 0; /* Hidden until JS builds the new structure or hover */
-  transition: opacity 0.4s ease;
-}
-.distorted-project:hover .distorted-num {
+.project-image-card:hover img {
+  transform: scale(1.05);
   opacity: 1;
 }
-@media(max-width: 768px) {
-  .distorted-num { display: none !important; }
-}
-.distorted-meta {
-  display: none; /* Always hide the raw meta in HTML; JS uses .distorted-meta-top */
+
+@media (max-width: 768px) {
+  .projects-split-container {
+    flex-direction: column;
+    height: auto;
+  }
+  .projects-left-side {
+    width: 100%;
+    height: 40vh;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .projects-right-side {
+    width: 100%;
+    height: 60vh;
+    position: relative;
+  }
+  .project-image-card {
+    width: 85vw;
+    height: 45vh;
+  }
 }
 .projects-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem)}
 .projects-list{
@@ -1069,59 +1013,64 @@ footer{
 </section>
 
 <!-- ═══ PROJECTS ════════════════════════════════════════════ -->
-<section class="projects" id="projects">
-  <div class="projects-inner">
-    <div class="section-header">
-      <h2 class="section-title"><span class="title-inner" id="projects-title">Selected Work</span></h2>
-      <span class="tag" id="projects-tag">// 05 projects</span>
+<section class="projects-split-section" id="work-section">
+  <div class="projects-split-container">
+    
+    <!-- Left Side: Fixed Titles -->
+    <div class="projects-left-side">
+      <div class="project-titles-window">
+        <div id="project-titles-track" class="project-titles-track">
+          <div class="project-title-block">
+            <span class="project-num">01 /</span>
+            <h2>Hustle Planner</h2>
+          </div>
+          <div class="project-title-block">
+            <span class="project-num">02 /</span>
+            <h2>Hybrid OS</h2>
+          </div>
+          <div class="project-title-block">
+            <span class="project-num">03 /</span>
+            <h2>PDF Studio</h2>
+          </div>
+          <div class="project-title-block">
+            <span class="project-num">04 /</span>
+            <h2>Uno Cypher</h2>
+          </div>
+          <div class="project-title-block">
+            <span class="project-num">05 /</span>
+            <h2>Track A Lot</h2>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 font-mono text-[10px] tracking-[0.4em] uppercase text-zinc-500">// Selected Work</div>
     </div>
-    <div class="projects-list-distorted" id="distorted-projects">
-      <div class="distorted-project" 
-           data-media="public/images/hustle_planner.png" 
-           data-text="Hustle Planner"
-           data-short="Hustle"
-           data-tags="React, Firebase, GSAP"
-           data-live="https://the-hustle-planner.vercel.app/" data-code="#">
-        <div class="distorted-num">01</div>
-        <div class="distorted-meta">Productivity · React</div>
-      </div>
-      <div class="distorted-project" 
-           data-media="public/images/Hybrid_OS.png" 
-           data-text="Hybrid OS"
-           data-short="Hybrid"
-           data-tags="Next.js, Framer, Node"
-           data-live="https://hybrid-os.vercel.app/" data-code="#">
-        <div class="distorted-num">02</div>
-        <div class="distorted-meta">System · Next.js</div>
-      </div>
-      <div class="distorted-project" 
-           data-media="public/images/pdf_studio.png" 
-           data-text="PDF Studio"
-           data-short="Studio"
-           data-tags="React, Node.js, AWS"
-           data-live="https://pdf-studio-sable.vercel.app/" data-code="#">
-        <div class="distorted-num">03</div>
-        <div class="distorted-meta">Utility · Node.js</div>
-      </div>
-      <div class="distorted-project" 
-           data-media="public/images/unocypher1.png" 
-           data-text="Uno Cypher"
-           data-short="Cypher"
-           data-tags="WebGL, OGL, React"
-           data-live="https://uno-cypher.vercel.app/" data-code="#">
-        <div class="distorted-num">04</div>
-        <div class="distorted-meta">Crypto · WebGL</div>
-      </div>
-      <div class="distorted-project" 
-           data-media="public/images/track a lot 1.png" 
-           data-text="Track A Lot"
-           data-short="Track"
-           data-tags="MongoDB, Express, React"
-           data-live="https://track-a-lot.vercel.app/" data-code="#">
-        <div class="distorted-num">05</div>
-        <div class="distorted-meta">Analytics · MongoDB</div>
+
+    <!-- Right Side: Horizontal Strip -->
+    <div class="projects-right-side">
+      <div id="projects-horizontal-track" class="projects-horizontal-track">
+        <!-- Project 1 -->
+        <div class="project-image-card">
+          <img src="public/images/hustle_planner.png" alt="Hustle Planner">
+        </div>
+        <!-- Project 2 -->
+        <div class="project-image-card">
+          <img src="public/images/Hybrid_OS.png" alt="Hybrid OS">
+        </div>
+        <!-- Project 3 -->
+        <div class="project-image-card">
+          <img src="public/images/pdf_studio.png" alt="PDF Studio">
+        </div>
+        <!-- Project 4 -->
+        <div class="project-image-card">
+          <img src="public/images/unocypher1.png" alt="Uno Cypher">
+        </div>
+        <!-- Project 5 -->
+        <div class="project-image-card">
+          <img src="public/images/track a lot 1.png" alt="Track A Lot">
+        </div>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -1303,82 +1252,40 @@ function initMagnetic() {
   });
 }
 
-function initDistortedProjects() {
-  const container = document.getElementById('distorted-projects');
-  if (!container) return;
-  const items = container.querySelectorAll('.distorted-project');
+function initSplitScrollProjects() {
+  const workSection = document.querySelector('#work-section');
+  const horizontalTrack = document.querySelector('#projects-horizontal-track');
+  const titlesTrack = document.querySelector('#project-titles-track');
+  const cards = gsap.utils.toArray('.project-image-card');
+  if (!workSection || !horizontalTrack || !titlesTrack) return;
 
-  items.forEach(item => {
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
-    const text = isMobile ? (item.getAttribute('data-short') || item.getAttribute('data-text')) : item.getAttribute('data-text');
-    const mid = Math.floor(text.length / 2);
-    const leftText = text.slice(0, mid);
-    const rightText = text.slice(mid);
-    const mediaUrl = item.getAttribute('data-media');
-    const liveUrl = item.getAttribute('data-live');
-    const codeUrl = item.getAttribute('data-code');
-    const metaText = item.querySelector('.distorted-meta').textContent;
-    const tagStr = item.getAttribute('data-tags') || '';
-    const num = item.querySelector('.distorted-num').textContent;
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-    // Clear and rebuild structure cleanly
-    item.innerHTML = `
-      <div class="distorted-num">${num}</div>
-      <div class="distorted-title-wrap">
-        <div class="title-text-group">
-          <span class="title-side left">${leftText}</span>
-          <span class="title-side right">${rightText}</span>
-        </div>
-        <div class="distorted-center-stage">
-          <div class="distorted-meta-top">${metaText}</div>
-          <div class="title-media-container">
-            <img src="${mediaUrl}" alt=""/>
-          </div>
-          <div class="distorted-tags">
-            ${tagStr.split(',').map(t => `<span class="distorted-tag">${t.trim()}</span>`).join('')}
-          </div>
-          <div class="distorted-links-bottom">
-            <a href="${liveUrl}" target="_blank" class="distorted-link">Live Link</a>
-            <a href="${codeUrl}" target="_blank" class="distorted-link">Code Link</a>
-          </div>
-        </div>
-      </div>
-    `;
+  // Refresh Trigger
+  ScrollTrigger.refresh();
 
-    const stage = item.querySelector('.distorted-center-stage');
-    const left = item.querySelector('.left');
-    const right = item.querySelector('.right');
-
-    const tl = gsap.timeline({ paused: true, defaults: { duration: 0.6, ease: "expo.out" } });
-    
-    if (!window.matchMedia('(max-width: 768px)').matches) {
-      tl.to(stage, { width: 280, opacity: 1, scale: 1, margin: "0 2rem" })
-        .to(left, { x: -10 }, 0)
-        .to(right, { x: 10 }, 0);
-
-      item.addEventListener('mouseenter', () => tl.play());
-      item.addEventListener('mouseleave', () => tl.reverse());
-    }
-  });
-}
-
-function initProjectsAnim() {
   const tl = gsap.timeline({
     scrollTrigger: {
-      trigger: '#projects',
-      start: 'top 70%',
-      toggleActions: 'play none none none',
+      trigger: workSection,
+      start: "top top",
+      end: "+=3500",
+      pin: true,
+      scrub: 1.2,
+      anticipatePin: 1,
     }
   });
 
-  tl.to('#projects-title', { y: 0, opacity: 1, duration: .7, ease: 'expo.out' }, 0)
-    .to('#projects-tag', { opacity: 1, duration: .5 }, 0.2)
-    .to('.distorted-project', {
-      opacity: 1, y: 0,
-      duration: .8,
-      stagger: .1,
-      ease: 'expo.out',
-    }, 0.3);
+  // 1. Horizontal Scroll for images
+  tl.to(horizontalTrack, {
+    x: () => -(horizontalTrack.offsetWidth - (window.innerWidth / (isMobile ? 1 : 2))),
+    ease: "none"
+  }, 0);
+
+  // 2. Vertical Scroll for titles
+  tl.to(titlesTrack, {
+    y: -(120 * (cards.length - 1)), // 120 is the height of .project-title-block
+    ease: "none"
+  }, 0);
 }
 
 function initHeroGrid() {
@@ -1483,8 +1390,7 @@ function initBentoDrifts() {
   });
 }
 
-initDistortedProjects();
-initProjectsAnim();
+initSplitScrollProjects();
 
 if(window.matchMedia('(pointer:fine)').matches){
   const dot = document.getElementById('cur-dot');
