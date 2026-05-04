@@ -605,19 +605,76 @@ nav{
 @media (max-width: 768px) {
   .projects-split-container {
     flex-direction: column;
-    height: auto;
+    height: 100vh; /* Keep it full screen for pinning */
   }
   .projects-left-side {
-    width: 100%;
-    height: 40vh;
-    border-right: none;
-    border-bottom: 1px solid var(--line);
+    display: none; /* Hide titles block on mobile */
   }
   .projects-right-side {
     width: 100%;
-    height: 60vh;
-    position: relative;
+    height: 100vh;
+    padding-top: 15vh; /* Center it more */
   }
+  .project-image-card {
+    width: 85vw;
+    height: 55vh;
+    margin-right: 8vw;
+    border-radius: 12px;
+  }
+  .project-image-card img {
+    opacity: 1; /* Fully visible on mobile */
+  }
+  /* Mobile Title Overlay */
+  .mobile-project-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 1.5rem;
+    background: linear-gradient(to top, rgba(5,5,7,0.9), transparent);
+    z-index: 5;
+    pointer-events: none;
+    display: block;
+  }
+  .mobile-project-info .num {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+    display: block;
+  }
+  .mobile-project-info h3 {
+    font-family: var(--display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--fg);
+  }
+}
+@media (min-width: 769px) {
+  .mobile-project-info { display: none; }
+}
+
+/* Progress Bar */
+.projects-progress-wrap {
+  position: absolute;
+  bottom: 10vh;
+  left: 10vw;
+  width: 80vw;
+  height: 2px;
+  background: var(--line);
+  z-index: 30;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.projects-progress-bar {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+  transform-origin: left;
+}
+@media (min-width: 769px) {
+  .projects-progress-wrap { display: none; }
 }
 .project-subtitle {
   margin-top: 2rem;
@@ -1079,24 +1136,49 @@ footer{
         <!-- Project 1 -->
         <div class="project-image-card">
           <img src="public/images/hustle_planner.png" alt="Hustle Planner">
+          <div class="mobile-project-info">
+            <span class="num">01 /</span>
+            <h3>Hustle Planner</h3>
+          </div>
         </div>
         <!-- Project 2 -->
         <div class="project-image-card">
           <img src="public/images/Hybrid_OS.png" alt="Hybrid OS">
+          <div class="mobile-project-info">
+            <span class="num">02 /</span>
+            <h3>Hybrid OS</h3>
+          </div>
         </div>
         <!-- Project 3 -->
         <div class="project-image-card">
           <img src="public/images/pdf_studio.png" alt="PDF Studio">
+          <div class="mobile-project-info">
+            <span class="num">03 /</span>
+            <h3>PDF Studio</h3>
+          </div>
         </div>
         <!-- Project 4 -->
         <div class="project-image-card">
           <img src="public/images/unocypher1.png" alt="Uno Cypher">
+          <div class="mobile-project-info">
+            <span class="num">04 /</span>
+            <h3>Uno Cypher</h3>
+          </div>
         </div>
         <!-- Project 5 -->
         <div class="project-image-card">
           <img src="public/images/track a lot 1.png" alt="Track A Lot">
+          <div class="mobile-project-info">
+            <span class="num">05 /</span>
+            <h3>Track A Lot</h3>
+          </div>
         </div>
       </div>
+    </div>
+
+    <!-- Mobile Progress Bar -->
+    <div class="projects-progress-wrap">
+      <div id="projects-progress" class="projects-progress-bar"></div>
     </div>
 
   </div>
@@ -1284,36 +1366,50 @@ function initSplitScrollProjects() {
   const workSection = document.querySelector('#work-section');
   const horizontalTrack = document.querySelector('#projects-horizontal-track');
   const titlesTrack = document.querySelector('#project-titles-track');
+  const progressBar = document.querySelector('#projects-progress');
   const cards = gsap.utils.toArray('.project-image-card');
   if (!workSection || !horizontalTrack || !titlesTrack) return;
 
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
-
-  // Refresh Trigger
   ScrollTrigger.refresh();
 
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: workSection,
       start: "top top",
-      end: "+=3500",
+      end: isMobile ? "+=2000" : "+=3500",
       pin: true,
       scrub: 1.2,
       anticipatePin: 1,
+      snap: isMobile ? {
+        snapTo: 1 / (cards.length - 1),
+        duration: 0.6,
+        ease: "power2.inOut"
+      } : null
     }
   });
 
   // 1. Horizontal Scroll for images
   tl.to(horizontalTrack, {
-    x: () => -(horizontalTrack.offsetWidth - (window.innerWidth / (isMobile ? 1 : 2))),
+    x: () => -(horizontalTrack.offsetWidth - window.innerWidth + (isMobile ? 0 : window.innerWidth / 2)),
     ease: "none"
   }, 0);
 
-  // 2. Vertical Scroll for titles
-  tl.to(titlesTrack, {
-    y: -(120 * (cards.length - 1)), // 120 is the height of .project-title-block
-    ease: "none"
-  }, 0);
+  // 2. Vertical Scroll for titles (Desktop Only)
+  if (!isMobile) {
+    tl.to(titlesTrack, {
+      y: -(120 * (cards.length - 1)),
+      ease: "none"
+    }, 0);
+  }
+
+  // 3. Mobile Progress Bar
+  if (isMobile && progressBar) {
+    tl.to(progressBar, {
+      width: "100%",
+      ease: "none"
+    }, 0);
+  }
 }
 
 function initHeroGrid() {
