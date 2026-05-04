@@ -781,6 +781,56 @@ nav{
   transform:scale(.85);
   transform-origin:center center;
 }
+.widget.span-2 {
+  grid-column: span 2;
+}
+.heatmap-compact {
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  background: rgba(126, 255, 160, 0.02); /* Very subtle green wash */
+}
+.heatmap-compact img {
+  height: 85px;
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
+  filter: saturate(1.2); /* Keep colors vibrant but don't wash out the grays */
+  opacity: 0.9;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.heatmap-compact:hover img {
+  opacity: 1;
+  filter: brightness(1.5) contrast(1.3) saturate(1.3);
+  transform: scale(1.02);
+}
+
+
+.time-display {
+  font-family: var(--display);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--fg);
+  line-height: 1;
+  margin: 0.5rem 0;
+}
+.time-zone {
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  color: var(--fg3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 900px) {
+  .widget.span-2 { grid-column: span 1; }
+  .heatmap-compact { mask-image: none; -webkit-mask-image: none; overflow-x: auto; }
+  .heatmap-compact img { height: 35px; width: 600px; max-width: none; }
+}
 .widget:hover{background:var(--bg2)}
 .widget-label{
   font-family:var(--mono);font-size:.52rem;letter-spacing:.2em;
@@ -1239,6 +1289,19 @@ footer{
       <div class="widget">
         <div class="widget-label">Active Right Now</div>
         <div id="kv-widget"><div class="not-playing">— Syncing…</div></div>
+      </div>
+      <!-- Compact Ribbon -->
+      <div class="widget span-2">
+        <div class="widget-label live">Activity Pulse</div>
+        <div class="heatmap-compact">
+          <img src="https://github-contributions-api.deno.dev/santjsx.svg?flat=true&color=7effa0&no-total=true" alt="GitHub Contributions" />
+        </div>
+      </div>
+      <!-- System Time -->
+      <div class="widget">
+        <div class="widget-label">System Time</div>
+        <div class="time-display" id="system-time">00:00:00</div>
+        <div class="time-zone">India (GMT+5:30)</div>
       </div>
     </div>
   </div>
@@ -2101,6 +2164,17 @@ async function loadTMDB(){
   }catch{setHTML('movie-body','<div class="not-playing">— TMDb unavailable</div>')}
 }
 loadTMDB();
+
+function initSystemTime(){
+  const el=$('system-time');
+  if(!el)return;
+  setInterval(()=>{
+    const now=new Date();
+    const ist=new Date(now.toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+    el.textContent=ist.toTimeString().split(' ')[0];
+  },1000);
+}
+initSystemTime();
 </script>
 </body>
 </html>
