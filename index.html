@@ -542,9 +542,22 @@ nav{
     flex-direction: column;
     height: auto;
     gap: 1rem !important;
-    white-space: normal;
+    white-space: nowrap;
     text-align: center;
-    font-size: clamp(1.2rem, 8vw, 1.8rem);
+    padding: 2.5rem 0;
+  }
+  .title-text-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .title-side {
+    display: inline-block;
+    font-size: clamp(1.8rem, 10vw, 2.8rem);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
   }
 }
 .title-side {
@@ -568,6 +581,7 @@ nav{
     opacity: 1 !important;
     transform: scale(1) !important;
     overflow: visible;
+    margin: 1rem 0;
   }
 }
 .distorted-meta-top {
@@ -592,8 +606,11 @@ nav{
 @media(max-width: 768px) {
   .title-media-container {
     width: 100%;
+    max-width: 400px;
     height: auto;
     aspect-ratio: 16/9;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(126, 255, 160, 0.1);
   }
 }
 .distorted-project:hover .title-media-container {
@@ -650,9 +667,17 @@ nav{
   font-family: var(--mono);
   font-size: 0.6rem;
   color: var(--line2);
+  opacity: 0; /* Hidden until JS builds the new structure or hover */
+  transition: opacity 0.4s ease;
+}
+.distorted-project:hover .distorted-num {
+  opacity: 1;
 }
 @media(max-width: 768px) {
-  .distorted-num { display: none; }
+  .distorted-num { display: none !important; }
+}
+.distorted-meta {
+  display: none; /* Always hide the raw meta in HTML; JS uses .distorted-meta-top */
 }
 .projects-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem)}
 .projects-list{
@@ -1054,42 +1079,47 @@ footer{
       <div class="distorted-project" 
            data-media="public/images/hustle_planner.png" 
            data-text="Hustle Planner"
+           data-short="Hustle"
            data-tags="React, Firebase, GSAP"
            data-live="https://the-hustle-planner.vercel.app/" data-code="#">
         <div class="distorted-num">01</div>
-        <div class="distorted-meta">Productivity · UI/UX</div>
+        <div class="distorted-meta">Productivity · React</div>
       </div>
       <div class="distorted-project" 
            data-media="public/images/Hybrid_OS.png" 
            data-text="Hybrid OS"
+           data-short="Hybrid"
            data-tags="Next.js, Framer, Node"
            data-live="https://hybrid-os.vercel.app/" data-code="#">
         <div class="distorted-num">02</div>
-        <div class="distorted-meta">System · Interface</div>
+        <div class="distorted-meta">System · Next.js</div>
       </div>
       <div class="distorted-project" 
            data-media="public/images/pdf_studio.png" 
            data-text="PDF Studio"
+           data-short="Studio"
            data-tags="React, Node.js, AWS"
            data-live="https://pdf-studio-sable.vercel.app/" data-code="#">
         <div class="distorted-num">03</div>
-        <div class="distorted-meta">Utility · Workflow</div>
+        <div class="distorted-meta">Utility · Node.js</div>
       </div>
       <div class="distorted-project" 
            data-media="public/images/unocypher1.png" 
            data-text="Uno Cypher"
+           data-short="Cypher"
            data-tags="WebGL, OGL, React"
            data-live="https://uno-cypher.vercel.app/" data-code="#">
         <div class="distorted-num">04</div>
-        <div class="distorted-meta">Crypto · Graphics</div>
+        <div class="distorted-meta">Crypto · WebGL</div>
       </div>
       <div class="distorted-project" 
            data-media="public/images/track a lot 1.png" 
            data-text="Track A Lot"
+           data-short="Track"
            data-tags="MongoDB, Express, React"
            data-live="https://track-a-lot.vercel.app/" data-code="#">
         <div class="distorted-num">05</div>
-        <div class="distorted-meta">Analytics · Habits</div>
+        <div class="distorted-meta">Analytics · MongoDB</div>
       </div>
     </div>
   </div>
@@ -1279,22 +1309,28 @@ function initDistortedProjects() {
   const items = container.querySelectorAll('.distorted-project');
 
   items.forEach(item => {
-    const text = item.getAttribute('data-text');
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const text = isMobile ? (item.getAttribute('data-short') || item.getAttribute('data-text')) : item.getAttribute('data-text');
     const mid = Math.floor(text.length / 2);
     const leftText = text.slice(0, mid);
     const rightText = text.slice(mid);
     const mediaUrl = item.getAttribute('data-media');
     const liveUrl = item.getAttribute('data-live');
     const codeUrl = item.getAttribute('data-code');
-    const meta = item.querySelector('.distorted-meta').textContent;
+    const metaText = item.querySelector('.distorted-meta').textContent;
     const tagStr = item.getAttribute('data-tags') || '';
+    const num = item.querySelector('.distorted-num').textContent;
 
+    // Clear and rebuild structure cleanly
     item.innerHTML = `
-      <div class="distorted-num">${item.querySelector('.distorted-num').textContent}</div>
+      <div class="distorted-num">${num}</div>
       <div class="distorted-title-wrap">
-        <span class="title-side left">${leftText}</span>
+        <div class="title-text-group">
+          <span class="title-side left">${leftText}</span>
+          <span class="title-side right">${rightText}</span>
+        </div>
         <div class="distorted-center-stage">
-          <div class="distorted-meta-top">${meta}</div>
+          <div class="distorted-meta-top">${metaText}</div>
           <div class="title-media-container">
             <img src="${mediaUrl}" alt=""/>
           </div>
@@ -1306,7 +1342,6 @@ function initDistortedProjects() {
             <a href="${codeUrl}" target="_blank" class="distorted-link">Code Link</a>
           </div>
         </div>
-        <span class="title-side right">${rightText}</span>
       </div>
     `;
 
@@ -1316,7 +1351,6 @@ function initDistortedProjects() {
 
     const tl = gsap.timeline({ paused: true, defaults: { duration: 0.6, ease: "expo.out" } });
     
-    // Only animate split if not on mobile
     if (!window.matchMedia('(max-width: 768px)').matches) {
       tl.to(stage, { width: 280, opacity: 1, scale: 1, margin: "0 2rem" })
         .to(left, { x: -10 }, 0)
@@ -1449,6 +1483,9 @@ function initBentoDrifts() {
   });
 }
 
+initDistortedProjects();
+initProjectsAnim();
+
 if(window.matchMedia('(pointer:fine)').matches){
   const dot = document.getElementById('cur-dot');
   const ring = document.getElementById('cur-ring');
@@ -1457,8 +1494,6 @@ if(window.matchMedia('(pointer:fine)').matches){
   (function lerp(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(lerp)})();
   
   initMagnetic();
-  initDistortedProjects();
-  initProjectsAnim();
   initHeroGrid();
   initKineticRoll();
   initBentoDrifts();
