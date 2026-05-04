@@ -1301,11 +1301,12 @@ class Waves{constructor(c,o={}){this.container=c;this.canvas=document.createElem
 let lenis;
 if (typeof Lenis !== 'undefined') {
   lenis = new Lenis({
-    duration: 1.2,
-    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    duration: 1.5,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // expoOut
     smoothWheel: true,
-    smoothTouch: false,
-    touchMultiplier: 2,
+    wheelMultiplier: 1.1,
+    touchMultiplier: 2.5,
+    lerp: 0.08,
   });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add(time => lenis.raf(time * 1000));
@@ -1354,10 +1355,10 @@ function initMagnetic() {
       const b = m.getBoundingClientRect();
       const x = e.clientX - b.left - b.width/2;
       const y = e.clientY - b.top - b.height/2;
-      gsap.to(m, { x: x * 0.35, y: y * 0.35, duration: 0.4, ease: 'power2.out' });
+      gsap.to(m, { x: x * 0.35, y: y * 0.35, duration: 0.5, ease: 'power3.out' });
     });
     m.addEventListener('mouseleave', () => {
-      gsap.to(m, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
+      gsap.to(m, { x: 0, y: 0, duration: 0.8, ease: 'elastic.out(1, 0.4)' });
     });
   });
 }
@@ -1379,7 +1380,7 @@ function initSplitScrollProjects() {
       start: "top top",
       end: isMobile ? "+=2000" : "+=3500",
       pin: true,
-      scrub: 1.2,
+      scrub: 1.5, // Smoother follow
       anticipatePin: 1,
       snap: isMobile ? {
         snapTo: 1 / (cards.length - 1),
@@ -1435,8 +1436,8 @@ function initHeroGrid() {
       rotationX: -y * 15,
       x: x * 20,
       y: y * 20,
-      duration: 1,
-      ease: 'power2.out',
+      duration: 1.2,
+      ease: 'power3.out',
       transformPerspective: 1000,
       force3D: true
     });
@@ -1470,15 +1471,15 @@ function initKineticRoll() {
     roll.addEventListener('mouseenter', () => {
       gsap.to(roll.querySelectorAll('.char-primary'), {
         yPercent: -100,
-        duration: 0.6,
+        duration: 0.85,
         stagger: 0.02,
-        ease: 'expo.inOut'
+        ease: 'power4.inOut'
       });
       gsap.to(roll.querySelectorAll('.char-secondary'), {
         yPercent: -100,
-        duration: 0.6,
+        duration: 0.85,
         stagger: 0.02,
-        ease: 'expo.inOut'
+        ease: 'power4.inOut'
       });
     });
     roll.addEventListener('mouseleave', () => {
@@ -1677,18 +1678,18 @@ scrollBtn.addEventListener('click', () => lenis.scrollTo(0, { duration: 1.6 }));
     { opacity: 1, x: 0, duration: .6, ease: 'expo.out', delay: .25 }
   );
 
-  const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+  const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
-  tl.to('#hero-eyebrow', { opacity: 1, y: 0, duration: .8 }, 0.2)
+  tl.to('#hero-eyebrow', { opacity: 1, y: 0, duration: 1 }, 0.2)
     .to(allChars, {
-      y: 0, opacity: 1, duration: 0.8, stagger: 0.025,
-      ease: 'expo.out'
+      y: 0, opacity: 1, duration: 1.2, stagger: 0.03,
+      ease: 'power4.out'
     }, 0.5)
-    .to('#hero-sub', { opacity: 1, y: 0, duration: .9 }, 1.0)
-    .to('#presence-bar', { opacity: 1, y: 0, duration: .7 }, 1.25)
+    .to('#hero-sub', { opacity: 1, y: 0, duration: 1.2 }, 1.0)
+    .to('#presence-bar', { opacity: 1, y: 0, duration: 1 }, 1.25)
     .to('.hero-stat', {
-      opacity: 1, y: 0, duration: .7, stagger: .12,
-      ease: 'back.out(1.4)'
+      opacity: 1, y: 0, duration: 1, stagger: .15,
+      ease: 'back.out(1.2)'
     }, 1.4);
 
   // Init Waves
@@ -1710,16 +1711,16 @@ gsap.registerPlugin(ScrollTrigger);
     }
   });
 
-  tl.to('#about-label', { opacity: 1, x: 0, duration: .5 }, 0)
+  tl.to('#about-label', { opacity: 1, x: 0, duration: .7 }, 0)
     .to('#about-phases .phase', {
-      opacity: 1, x: 0, duration: .65,
-      stagger: .15, ease: 'power3.out'
+      opacity: 1, x: 0, duration: 0.8,
+      stagger: .2, ease: 'power4.out'
     }, 0.2)
     .to('#hero-quote', {
       clipPath: 'inset(0 0% 0 0)',
-      duration: 1.1, ease: 'expo.inOut'
+      duration: 1.4, ease: 'power4.inOut'
     }, 0.3)
-    .to('#about-src', { opacity: 1, y: 0, duration: .5 }, 1.0);
+    .to('#about-src', { opacity: 1, y: 0, duration: .7 }, 1.0);
 
   // Floating orb parallax
   gsap.to('#about-orb', {
