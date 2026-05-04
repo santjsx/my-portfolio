@@ -41,8 +41,29 @@ body{
 @media(pointer:coarse){body{cursor:auto}}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
-button{cursor:none;border:none;background:none;font-family:inherit}
+button{cursor:none;border:none;background:none;font-family:inherit;position:relative}
 @media(pointer:coarse){button{cursor:pointer}}
+
+/* ─── PROJECT REVEAL ─────────────────────────────────────── */
+.project-reveal{
+  position:fixed;width:300px;height:200px;top:0;left:0;
+  pointer-events:none;z-index:1000;opacity:0;
+  transform:scale(.8) rotate(-5deg);
+  transition:opacity .4s,transform .4s cubic-bezier(.23,1,.32,1);
+  overflow:hidden;border-radius:8px;
+  box-shadow:0 20px 40px rgba(0,0,0,.5);
+  border:1px solid var(--line2);
+}
+.project-reveal img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%)}
+.project-reveal.is-active{opacity:1;transform:scale(1) rotate(0deg)}
+
+.project-thumb-mini{
+  width:40px;height:40px;border-radius:4px;object-fit:cover;
+  border:1px solid var(--line);margin-right:1rem;flex-shrink:0;
+  display:none; /* Desktop only visual anchor */
+}
+@media(min-width:1024px){.project-thumb-mini{display:block}}
+
 
 /* ─── SCROLLBAR ───────────────────────────────────────────── */
 ::-webkit-scrollbar{width:3px}
@@ -66,9 +87,19 @@ button{cursor:none;border:none;background:none;font-family:inherit}
     transform:translate(-50%,-50%);
     transition:width .2s,height .2s,border-color .2s;
   }
+
   body:has(a:hover,button:hover) #cur-dot{width:10px;height:10px;background:var(--accent2)}
   body:has(a:hover,button:hover) #cur-ring{width:44px;height:44px;border-color:rgba(255,107,53,.4)}
 }
+
+/* ─── HERO GRID ─────────────────────────────────────────── */
+.hero-grid{
+  position:absolute;inset:0;z-index:-1;
+  display:grid;grid-template-columns:repeat(12,1fr);
+  grid-template-rows:repeat(8,1fr);
+  opacity:.15;pointer-events:none;
+}
+.hero-grid-line{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
 
 /* ─── NOISE + SCANLINES ───────────────────────────────────── */
 body::before{
@@ -468,10 +499,138 @@ nav{
 }
 .skill-item:hover::before{background:var(--accent)}
 
-/* ═══════════════════════════════════════════════════════════
-   PROJECTS — Cinematic stagger from right
-═══════════════════════════════════════════════════════════ */
+/* Skill Pills */
+.skill-item{
+  background:var(--bg3);padding:.4rem .8rem;border-radius:100px;
+  border:1px solid var(--line);font-size:.72rem;
+  transition:all .3s cubic-bezier(.23,1,.32,1);
+}
+.skill-item:hover{
+  background:var(--accent);color:var(--bg);border-color:var(--accent);
+  transform:translateY(-2px);
+}
+.skill-item::before{display:none}
+.skill-list{flex-direction:row;flex-wrap:wrap;gap:.5rem}
+.skill-cat{border-bottom:1px solid var(--line)}
+.skill-cat:last-child{border-bottom:none}
+
+/* ─── DISTORTED PROJECT HOVER ────────────────────────────── */
+/* ─── PROJECTS ───────────────────────────────────────────── */
 .projects{border-bottom:1px solid var(--line);padding:clamp(3rem,8vh,6rem) 0;position:relative;overflow:hidden}
+.projects-list-distorted {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+.distorted-project {
+  position: relative;
+  width: 100%;
+  border-bottom: 1px solid var(--line);
+  padding: clamp(1.5rem, 4vh, 3rem) 0;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+.distorted-project:hover {
+  background: rgba(126,255,160,0.02);
+}
+.distorted-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.2rem, 4.5vw, 3.2rem);
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+}
+.title-side {
+  display: inline-block;
+  will-change: transform;
+}
+.title-media-container {
+  width: 0;
+  height: clamp(45px, 8vw, 85px);
+  overflow: hidden;
+  position: relative;
+  background: var(--bg3);
+  border-radius: 4px;
+  transform: scale(0.8);
+  opacity: 0;
+  margin: 0;
+  will-change: width, transform, opacity;
+}
+.title-media-container img,
+.title-media-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.2) contrast(1.1);
+}
+.distorted-meta {
+  position: absolute;
+  bottom: 1rem;
+  left: clamp(1.25rem, 5vw, 4rem);
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--fg3);
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+}
+.distorted-project:hover .distorted-meta {
+  opacity: 1;
+  transform: translateY(0);
+}
+.distorted-num {
+  position: absolute;
+  top: 1rem;
+  right: clamp(1.25rem, 5vw, 4rem);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--line2);
+}
+
+/* Distorted Hover Links */
+.distorted-links {
+  position: absolute;
+  bottom: 1rem;
+  right: clamp(1.25rem, 5vw, 4rem);
+  display: flex;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  pointer-events: none;
+}
+.distorted-project:hover .distorted-links {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.distorted-link {
+  font-family: var(--mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg);
+  border: 1px solid var(--line2);
+  padding: 0.4rem 0.8rem;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+  background: var(--bg);
+}
+.distorted-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(126, 255, 160, 0.05);
+}
 .projects-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem)}
 .projects-list{
   display:flex;flex-direction:column;
@@ -647,6 +806,12 @@ nav{
 }
 .contact-link:hover{border-color:var(--accent);color:var(--accent);background:rgba(126,255,160,.04)}
 .contact-link svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.5;flex-shrink:0}
+
+/* Kinetic Roll */
+.kinetic-roll{position:relative;display:block;cursor:pointer}
+.kinetic-roll .char-wrap{display:inline-block;position:relative;overflow:hidden;vertical-align:bottom}
+.kinetic-roll .char-primary{display:block}
+.kinetic-roll .char-secondary{position:absolute;top:100%;left:0;display:block;color:var(--accent)}
 @media(max-width:480px){
   .contact-link{padding:.65rem 1rem;font-size:.58rem}
 }
@@ -736,6 +901,10 @@ footer{
 
 <!-- ═══ HERO ═══════════════════════════════════════════════ -->
 <section class="hero" id="hero">
+  <div id="hero-waves" style="position:absolute;inset:0;pointer-events:none;opacity:0.4;z-index:0"></div>
+  <div class="hero-grid" id="hero-grid">
+    <!-- Lines will be injected by JS -->
+  </div>
   <div class="hero-main">
     <div class="hero-eyebrow" id="hero-eyebrow">
       <div class="hero-eyebrow-line"></div>
@@ -794,7 +963,7 @@ footer{
       </div>
     </div>
     <div>
-      <div class="about-quote" id="hero-quote">
+      <div class="about-quote" id="hero-quote" style="max-width:700px">
         Every pixel is a decision. Every interaction is a story. I build the kind of web that makes people stop and look twice.
       </div>
       <span class="about-quote-src tag" id="about-src" style="margin-top:1.2rem">— santhoshh.xyz</span>
@@ -858,61 +1027,41 @@ footer{
       <h2 class="section-title"><span class="title-inner" id="projects-title">Selected Work</span></h2>
       <span class="tag" id="projects-tag">// 05 projects</span>
     </div>
-    <div class="projects-list">
-      <div class="project-row">
-        <div class="project-num">01</div>
-        <div class="project-info">
-          <div class="project-name">The Hustle Planner</div>
-          <div class="project-brief">High-performance productivity engine for deep work.</div>
-        </div>
-        <div class="project-tags"><span class="tag green">React</span><span class="tag">Firebase</span></div>
-        <a href="https://the-hustle-planner.vercel.app/" target="_blank" rel="noopener" class="project-link">
-          Visit<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
+    <div class="projects-list-distorted" id="distorted-projects">
+      <div class="distorted-project" 
+           data-media="public/images/hustle_planner.png" 
+           data-text="Hustle Planner"
+           data-live="#" data-code="#">
+        <div class="distorted-num">01</div>
+        <div class="distorted-meta">Productivity · React</div>
       </div>
-      <div class="project-row">
-        <div class="project-num">02</div>
-        <div class="project-info">
-          <div class="project-name">Hybrid OS</div>
-          <div class="project-brief">Unified system interface harmonizing complex workflows.</div>
-        </div>
-        <div class="project-tags"><span class="tag blue">Next.js</span><span class="tag">GSAP</span></div>
-        <a href="https://hybrid-os.vercel.app/" target="_blank" rel="noopener" class="project-link">
-          Visit<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
+      <div class="distorted-project" 
+           data-media="public/images/Hybrid_OS.png" 
+           data-text="Hybrid OS"
+           data-live="#" data-code="#">
+        <div class="distorted-num">02</div>
+        <div class="distorted-meta">System · Next.js</div>
       </div>
-      <div class="project-row">
-        <div class="project-num">03</div>
-        <div class="project-info">
-          <div class="project-name">PDF Studio</div>
-          <div class="project-brief">Minimalist, performance-first cloud document utility.</div>
-        </div>
-        <div class="project-tags"><span class="tag green">React</span><span class="tag">Node.js</span></div>
-        <a href="https://pdf-studio-sable.vercel.app/" target="_blank" rel="noopener" class="project-link">
-          Visit<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
+      <div class="distorted-project" 
+           data-media="public/images/pdf_studio.png" 
+           data-text="PDF Studio"
+           data-live="#" data-code="#">
+        <div class="distorted-num">03</div>
+        <div class="distorted-meta">Utility · Node.js</div>
       </div>
-      <div class="project-row">
-        <div class="project-num">04</div>
-        <div class="project-info">
-          <div class="project-name">Uno Cypher</div>
-          <div class="project-brief">Immersive interactive engine with low-latency state management.</div>
-        </div>
-        <div class="project-tags"><span class="tag orange">WebGL</span><span class="tag blue">Next.js</span></div>
-        <a href="https://uno-cypher.vercel.app/" target="_blank" rel="noopener" class="project-link">
-          Visit<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
+      <div class="distorted-project" 
+           data-media="public/images/unocypher1.png" 
+           data-text="Uno Cypher"
+           data-live="#" data-code="#">
+        <div class="distorted-num">04</div>
+        <div class="distorted-meta">Crypto · WebGL</div>
       </div>
-      <div class="project-row">
-        <div class="project-num">05</div>
-        <div class="project-info">
-          <div class="project-name">Track A Lot</div>
-          <div class="project-brief">Data-driven habit tracking ecosystem with analytical insights.</div>
-        </div>
-        <div class="project-tags"><span class="tag green">React</span><span class="tag">MongoDB</span></div>
-        <a href="https://track-a-lot.vercel.app/" target="_blank" rel="noopener" class="project-link">
-          Visit<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
+      <div class="distorted-project" 
+           data-media="public/images/track a lot 1.png" 
+           data-text="Track A Lot"
+           data-live="#" data-code="#">
+        <div class="distorted-num">05</div>
+        <div class="distorted-meta">Habit Tracking · MongoDB</div>
       </div>
     </div>
   </div>
@@ -982,9 +1131,9 @@ footer{
 <section class="contact" id="contact">
   <div class="contact-inner">
     <div class="contact-big" id="contact-big">
-      <span class="line-wrap"><span class="line-inner">LET'S BUILD</span></span>
-      <span class="line-wrap"><span class="line-inner">SOMETHING</span></span>
-      <span class="line-wrap"><span class="line-inner"><em>REAL.</em></span></span>
+      <span class="line-wrap"><span class="line-inner kinetic-roll" data-text="LET'S BUILD">LET'S BUILD</span></span>
+      <span class="line-wrap"><span class="line-inner kinetic-roll" data-text="SOMETHING">SOMETHING</span></span>
+      <span class="line-wrap"><span class="line-inner kinetic-roll" data-text="REAL."><em>REAL.</em></span></span>
     </div>
     <div class="contact-links" id="contact-links">
       <a href="mailto:heysanthoshreddy@gmail.com" class="contact-link">
@@ -1019,6 +1168,13 @@ footer{
 <!-- GSAP core + ScrollTrigger -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+/* ─── WAVES CLASS ────────────────────────────────────────── */
+class Grad{constructor(x,y,z){this.x=x;this.y=y;this.z=z}dot2(x,y){return this.x*x+this.y*y}}
+class Noise{constructor(s=0){this.p=[151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,102,143,54,65,25,63,161,1,216,80,73,209,76,132,187,208,89,18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186,3,64,52,217,226,250,124,123,5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,223,183,170,213,119,248,152,2,44,154,163,70,221,153,101,155,167,43,172,9,129,22,39,253,19,98,108,110,79,113,224,232,178,185,112,104,218,246,97,228,251,34,242,193,238,210,144,12,191,179,162,241,81,51,145,235,249,14,239,107,49,192,214,31,181,199,106,157,184,84,204,176,115,121,50,45,127,4,150,254,138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180];this.perm=new Array(512);this.gradP=new Array(512);this.grad3=[new Grad(1,1,0),new Grad(-1,1,0),new Grad(1,-1,0),new Grad(-1,-1,0),new Grad(1,0,1),new Grad(-1,0,1),new Grad(1,0,-1),new Grad(-1,0,-1),new Grad(0,1,1),new Grad(0,-1,1),new Grad(0,1,-1),new Grad(0,-1,-1)];this.seed(s)}seed(s){if(s>0&&s<1)s*=65536;s=Math.floor(s);if(s<256)s|=s<<8;for(let i=0;i<256;i++){let v=i&1?this.p[i]^ (s&255):this.p[i]^ ((s>>8)&255);this.perm[i]=this.perm[i+256]=v;this.gradP[i]=this.gradP[i+256]=this.grad3[v%12]}}fade(t){return t*t*t*(t*(t*6-15)+10)}lerp(a,b,t){return(1-t)*a+t*b}perlin2(x,y){let X=Math.floor(x),Y=Math.floor(y);x-=X;y-=Y;X&=255;Y&=255;const n00=this.gradP[X+this.perm[Y]].dot2(x,y);const n01=this.gradP[X+this.perm[Y+1]].dot2(x,y-1);const n10=this.gradP[X+1+this.perm[Y]].dot2(x-1,y);const n11=this.gradP[X+1+this.perm[Y+1]].dot2(x-1,y-1);const u=this.fade(x);return this.lerp(this.lerp(n00,n10,u),this.lerp(n01,n11,u),this.fade(y))}}
+class Waves{constructor(c,o={}){this.container=c;this.canvas=document.createElement('canvas');this.container.appendChild(this.canvas);this.ctx=this.canvas.getContext('2d');this.options={lineColor:o.lineColor||'white',waveSpeedX:0.0125,waveSpeedY:0.005,waveAmpX:32,waveAmpY:16,xGap:12,yGap:36,friction:0.925,tension:0.005};this.noise=new Noise(Math.random());this.lines=[];this.mouse={x:-10,y:0,sx:0,sy:0,vs:0,lx:0,ly:0,set:false};this.init()}init(){this.setSize();this.setLines();window.addEventListener('resize',()=>this.onResize());window.addEventListener('mousemove',e=>this.updateMouse(e.clientX,e.clientY));requestAnimationFrame(t=>this.tick(t))}setSize(){this.b=this.container.getBoundingClientRect();this.canvas.width=this.b.width;this.canvas.height=this.b.height}setLines(){const{width:w,height:h}=this.b;this.lines=[];const{xGap:xg,yGap:yg}=this.options;for(let i=0;i<=Math.ceil(w/xg)+10;i++){const p=[];for(let j=0;j<=Math.ceil(h/yg)+2;j++){p.push({x:xg*i-100,y:yg*j,w:{x:0,y:0},c:{x:0,y:0,vx:0,vy:0}})}this.lines.push(p)}}updateMouse(x,y){this.mouse.x=x-this.b.left;this.mouse.y=y-this.b.top;if(!this.mouse.set){this.mouse.sx=this.mouse.x;this.mouse.sy=this.mouse.y;this.mouse.set=true}}tick(t){this.mouse.sx+=(this.mouse.x-this.mouse.sx)*0.1;this.mouse.sy+=(this.mouse.y-this.mouse.sy)*0.1;const dx=this.mouse.x-this.mouse.lx,dy=this.mouse.y-this.mouse.ly;this.mouse.vs+=(Math.hypot(dx,dy)-this.mouse.vs)*0.1;this.mouse.lx=this.mouse.x;this.mouse.ly=this.mouse.y;this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);this.ctx.beginPath();this.ctx.strokeStyle=this.options.lineColor;this.ctx.globalAlpha=0.15;this.lines.forEach(pts=>{this.ctx.moveTo(pts[0].x,pts[0].y);pts.forEach(p=>{const m=this.noise.perlin2((p.x+t*0.01)*0.002,(p.y+t*0.005)*0.0015)*12;p.w.x=Math.cos(m)*32;p.w.y=Math.sin(m)*16;const d=Math.hypot(p.x-this.mouse.sx,p.y-this.mouse.sy);if(d<150){const s=1-d/150;p.c.vx+=Math.cos(Math.atan2(dy,dx))*s*this.mouse.vs*0.005;p.c.vy+=Math.sin(Math.atan2(dy,dx))*s*this.mouse.vs*0.005}p.c.vx+=(0-p.c.x)*0.005;p.c.vy+=(0-p.c.y)*0.005;p.c.vx*=0.925;p.c.vy*=0.925;p.c.x+=p.c.vx;p.c.y+=p.c.vy;this.ctx.lineTo(p.x+p.w.x+p.c.x,p.y+p.w.y+p.c.y)})});this.ctx.stroke();requestAnimationFrame(t=>this.tick(t))}onResize(){this.setSize();this.setLines()}}
+</script>
 
 <script>
 /* ══════════════════════════════════════════════════════════
@@ -1073,15 +1229,203 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', handleAnchorClick);
 });
 
-/* ══════════════════════════════════════════════════════════
-   CURSOR
-══════════════════════════════════════════════════════════ */
+/* ─── MAGNETIC & REVEAL ───────────────────────────────────── */
+function initMagnetic() {
+  const magnets = document.querySelectorAll('.project-link, .contact-link, .nav-links a, .nav-logo');
+  magnets.forEach(m => {
+    m.addEventListener('mousemove', e => {
+      const b = m.getBoundingClientRect();
+      const x = e.clientX - b.left - b.width/2;
+      const y = e.clientY - b.top - b.height/2;
+      gsap.to(m, { x: x * 0.35, y: y * 0.35, duration: 0.4, ease: 'power2.out' });
+    });
+    m.addEventListener('mouseleave', () => {
+      gsap.to(m, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
+    });
+  });
+}
+
+function initDistortedProjects() {
+  const container = document.getElementById('distorted-projects');
+  if (!container) return;
+  const items = container.querySelectorAll('.distorted-project');
+
+  items.forEach(item => {
+    const text = item.getAttribute('data-text');
+    const mid = Math.floor(text.length / 2);
+    const leftText = text.slice(0, mid);
+    const rightText = text.slice(mid);
+    const mediaUrl = item.getAttribute('data-media');
+    const liveUrl = item.getAttribute('data-live');
+    const codeUrl = item.getAttribute('data-code');
+
+    const wrap = document.createElement('div');
+    wrap.className = 'distorted-title-wrap';
+    wrap.innerHTML = `
+      <span class="title-side left">${leftText}</span>
+      <div class="title-media-container">
+        <img src="${mediaUrl}" alt=""/>
+      </div>
+      <span class="title-side right">${rightText}</span>
+    `;
+    item.appendChild(wrap);
+
+    const links = document.createElement('div');
+    links.className = 'distorted-links';
+    links.innerHTML = `
+      <a href="${liveUrl}" target="_blank" class="distorted-link">Live Link</a>
+      <a href="${codeUrl}" target="_blank" class="distorted-link">Code Link</a>
+    `;
+    item.appendChild(links);
+
+    const media = wrap.querySelector('.title-media-container');
+    const left = wrap.querySelector('.left');
+    const right = wrap.querySelector('.right');
+
+    const tl = gsap.timeline({ paused: true, defaults: { duration: 0.6, ease: "expo.out" } });
+    tl.to(media, { width: 240, opacity: 1, scale: 1, margin: "0 1.5rem" })
+      .to(left, { x: -10 }, 0)
+      .to(right, { x: 10 }, 0);
+
+    item.addEventListener('mouseenter', () => tl.play());
+    item.addEventListener('mouseleave', () => tl.reverse());
+  });
+}
+
+function initProjectsAnim() {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#projects',
+      start: 'top 70%',
+      toggleActions: 'play none none none',
+    }
+  });
+
+  tl.to('#projects-title', { y: 0, opacity: 1, duration: .7, ease: 'expo.out' }, 0)
+    .to('#projects-tag', { opacity: 1, duration: .5 }, 0.2)
+    .to('.distorted-project', {
+      opacity: 1, y: 0,
+      duration: .8,
+      stagger: .1,
+      ease: 'expo.out',
+    }, 0.3);
+}
+
+function initHeroGrid() {
+  const grid = document.getElementById('hero-grid');
+  const hero = document.getElementById('hero');
+  if (!grid || !hero) return;
+
+  // Inject lines
+  for (let i = 0; i < 96; i++) {
+    const line = document.createElement('div');
+    line.className = 'hero-grid-line';
+    grid.appendChild(line);
+  }
+
+  // Faux-3D Tilt
+  hero.addEventListener('mousemove', e => {
+    const { width, height, left, top } = hero.getBoundingClientRect();
+    const x = (e.clientX - left) / width - 0.5;
+    const y = (e.clientY - top) / height - 0.5;
+
+    gsap.to(grid, {
+      rotationY: x * 15,
+      rotationX: -y * 15,
+      x: x * 20,
+      y: y * 20,
+      duration: 1,
+      ease: 'power2.out',
+      transformPerspective: 1000,
+      force3D: true
+    });
+  });
+}
+
+function initKineticRoll() {
+  const rolls = document.querySelectorAll('.kinetic-roll');
+  rolls.forEach(roll => {
+    const text = roll.getAttribute('data-text') || roll.textContent;
+    roll.innerHTML = '';
+    
+    [...text].forEach(char => {
+      const wrap = document.createElement('span');
+      wrap.className = 'char-wrap';
+      
+      const primary = document.createElement('span');
+      primary.className = 'char-primary';
+      primary.textContent = char === ' ' ? '\u00A0' : char;
+      
+      const secondary = document.createElement('span');
+      secondary.className = 'char-secondary';
+      secondary.textContent = char === ' ' ? '\u00A0' : char;
+      
+      wrap.appendChild(primary);
+      wrap.appendChild(secondary);
+      roll.appendChild(wrap);
+    });
+
+    const chars = roll.querySelectorAll('.char-wrap');
+    roll.addEventListener('mouseenter', () => {
+      gsap.to(roll.querySelectorAll('.char-primary'), {
+        yPercent: -100,
+        duration: 0.6,
+        stagger: 0.02,
+        ease: 'expo.inOut'
+      });
+      gsap.to(roll.querySelectorAll('.char-secondary'), {
+        yPercent: -100,
+        duration: 0.6,
+        stagger: 0.02,
+        ease: 'expo.inOut'
+      });
+    });
+    roll.addEventListener('mouseleave', () => {
+      gsap.to(roll.querySelectorAll('.char-primary'), {
+        yPercent: 0,
+        duration: 0.6,
+        stagger: 0.01,
+        ease: 'expo.inOut'
+      });
+      gsap.to(roll.querySelectorAll('.char-secondary'), {
+        yPercent: 0,
+        duration: 0.6,
+        stagger: 0.01,
+        ease: 'expo.inOut'
+      });
+    });
+  });
+}
+
+function initBentoDrifts() {
+  const widgets = document.querySelectorAll('.widget');
+  widgets.forEach((w, i) => {
+    gsap.to(w, {
+      z: 20,
+      x: i % 2 === 0 ? 5 : -5,
+      y: i % 3 === 0 ? 5 : -5,
+      duration: 3 + i * 0.5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+      delay: i * 0.2
+    });
+  });
+}
+
 if(window.matchMedia('(pointer:fine)').matches){
   const dot = document.getElementById('cur-dot');
   const ring = document.getElementById('cur-ring');
   let mx=0,my=0,rx=0,ry=0;
   document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
   (function lerp(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(lerp)})();
+  
+  initMagnetic();
+  initDistortedProjects();
+  initProjectsAnim();
+  initHeroGrid();
+  initKineticRoll();
+  initBentoDrifts();
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -1245,6 +1589,10 @@ scrollBtn.addEventListener('click', () => lenis.scrollTo(0, { duration: 1.6 }));
       opacity: 1, y: 0, duration: .7, stagger: .12,
       ease: 'back.out(1.4)'
     }, 1.4);
+
+  // Init Waves
+  const wavesContainer = document.getElementById('hero-waves');
+  if(wavesContainer) new Waves(wavesContainer, { lineColor: '#7effa0' });
 })();
 
 /* ══════════════════════════════════════════════════════════
