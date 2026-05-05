@@ -3195,6 +3195,9 @@ window.initNeko = function() {
 
     // Instant Reaction for Clicks and Touches
     const handleInstantAction = (e) => {
+      // If clicking directly on the cat, don't trigger the movement/wake burst
+      if (e.target && e.target.closest('.neko')) return;
+
       const x = e.clientX || (e.touches && e.touches[0].clientX);
       const y = e.clientY || (e.touches && e.touches[0].clientY);
       if (x === undefined || y === undefined) return;
@@ -3203,21 +3206,17 @@ window.initNeko = function() {
       pet.mouseY = y;
       pet.hasMouseMoved = true;
 
-      // Immediate wake-up: bypass the AWAKE state transition delay
+      // Immediate wake-up: bypass the AWAKE state transition delay safely
       if (pet.isIdle()) {
         pet.setState(5); // AWAKE
         pet.stateCount = 100; // Skip the "waking up" pause
       }
 
       // Moderate acceleration burst (realistic feel)
-      const originalSpeed = pet.speed;
       pet.speed = 20; // Grounded, natural fast-walk speed
       
-      // Force a manual logic tick to initiate movement immediately
-      pet.tickAccumulator = 1; 
-      pet.update(); 
-      
-      setTimeout(() => { pet.speed = originalSpeed; }, 800);
+      clearTimeout(window.nekoSpeedTimeout);
+      window.nekoSpeedTimeout = setTimeout(() => { pet.speed = 10; }, 800);
     };
 
     window.addEventListener('pointerdown', handleInstantAction, { capture: true, passive: true });
@@ -3239,11 +3238,7 @@ window.initNeko = function() {
         spawnHeart(petRect.left, petRect.top);
       }
       
-      // Occasional "Glitch"
-      if (Math.random() < 0.005) {
-        pet.element.style.transform = `translate(${Math.random()*4-2}px, ${Math.random()*4-2}px) skew(${Math.random()*10-5}deg)`;
-        setTimeout(() => pet.element.style.transform = '', 100);
-      }
+      // (Removed intentional CSS glitch effect to prevent jittering)
       
       requestAnimationFrame(checkProximity);
     }
