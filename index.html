@@ -2107,92 +2107,172 @@ async function loadISS(){
   }
 }
 loadISS();
+setInterval(loadISS, 30000); // Faster polling for ISS
 
-async function loadLanyard(){
-  try{
-    const r=await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
-    const d=await r.json();
-    if(!d.success)return;
-    const p=d.data;
-    if(p.discord_user?.avatar){
-      const avUrl=`https://cdn.discordapp.com/avatars/${DISCORD_ID}/${p.discord_user.avatar}.png?size=128`;
-      $('presence-avatar').src=avUrl;$('dw-avatar').src=avUrl;
+function updateLanyardUI(p) {
+  if(!p) return;
+  
+  // Update Avatars
+  if(p.discord_user?.avatar){
+    const avUrl=`https://cdn.discordapp.com/avatars/${DISCORD_ID}/${p.discord_user.avatar}.png?size=128`;
+    const pAv = $('presence-avatar'); if(pAv) pAv.src=avUrl;
+    const dAv = $('dw-avatar'); if(dAv) dAv.src=avUrl;
+  }
+
+  // Update Status Label
+  const statusMap={online:'● Online',idle:'◑ Idle',dnd:'● Do Not Disturb',offline:'○ Offline'};
+  const st = p.discord_status || 'offline';
+  setText('dw-status', statusMap[st] || st);
+
+  // Real-time Music Update via Spotify Socket
+  const np = $('now-playing-body');
+  const eq = $('eq-bars');
+  if (p.listening_to_spotify && p.spotify) {
+    const s = p.spotify;
+    if (np) {
+      np.innerHTML = `
+        <div class="now-playing-body">
+          <img class="now-playing-art" src="${s.album_art_url}" alt="${esc(s.song)}"
+            onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(s.song[0])}&background=12121a&color=7effa0&size=120'"/>
+          <div>
+            <div class="now-playing-track">${esc(s.song)}</div>
+            <div class="now-playing-artist">${esc(s.artist)}</div>
+            <div style="margin-top:.4rem"><span class="tag green">● Live on Spotify</span></div>
+          </div>
+        </div>
+        <div class="now-playing-bar"><div class="now-playing-bar-fill" id="spotify-progress-fill"></div></div>
+      `;
+      // Smooth progress bar update
+      const updateProgress = () => {
+        const fill = $('spotify-progress-fill');
+        if (!fill || !window.isSpotifyActive) return;
+        const start = s.timestamps.start;
+        const end = s.timestamps.end;
+        const total = end - start;
+        const current = Date.now() - start;
+        const progress = Math.min(Math.max((current / total) * 100, 0), 100);
+        fill.style.width = progress + '%';
+        if (progress < 100) requestAnimationFrame(updateProgress);
+      };
+      updateProgress();
     }
-    const statusMap={online:'● Online',idle:'◑ Idle',dnd:'● Do Not Disturb',offline:'○ Offline'};
-    const statusColor={online:'var(--accent)',idle:'#ffd700',dnd:'var(--accent2)',offline:'var(--fg3)'};
-    const activities = p.activities || [];
-    const container = $('dw-activities-container');
-    const presence = $('presence-activity');
-    
-    if(container){
-      if(activities.length > 0){
-        container.innerHTML = activities.map(act => {
-          let name = act.name === 'Custom Status' ? (act.state || act.details || '') : act.name;
-          let details = act.name === 'Custom Status' ? '' : (act.details || '');
-          
-          let imgSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent((name||'?')[0])}&background=12121a&color=7effa0&bold=true&size=80`;
-          
-          if (act.name === 'Spotify' && p.spotify) {
-            imgSrc = p.spotify.album_art_url;
-          } else if(act.assets?.large_image){
-            if(act.assets.large_image.startsWith('mp:external/')){
-              imgSrc = 'https://media.discordapp.net/' + act.assets.large_image.replace('mp:', '');
-            } else {
-              imgSrc = `https://cdn.discordapp.com/app-assets/${act.application_id}/${act.assets.large_image}.png`;
-            }
+    if (eq) eq.classList.remove('paused');
+    window.isSpotifyActive = true;
+  } else {
+    window.isSpotifyActive = false;
+  }
+
+  if(container){
+    if(activities.length > 0){
+      container.innerHTML = activities.map(act => {
+        let name = act.name === 'Custom Status' ? (act.state || act.details || '') : act.name;
+        let details = act.name === 'Custom Status' ? '' : (act.details || '');
+        
+        // Calculate duration if available
+        let durationText = '';
+        if (act.timestamps?.start) {
+          const diff = Date.now() - act.timestamps.start;
+          const mins = Math.floor(diff / 60000);
+          const hours = Math.floor(mins / 60);
+          if (hours > 0) durationText = `for ${hours}h ${mins % 60}m`;
+          else if (mins > 0) durationText = `for ${mins}m`;
+          else durationText = 'just started';
+        }
+
+        let imgSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent((name||'?')[0])}&background=12121a&color=7effa0&bold=true&size=80`;
+        
+        if (act.name === 'Spotify' && p.spotify) {
+          imgSrc = p.spotify.album_art_url;
+        } else if(act.assets?.large_image){
+          if(act.assets.large_image.startsWith('mp:external/')){
+            imgSrc = 'https://media.discordapp.net/' + act.assets.large_image.replace('mp:', '');
+          } else {
+            imgSrc = `https://cdn.discordapp.com/app-assets/${act.application_id}/${act.assets.large_image}.png`;
           }
+        }
 
-          return `
-            <div class="discord-activity-card" style="margin-bottom:.5rem">
-              <img class="discord-activity-img" src="${imgSrc}" alt="" onerror="this.src='https://ui-avatars.com/api/?name=?&background=12121a&color=7effa0&size=80'"/>
-              <div>
-                <div class="discord-activity-name">${esc(name)}</div>
-                <div class="discord-activity-detail">${esc(details)}</div>
-              </div>
+        return `
+          <div class="discord-activity-card" style="margin-bottom:.5rem">
+            <img class="discord-activity-img" src="${imgSrc}" alt="" onerror="this.src='https://ui-avatars.com/api/?name=?&background=12121a&color=7effa0&size=80'"/>
+            <div>
+              <div class="discord-activity-name">${esc(name)}</div>
+              <div class="discord-activity-detail">${esc(details)} ${durationText ? `<span style="opacity:0.5; font-size:0.5rem">(${durationText})</span>` : ''}</div>
             </div>
-          `;
-        }).join('');
-      } else {
-        container.innerHTML = '<div class="not-playing">— Not doing anything</div>';
-      }
+          </div>
+        `;
+      }).join('');
+    } else {
+      container.innerHTML = '<div class="not-playing">— Not doing anything</div>';
     }
+  }
 
-    if(presence){
-      const topAct = activities.find(a => a.type === 0) || activities[0];
-      if(topAct){
-        const n = topAct.name === 'Custom Status' ? (topAct.state || topAct.details || '') : topAct.name;
-        const d = topAct.name === 'Custom Status' ? '' : (topAct.details ? ' · ' + topAct.details : '');
-        presence.innerHTML = `Currently — <span>${esc(n)}</span>${esc(d)}`;
-      } else {
-        presence.textContent = `Discord ${statusMap[st]||st}`;
-      }
+  // Update KV Data
+  const kv=p.kv||{};
+  const kvEl=$('kv-widget');
+  if(kvEl){
+    let html='<div style="display:flex;flex-direction:column;gap:.5rem">';
+    if(kv.quote){
+      html+=`<div class="kv-quote">"${esc(kv.quote)}"</div>`;
+      const hq=$('hero-quote');
+      if(hq)hq.textContent=kv.quote;
     }
-
-    const kv=p.kv||{};
-    const kvEl=$('kv-widget');
-    if(kvEl){
-      let html='<div style="display:flex;flex-direction:column;gap:.5rem">';
-      if(kv.quote){
-        html+=`<div class="kv-quote">"${esc(kv.quote)}"</div>`;
-        const hq=$('hero-quote');
-        if(hq)hq.textContent=kv.quote;
-      }
-      if(kv.currently){
-        html+=`<div class="tag kv-tag">Working on: <span style="color:var(--accent)">${esc(kv.currently)}</span></div>`;
-      }
-      const keys=Object.keys(kv).filter(k=>k!=='quote'&&k!=='currently');
-      keys.forEach(k=>{html+=`<div class="kv-field">${esc(k)}: <span>${esc(kv[k])}</span></div>`});
-      if(!Object.keys(kv).length){html+=`<div class="not-playing">— No KV data set</div>`}
-      html+='</div>';
-      kvEl.innerHTML=html;
+    if(kv.currently){
+      html+=`<div class="tag kv-tag">Working on: <span style="color:var(--accent)">${esc(kv.currently)}</span></div>`;
     }
-  }catch(e){
-    const p=$('presence-activity');
-    if(p)p.textContent='Discord presence unavailable';
+    const keys=Object.keys(kv).filter(k=>k!=='quote'&&k!=='currently');
+    keys.forEach(k=>{html+=`<div class="kv-field">${esc(k)}: <span>${esc(kv[k])}</span></div>`});
+    if(!Object.keys(kv).length && !activities.length){html+=`<div class="not-playing">— No live data available</div>`}
+    html+='</div>';
+    kvEl.innerHTML=html;
   }
 }
-loadLanyard();
-setInterval(loadLanyard,30000);
+
+let lanyardSocket = null;
+let heartbeatInterval = null;
+
+function initLanyardSocket() {
+  if (lanyardSocket) lanyardSocket.close();
+
+  lanyardSocket = new WebSocket('wss://api.lanyard.rest/socket');
+
+  lanyardSocket.onopen = () => {
+    // Initialize session
+    lanyardSocket.send(JSON.stringify({
+      op: 2,
+      d: { subscribe_to_id: DISCORD_ID }
+    }));
+  };
+
+  lanyardSocket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+
+    if (data.op === 1) { // Hello
+      // Start heartbeating
+      if (heartbeatInterval) clearInterval(heartbeatInterval);
+      heartbeatInterval = setInterval(() => {
+        lanyardSocket.send(JSON.stringify({ op: 3 }));
+      }, data.d.heartbeat_interval);
+    }
+
+    if (data.op === 0) { // Event
+      if (data.t === 'INIT_STATE' || data.t === 'PRESENCE_UPDATE') {
+        updateLanyardUI(data.d);
+      }
+    }
+  };
+
+  lanyardSocket.onclose = () => {
+    if (heartbeatInterval) clearInterval(heartbeatInterval);
+    // Reconnect after 5 seconds
+    setTimeout(initLanyardSocket, 5000);
+  };
+
+  lanyardSocket.onerror = () => {
+    lanyardSocket.close();
+  };
+}
+
+initLanyardSocket();
 
 async function fetchAlbumArt(track,artist){
   try{
@@ -2201,6 +2281,23 @@ async function fetchAlbumArt(track,artist){
     if(d.results?.length)return d.results[0].artworkUrl100.replace('100x100','600x600');
   }catch{}
   return null;
+}
+
+function renderRecentTracks(recent) {
+  const rt=$('recent-tracks');
+  if(!rt) return;
+  rt.innerHTML=recent.map((t,i)=>{
+    const tn=t.name;
+    const an=t.artist?.['#text']||t.artist;
+    const sm=t.image?.find(im=>im.size==='small')?.['#text']||`https://ui-avatars.com/api/?name=${encodeURIComponent(tn[0])}&background=12121a&color=4a4758&size=40`;
+    return `<div class="track-row" style="animation-delay:${i*60}ms">
+      <img class="track-thumb" src="${sm}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(tn[0])}&background=12121a&color=4a4758&size=40'" alt=""/>
+      <div style="min-width:0">
+        <div class="track-name">${esc(tn)}</div>
+        <div class="track-artist">${esc(an)}</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 async function loadLastFM(){
@@ -2213,25 +2310,39 @@ async function loadLastFM(){
       if(!d.error){data=d;break}
     }catch{}
   }
+  
   const np=$('now-playing-body');
   const rt=$('recent-tracks');
   const eq=$('eq-bars');
+  
   if(!data||data.error){
-    if(np)np.innerHTML='<div class="not-playing">— Last.fm unavailable</div>';
+    if(np && !window.isSpotifyActive) np.innerHTML='<div class="not-playing">— Last.fm unavailable</div>';
     if(rt)rt.innerHTML='<div class="not-playing">— Unavailable</div>';
-    if(eq)eq.classList.add('paused');
+    if(eq && !window.isSpotifyActive) eq.classList.add('paused');
     return;
   }
+
   const tracks=data.recenttracks?.track||[];
+  const isLive=tracks[0]?.['@attr']?.nowplaying==='true';
+
+  // If Spotify is active via socket, we only update the history list from Last.fm
+  if(window.isSpotifyActive) {
+    if(rt && tracks.length) {
+      const recent=tracks.slice(isLive?1:0, (isLive?1:0)+5);
+      renderRecentTracks(recent);
+    }
+    return;
+  }
+
   if(!tracks.length){if(np)np.innerHTML='<div class="not-playing">— No recent tracks</div>';return}
   const nowPlaying=tracks[0];
-  const isLive=nowPlaying['@attr']?.nowplaying==='true';
   const trackName=nowPlaying.name;
   const artistName=nowPlaying.artist?.['#text']||nowPlaying.artist;
   const albumArt=nowPlaying.image?.find(i=>i.size==='extralarge')?.['#text']||'';
   const itunesArt=await fetchAlbumArt(trackName,artistName);
   const finalArt=itunesArt||albumArt||`https://ui-avatars.com/api/?name=${encodeURIComponent(trackName[0])}&background=12121a&color=7effa0&bold=true&size=120`;
-  if(eq)eq.classList.toggle('paused',!isLive);
+  
+  if(eq) eq.classList.toggle('paused',!isLive);
   if(np){
     if(isLive){
       np.innerHTML=`
@@ -2252,22 +2363,11 @@ async function loadLastFM(){
   }
   if(rt){
     const recent=tracks.slice(isLive?1:0,(isLive?1:0)+5);
-    if(!recent.length){rt.innerHTML='<div class="not-playing">— No history yet</div>';return}
-    rt.innerHTML=recent.map((t,i)=>{
-      const tn=t.name;
-      const an=t.artist?.['#text']||t.artist;
-      const sm=t.image?.find(im=>im.size==='small')?.['#text']||`https://ui-avatars.com/api/?name=${encodeURIComponent(tn[0])}&background=12121a&color=4a4758&size=40`;
-      return `<div class="track-row" style="animation-delay:${i*60}ms">
-        <img class="track-thumb" src="${sm}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(tn[0])}&background=12121a&color=4a4758&size=40'" alt=""/>
-        <div style="min-width:0">
-          <div class="track-name">${esc(tn)}</div>
-          <div class="track-artist">${esc(an)}</div>
-        </div>
-      </div>`;
-    }).join('');
+    renderRecentTracks(recent);
   }
 }
 loadLastFM();
+setInterval(loadLastFM, 20000); // 20s for faster music history sync
 
 async function loadTMDB(){
   try{
