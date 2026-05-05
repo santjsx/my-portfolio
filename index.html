@@ -2074,8 +2074,9 @@ gsap.registerPlugin(ScrollTrigger);
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: '#contact',
-      start: 'top 75%',
-      toggleActions: 'play none none none',
+      start: 'top 80%',
+      onEnterBack: () => tl.restart(),
+      toggleActions: 'play none none none'
     }
   });
 
