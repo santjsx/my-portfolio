@@ -3059,7 +3059,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Wait for Neko to be available
   if (typeof createNeko === 'function') {
     const pet = createNeko({
-      speed: 16, // Moderate speed per logic tick (will be 10 ticks/sec)
+      speed: 10, // Reduced speed for a more realistic, natural pace
       fps: 120,
       behaviorMode: 0,
       allowBehaviorChange: true
@@ -3123,7 +3123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Moderate acceleration burst (realistic feel)
       const originalSpeed = pet.speed;
-      pet.speed = 32; // Natural fast-walk speed
+      pet.speed = 20; // Grounded, natural fast-walk speed
       
       // Force a manual logic tick to initiate movement immediately
       pet.tickAccumulator = 1; 
