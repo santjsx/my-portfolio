@@ -3059,17 +3059,56 @@ document.addEventListener('DOMContentLoaded', () => {
   // Wait for Neko to be available
   if (typeof createNeko === 'function') {
     const pet = createNeko({
-      speed: 45, // Faster base speed for better responsiveness
-      fps: 144,  // Higher FPS for smoother interpolation
+      speed: 16, // Moderate speed per logic tick (will be 10 ticks/sec)
+      fps: 120,
       behaviorMode: 0,
       allowBehaviorChange: true
     });
 
-    // Instant Response for Clicks and Touches
+    // ENHANCEMENT: Improve Reaction Time (Latency)
+    // We increase the logic frequency from 5 FPS to 12 FPS.
+    // This makes the cat "think" and check your mouse 2.4x more often,
+    // making it feel alert and responsive without needing high speed.
+    pet.update = function() {
+      if (this.tickAccumulator === undefined) this.tickAccumulator = 0;
+      const logicFPS = 12; // Higher frequency = lower latency / better reaction time
+      this.tickAccumulator += logicFPS / this.fps;
+      
+      while (this.tickAccumulator >= 1) {
+        this.tickAccumulator -= 1;
+        this.prevLogicX = this.logicX;
+        this.prevLogicY = this.logicY;
+        
+        // Animation logic: Neko animations were designed for 5 FPS.
+        // We only increment the animation frame every ~2.4 logic ticks to keep it realistic.
+        this._animStep = (this._animStep || 0) + (5 / logicFPS);
+        if (this._animStep >= 1) {
+          this._animStep -= 1;
+          this.processOriginalTick(); // Full logic + animation update
+        } else {
+          // Intermediate logic tick: update target and move, but don't animate yet
+          // This is what makes the "reaction time" feel instant.
+          this.chaseMouse(); 
+          if (this.state >= 6 && this.state <= 13) { // Movement states
+            let newX = this.logicX + this.moveDX;
+            let newY = this.logicY + this.moveDY;
+            this.logicX = Math.max(0, Math.min(this.boundsWidth, newX));
+            this.logicY = Math.max(0, Math.min(this.boundsHeight, newY));
+          }
+        }
+      }
+
+      // Smooth interpolation for visual rendering
+      const t = this.tickAccumulator;
+      this.x = this.prevLogicX + (this.logicX - this.prevLogicX) * t;
+      this.y = this.prevLogicY + (this.logicY - this.prevLogicY) * t;
+      this.updatePosition();
+    };
+
+    // Instant Reaction for Clicks and Touches
     const handleInstantAction = (e) => {
-      // Handle both mouse and touch coordinates
-      const x = e.clientX;
-      const y = e.clientY;
+      const x = e.clientX || (e.touches && e.touches[0].clientX);
+      const y = e.clientY || (e.touches && e.touches[0].clientY);
       if (x === undefined || y === undefined) return;
 
       pet.mouseX = x;
@@ -3077,25 +3116,22 @@ document.addEventListener('DOMContentLoaded', () => {
       pet.hasMouseMoved = true;
 
       // Immediate wake-up: bypass the AWAKE state transition delay
-      // States: 0=STOP, 4=SLEEP, 5=AWAKE
-      if (pet.state === 4 || pet.state === 0 || pet.state === 5) {
+      if (pet.isIdle()) {
         pet.setState(5); // AWAKE
-        pet.stateCount = 200; // Force immediate transition to movement on next tick
+        pet.stateCount = 100; // Skip the "waking up" pause
       }
 
-      // Instant burst: temporary speed boost to make it "dash" to the target
-      const oldSpeed = pet.speed;
-      pet.speed = 150; 
+      // Moderate acceleration burst (realistic feel)
+      const originalSpeed = pet.speed;
+      pet.speed = 32; // Natural fast-walk speed
       
-      // Force a manual logic tick to initiate movement without waiting for the next interval
+      // Force a manual logic tick to initiate movement immediately
       pet.tickAccumulator = 1; 
       pet.update(); 
       
-      // Reset speed after a short dash duration
-      setTimeout(() => { pet.speed = oldSpeed; }, 500);
+      setTimeout(() => { pet.speed = originalSpeed; }, 800);
     };
 
-    // Use pointerdown to handle both mouse and touch instantly
     window.addEventListener('pointerdown', handleInstantAction, { capture: true, passive: true });
 
     // Custom "Unique" Interaction: Heart when near logo
