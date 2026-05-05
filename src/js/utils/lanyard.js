@@ -934,10 +934,16 @@ function initChatSystem() {
     });
 }
 
+const albumArtCache = new Map();
+
 /**
  * Fetches high-resolution album art from iTunes Search API with fallback
  */
 async function fetchiTunesAlbumArt(song, artist) {
+    if (!song) return null;
+    const cacheKey = `${song} - ${artist}`;
+    if (albumArtCache.has(cacheKey)) return albumArtCache.get(cacheKey);
+
     // Clean up song title for better search (remove "feat.", "remaster", etc.)
     const cleanSong = song.replace(/\(.*\)|- .*|feat\..*/gi, '').trim();
     
@@ -962,6 +968,7 @@ async function fetchiTunesAlbumArt(song, artist) {
         art = await search(cleanSong);
     }
     
+    if (art) albumArtCache.set(cacheKey, art);
     return art;
 }
 

@@ -306,8 +306,19 @@ function escapeHTML(str) {
 /**
  * Fetches high-resolution album art from iTunes Search API with fallback
  */
-async function fetchiTunesAlbumArt(song, artist) {
+const albumArtCache = new Map();
+
+/**
+ * Fetches high-resolution album art from iTunes Search API with fallback
+ */
+export async function fetchiTunesAlbumArt(song, artist) {
+    if (!song) return null;
+    const cacheKey = `${song} - ${artist}`;
+    if (albumArtCache.has(cacheKey)) return albumArtCache.get(cacheKey);
+
+    // Clean up song title for better search (remove "feat.", "remaster", etc.)
     const cleanSong = song.replace(/\(.*\)|- .*|feat\..*/gi, '').trim();
+    
     const search = async (query) => {
         try {
             const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=1`);
@@ -320,7 +331,15 @@ async function fetchiTunesAlbumArt(song, artist) {
         }
         return null;
     };
+
+    // Try primary search (Song + Artist)
     let art = await search(`${cleanSong} ${artist}`);
-    if (!art) art = await search(cleanSong);
+    
+    // Secondary search (just Song) if primary fails
+    if (!art) {
+        art = await search(cleanSong);
+    }
+    
+    if (art) albumArtCache.set(cacheKey, art);
     return art;
 }

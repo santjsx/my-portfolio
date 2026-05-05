@@ -3096,26 +3096,70 @@ function initLanyardSocket() {
 
 initLanyardSocket();
 
-async function fetchAlbumArt(track,artist){
-  try{
-    const r=await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(track+' '+artist)}&media=music&limit=1`);
-    const d=await r.json();
-    if(d.results?.length)return d.results[0].artworkUrl100.replace('100x100','600x600');
-  }catch{}
+const albumArtCache = new Map();
+
+async function fetchAlbumArt(track, artist) {
+  if (!track) return null;
+  const cacheKey = `${track} - ${artist}`;
+  if (albumArtCache.has(cacheKey)) return albumArtCache.get(cacheKey);
+
+  // Clean track name for better results (remove "feat.", "(Remastered)", etc.)
+  const cleanTrack = track.replace(/\(.*\)|- .*|feat\..*/gi, '').trim();
+  
+  try {
+    // Priority 1: Exact search (Track + Artist)
+    let r = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(cleanTrack + ' ' + artist)}&media=music&limit=1`);
+    let d = await r.json();
+    
+    if (d.results?.length) {
+      const art = d.results[0].artworkUrl100.replace('100x100', '600x600');
+      albumArtCache.set(cacheKey, art);
+      return art;
+    }
+    
+    // Priority 2: Track only fallback
+    r = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(cleanTrack)}&media=music&limit=1`);
+    d = await r.json();
+    if (d.results?.length) {
+      const art = d.results[0].artworkUrl100.replace('100x100', '600x600');
+      albumArtCache.set(cacheKey, art);
+      return art;
+    }
+  } catch (e) {
+    console.warn('iTunes API failed:', e);
+  }
   return null;
 }
 
-function renderRecentTracks(recent) {
-  const rt=$('recent-tracks');
-  if(!rt) return;
-  rt.innerHTML=recent.map((t,i)=>{
-    const tn=t.name;
-    const an=t.artist?.['#text']||t.artist;
-    const sm=t.image?.find(im=>im.size==='small')?.['#text']||`https://ui-avatars.com/api/?name=${encodeURIComponent(tn[0])}&background=12121a&color=4a4758&size=40`;
-    return `<div class="track-row" style="animation-delay:${i*60}ms">
-      <img class="track-thumb" src="${sm}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(tn[0])}&background=12121a&color=4a4758&size=40'" alt=""/>
+async function renderRecentTracks(recent) {
+  const rt = $('recent-tracks');
+  if (!rt) return;
+
+  // Fetch all art in parallel for efficiency
+  const tracksWithArt = await Promise.all(recent.map(async (t) => {
+    const tn = t.name;
+    const an = t.artist?.['#text'] || t.artist;
+    
+    // Try iTunes first for high-res
+    let art = await fetchAlbumArt(tn, an);
+    
+    // Fallback to Last.fm if iTunes fails
+    if (!art) {
+      art = t.image?.find(im => im.size === 'medium' || im.size === 'large' || im.size === 'small')?.['#text'];
+    }
+    
+    return { ...t, finalArt: art };
+  }));
+
+  rt.innerHTML = tracksWithArt.map((t, i) => {
+    const tn = t.name;
+    const an = t.artist?.['#text'] || t.artist;
+    const art = t.finalArt || `https://ui-avatars.com/api/?name=${encodeURIComponent(tn[0])}&background=12121a&color=4a4758&size=40`;
+    
+    return `<div class="track-row" style="animation-delay:${i * 60}ms">
+      <img class="track-thumb" src="${art}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(tn[0])}&background=12121a&color=4a4758&size=40'" alt=""/>
       <div style="min-width:0">
-        <div class="track-name">${esc(tn)}</div>
+        <div class="track-name" title="${esc(tn)}">${esc(tn)}</div>
         <div class="track-artist">${esc(an)}</div>
       </div>
     </div>`;
@@ -3151,7 +3195,7 @@ async function loadLastFM(){
   if(window.isSpotifyActive) {
     if(rt && tracks.length) {
       const recent=tracks.slice(isLive?1:0, (isLive?1:0)+5);
-      renderRecentTracks(recent);
+      await renderRecentTracks(recent);
     }
     return;
   }
@@ -3185,7 +3229,7 @@ async function loadLastFM(){
   }
   if(rt){
     const recent=tracks.slice(isLive?1:0,(isLive?1:0)+5);
-    renderRecentTracks(recent);
+    await renderRecentTracks(recent);
   }
 }
 loadLastFM();
