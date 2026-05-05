@@ -3059,11 +3059,44 @@ document.addEventListener('DOMContentLoaded', () => {
   // Wait for Neko to be available
   if (typeof createNeko === 'function') {
     const pet = createNeko({
-      speed: 30,
-      fps: 120,
+      speed: 45, // Faster base speed for better responsiveness
+      fps: 144,  // Higher FPS for smoother interpolation
       behaviorMode: 0,
       allowBehaviorChange: true
     });
+
+    // Instant Response for Clicks and Touches
+    const handleInstantAction = (e) => {
+      // Handle both mouse and touch coordinates
+      const x = e.clientX;
+      const y = e.clientY;
+      if (x === undefined || y === undefined) return;
+
+      pet.mouseX = x;
+      pet.mouseY = y;
+      pet.hasMouseMoved = true;
+
+      // Immediate wake-up: bypass the AWAKE state transition delay
+      // States: 0=STOP, 4=SLEEP, 5=AWAKE
+      if (pet.state === 4 || pet.state === 0 || pet.state === 5) {
+        pet.setState(5); // AWAKE
+        pet.stateCount = 200; // Force immediate transition to movement on next tick
+      }
+
+      // Instant burst: temporary speed boost to make it "dash" to the target
+      const oldSpeed = pet.speed;
+      pet.speed = 150; 
+      
+      // Force a manual logic tick to initiate movement without waiting for the next interval
+      pet.tickAccumulator = 1; 
+      pet.update(); 
+      
+      // Reset speed after a short dash duration
+      setTimeout(() => { pet.speed = oldSpeed; }, 500);
+    };
+
+    // Use pointerdown to handle both mouse and touch instantly
+    window.addEventListener('pointerdown', handleInstantAction, { capture: true, passive: true });
 
     // Custom "Unique" Interaction: Heart when near logo
     const logo = document.querySelector('.nav-logo');
