@@ -2627,7 +2627,13 @@ window.initHeroAnim = function() {
   );
 
   const tl = gsap.timeline({
-    defaults: { ease: 'power4.out' }
+    defaults: { ease: 'power4.out' },
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top 90%', 
+      onEnterBack: () => tl.restart(),
+      toggleActions: 'play none none none'
+    }
   });
 
   tl.fromTo(allChars, {
