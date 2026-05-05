@@ -2853,7 +2853,9 @@ function updateLanyardUI(p) {
   // Update Status Label
   const statusMap={online:'● Online',idle:'◑ Idle',dnd:'● Do Not Disturb',offline:'○ Offline'};
   const st = p.discord_status || 'offline';
-  setText('dw-status', statusMap[st] || st);
+  const statusText = statusMap[st] || st;
+  setText('dw-status', statusText);
+  setText('presence-activity', statusText);
 
   // Real-time Music Update via Spotify Socket
   const np = $('now-playing-body');
