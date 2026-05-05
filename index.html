@@ -6,7 +6,7 @@
 <title>Santhosh Reddy — Frontend Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
 <style>
 /* ─── RESET & TOKENS ──────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -37,6 +37,8 @@ body{
   line-height:1.6;
   overflow-x:hidden;
   cursor:none;
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
 }
 @media(pointer:coarse){body{cursor:auto}}
 a{color:inherit;text-decoration:none}
@@ -79,6 +81,7 @@ button{cursor:none;border:none;background:none;font-family:inherit;position:rela
     pointer-events:none;z-index:9999;
     transform:translate(-50%,-50%);
     transition:width .15s,height .15s,background .15s;
+    will-change: transform;
   }
   #cur-ring{
     display:block;position:fixed;top:0;left:0;width:32px;height:32px;
@@ -86,6 +89,7 @@ button{cursor:none;border:none;background:none;font-family:inherit;position:rela
     pointer-events:none;z-index:9998;
     transform:translate(-50%,-50%);
     transition:width .2s,height .2s,border-color .2s;
+    will-change: transform;
   }
 
   body:has(a:hover,button:hover) #cur-dot{width:10px;height:10px;background:var(--accent2)}
@@ -98,6 +102,8 @@ button{cursor:none;border:none;background:none;font-family:inherit;position:rela
   display:grid;grid-template-columns:repeat(12,1fr);
   grid-template-rows:repeat(8,1fr);
   opacity:.15;pointer-events:none;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 .hero-grid-line{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
 
@@ -124,7 +130,19 @@ body::after{
 .tag.orange{color:var(--accent2);border-color:rgba(255,107,53,.2)}
 .tag.blue{color:var(--accent3);border-color:rgba(91,140,255,.2)}
 
-/* ─── PULSE ───────────────────────────────────────────────── */
+/* ─── SECTION HEADERS ────────────────────────────────────── */
+.section-header{
+  display:flex;align-items:baseline;justify-content:space-between;
+  margin-bottom:clamp(1.5rem,4vh,3rem);gap:1rem;flex-wrap:wrap;
+}
+.section-title{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(1.6rem,4vw,3rem);letter-spacing:-.02em;
+  overflow:hidden;
+}
+.section-title .title-inner{display:block;transform:translateY(100%);opacity:0}
+
+/* PULSE ───────────────────────────────────────────────── */
 @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes orbit{from{transform:rotate(0deg) translateX(24px)}to{transform:rotate(360deg) translateX(24px)}}
 @keyframes eq-dance{0%{transform:scaleY(.3)}100%{transform:scaleY(1)}}
@@ -529,49 +547,168 @@ nav {
 /* ═══════════════════════════════════════════════════════════
    SKILLS — Stagger grid with scale+fade
 ═══════════════════════════════════════════════════════════ */
-.skills{border-bottom:1px solid var(--line);padding:clamp(3rem,8vh,6rem) 0;position:relative;overflow:hidden}
-.skills-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem)}
-.section-header{
-  display:flex;align-items:baseline;justify-content:space-between;
-  margin-bottom:clamp(1.5rem,4vh,3rem);gap:1rem;flex-wrap:wrap;
+/* ═══════════════════════════════════════════════════════════
+   SKILLS — Modular Arsenal Design
+═══════════════════════════════════════════════════════════ */
+.skills {
+  border-bottom: 1px solid var(--line);
+  padding: clamp(4rem, 10vh, 8rem) 0;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 0%, rgba(126, 255, 160, 0.03) 0%, transparent 70%);
 }
-.section-title{
-  font-family:var(--display);font-weight:700;
-  font-size:clamp(1.6rem,4vw,3rem);letter-spacing:-.02em;
-  overflow:hidden;
-}
-.section-title .title-inner{display:block;transform:translateY(100%);opacity:0}
 
-.skills-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(clamp(140px,18vw,200px),1fr));
-  gap:1px;border:1px solid var(--line);overflow:hidden;border-radius:4px;
+.skills-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 5vw, 4rem);
+  position: relative;
+  z-index: 2;
 }
-.skill-cat{
-  padding:clamp(1rem,2.5vw,1.5rem);background:var(--bg);
-  transition:background .2s;
-  opacity:0;
-  transform:scale(.92) translateY(20px);
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+  perspective: 1000px;
 }
-.skill-cat:hover{background:var(--bg2)}
-.skill-cat-name{
-  font-family:var(--mono);font-size:.56rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--fg3);margin-bottom:.9rem;
+
+@media (max-width: 900px) {
+  .skills-grid { grid-template-columns: 1fr; }
 }
-.skill-list{display:flex;flex-direction:row;flex-wrap:wrap;gap:.5rem}
-.skill-item{
-  font-family:var(--display);font-size:.72rem;font-weight:500;
-  color:var(--fg2);display:flex;align-items:center;gap:.5rem;
-  background:var(--bg3);padding:.4rem .8rem;border-radius:100px;
-  border:1px solid var(--line);
-  transition:all .3s cubic-bezier(.23,1,.32,1);
+
+.skill-module {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
-.skill-item:hover{
-  background:var(--accent);color:var(--bg);border-color:var(--accent);
-  transform:translateY(-2px);
+
+.skill-module:hover {
+  border-color: rgba(126, 255, 160, 0.3);
+  background: var(--bg3);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
-.skill-cat{border-bottom:1px solid var(--line)}
-.skill-cat:last-child{border-bottom:none}
+
+.module-header {
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.module-title {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--fg2);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.module-title::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 1px;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.module-status {
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  color: var(--fg3);
+  text-transform: uppercase;
+}
+
+.module-content {
+  padding: 1.5rem;
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.skill-card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-card:hover {
+  border-color: var(--accent);
+  background: rgba(126, 255, 160, 0.05);
+  transform: scale(1.05);
+}
+
+.skill-card img {
+  width: 18px;
+  height: 18px;
+  filter: grayscale(1) brightness(0.8);
+  transition: filter 0.3s ease;
+}
+
+.skill-card:hover img {
+  filter: grayscale(0) brightness(1);
+}
+
+.skill-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.skill-name {
+  font-family: var(--display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.skill-level {
+  font-family: var(--mono);
+  font-size: 0.5rem;
+  color: var(--fg3);
+  text-transform: uppercase;
+  margin-top: 0.1rem;
+}
+
+/* Background Deco */
+.skills-deco {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--display);
+  font-size: 20vw;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.01);
+  pointer-events: none;
+  z-index: 1;
+  white-space: nowrap;
+}
+
 
 /* ─── HORIZONTAL SPLIT SCROLL ────────────────────────────── */
 .projects-split-section {
@@ -731,6 +868,7 @@ nav {
   object-fit: cover;
   opacity: 0.8;
   transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease;
+  will-change: transform;
 }
 .project-image-card:hover img {
   transform: scale(1.05);
@@ -1220,7 +1358,7 @@ footer{
 </section>
 
 <!-- ═══ ABOUT ══════════════════════════════════════════════ -->
-<section class="about" id="about">
+<section class="about" id="about" style="content-visibility: auto; contain-intrinsic-size: 500px;">
   <div class="about-orb" id="about-orb"></div>
   <div class="about-inner">
     <div>
@@ -1250,7 +1388,8 @@ footer{
 </section>
 
 <!-- ═══ SKILLS ══════════════════════════════════════════════ -->
-<section class="skills" id="skills">
+<section class="skills" id="skills" style="content-visibility: auto; contain-intrinsic-size: 600px;">
+  <div class="skills-deco">ARSENAL</div>
   <div class="skills-ticker">
     <div class="skills-ticker-inner">
       HTML5 · CSS3 · JavaScript · React · Next.js · Node.js · Vite.js · Firebase · MongoDB · Git · GitHub · Linux · NPM · VS Code &nbsp;&nbsp;&nbsp;
@@ -1260,38 +1399,153 @@ footer{
   <div class="skills-inner">
     <div class="section-header">
       <h2 class="section-title"><span class="title-inner" id="skills-title">Technical Arsenal</span></h2>
-      <span class="tag" id="skills-tag">// stack</span>
+      <span class="tag" id="skills-tag">// weaponry</span>
     </div>
+
     <div class="skills-grid" id="skills-grid">
-      <!-- Logic: Mapping each skill from public/images/skills_logos/ -->
-      <div class="skill-cat">
-        <div class="skill-list">
-          <div class="skill-item"><img src="public/images/skills_logos/HTML5.svg" width="14" alt=""/> HTML5</div>
-          <div class="skill-item"><img src="public/images/skills_logos/CSS3.svg" width="14" alt=""/> CSS3</div>
-          <div class="skill-item"><img src="public/images/skills_logos/JavaScript.svg" width="14" alt=""/> JavaScript</div>
-          <div class="skill-item"><img src="public/images/skills_logos/React.svg" width="14" alt=""/> React</div>
+      <!-- Module 1: Frontend -->
+      <div class="skill-module">
+        <div class="module-header">
+          <div class="module-title">Frontend Core</div>
+          <div class="module-status">[ ONLINE ]</div>
+        </div>
+        <div class="module-content">
+          <div class="skill-list">
+            <div class="skill-card">
+              <img src="public/images/skills_logos/HTML5.svg" alt="" loading="lazy" decoding="async"/>
+              <div class="skill-info">
+                <div class="skill-name">HTML5</div>
+                <div class="skill-level">Expert</div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <img src="public/images/skills_logos/CSS3.svg" alt="" loading="lazy" decoding="async"/>
+              <div class="skill-info">
+                <div class="skill-name">CSS3</div>
+                <div class="skill-level">Advanced</div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <img src="public/images/skills_logos/JavaScript.svg" alt="" loading="lazy" decoding="async"/>
+              <div class="skill-info">
+                <div class="skill-name">JavaScript</div>
+                <div class="skill-level">ES6+</div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <img src="public/images/skills_logos/React.svg" alt="" loading="lazy" decoding="async"/>
+              <div class="skill-info">
+                <div class="skill-name">React</div>
+                <div class="skill-level">Hooks/Context</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="skill-cat">
-        <div class="skill-list">
-          <div class="skill-item"><img src="public/images/skills_logos/Next.js.svg" width="14" alt=""/> Next.js</div>
-          <div class="skill-item"><img src="public/images/skills_logos/Node.js.svg" width="14" alt=""/> Node.js</div>
-          <div class="skill-item"><img src="public/images/skills_logos/Vite.js.svg" width="14" alt=""/> Vite.js</div>
-          <div class="skill-item"><img src="public/images/skills_logos/Firebase.svg" width="14" alt=""/> Firebase</div>
+
+      <!-- Module 2: Frameworks & Tools -->
+      <div class="skill-module">
+        <div class="module-header">
+          <div class="module-title">Modern Stack</div>
+          <div class="module-status">V2.4.0</div>
+        </div>
+        <div class="module-content">
+          <div class="skill-list">
+            <div class="skill-card">
+              <img src="public/images/skills_logos/Next.js.svg" alt=""/>
+              <div class="skill-info">
+                <div class="skill-name">Next.js</div>
+                <div class="skill-level">App Router</div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <img src="public/images/skills_logos/Node.js.svg" alt=""/>
+              <div class="skill-info">
+                <div class="skill-name">Node.js</div>
+                <div class="skill-level">Runtime</div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <img src="public/images/skills_logos/Vite.js.svg" alt=""/>
+              <div class="skill-info">
+                <div class="skill-name">Vite.js</div>
+                <div class="skill-level">Bundler</div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <img src="public/images/skills_logos/Firebase.svg" alt=""/>
+              <div class="skill-info">
+                <div class="skill-name">Firebase</div>
+                <div class="skill-level">Backend</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="skill-cat">
-        <div class="skill-list">
-          <div class="skill-item"><img src="public/images/skills_logos/MongoDB.svg" width="14" alt=""/> MongoDB</div>
-          <div class="skill-item"><img src="public/images/skills_logos/Git.svg" width="14" alt=""/> Git</div>
-          <div class="skill-item"><img src="public/images/skills_logos/GitHub.svg" width="14" alt=""/> GitHub</div>
-          <div class="skill-item"><img src="public/images/skills_logos/Linux.svg" width="14" alt=""/> Linux</div>
+
+      <!-- Module 3: Infrastructure -->
+      <div class="skill-module">
+        <div class="module-header">
+          <div class="module-title">Data & Systems</div>
+          <div class="module-status">SYSCK_OK</div>
+        </div>
+        <div class="module-content">
+          <div class="skill-list">
+            <div class="skill-card">
+              <img src="public/images/skills_logos/MongoDB.svg" alt=""/>
+              <div class="skill-info">
+                <div class="skill-name">MongoDB</div>
+                <div class="skill-level">NoSQL</div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <img src="public/images/skills_logos/Git.svg" alt=""/>
+              <div class="skill-info">
+                <div class="skill-name">Git</div>
+                <div class="skill-level">Control</div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <img src="public/images/skills_logos/GitHub.svg" alt=""/>
+              <div class="skill-info">
+                <div class="skill-name">GitHub</div>
+                <div class="skill-level">DevOps</div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <img src="public/images/skills_logos/Linux.svg" alt=""/>
+              <div class="skill-info">
+                <div class="skill-name">Linux</div>
+                <div class="skill-level">Shell</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="skill-cat">
-        <div class="skill-list">
-          <div class="skill-item"><img src="public/images/skills_logos/NPM.svg" width="14" alt=""/> NPM</div>
-          <div class="skill-item"><img src="public/images/skills_logos/Visual Studio Code (VS Code).svg" width="14" alt=""/> VS Code</div>
+
+      <!-- Module 4: Environment -->
+      <div class="skill-module">
+        <div class="module-header">
+          <div class="module-title">Development Environment</div>
+          <div class="module-status">STABLE</div>
+        </div>
+        <div class="module-content">
+          <div class="skill-list">
+            <div class="skill-card">
+              <img src="public/images/skills_logos/NPM.svg" alt=""/>
+              <div class="skill-info">
+                <div class="skill-name">NPM</div>
+                <div class="skill-level">Packages</div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <img src="public/images/skills_logos/Visual Studio Code (VS Code).svg" alt=""/>
+              <div class="skill-info">
+                <div class="skill-name">VS Code</div>
+                <div class="skill-level">IDE</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1299,7 +1553,7 @@ footer{
 </section>
 
 <!-- ═══ PROJECTS ════════════════════════════════════════════ -->
-<section class="projects-split-section" id="projects">
+<section class="projects-split-section" id="projects" style="content-visibility: auto; contain-intrinsic-size: 1000px;">
   <div class="projects-split-container">
     
     <!-- Left Side: Fixed Titles -->
@@ -1395,7 +1649,7 @@ footer{
       <div id="projects-horizontal-track" class="projects-horizontal-track">
         <!-- Project 1 -->
         <div class="project-image-card">
-          <img src="public/images/hustle_planner.png" alt="Hustle Planner">
+          <img src="public/images/hustle_planner.png" alt="Hustle Planner" loading="lazy" decoding="async">
           <!-- Mobile Title Overlay (Hidden on Desktop) -->
           <div class="mobile-project-content">
             <span class="project-num">01 / DASHBOARD</span>
@@ -1491,7 +1745,7 @@ footer{
 </section>
 
 <!-- ═══ LIVE WIDGETS ════════════════════════════════════════ -->
-<section class="widgets" id="live">
+<section class="widgets" id="live" style="content-visibility: auto; contain-intrinsic-size: 800px;">
   <div class="widgets-inner">
     <div class="section-header">
       <h2 class="section-title"><span class="title-inner" id="live-title">Live Feed</span></h2>
@@ -1598,10 +1852,16 @@ footer{
 /* ─── WAVES CLASS ────────────────────────────────────────── */
 class Grad{constructor(x,y,z){this.x=x;this.y=y;this.z=z}dot2(x,y){return this.x*x+this.y*y}}
 class Noise{constructor(s=0){this.p=[151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,102,143,54,65,25,63,161,1,216,80,73,209,76,132,187,208,89,18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186,3,64,52,217,226,250,124,123,5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,223,183,170,213,119,248,152,2,44,154,163,70,221,153,101,155,167,43,172,9,129,22,39,253,19,98,108,110,79,113,224,232,178,185,112,104,218,246,97,228,251,34,242,193,238,210,144,12,191,179,162,241,81,51,145,235,249,14,239,107,49,192,214,31,181,199,106,157,184,84,204,176,115,121,50,45,127,4,150,254,138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180];this.perm=new Array(512);this.gradP=new Array(512);this.grad3=[new Grad(1,1,0),new Grad(-1,1,0),new Grad(1,-1,0),new Grad(-1,-1,0),new Grad(1,0,1),new Grad(-1,0,1),new Grad(1,0,-1),new Grad(-1,0,-1),new Grad(0,1,1),new Grad(0,-1,1),new Grad(0,1,-1),new Grad(0,-1,-1)];this.seed(s)}seed(s){if(s>0&&s<1)s*=65536;s=Math.floor(s);if(s<256)s|=s<<8;for(let i=0;i<256;i++){let v=i&1?this.p[i]^ (s&255):this.p[i]^ ((s>>8)&255);this.perm[i]=this.perm[i+256]=v;this.gradP[i]=this.gradP[i+256]=this.grad3[v%12]}}fade(t){return t*t*t*(t*(t*6-15)+10)}lerp(a,b,t){return(1-t)*a+t*b}perlin2(x,y){let X=Math.floor(x),Y=Math.floor(y);x-=X;y-=Y;X&=255;Y&=255;const n00=this.gradP[X+this.perm[Y]].dot2(x,y);const n01=this.gradP[X+this.perm[Y+1]].dot2(x,y-1);const n10=this.gradP[X+1+this.perm[Y]].dot2(x-1,y);const n11=this.gradP[X+1+this.perm[Y+1]].dot2(x-1,y-1);const u=this.fade(x);return this.lerp(this.lerp(n00,n10,u),this.lerp(n01,n11,u),this.fade(y))}}
-class Waves{constructor(c,o={}){this.container=c;this.canvas=document.createElement('canvas');this.container.appendChild(this.canvas);this.ctx=this.canvas.getContext('2d');this.options={lineColor:o.lineColor||'white',waveSpeedX:0.0125,waveSpeedY:0.005,waveAmpX:32,waveAmpY:16,xGap:12,yGap:36,friction:0.925,tension:0.005};this.noise=new Noise(Math.random());this.lines=[];this.mouse={x:-10,y:0,sx:0,sy:0,vs:0,lx:0,ly:0,set:false};this.init()}init(){this.setSize();this.setLines();window.addEventListener('resize',()=>this.onResize());window.addEventListener('mousemove',e=>this.updateMouse(e.clientX,e.clientY));requestAnimationFrame(t=>this.tick(t))}setSize(){this.b=this.container.getBoundingClientRect();this.canvas.width=this.b.width;this.canvas.height=this.b.height}setLines(){const{width:w,height:h}=this.b;this.lines=[];const{xGap:xg,yGap:yg}=this.options;for(let i=0;i<=Math.ceil(w/xg)+10;i++){const p=[];for(let j=0;j<=Math.ceil(h/yg)+2;j++){p.push({x:xg*i-100,y:yg*j,w:{x:0,y:0},c:{x:0,y:0,vx:0,vy:0}})}this.lines.push(p)}}updateMouse(x,y){this.mouse.x=x-this.b.left;this.mouse.y=y-this.b.top;if(!this.mouse.set){this.mouse.sx=this.mouse.x;this.mouse.sy=this.mouse.y;this.mouse.set=true}}tick(t){this.mouse.sx+=(this.mouse.x-this.mouse.sx)*0.1;this.mouse.sy+=(this.mouse.y-this.mouse.sy)*0.1;const dx=this.mouse.x-this.mouse.lx,dy=this.mouse.y-this.mouse.ly;this.mouse.vs+=(Math.hypot(dx,dy)-this.mouse.vs)*0.1;this.mouse.lx=this.mouse.x;this.mouse.ly=this.mouse.y;this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);this.ctx.beginPath();this.ctx.strokeStyle=this.options.lineColor;this.ctx.globalAlpha=0.15;this.lines.forEach(pts=>{this.ctx.moveTo(pts[0].x,pts[0].y);pts.forEach(p=>{const m=this.noise.perlin2((p.x+t*0.01)*0.002,(p.y+t*0.005)*0.0015)*12;p.w.x=Math.cos(m)*32;p.w.y=Math.sin(m)*16;const d=Math.hypot(p.x-this.mouse.sx,p.y-this.mouse.sy);if(d<150){const s=1-d/150;p.c.vx+=Math.cos(Math.atan2(dy,dx))*s*this.mouse.vs*0.005;p.c.vy+=Math.sin(Math.atan2(dy,dx))*s*this.mouse.vs*0.005}p.c.vx+=(0-p.c.x)*0.005;p.c.vy+=(0-p.c.y)*0.005;p.c.vx*=0.925;p.c.vy*=0.925;p.c.x+=p.c.vx;p.c.y+=p.c.vy;this.ctx.lineTo(p.x+p.w.x+p.c.x,p.y+p.w.y+p.c.y)})});this.ctx.stroke();requestAnimationFrame(t=>this.tick(t))}onResize(){this.setSize();this.setLines()}}
+class Waves{constructor(c,o={}){this.container=c;this.canvas=document.createElement('canvas');this.container.appendChild(this.canvas);this.ctx=this.canvas.getContext('2d');this.options={lineColor:o.lineColor||'white',waveSpeedX:0.0125,waveSpeedY:0.005,waveAmpX:32,waveAmpY:16,xGap:20,yGap:44,friction:0.925,tension:0.005};this.noise=new Noise(Math.random());this.lines=[];this.mouse={x:-10,y:0,sx:0,sy:0,vs:0,lx:0,ly:0,set:false};this.init()}init(){this.setSize();this.setLines();window.addEventListener('resize',()=>this.onResize(),{passive:true});window.addEventListener('mousemove',e=>this.updateMouse(e.clientX,e.clientY),{passive:true});requestAnimationFrame(t=>this.tick(t))}setSize(){this.b=this.container.getBoundingClientRect();this.canvas.width=this.b.width;this.canvas.height=this.b.height}setLines(){const{width:w,height:h}=this.b;this.lines=[];const{xGap:xg,yGap:yg}=this.options;for(let i=0;i<=Math.ceil(w/xg)+4;i++){const p=[];for(let j=0;j<=Math.ceil(h/yg)+2;j++){p.push({x:xg*i-50,y:yg*j,w:{x:0,y:0},c:{x:0,y:0,vx:0,vy:0}})}this.lines.push(p)}}updateMouse(x,y){this.mouse.x=x-this.b.left;this.mouse.y=y-this.b.top;if(!this.mouse.set){this.mouse.sx=this.mouse.x;this.mouse.sy=this.mouse.y;this.mouse.set=true}}tick(t){this.mouse.sx+=(this.mouse.x-this.mouse.sx)*0.1;this.mouse.sy+=(this.mouse.y-this.mouse.sy)*0.1;const dx=this.mouse.x-this.mouse.lx,dy=this.mouse.y-this.mouse.ly;this.mouse.vs+=(Math.hypot(dx,dy)-this.mouse.vs)*0.1;this.mouse.lx=this.mouse.x;this.mouse.ly=this.mouse.y;this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);this.ctx.beginPath();this.ctx.strokeStyle=this.options.lineColor;this.ctx.globalAlpha=0.15;const timeX=t*0.001,timeY=t*0.0005;this.lines.forEach(pts=>{this.ctx.moveTo(pts[0].x,pts[0].y);pts.forEach(p=>{const m=this.noise.perlin2((p.x*0.002)+timeX,(p.y*0.0015)+timeY)*12;p.w.x=Math.cos(m)*32;p.w.y=Math.sin(m)*16;const dist=Math.hypot(p.x-this.mouse.sx,p.y-this.mouse.sy);if(dist<150){const s=(1-dist/150)*this.mouse.vs*0.005;p.c.vx+=Math.cos(Math.atan2(dy,dx))*s;p.c.vy+=Math.sin(Math.atan2(dy,dx))*s}p.c.vx+=(0-p.c.x)*0.005;p.c.vy+=(0-p.c.y)*0.005;p.c.vx*=0.925;p.c.vy*=0.925;p.c.x+=p.c.vx;p.c.y+=p.c.vy;this.ctx.lineTo(p.x+p.w.x+p.c.x,p.y+p.w.y+p.c.y)})});this.ctx.stroke();requestAnimationFrame(t=>this.tick(t))}onResize(){this.setSize();this.setLines()}}
 </script>
 
 <script>
+/* ══════════════════════════════════════════════════════════
+   GSAP GLOBAL CONFIG
+══════════════════════════════════════════════════════════ */
+gsap.config({ force3D: true });
+gsap.registerPlugin(ScrollTrigger);
+
 /* ══════════════════════════════════════════════════════════
    LENIS — Buttery smooth scrolling
 ══════════════════════════════════════════════════════════ */
@@ -1831,8 +2091,18 @@ if(window.matchMedia('(pointer:fine)').matches){
   const dot = document.getElementById('cur-dot');
   const ring = document.getElementById('cur-ring');
   let mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
-  (function lerp(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(lerp)})();
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;
+    my=e.clientY;
+    dot.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
+  },{passive:true});
+  
+  (function lerp(){
+    rx+=(mx-rx)*.12;
+    ry+=(my-ry)*.12;
+    ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%)`;
+    requestAnimationFrame(lerp);
+  })();
   
   initMagnetic();
   initHeroGrid();
@@ -2061,19 +2331,44 @@ gsap.registerPlugin(ScrollTrigger);
 
   tl.to('#skills-title', { y: 0, opacity: 1, duration: .7, ease: 'expo.out' }, 0)
     .to('#skills-tag', { opacity: 1, duration: .5 }, 0.2)
-    .to('.skill-cat', {
+    .to('.skill-module', {
       opacity: 1,
-      scale: 1,
       y: 0,
       duration: .65,
-      stagger: {
-        amount: 0.5,
-        from: 'start',
-        ease: 'power2.inOut',
-      },
-      ease: 'back.out(1.2)',
+      stagger: 0.15,
+      ease: 'power4.out',
     }, 0.3);
+
+  // Card hover parallax effect
+  document.querySelectorAll('.skill-module').forEach(mod => {
+    mod.addEventListener('mousemove', e => {
+      if (window.innerWidth < 1024) return; // Disable on tablet/mobile for perf
+      const rect = mod.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const xc = rect.width / 2;
+      const yc = rect.height / 2;
+      const dx = x - xc;
+      const dy = y - yc;
+      gsap.to(mod, {
+        rotationY: dx / 20,
+        rotationX: -dy / 20,
+        duration: 0.4,
+        ease: 'power2.out',
+        overwrite: 'auto'
+      });
+    });
+    mod.addEventListener('mouseleave', () => {
+      gsap.to(mod, {
+        rotationY: 0,
+        rotationX: 0,
+        duration: 0.6,
+        ease: 'elastic.out(1, 0.5)'
+      });
+    });
+  });
 })();
+
 
 /* ══════════════════════════════════════════════════════════
    ██ PROJECTS — Cinematic slide-from-right with velocity taper
