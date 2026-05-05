@@ -1438,9 +1438,55 @@ footer{
   padding:.4rem 0;
 }
 @keyframes ticker-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* ─── GLOBAL LOADER ──────────────────────────────────────── */
+#global-loader {
+  position: fixed; inset: 0; z-index: 10000;
+  background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: var(--fg); font-family: var(--mono);
+}
+.loader-num-wrap {
+  min-width: 4ch;
+  display: flex;
+  justify-content: center;
+}
+.loader-number {
+  font-family: var(--display); font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 800; line-height: 1; color: var(--bg);
+  -webkit-text-stroke: 1px var(--line2);
+  position: relative;
+  font-variant-numeric: tabular-nums;
+  display: inline-block;
+}
+.loader-number::after {
+  content: attr(data-text);
+  position: absolute; left: 0; top: 0;
+  color: var(--accent);
+  -webkit-text-stroke: 0;
+  clip-path: inset(0 calc(100% - var(--fill-width, 0%)) 0 0);
+}
+.loader-progress-wrap {
+  width: 150px; height: 1px; background: rgba(255,255,255,0.1);
+  margin-top: 1.5rem; position: relative; overflow: hidden;
+}
+.loader-progress-bar {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  will-change: transform;
+}
 </style>
 </head>
 <body>
+<div id="global-loader">
+  <div class="loader-num-wrap">
+    <div class="loader-number" id="loader-num" data-text="00">00</div>
+  </div>
+  <div class="loader-progress-wrap">
+    <div class="loader-progress-bar" id="loader-bar"></div>
+  </div>
+</div>
 
 <div id="cur-dot"></div>
 <div id="cur-ring"></div>
@@ -2432,7 +2478,7 @@ scrollBtn.addEventListener('click', () => lenis.scrollTo(0, { duration: 1.6 }));
 /* ══════════════════════════════════════════════════════════
    ██ HERO — Character-by-character entrance
 ══════════════════════════════════════════════════════════ */
-(function initHeroAnim() {
+window.initHeroAnim = function() {
   // Wrap each letter in a span for char animation
   function splitChars(el) {
     const text = el.textContent;
@@ -2504,7 +2550,7 @@ scrollBtn.addEventListener('click', () => lenis.scrollTo(0, { duration: 1.6 }));
 
   // Ensure triggers are calculated correctly after init
   ScrollTrigger.refresh();
-})();
+};
 
 /* ══════════════════════════════════════════════════════════
    ██ ABOUT — Slide-from-left phases + clip-path quote reveal
@@ -3097,7 +3143,7 @@ loadTMDB();
 <!-- Neko.js — A classic desktop pet -->
 <script src="https://louisabraham.github.io/nekojs/neko.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+window.initNeko = function() {
   // Wait for Neko to be available
   if (typeof createNeko === 'function') {
     const pet = createNeko({
@@ -3234,7 +3280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let bubbleTimeout;
     const say = (text, duration = 3000) => {
       clearTimeout(bubbleTimeout);
-      bubble.textContent = `> ${text}`;
+      bubble.textContent = text;
       bubble.style.opacity = '1';
       bubble.style.transform = 'translateY(0)';
       bubbleTimeout = setTimeout(() => {
@@ -3258,12 +3304,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Section Awareness (The Cat as a Guide)
     const sectionData = [
-      { id: 'hero', msg: 'Grid initialized.' },
-      { id: 'about', msg: 'Bio-scan: Frontend Engineer' },
-      { id: 'skills', msg: 'Detected: Technical Arsenal' },
-      { id: 'projects', msg: 'Viewing: Compiled Works' },
-      { id: 'live', msg: 'Syncing: Real-time Data' },
-      { id: 'contact', msg: 'Establishing Link...' }
+      { id: 'hero', msg: 'Hi there! 👋' },
+      { id: 'about', msg: 'Let\'s get to know him! 😸' },
+      { id: 'skills', msg: 'So many skills! ✨' },
+      { id: 'projects', msg: 'Wow, cool projects! 🚀' },
+      { id: 'live', msg: 'Listening to music? 🎵' },
+      { id: 'contact', msg: 'Say hello! 💌' }
     ];
 
     let lastSec = '';
@@ -3278,27 +3324,86 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       if (current && current !== lastSec) {
         lastSec = current;
-        const s = sectionData.find(x => x.id === current);
-        say(s.msg, 2500);
+        if (current === 'live') {
+          const trackEl = document.querySelector('.now-playing-track');
+          const actEl = document.querySelector('.discord-activity-name');
+          let liveMsg = 'Just chilling right now ☕';
+          
+          if (trackEl && trackEl.textContent) {
+            liveMsg = `Vibing to ${trackEl.textContent} 🎵`;
+          } else if (actEl && actEl.textContent && actEl.textContent !== 'Custom Status') {
+            liveMsg = `Working in ${actEl.textContent} 💻`;
+          }
+          say(liveMsg, 3000);
+        } else {
+          const s = sectionData.find(x => x.id === current);
+          if (s) say(s.msg, 2500);
+        }
       }
     }, { passive: true });
 
     // Personality: Idle & Interaction
     setInterval(() => {
       if (Math.random() < 0.1 && bubble.style.opacity === '0') {
-        const idleMsg = ['Searching...', 'System: OK', '01001101', 'Meow.js', 'zZz...', 'Ping!'];
+        const idleMsg = ['Meow~', 'purrrr...', '*stretches*', 'zZz...', 'Yawn 🥱', '*wags tail*'];
         say(idleMsg[Math.floor(Math.random() * idleMsg.length)], 2000);
       }
     }, 12000);
 
     window.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('.neko')) say('Purr...!', 1500);
+      if (e.target.closest('.neko')) say('Purr...! 💖', 1500);
     });
 
     // Initial greeting
     setTimeout(() => say('Meow! Welcome.', 3000), 2000);
   }
-});
+};
+</script>
+
+<script>
+// --- GLOBAL LOADER LOGIC ---
+(function() {
+  document.body.style.overflow = 'hidden';
+  if (typeof lenis !== 'undefined' && lenis) lenis.stop();
+  
+  const loader = document.getElementById('global-loader');
+  const loaderNum = document.getElementById('loader-num');
+  const loaderBar = document.getElementById('loader-bar');
+  let dummy = { val: 0 };
+  let lastNum = -1;
+  
+  gsap.to(dummy, {
+    val: 100,
+    duration: 2.2,
+    ease: 'power2.inOut',
+    onUpdate: () => {
+      let num = Math.floor(dummy.val);
+      if (num !== lastNum) {
+        lastNum = num;
+        let padded = num < 10 ? '0' + num : num;
+        loaderNum.textContent = padded;
+        loaderNum.setAttribute('data-text', padded);
+      }
+      loaderNum.style.setProperty('--fill-width', dummy.val + '%');
+      loaderBar.style.transform = `scaleX(${dummy.val / 100})`;
+    },
+    onComplete: () => {
+      gsap.to(loader, {
+        yPercent: -100,
+        duration: 1.2,
+        ease: 'expo.inOut',
+        delay: 0.1,
+        onComplete: () => {
+          loader.style.display = 'none';
+          document.body.style.overflow = '';
+          if (typeof lenis !== 'undefined' && lenis) lenis.start();
+          if (typeof window.initHeroAnim === 'function') window.initHeroAnim();
+          if (typeof window.initNeko === 'function') window.initNeko();
+        }
+      });
+    }
+  });
+})();
 </script>
 </body>
 </html>
