@@ -2852,10 +2852,11 @@ function updateLanyardUI(p) {
 
   // Update Status Label
   const statusMap={online:'● Online',idle:'◑ Idle',dnd:'● Do Not Disturb',offline:'○ Offline'};
+  const colorMap={online:'var(--accent)',idle:'#faa61a',dnd:'#f04747',offline:'var(--fg3)'};
   const st = p.discord_status || 'offline';
-  const statusText = statusMap[st] || st;
-  setText('dw-status', statusText);
-  setText('presence-activity', statusText);
+  const statusHtml = `<span style="color:${colorMap[st] || 'var(--fg3)'}">${statusMap[st] || st}</span>`;
+  setHTML('dw-status', statusHtml);
+  setHTML('presence-activity', statusHtml);
 
   // Real-time Music Update via Spotify Socket
   const np = $('now-playing-body');
