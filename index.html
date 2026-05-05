@@ -337,18 +337,27 @@ nav {
 
 /* CYBER NEKO ENHANCEMENTS */
 .neko {
-  filter: hue-rotate(90deg) brightness(1.2) drop-shadow(0 0 8px var(--accent));
-  transition: filter 0.3s ease;
+  /* Current: Cyber Pink — clean look without glow */
+  filter: hue-rotate(280deg) brightness(1.3);
+  
+  /* Presets (Swap the filter above with one of these to change color):
+     Neon Blue:    filter: hue-rotate(180deg) brightness(1.2);
+     Matrix Green: filter: hue-rotate(90deg) brightness(1.2);
+     Vivid Gold:   filter: sepia(1) saturate(5) hue-rotate(-30deg);
+     Ghost White:  filter: brightness(2) grayscale(1);
+  */
+  
+  transition: filter 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   z-index: 999999 !important;
 }
 .neko:hover {
-  filter: hue-rotate(0deg) brightness(1.5) drop-shadow(0 0 15px var(--accent2));
+  filter: hue-rotate(0deg) brightness(1.5);
 }
 .neko-heart {
   position: fixed;
   width: 14px;
   height: 14px;
-  color: var(--accent);
+  color: #ff00ff; /* Matches Cyber Pink cat */
   pointer-events: none;
   z-index: 1000000;
   user-select: none;
@@ -356,6 +365,35 @@ nav {
 }
 .neko-heart svg {
   width: 100%; height: 100%; fill: currentColor;
+}
+.neko-bubble {
+  position: fixed;
+  padding: 5px 10px;
+  background: var(--bg3);
+  border: 1px solid var(--line2);
+  border-radius: 4px;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 10px;
+  pointer-events: none;
+  z-index: 1000000;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s, left 0.1s linear, top 0.1s linear;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.neko-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--line2);
 }
 ═══════════════════════════════════════════════════════════ */
 .hero{
@@ -3183,6 +3221,78 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     requestAnimationFrame(checkProximity);
+
+    // --- CYBER GUIDE UPGRADE ---
+    const bubble = document.createElement('div');
+    bubble.className = 'neko-bubble';
+    document.body.appendChild(bubble);
+
+    let bubbleTimeout;
+    const say = (text, duration = 3000) => {
+      clearTimeout(bubbleTimeout);
+      bubble.textContent = `> ${text}`;
+      bubble.style.opacity = '1';
+      bubble.style.transform = 'translateY(0)';
+      bubbleTimeout = setTimeout(() => {
+        bubble.style.opacity = '0';
+        bubble.style.transform = 'translateY(10px)';
+      }, duration);
+    };
+
+    // Follow the cat smoothly
+    const updateBubblePos = () => {
+      if (pet.element && bubble.style.opacity !== '0') {
+        const rect = pet.element.getBoundingClientRect();
+        const targetLeft = rect.left + rect.width / 2 - bubble.offsetWidth / 2;
+        const targetTop = rect.top - bubble.offsetHeight - 12;
+        bubble.style.left = `${targetLeft}px`;
+        bubble.style.top = `${targetTop}px`;
+      }
+      requestAnimationFrame(updateBubblePos);
+    };
+    updateBubblePos();
+
+    // Section Awareness (The Cat as a Guide)
+    const sectionData = [
+      { id: 'hero', msg: 'Grid initialized.' },
+      { id: 'about', msg: 'Bio-scan: Frontend Engineer' },
+      { id: 'skills', msg: 'Detected: Technical Arsenal' },
+      { id: 'projects', msg: 'Viewing: Compiled Works' },
+      { id: 'live', msg: 'Syncing: Real-time Data' },
+      { id: 'contact', msg: 'Establishing Link...' }
+    ];
+
+    let lastSec = '';
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sectionData.forEach(s => {
+        const el = document.getElementById(s.id);
+        if (el) {
+          const r = el.getBoundingClientRect();
+          if (r.top < window.innerHeight/2 && r.bottom > window.innerHeight/2) current = s.id;
+        }
+      });
+      if (current && current !== lastSec) {
+        lastSec = current;
+        const s = sectionData.find(x => x.id === current);
+        say(s.msg, 2500);
+      }
+    }, { passive: true });
+
+    // Personality: Idle & Interaction
+    setInterval(() => {
+      if (Math.random() < 0.1 && bubble.style.opacity === '0') {
+        const idleMsg = ['Searching...', 'System: OK', '01001101', 'Meow.js', 'zZz...', 'Ping!'];
+        say(idleMsg[Math.floor(Math.random() * idleMsg.length)], 2000);
+      }
+    }, 12000);
+
+    window.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.neko')) say('Purr...!', 1500);
+    });
+
+    // Initial greeting
+    setTimeout(() => say('Meow! Welcome.', 3000), 2000);
   }
 });
 </script>
