@@ -714,11 +714,12 @@ nav {
   width: 18px;
   height: 18px;
   filter: grayscale(1) brightness(0.8);
-  transition: filter 0.3s ease;
+  transition: filter 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .skill-card:hover img {
-  filter: grayscale(0) brightness(1);
+  filter: grayscale(0) brightness(1.1);
+  transform: scale(1.1);
 }
 
 .skill-info {
@@ -2720,7 +2721,17 @@ gsap.registerPlugin(ScrollTrigger);
       duration: .65,
       stagger: 0.15,
       ease: 'power4.out',
-    }, 0.3);
+    }, 0.3)
+    .to('.skill-card img', {
+      filter: 'grayscale(0) brightness(1)',
+      opacity: 1,
+      duration: 1,
+      stagger: {
+        each: 0.03,
+        from: 'start'
+      },
+      ease: 'power2.out'
+    }, 0.5);
 
   // Card hover parallax effect
   document.querySelectorAll('.skill-module').forEach(mod => {
