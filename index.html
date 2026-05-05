@@ -1171,35 +1171,186 @@ nav {
 /* ═══════════════════════════════════════════════════════════
    CONTACT — Explosive scale in
 ═══════════════════════════════════════════════════════════ */
-.contact{padding:clamp(4rem,10vh,8rem) 0;border-bottom:1px solid var(--line);position:relative;overflow:visible}
-.contact-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem)}
-.contact-big{
-  font-family:var(--display);font-weight:800;
-  font-size:clamp(2rem,7.5vw,6.5rem);
-  line-height:.95;letter-spacing:-.03em;
-  margin-bottom:clamp(2rem,5vh,3rem);
+/* ═══════════════════════════════════════════════════════════
+   CONTACT — Split Layout & Form
+═══════════════════════════════════════════════════════════ */
+.contact{
+  padding: 0;
+  border-bottom: none;
+  position:relative;
   overflow:visible;
+  margin-top: clamp(4rem, 10vh, 8rem);
 }
-.contact-big .line-wrap{overflow:hidden;display:block;padding-bottom:.08em}
+.contact-inner{
+  max-width:1300px;
+  margin:0 auto;
+  background: var(--accent);
+  color: var(--bg);
+  padding: clamp(2rem, 6vw, 4rem) clamp(1.25rem, 5vw, 4rem);
+  border-radius: 40px 40px 0 0;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+@media (max-width: 1024px) {
+  .contact-inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    border-radius: 30px 30px 0 0;
+  }
+}
+
+.contact-big{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(1.8rem, 4.5vw, 3.8rem);
+  line-height:1;
+  letter-spacing:-.03em;
+  margin-bottom: clamp(1.5rem, 4vh, 2.5rem);
+}
+.contact-big .line-wrap{overflow:hidden;display:block;padding-bottom:.08em; white-space: nowrap;}
 .contact-big .line-inner{display:block;opacity:0;transform:translateY(110%)}
-.contact-big em{font-style:normal;color:var(--accent)}
-.contact-links{display:flex;flex-wrap:wrap;gap:.75rem}
+.contact-big em{font-style:normal;}
+
+.contact-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.75rem;
+  margin-top: 2rem;
+}
 .contact-link{
   display:flex;align-items:center;gap:.65rem;
-  padding:.75rem 1.2rem;border:1px solid var(--line);
+  padding:.75rem 1.2rem;border:1px solid rgba(0,0,0,0.1);
   font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--fg2);
+  text-transform:uppercase;color: var(--bg);
   transition:all .2s;border-radius:3px;
   opacity:0;transform:translateY(20px);
 }
-.contact-link:hover{border-color:var(--accent);color:var(--accent);background:rgba(126,255,160,.04)}
+.contact-link:hover{border-color: var(--bg); background:rgba(0,0,0,0.05)}
 .contact-link svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.5;flex-shrink:0}
+
+/* Form Styles */
+.contact-form-container {
+  background: rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.1);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.4s ease;
+  opacity: 0;
+  transform: translateX(30px);
+}
+.contact-form-container:hover {
+  border-color: rgba(0,0,0,0.2);
+}
+
+.form-header {
+  margin-bottom: 2rem;
+}
+.form-header h3 {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--bg);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+.form-header p {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: rgba(0,0,0,0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  color: rgba(0,0,0,0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.form-input, .form-textarea {
+  background: rgba(255,255,255,0.3);
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 4px;
+  padding: 0.9rem 1.2rem;
+  color: var(--bg);
+  font-family: var(--body);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+.form-input::placeholder, .form-textarea::placeholder {
+  color: rgba(0,0,0,0.4);
+}
+.form-input:focus, .form-textarea:focus {
+  border-color: var(--bg);
+  background: rgba(255,255,255,0.6);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.submit-btn {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--bg);
+  color: var(--accent);
+  border: none;
+  border-radius: 4px;
+  font-family: var(--display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.submit-btn svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s ease;
+}
+.submit-btn:hover svg {
+  transform: translateX(4px);
+}
 
 /* Kinetic Roll */
 .kinetic-roll{position:relative;display:block;cursor:pointer}
 .kinetic-roll .char-wrap{display:inline-block;position:relative;overflow:hidden;vertical-align:bottom}
 .kinetic-roll .char-primary{display:block}
-.kinetic-roll .char-secondary{position:absolute;top:100%;left:0;display:block;color:var(--accent)}
+.kinetic-roll .char-secondary{position:absolute;top:100%;left:0;display:block;color:inherit}
 @media(max-width:480px){
   .contact-link{padding:.65rem 1rem;font-size:.58rem}
 }
@@ -1807,26 +1958,60 @@ footer{
 </section>
 
 <!-- ═══ CONTACT ═════════════════════════════════════════════ -->
-<section class="contact" id="contact">
+<section class="contact" id="contact" style="content-visibility: auto; contain-intrinsic-size: 800px;">
   <div class="contact-inner">
-    <div class="contact-big" id="contact-big">
-      <span class="line-wrap"><span class="line-inner kinetic-roll" data-text="LET'S BUILD">LET'S BUILD</span></span>
-      <span class="line-wrap"><span class="line-inner kinetic-roll" data-text="SOMETHING">SOMETHING</span></span>
-      <span class="line-wrap"><span class="line-inner kinetic-roll" data-text="REAL."><em>REAL.</em></span></span>
+    <div class="contact-info">
+      <div class="contact-big" id="contact-big">
+        <span class="line-wrap"><span class="line-inner kinetic-roll" data-text="LET'S BUILD">LET'S BUILD</span></span>
+        <span class="line-wrap"><span class="line-inner kinetic-roll" data-text="SOMETHING">SOMETHING</span></span>
+        <span class="line-wrap"><span class="line-inner kinetic-roll" data-text="REAL."><em>REAL.</em></span></span>
+      </div>
+      <div class="contact-links" id="contact-links">
+        <a href="mailto:heysanthoshreddy@gmail.com" class="contact-link">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email me
+        </a>
+        <a href="https://github.com/santjsx" target="_blank" rel="noopener" class="contact-link">
+          <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub
+        </a>
+        <a href="https://x.com/Santhoshh_void" target="_blank" rel="noopener" class="contact-link">
+          <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>@Santhoshh_void
+        </a>
+        <a href="https://www.instagram.com/whoissanthoshh" target="_blank" rel="noopener" class="contact-link">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram
+        </a>
+      </div>
     </div>
-    <div class="contact-links" id="contact-links">
-      <a href="mailto:heysanthoshreddy@gmail.com" class="contact-link">
-        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email me
-      </a>
-      <a href="https://github.com/santjsx" target="_blank" rel="noopener" class="contact-link">
-        <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub
-      </a>
-      <a href="https://x.com/Santhoshh_void" target="_blank" rel="noopener" class="contact-link">
-        <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>@Santhoshh_void
-      </a>
-      <a href="https://www.instagram.com/whoissanthoshh" target="_blank" rel="noopener" class="contact-link">
-        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram
-      </a>
+
+    <div class="contact-form-container" id="contact-form-container">
+      <div class="form-header">
+        <h3>Contact Me</h3>
+        <p>Drop me a line</p>
+      </div>
+      <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" id="contact-form">
+        <input type="hidden" name="access_key" value="94faa993-c934-4458-aaf6-5f43e843f547">
+        <div class="form-group">
+          <label class="form-label" for="name">Name</label>
+          <input type="text" id="name" name="name" class="form-input" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="message">Message</label>
+          <textarea id="message" name="message" class="form-textarea" placeholder="How can I help?" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn" id="submit-btn">
+          <span>Send Message</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </form>
+      <div id="form-result" style="display:none; margin-top:1.5rem; font-family:var(--mono); font-size:0.7rem; color:var(--bg); text-align:center; padding:1rem; background:rgba(255,255,255,0.2); border-radius:4px;">
+        // TRANSMISSION SUCCESSFUL
+      </div>
     </div>
   </div>
 </section>
@@ -2457,7 +2642,62 @@ gsap.registerPlugin(ScrollTrigger);
       stagger: .08,
       ease: 'back.out(1.4)',
     }, 0.5)
+    .to('#contact-form-container', {
+      opacity: 1, x: 0,
+      duration: 1,
+      ease: 'power4.out',
+    }, 0.6)
     .to('#footer', { opacity: 1, duration: .8 }, 0.8);
+
+  // Web3Forms AJAX Submission
+  const form = document.getElementById('contact-form');
+  const result = document.getElementById('form-result');
+  const submitBtn = document.getElementById('submit-btn');
+
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const object = Object.fromEntries(formData);
+      const json = JSON.stringify(object);
+      
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.querySelector('span').textContent = "Transmitting...";
+      }
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: json
+      })
+      .then(async (response) => {
+        let json = await response.json();
+        if (response.status == 200) {
+          result.style.display = "block";
+          result.textContent = "// TRANSMISSION SUCCESSFUL";
+          form.style.display = "none";
+        } else {
+          console.log(response);
+          result.style.display = "block";
+          result.textContent = "// ERROR: " + json.message;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        result.style.display = "block";
+        result.textContent = "// SYSTEM ERROR: RETRY LATER";
+      })
+      .then(function() {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+        }
+      });
+    });
+  }
 })();
 
 /* ══════════════════════════════════════════════════════════
