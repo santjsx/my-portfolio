@@ -141,139 +141,181 @@ body::after{
 
 /* ═══════════════════════════════════════════════════════════
    NAV
-═══════════════════════════════════════════════════════════ */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  height:var(--nav-h);
-  border-bottom:1px solid var(--line);
-  background:rgba(5,5,7,.88);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
+   ═══════════════════════════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 600;
+  height: var(--nav-h);
+  border-bottom: 1px solid var(--line);
+  background: rgba(5, 5, 7, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
-.nav-inner{
-  display:flex;align-items:center;justify-content:space-between;
-  height:100%;max-width:1200px;margin:0 auto;
-  padding:0 clamp(1.25rem,5vw,4rem);
-  gap:1rem;
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 100%; max-width: 1400px; margin: 0 auto;
+  padding: 0 clamp(1rem, 3vw, 2.5rem); /* Moved a little left */
+  gap: 1rem;
 }
-.nav-logo{
-  display:flex;align-items:center;gap:.65rem;
-  text-decoration:none;flex-shrink:0;white-space:nowrap;
-  cursor:pointer;
+.nav-logo {
+  display: flex; align-items: center; gap: 0.5rem;
+  text-decoration: none; position: relative;
+  transition: transform 0.3s ease;
 }
-/* Geometric monogram mark */
-.nav-logo-mark{
-  position:relative;width:28px;height:28px;flex-shrink:0;
+.nav-logo:hover { transform: translateX(4px); }
+
+.nav-logo-name {
+  font-family: var(--display); font-weight: 800; font-size: 0.9rem;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--fg);
+  display: flex; align-items: center;
 }
-.nav-logo-mark svg{width:28px;height:28px;display:block;}
-/* Name block */
-.nav-logo-text{
-  display:flex;flex-direction:column;gap:.05rem;line-height:1;
+.logo-h { color: var(--accent); transition: color 0.3s; }
+.nav-logo:hover .logo-h { color: var(--accent2); }
+
+.nav-status {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: var(--display); font-size: 0.72rem; font-weight: 500; 
+  letter-spacing: 0.05em; color: var(--accent); /* Changed to accent for visibility */
+  margin-right: auto; margin-left: 2.5rem;
+  text-transform: uppercase;
 }
-.nav-logo-first{
-  font-family:var(--display);font-weight:400;font-size:.78rem;
-  letter-spacing:.22em;text-transform:uppercase;color:var(--fg);
-  transition:color .25s;
+@media (max-width: 1024px) { 
+  .nav-status { margin-left: 1.5rem; font-size: 0.65rem; } 
 }
-.nav-logo-last{
-  font-family:var(--mono);font-size:.52rem;letter-spacing:.28em;
-  text-transform:uppercase;color:var(--fg3);
-  transition:color .25s, letter-spacing .35s;
+@media (max-width: 600px) {
+  .nav-status { margin-left: 0.8rem; }
+  .nav-status span { font-size: 0.55rem; letter-spacing: 0; }
 }
-.nav-logo:hover .nav-logo-first{color:var(--accent)}
-.nav-logo:hover .nav-logo-last{color:var(--fg2);letter-spacing:.38em}
-/* SVG ring spin on hover */
-.nav-logo-mark .ring{
-  transform-origin:14px 14px;
-  transition:transform .6s cubic-bezier(.34,1.56,.64,1);
+@media (max-width: 400px) {
+  .menu-text { display: none; } /* Hide "Menu" text to make room for status */
+  .nav-status span { font-size: 0.5rem; }
 }
-.nav-logo:hover .ring{transform:rotate(90deg)}
-/* dot pulse */
-.nav-logo-mark .dot{
-  transition:fill .25s;
+@media (max-width: 350px) {
+  .nav-status span { display: none; } /* Only dot on ultra-small screens */
 }
-.nav-logo:hover .dot{fill:var(--accent)}
-.nav-links{display:flex;align-items:center;gap:clamp(1rem,3vw,2.5rem)}
-.nav-links a{
-  font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--fg2);
-  transition:color .2s;position:relative;
+
+.nav-status::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  animation: pulse-dot 2s infinite;
 }
-.nav-links a::after{
-  content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;
-  background:var(--accent);transition:width .2s;
+
+/* NEW MENU TRIGGER */
+.menu-trigger {
+  display: flex; align-items: center; gap: 1.2rem;
+  cursor: pointer; background: none; border: none;
+  padding: 0.5rem; z-index: 610;
 }
-.nav-links a:hover{color:var(--fg)}
-.nav-links a:hover::after{width:100%}
-.nav-status{
-  display:flex;align-items:center;gap:.5rem;
-  font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(--accent);
-  white-space:nowrap;flex-shrink:0;
+.menu-text {
+  font-family: var(--display); font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.15em; color: var(--fg); /* Brighter color */
+  text-transform: uppercase;
+  transition: color 0.3s, transform 0.3s;
 }
-.nav-status::before{
-  content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);
-  animation:pulse-dot 2s infinite;flex-shrink:0;
+.menu-trigger:hover .menu-text { color: var(--accent); transform: translateX(-4px); }
+
+.nav-toggle {
+  display: flex; flex-direction: column; gap: 5px; width: 22px;
 }
-.nav-toggle{
-  display:none;flex-direction:column;gap:4px;
-  width:24px;padding:4px 0;cursor:pointer;
-  background:none;border:none;
+.nav-toggle span {
+  display: block; height: 1px; width: 100%; background: var(--fg);
+  transform-origin: right; transition: transform 0.4s, opacity 0.4s;
 }
-.nav-toggle span{
-  display:block;height:1px;background:var(--fg2);
-  transform-origin:center;
-  will-change:transform,opacity;
+
+/* FULL SCREEN MENU */
+.fs-menu {
+  position: fixed; inset: 0; z-index: 550;
+  background: var(--bg);
+  display: flex; align-items: flex-start; justify-content: center; /* Changed to start for scrolling */
+  clip-path: circle(0% at 95% 5%);
+  transition: clip-path 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+  visibility: hidden;
+  overflow-y: auto; /* Added for mobile/short screens */
+  padding: 8rem 0 4rem 0; /* Space for fixed header and bottom padding */
 }
-.mobile-menu{
-  display:flex;
-  position:fixed;inset:var(--nav-h) 0 0 0;z-index:499;
-  background:rgba(5,5,7,.97);backdrop-filter:blur(24px);
-  flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
-  border-top:1px solid var(--line);
-  clip-path:inset(0 0 100% 0);
-  pointer-events:none;
-  will-change:clip-path;
+.fs-menu.is-open {
+  clip-path: circle(150% at 95% 5%);
+  visibility: visible;
 }
-.mobile-menu.is-open{pointer-events:all}
-.mobile-menu a{
-  font-family:var(--display);font-weight:700;font-size:2.2rem;
-  color:var(--fg3);letter-spacing:-.02em;
-  transition:color .2s;
-  opacity:0;transform:translateY(28px);
-  display:flex;align-items:center;gap:.6rem;
+
+.fs-menu-bg-text {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); /* Fixed so it doesn't scroll */
+  font-family: var(--display); font-size: 25vw; font-weight: 900;
+  color: rgba(255,255,255,0.02); pointer-events: none;
+  white-space: nowrap; text-transform: uppercase;
+  z-index: -1;
 }
-.mobile-menu a:hover{color:var(--fg)}
-.mobile-menu a::before{
-  content:attr(data-num);
-  font-family:var(--mono);font-size:.55rem;letter-spacing:.18em;
-  color:var(--fg3);margin-top:.15rem;
-  opacity:0;transform:translateX(-8px);
-  transition:opacity .2s,transform .2s;display:inline-block;
+
+.fs-menu-inner {
+  display: grid; grid-template-columns: 1fr 1.2fr; /* Adjusted ratio */
+  width: 100%; max-width: 1200px; padding: 0 4rem;
+  align-items: start; gap: 4rem;
+  position: relative;
 }
-.mobile-menu a:hover::before{opacity:1;transform:none;color:var(--accent)}
-.menu-rule{
-  width:1px;height:0;background:var(--line2);
-  position:absolute;top:0;opacity:0;
+
+.fs-links {
+  display: flex; flex-direction: column; gap: 1rem;
 }
-.menu-rule.left{left:clamp(2rem,8vw,5rem)}
-.menu-rule.right{right:clamp(2rem,8vw,5rem)}
-.menu-meta{
-  position:absolute;bottom:2rem;left:0;right:0;
-  display:flex;justify-content:space-between;
-  padding:0 clamp(1.5rem,6vw,4rem);
-  font-family:var(--mono);font-size:.55rem;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--fg3);
-  opacity:0;
+.fs-link-item {
+  position: relative; overflow: hidden;
 }
-.menu-meta span{color:var(--accent)}
-@media(max-width:768px){
-  .nav-links{display:none}
-  .nav-toggle{display:flex}
+.fs-link {
+  font-family: var(--display); font-size: clamp(3rem, 6vw, 6rem);
+  font-weight: 800; text-transform: uppercase; color: var(--fg3);
+  display: flex; align-items: baseline; gap: 1.5rem;
+  transition: color 0.4s, transform 0.4s;
+  line-height: 1.1;
 }
-@media(max-width:400px){
-  .nav-logo-text{display:none}
-  .nav-status{display:none}
+.fs-link span {
+  font-family: var(--mono); font-size: 1rem; color: var(--accent);
+  opacity: 0.5; transition: opacity 0.4s, color 0.4s;
 }
+.fs-link:hover {
+  color: var(--fg); transform: translateX(20px);
+}
+.fs-link:hover span { opacity: 1; color: var(--accent); }
+
+.fs-menu-info {
+  display: flex; flex-direction: column; gap: 3rem;
+  border-left: 1px solid var(--line); padding-left: 4rem;
+}
+.fs-info-block h4 {
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em;
+  color: var(--fg3); text-transform: uppercase; margin-bottom: 1rem;
+}
+.fs-info-content {
+  font-family: var(--display); font-size: 1.2rem; color: var(--fg2);
+}
+.fs-socials { display: flex; gap: 1.5rem; }
+.fs-social-link {
+  font-family: var(--mono); font-size: 0.7rem; color: var(--fg3);
+  transition: color 0.3s;
+}
+.fs-social-link:hover { color: var(--accent); }
+
+@media (max-width: 900px) {
+  .fs-menu { padding-top: 7rem; }
+  .fs-menu-inner { 
+    grid-template-columns: 1fr; 
+    gap: 3rem; 
+    padding: 0 2.5rem; 
+    align-items: start;
+  }
+  .fs-menu-info { 
+    border-left: none; 
+    padding-left: 0; 
+    border-top: 1px solid var(--line); 
+    padding-top: 3rem; 
+    gap: 2.5rem;
+  }
+  .fs-link { font-size: clamp(2.5rem, 10vw, 4rem); gap: 1rem; }
+  .fs-link span { font-size: 0.8rem; }
+  .fs-info-content { font-size: 1.1rem; }
+}
+@media (max-height: 700px) {
+  .fs-menu { align-items: flex-start; }
+  .fs-link { font-size: 2.5rem; }
+}
+
 
 /* ═══════════════════════════════════════════════════════════
    HERO
@@ -1054,36 +1096,66 @@ footer{
 <nav>
   <div class="nav-inner">
     <a class="nav-logo" href="#hero" aria-label="Santhosh — home">
-      <span class="nav-logo-first">Santhoshhh</span>
+      <span class="nav-logo-name">SANTHOSH<span class="logo-h">H</span><span class="logo-h" style="opacity:0.7">H</span><span class="logo-h" style="opacity:0.4">H</span></span>
     </a>
-    <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Work</a>
-      <a href="#live">Live</a>
-      <a href="#contact">Contact</a>
-    </div>
-    <div class="nav-status">Available for work</div>
-    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
+    
+    <div class="nav-status"><span>Open to work</span></div>
+
+    <button class="menu-trigger" id="nav-toggle" aria-label="Toggle menu">
+      <span class="menu-text">Menu</span>
+      <div class="nav-toggle">
+        <span></span><span></span><span></span>
+      </div>
     </button>
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobile-menu">
-  <div class="menu-rule left" id="menu-rule-l"></div>
-  <div class="menu-rule right" id="menu-rule-r"></div>
-  <a href="#about" class="mobile-link" data-num="01">About</a>
-  <a href="#skills" class="mobile-link" data-num="02">Skills</a>
-  <a href="#projects" class="mobile-link" data-num="03">Work</a>
-  <a href="#live" class="mobile-link" data-num="04">Live</a>
-  <a href="#contact" class="mobile-link" data-num="05">Contact</a>
-  <div class="menu-meta" id="menu-meta">
-    <span>@santjsx</span>
-    <span style="color:var(--fg3)">santhoshh.xyz</span>
-    <span>India ●</span>
+<div class="fs-menu" id="mobile-menu">
+  <div class="fs-menu-bg-text">INDEX</div>
+  <div class="fs-menu-inner">
+    <div class="fs-links">
+      <div class="fs-link-item">
+        <a href="#about" class="fs-link"><span>01</span>About</a>
+      </div>
+      <div class="fs-link-item">
+        <a href="#skills" class="fs-link"><span>02</span>Skills</a>
+      </div>
+      <div class="fs-link-item">
+        <a href="#projects" class="fs-link"><span>03</span>Work</a>
+      </div>
+      <div class="fs-link-item">
+        <a href="#live" class="fs-link"><span>04</span>Live</a>
+      </div>
+      <div class="fs-link-item">
+        <a href="#contact" class="fs-link"><span>05</span>Contact</a>
+      </div>
+    </div>
+
+    <div class="fs-menu-info">
+      <div class="fs-info-block">
+        <h4>Local Time</h4>
+        <div class="fs-info-content" id="fs-menu-time">00:00:00</div>
+      </div>
+      <div class="fs-info-block">
+        <h4>Location</h4>
+        <div class="fs-info-content">Hyderabad, India</div>
+      </div>
+      <div class="fs-info-block">
+        <h4>Socials</h4>
+        <div class="fs-socials">
+          <a href="https://github.com/santjsx" class="fs-social-link" target="_blank">Github</a>
+          <a href="https://x.com/Santhoshh_void" class="fs-social-link" target="_blank">X.com</a>
+          <a href="https://www.instagram.com/whoissanthoshh" class="fs-social-link" target="_blank">Instagram</a>
+        </div>
+      </div>
+      <div class="fs-info-block">
+        <h4>Contact</h4>
+        <div class="fs-info-content" style="font-size: 0.9rem; font-family: var(--mono); color: var(--accent);">heysanthoshreddy@gmail.com</div>
+      </div>
+    </div>
   </div>
 </div>
+
 
 <!-- ═══ HERO ═══════════════════════════════════════════════ -->
 <section class="hero" id="hero">
@@ -1751,79 +1823,29 @@ if(window.matchMedia('(pointer:fine)').matches){
 /* ══════════════════════════════════════════════════════════
    MOBILE MENU — GSAP cinematic open/close
 ══════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════
+   FULL SCREEN MENU — GSAP cinematic
+   ══════════════════════════════════════════════════════════ */
 const toggle = document.getElementById('nav-toggle');
 const mobileMenu = document.getElementById('mobile-menu');
-const menuLinks = mobileMenu.querySelectorAll('.mobile-link');
-const menuRuleL = document.getElementById('menu-rule-l');
-const menuRuleR = document.getElementById('menu-rule-r');
-const menuMeta  = document.getElementById('menu-meta');
+const fsLinks = mobileMenu.querySelectorAll('.fs-link');
+const fsInfoBlocks = mobileMenu.querySelectorAll('.fs-info-block');
+const menuText = toggle.querySelector('.menu-text');
 
 let menuOpen = false;
-let menuTl = null;
 
-function buildMenuTl(opening) {
-  if (menuTl) menuTl.kill();
-  menuTl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-
-  if (opening) {
-    // 1. Curtain drops down via clip-path
-    menuTl.to(mobileMenu, {
-      clipPath: 'inset(0 0 0% 0)',
-      duration: .65,
-      ease: 'expo.inOut',
-    }, 0)
-    // 2. Vertical rule lines grow from top
-    .to([menuRuleL, menuRuleR], {
-      height: '55%', opacity: 1,
-      duration: .55, stagger: .08,
-      ease: 'power3.out',
-    }, 0.15)
-    // 3. Links rise up and fade in with elastic bounce
-    .to(menuLinks, {
-      opacity: 1, y: 0,
-      duration: .65, stagger: .07,
-      ease: 'back.out(1.5)',
-    }, 0.28)
-    // 4. Bottom meta strip fades in
-    .to(menuMeta, {
-      opacity: 1, duration: .4,
-    }, 0.7);
-  } else {
-    // Reverse: meta out → links drop → rules shrink → curtain rises
-    menuTl.to(menuMeta, { opacity: 0, duration: .2 }, 0)
-    .to(menuLinks, {
-      opacity: 0, y: 18,
-      duration: .35, stagger: { each: .05, from: 'end' },
-      ease: 'power2.in',
-    }, 0.05)
-    .to([menuRuleL, menuRuleR], {
-      height: 0, opacity: 0,
-      duration: .35,
-      ease: 'power2.in',
-    }, 0.1)
-    .to(mobileMenu, {
-      clipPath: 'inset(0 0 100% 0)',
-      duration: .55,
-      ease: 'expo.inOut',
-      onComplete: () => mobileMenu.classList.remove('is-open'),
-    }, 0.25);
-  }
-  return menuTl;
-}
-
-// Hamburger → X morph via GSAP (smoother than CSS transitions)
 function animateToggleIcon(opening) {
-  const bars = toggle.querySelectorAll('span');
+  const bars = toggle.querySelectorAll('.nav-toggle span');
   if (opening) {
-    gsap.to(bars[0], { rotate: 45, y: 5,  duration: .35, ease: 'expo.out' });
-    gsap.to(bars[1], { scaleX: 0, opacity: 0, duration: .2 });
-    gsap.to(bars[2], { rotate: -45, y: -5, duration: .35, ease: 'expo.out' });
-    gsap.to(bars, { background: 'var(--fg)', duration: .2 });
+    gsap.to(bars[0], { rotate: -45, y: 6, width: "100%", duration: 0.4, ease: 'power4.out' });
+    gsap.to(bars[1], { opacity: 0, scaleX: 0, duration: 0.2 });
+    gsap.to(bars[2], { rotate: 45, y: -6, width: "100%", duration: 0.4, ease: 'power4.out' });
+    if (menuText) menuText.textContent = "Close";
   } else {
-    gsap.to(bars[0], { rotate: 0, y: 0,  duration: .35, ease: 'expo.out' });
-    gsap.to(bars[1], { scaleX: 1, opacity: 1, duration: .3, delay: .05 });
-    gsap.to(bars[2], { rotate: 0, y: 0,  duration: .35, ease: 'expo.out' });
-    gsap.to(bars, { background: 'var(--fg2)', duration: .25 });
+    gsap.to(bars[0], { rotate: 0, y: 0, width: "100%", duration: 0.4, ease: 'power4.out' });
+    gsap.to(bars[1], { opacity: 1, scaleX: 1, duration: 0.4 });
+    gsap.to(bars[2], { rotate: 0, y: 0, width: "100%", duration: 0.4, ease: 'power4.out' });
+    if (menuText) menuText.textContent = "Menu";
   }
 }
 
@@ -1831,24 +1853,53 @@ function openMenu() {
   menuOpen = true;
   mobileMenu.classList.add('is-open');
   animateToggleIcon(true);
-  buildMenuTl(true);
-  if (lenis) lenis.stop ? lenis.stop() : null;
+  
+  // Stagger links in
+  gsap.fromTo(fsLinks, 
+    { y: 100, opacity: 0 }, 
+    { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'expo.out', delay: 0.3 }
+  );
+  
+  // Fade in info blocks
+  gsap.fromTo(fsInfoBlocks,
+    { y: 30, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'expo.out', delay: 0.6 }
+  );
+
+  if (lenis) lenis.stop();
   document.body.style.overflow = 'hidden';
 }
 
 function closeMenu() {
   menuOpen = false;
   animateToggleIcon(false);
-  buildMenuTl(false);
-  if (lenis) lenis.start ? lenis.start() : null;
-  document.body.style.overflow = '';
+  
+  // Stagger links out
+  gsap.to(fsLinks, { y: -50, opacity: 0, duration: 0.4, stagger: 0.05, ease: 'power2.in' });
+  
+  setTimeout(() => {
+    mobileMenu.classList.remove('is-open');
+    if (lenis) lenis.start();
+    document.body.style.overflow = '';
+  }, 400);
 }
 
 toggle.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
 
+// Menu clock
+function updateMenuTime() {
+  const timeEl = document.getElementById('fs-menu-time');
+  if (!timeEl) return;
+  const now = new Date();
+  timeEl.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+}
+setInterval(updateMenuTime, 1000);
+updateMenuTime();
+
+
 // Menu closing is now handled within handleAnchorClick for anchor links.
 // This listener remains for any non-anchor links if they were added.
-menuLinks.forEach(link => {
+fsLinks.forEach(link => {
   link.addEventListener('click', () => {
     if (menuOpen && !link.getAttribute('href')?.startsWith('#')) closeMenu();
   });
