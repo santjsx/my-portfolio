@@ -94,6 +94,10 @@ button{cursor:none;border:none;background:none;font-family:inherit;position:rela
 
   body:has(a:hover,button:hover) #cur-dot{width:10px;height:10px;background:var(--accent2)}
   body:has(a:hover,button:hover) #cur-ring{width:44px;height:44px;border-color:rgba(255,107,53,.4)}
+  
+  /* Invert cursor on light-colored Contact section */
+  body:has(.contact:hover) #cur-dot { background: var(--bg); }
+  body:has(.contact:hover) #cur-ring { border-color: rgba(5, 5, 7, 0.4); }
 }
 
 /* ─── HERO GRID ─────────────────────────────────────────── */
