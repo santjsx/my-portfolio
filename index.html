@@ -1144,12 +1144,12 @@ nav {
 }
 .widget:hover{background:var(--bg2)}
 .widget-label{
-  font-family:var(--mono);font-size:.52rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--fg3);margin-bottom:.9rem;
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;font-weight:500;
+  text-transform:uppercase;color:var(--fg2);margin-bottom:.9rem;
   display:flex;align-items:center;gap:.5rem;
 }
-.widget-label::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--line)}
-.widget-label.live::before{background:var(--accent);animation:pulse-dot 2s infinite}
+.widget-label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--line2);flex-shrink:0}
+.widget-label.live::before{background:var(--accent);box-shadow:0 0 6px rgba(126,255,160,.4);animation:pulse-dot 2s infinite}
 
 .skel{
   background:linear-gradient(90deg,var(--bg3) 25%,var(--line) 50%,var(--bg3) 75%);
@@ -1209,11 +1209,75 @@ nav {
 .track-name{font-family:var(--display);font-size:.76rem;font-weight:600;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .track-artist{font-family:var(--mono);font-size:.54rem;color:var(--fg3)}
 
-/* KV widget */
-.kv-quote{font-family:var(--display);font-size:.88rem;color:var(--fg);line-height:1.4}
-.kv-tag{margin-top:.5rem}
-.kv-field{font-family:var(--mono);font-size:.58rem;color:var(--fg3);margin-top:.3rem}
-.kv-field span{color:var(--fg2)}
+/* Bookshelf widget — cover grid + tooltip */
+.book-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+}
+.book-card{
+  position:relative;aspect-ratio:2/3;border-radius:4px;overflow:visible;
+  cursor:none;
+  box-shadow:2px 4px 12px rgba(0,0,0,.5);
+  transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease;
+}
+@media(pointer:coarse){.book-card{cursor:pointer}}
+.book-card:hover{
+  transform:translateY(-4px) scale(1.04);
+  box-shadow:0 8px 24px rgba(0,0,0,.6), 0 0 12px rgba(126,255,160,.12);
+  z-index:10;
+}
+.book-cover{
+  width:100%;height:100%;object-fit:cover;display:block;border-radius:4px;
+  filter:brightness(.88) contrast(1.05);
+  transition:filter .35s ease, transform .35s ease;
+}
+.book-card:hover .book-cover{
+  filter:brightness(1) contrast(1.08);
+}
+/* Floating tooltip */
+.book-tooltip{
+  position:absolute;bottom:calc(100% + 10px);left:50%;
+  transform:translateX(-50%) translateY(6px);
+  width:max-content;max-width:180px;
+  padding:.55rem .7rem;
+  background:rgba(12,12,16,.92);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(126,255,160,.15);
+  border-radius:6px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease, transform .25s cubic-bezier(.22,1,.36,1);
+  z-index:20;
+}
+/* Tooltip arrow */
+.book-tooltip::after{
+  content:'';position:absolute;top:100%;left:50%;
+  transform:translateX(-50%);
+  border:5px solid transparent;
+  border-top-color:rgba(12,12,16,.92);
+}
+.book-card:hover .book-tooltip{
+  opacity:1;transform:translateX(-50%) translateY(0);
+}
+/* Keep tooltip visible for edge cards */
+.book-card:first-child .book-tooltip{left:0;transform:translateX(0) translateY(6px)}
+.book-card:first-child .book-tooltip::after{left:20px;transform:translateX(0)}
+.book-card:first-child:hover .book-tooltip{transform:translateX(0) translateY(0)}
+.book-card:nth-child(3n) .book-tooltip{left:auto;right:0;transform:translateX(0) translateY(6px)}
+.book-card:nth-child(3n) .book-tooltip::after{left:auto;right:20px;transform:translateX(0)}
+.book-card:nth-child(3n):hover .book-tooltip{transform:translateX(0) translateY(0)}
+.book-title{
+  font-family:var(--display);font-weight:600;font-size:.7rem;color:var(--fg);
+  line-height:1.25;margin-bottom:.15rem;
+}
+.book-author{
+  font-family:var(--mono);font-size:.44rem;color:var(--accent);
+  letter-spacing:.06em;margin-bottom:.3rem;
+}
+.book-desc{
+  font-family:var(--body);font-size:.52rem;color:var(--fg2);
+  line-height:1.45;
+  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
 
 /* ═══════════════════════════════════════════════════════════
    CONTACT — Explosive scale in
@@ -2023,7 +2087,7 @@ footer{
         </div>
       </div>
       <div class="widget">
-        <div class="widget-label live">Humans in Orbit</div>
+        <div class="widget-label live">Humans in Space</div>
         <div class="iss-wrap">
           <div class="iss-orbit"><div class="iss-dot"></div></div>
           <div class="iss-count" id="iss-count">—</div>
@@ -2031,7 +2095,7 @@ footer{
         </div>
       </div>
       <div class="widget">
-        <div class="widget-label">The Super Mario Galaxy Movie</div>
+        <div class="widget-label">Cinema Log</div>
         <div id="movie-body"><div class="not-playing">— Loading…</div></div>
       </div>
       <div class="widget">
@@ -2041,8 +2105,49 @@ footer{
         </div>
       </div>
       <div class="widget">
-        <div class="widget-label">Active Right Now</div>
-        <div id="kv-widget"><div class="not-playing">— Syncing…</div></div>
+        <div class="widget-label">Currently Reading</div>
+        <div class="book-grid" id="bookshelf-widget">
+          <div class="book-card">
+            <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/9780735211292-M.jpg" alt="Atomic Habits" loading="lazy"/>
+            <div class="book-tooltip">
+              <div class="book-title">Atomic Habits</div>
+              <div class="book-author">James Clear</div>
+              <div class="book-desc">Tiny changes, remarkable results — a practical guide to building good habits and breaking bad ones.</div>
+            </div>
+          </div>
+          <div class="book-card">
+            <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/9781612680194-M.jpg" alt="Rich Dad Poor Dad" loading="lazy"/>
+            <div class="book-tooltip">
+              <div class="book-title">Rich Dad Poor Dad</div>
+              <div class="book-author">Robert Kiyosaki</div>
+              <div class="book-desc">What the rich teach their kids about money that the poor and middle class do not.</div>
+            </div>
+          </div>
+          <div class="book-card">
+            <img class="book-cover" src="https://covers.openlibrary.org/b/id/15052166-M.jpg" alt="The Art of Being Alone" loading="lazy"/>
+            <div class="book-tooltip">
+              <div class="book-title">The Art of Being Alone</div>
+              <div class="book-author">Renuka Gavrani</div>
+              <div class="book-desc">Turning solitude into your superpower — a journey from loneliness to self-discovery.</div>
+            </div>
+          </div>
+          <div class="book-card">
+            <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/9780857197689-M.jpg" alt="The Psychology of Money" loading="lazy"/>
+            <div class="book-tooltip">
+              <div class="book-title">The Psychology of Money</div>
+              <div class="book-author">Morgan Housel</div>
+              <div class="book-desc">Timeless lessons on wealth, greed, and happiness — how behavior matters more than knowledge.</div>
+            </div>
+          </div>
+          <div class="book-card">
+            <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/9780143130727-M.jpg" alt="Ikigai" loading="lazy"/>
+            <div class="book-tooltip">
+              <div class="book-title">Ikigai</div>
+              <div class="book-author">Héctor García & Francesc Miralles</div>
+              <div class="book-desc">The Japanese secret to a long and happy life — finding your reason for being.</div>
+            </div>
+          </div>
+        </div>
       </div>
 
 
@@ -2941,26 +3046,6 @@ function updateLanyardUI(p) {
     } else {
       container.innerHTML = '<div class="not-playing">— Not doing anything</div>';
     }
-  }
-
-  // Update KV Data
-  const kv=p.kv||{};
-  const kvEl=$('kv-widget');
-  if(kvEl){
-    let html='<div style="display:flex;flex-direction:column;gap:.5rem">';
-    if(kv.quote){
-      html+=`<div class="kv-quote">"${esc(kv.quote)}"</div>`;
-      const hq=$('hero-quote');
-      if(hq)hq.textContent=kv.quote;
-    }
-    if(kv.currently){
-      html+=`<div class="tag kv-tag">Working on: <span style="color:var(--accent)">${esc(kv.currently)}</span></div>`;
-    }
-    const keys=Object.keys(kv).filter(k=>k!=='quote'&&k!=='currently');
-    keys.forEach(k=>{html+=`<div class="kv-field">${esc(k)}: <span>${esc(kv[k])}</span></div>`});
-    if(!Object.keys(kv).length && !activities.length){html+=`<div class="not-playing">— No live data available</div>`}
-    html+='</div>';
-    kvEl.innerHTML=html;
   }
 }
 
