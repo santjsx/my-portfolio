@@ -2888,6 +2888,9 @@ function updateLanyardUI(p) {
     window.isSpotifyActive = false;
   }
 
+  const container = $('dw-activities-container');
+  const activities = p.activities || [];
+
   if(container){
     if(activities.length > 0){
       container.innerHTML = activities.map(act => {
