@@ -303,9 +303,17 @@ nav{
   overflow:visible;
 }
 .name-line{display:block;white-space:nowrap}
+.hero-name em {
+  font-style: normal;
+  -webkit-text-stroke: 1px var(--fg3);
+  color: transparent;
+  transition: -webkit-text-stroke 0.4s ease, filter 0.4s ease;
+}
+.hero-name:hover em {
+  -webkit-text-stroke: 1px var(--accent);
+  filter: drop-shadow(0 0 10px rgba(126, 255, 160, 0.4));
+}
 .hero-name .char{display:inline-block;opacity:0;transform:translateY(110%)}
-.hero-name em{font-style:normal;-webkit-text-stroke:1px var(--fg3);color:transparent}
-.hero-name em .char{display:inline-block;opacity:0;transform:translateY(110%)}
 
 .hero-sub{
   display:flex;align-items:flex-start;gap:clamp(1.5rem,4vw,3rem);
@@ -1888,23 +1896,47 @@ scrollBtn.addEventListener('click', () => lenis.scrollTo(0, { duration: 1.6 }));
     { opacity: 1, x: 0, duration: .6, ease: 'expo.out', delay: .25 }
   );
 
-  const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+  const tl = gsap.timeline({
+    defaults: { ease: 'power4.out' },
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top bottom', // Trigger as soon as hero is in view (handles reload at top)
+      onEnterBack: () => tl.restart(),
+      toggleActions: 'play none none none'
+    }
+  });
 
-  tl.to('#hero-eyebrow', { opacity: 1, y: 0, duration: 1 }, 0.2)
+  tl.to('#hero-eyebrow', { opacity: 1, y: 0, duration: 1 }, 0.1)
     .to(allChars, {
-      y: 0, opacity: 1, duration: 1.2, stagger: 0.03,
-      ease: 'power4.out'
-    }, 0.5)
-    .to('#hero-sub', { opacity: 1, y: 0, duration: 1.2 }, 1.0)
-    .to('#presence-bar', { opacity: 1, y: 0, duration: 1 }, 1.25)
+      y: 0, 
+      opacity: 1, 
+      filter: 'blur(0px)',
+      skewY: 0,
+      duration: 1.4, 
+      stagger: {
+        amount: 0.6,
+        from: 'random'
+      },
+      ease: 'elastic.out(1, 0.75)'
+    }, 0.3)
+    .fromTo('#hero-name', 
+      { letterSpacing: '0.4em' }, 
+      { letterSpacing: '-0.03em', duration: 1.8, ease: 'expo.out' }, 
+      0.3
+    )
+    .to('#hero-sub', { opacity: 1, y: 0, duration: 1.2 }, 0.8)
+    .to('#presence-bar', { opacity: 1, y: 0, duration: 1 }, 1.1)
     .to('.hero-stat', {
-      opacity: 1, y: 0, duration: 1, stagger: .15,
+      opacity: 1, y: 0, duration: 1, stagger: .1,
       ease: 'back.out(1.2)'
-    }, 1.4);
+    }, 1.2);
 
   // Init Waves
   const wavesContainer = document.getElementById('hero-waves');
   if(wavesContainer) new Waves(wavesContainer, { lineColor: '#7effa0' });
+
+  // Ensure triggers are calculated correctly after init
+  ScrollTrigger.refresh();
 })();
 
 /* ══════════════════════════════════════════════════════════
@@ -1928,8 +1960,8 @@ gsap.registerPlugin(ScrollTrigger);
     }, 0.2)
     .to('#hero-quote', {
       clipPath: 'inset(0 0% 0 0)',
-      duration: 1.4, ease: 'power4.inOut'
-    }, 0.3)
+      duration: 0.8, ease: 'expo.out'
+    }, 0.1)
     .to('#about-src', { opacity: 1, y: 0, duration: .7 }, 1.0);
 
   // Floating orb parallax
