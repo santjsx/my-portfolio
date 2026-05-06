@@ -45,7 +45,7 @@ export function initLanyardWidget() {
             }
             // Defer data fetch until after animation for smoothness
             const fetchAfter = () => {
-                fetchLanyardData();
+                // Initial data already fetched via socket
                 updatePhoneClock();
                 // Fade in close button ONLY after phone is fully open
                 const closeBtnEl = toggleBtn.querySelector('.lanyard-close-minimal');
@@ -249,14 +249,6 @@ export function initLanyardWidget() {
         });
     }
 
-    // Contact button inside the widget
-    const contactBtn = document.getElementById('lanyard-contact-btn');
-    if (contactBtn) {
-        contactBtn.addEventListener('click', () => {
-            if(toggleBtn.classList.contains('active')) toggleBtn.click();
-        });
-    }
-
     // Close when clicking outside
     document.addEventListener('click', (e) => {
         if (!toggleBtn.contains(e.target) && toggleBtn.classList.contains('active')) {
@@ -264,20 +256,8 @@ export function initLanyardWidget() {
         }
     });
 
-    /* Removed auto-close on scroll to ensure it stays "sticky" as requested */
-    /* 
-    window.addEventListener('scroll', () => {
-        if (toggleBtn.classList.contains('active') && !isAnimating) {
-            toggleBtn.click();
-        }
-    }, { passive: true });
-    */
-
-    // Initial fetch to set color indicator on the floating button
-    fetchLanyardData();
-    
-    // Poll every 30 seconds
-    setInterval(fetchLanyardData, 30000);
+    // Initialize WebSocket
+    initLanyardSocket();
 
     // Keep phone clock updated every minute
     updatePhoneClock();
@@ -287,66 +267,93 @@ export function initLanyardWidget() {
     initStatusBarDynamics();
 }
 
-async function fetchLanyardData() {
-    try {
-        // Fetch Lanyard and Last.fm concurrently for maximum performance
-        const [lanyardRes, lastfmRes] = await Promise.all([
-            fetch(API_URL),
-            fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=1`)
-        ]);
+let socket = null;
+let heartbeatInterval = null;
 
-        const lanyardJson = await lanyardRes.json();
+function initLanyardSocket() {
+    if (socket) socket.close();
+
+    socket = new WebSocket('wss://api.lanyard.rest/socket');
+
+    socket.onopen = () => {
+        console.log('⚡ LANYARD: SOCKET CONNECTED');
+    };
+
+    socket.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+
+        // Op 1: Hello (Initial connection response)
+        if (msg.op === 1) {
+            // Send Op 2: Initialize subscription
+            socket.send(JSON.stringify({
+                op: 2,
+                d: { subscribe_to_id: DiscordID }
+            }));
+
+            // Start Heartbeat
+            if (heartbeatInterval) clearInterval(heartbeatInterval);
+            heartbeatInterval = setInterval(() => {
+                socket.send(JSON.stringify({ op: 3 }));
+            }, msg.d.heartbeat_interval);
+        }
+
+        // Op 0: Event (Data update)
+        if (msg.op === 0) {
+            if (msg.t === 'INIT_STATE' || msg.t === 'PRESENCE_UPDATE') {
+                processLanyardUpdate(msg.d);
+            }
+        }
+    };
+
+    socket.onclose = () => {
+        console.warn('⚠️ LANYARD: SOCKET CLOSED. RECONNECTING...');
+        setTimeout(initLanyardSocket, 5000);
+    };
+
+    socket.onerror = (err) => {
+        console.error('❌ LANYARD: SOCKET ERROR:', err);
+    };
+}
+
+async function processLanyardUpdate(data) {
+    try {
+        // Last.fm check (optional, can be combined with socket data)
+        const lastfmRes = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=1`);
         const lastfmJson = await lastfmRes.json();
         
-        if (lanyardJson.success && lanyardJson.data) {
-            // Check Last.fm for Now Playing
-            let lastfmTrack = null;
-            if (lastfmJson && lastfmJson.recenttracks && lastfmJson.recenttracks.track) {
-                const track = Array.isArray(lastfmJson.recenttracks.track) ? lastfmJson.recenttracks.track[0] : lastfmJson.recenttracks.track;
-                if (track && track['@attr'] && track['@attr'].nowplaying === 'true') {
-                    const trackName = track.name;
-                    const artistName = track.artist['#text'] || track.artist.name;
-
-                    // Priority 1: High-Res iTunes (600x600)
-                    let albumArt = await fetchiTunesAlbumArt(trackName, artistName);
-                    
-                    // Priority 2: Last.fm Fallback
-                    if (!albumArt) {
-                        albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
-                    }
-                    
-                    // Filter placeholders
-                    if (albumArt && (
-                        albumArt.includes('default_album') || 
-                        albumArt.includes('2a96cbd8b46e442fc41c2b86b821562f') ||
-                        albumArt.includes('noimage')
-                    )) {
-                        albumArt = null;
-                    }
-
-                    lastfmTrack = {
-                        song: trackName,
-                        artist: artistName,
-                        album: track.album['#text'] || track.album.name || 'Unknown Album',
-                        album_art_url: albumArt
-                    };
-                }
+        let lastfmTrack = null;
+        if (lastfmJson && lastfmJson.recenttracks && lastfmJson.recenttracks.track) {
+            const track = Array.isArray(lastfmJson.recenttracks.track) ? lastfmJson.recenttracks.track[0] : lastfmJson.recenttracks.track;
+            if (track && track['@attr'] && track['@attr'].nowplaying === 'true') {
+                const trackName = track.name;
+                const artistName = track.artist['#text'] || track.artist.name;
+                let albumArt = await fetchiTunesAlbumArt(trackName, artistName);
+                if (!albumArt) albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
+                
+                lastfmTrack = {
+                    song: trackName,
+                    artist: artistName,
+                    album: track.album['#text'] || track.album.name || 'Unknown Album',
+                    album_art_url: albumArt
+                };
             }
-
-            // Also check Spotify for missing covers (rare but possible)
-            if (lanyardJson.data.listening_to_spotify && lanyardJson.data.spotify) {
-                if (!lanyardJson.data.spotify.album_art_url) {
-                    lanyardJson.data.spotify.album_art_url = await fetchiTunesAlbumArt(lanyardJson.data.spotify.song, lanyardJson.data.spotify.artist);
-                }
-            }
-
-            updateWidgetUI(lanyardJson.data, lastfmTrack);
-            updateHeroQuote(lanyardJson.data.kv);
-            updateAboutPhoto(lanyardJson.data.kv);
-            updateSkills(lanyardJson.data.kv);
         }
+
+        // Spotify optimization: Fetch missing high-res covers immediately
+        if (data.listening_to_spotify && data.spotify) {
+            if (!data.spotify.album_art_url || data.spotify.album_art_url.includes('placeholder')) {
+                data.spotify.album_art_url = await fetchiTunesAlbumArt(data.spotify.song, data.spotify.artist);
+            }
+        }
+
+        // Update all UI components instantly
+        updateWidgetUI(data, lastfmTrack);
+        updateHeroQuote(data.kv);
+        updateAboutPhoto(data.kv);
+        updateSkills(data.kv);
+        
     } catch (error) {
-        console.error('Failed to sync Lanyard/Last.fm:', error);
+        console.error('Failed to process Lanyard update:', error);
     }
 }
 
