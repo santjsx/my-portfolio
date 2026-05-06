@@ -102,17 +102,20 @@ export function initGSAPAnimations() {
     // Magnetic Cursor interactions for specific buttons
     const magneticItems = document.querySelectorAll('.t-btn, .hero-cta-link, .nav-item, .contact-card, .gallery-cta, .pill-card');
     magneticItems.forEach(item => {
+        // Optimization: Use quickTo for performance (bypasses tween creation overhead)
+        const xTo = gsap.quickTo(item, "x", { duration: 0.8, ease: "power2.out" });
+        const yTo = gsap.quickTo(item, "y", { duration: 0.8, ease: "power2.out" });
+
+        // Add will-change to promote to its own layer
+        item.style.willChange = "transform";
+        
         item.addEventListener('mousemove', (e) => {
             const bound = item.getBoundingClientRect();
             const x = e.clientX - bound.left - bound.width / 2;
             const y = e.clientY - bound.top - bound.height / 2;
             
-            gsap.to(item, {
-                x: x * 0.2,
-                y: y * 0.2,
-                duration: 0.8,
-                ease: "power2.out"
-            });
+            xTo(x * 0.2);
+            yTo(y * 0.2);
         });
         
         item.addEventListener('mouseleave', () => {
@@ -120,7 +123,10 @@ export function initGSAPAnimations() {
                 x: 0,
                 y: 0,
                 duration: 1.2,
-                ease: "elastic.out(1, 0.3)" 
+                ease: "elastic.out(1, 0.3)",
+                onComplete: () => {
+                    // Optional: remove will-change if needed, but for small items it's fine to keep
+                }
             });
         });
     });

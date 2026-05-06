@@ -12,22 +12,22 @@ export function setupLenis() {
     }
 
     const lenis = new Lenis({
-        duration: 1.5,           /* Buttery smooth duration */
+        duration: 1.2,           /* Slightly faster but smoother duration */
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
         orientation: 'vertical',
         gestureOrientation: 'vertical',
         smoothWheel: true,
-        wheelMultiplier: 1.0,     /* Normalized for better predictability */
+        wheelMultiplier: 1.0,
         touchMultiplier: 1.5,
         infinite: false,
+        lerp: 0.1,               /* Added lerp for smoother interpolation */
     });
 
     // Synchronize Lenis with ScrollTrigger
     if (lenis) {
         lenis.on('scroll', ScrollTrigger.update);
 
-        // Add Lenis's requestAnimationFrame to GSAP's ticker
-        // This ensures perfect synchronization between GSAP animations and smooth scrolling
+        // Optimization: Use gsap.ticker.add for perfect sync
         gsap.ticker.add((time) => {
             lenis.raf(time * 1000);
         });
@@ -42,6 +42,11 @@ export function setupLenis() {
             } else {
                 lenis.start();
             }
+        });
+
+        // Optimization: Handle window resize for Lenis
+        window.addEventListener('resize', () => {
+            lenis.resize();
         });
 
         // Expose lenis for other modules if needed

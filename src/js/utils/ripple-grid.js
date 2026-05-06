@@ -208,7 +208,11 @@ void main() {
     resize();
 
     let request;
+    let isVisible = true;
+
     const render = t => {
+        if (!isVisible) return;
+
         uniforms.iTime.value = t * 0.001;
 
         const lerpFactor = 0.1;
@@ -222,6 +226,20 @@ void main() {
         renderer.render({ scene: mesh });
         request = requestAnimationFrame(render);
     };
+
+    // Optimization: Pause animation when off-screen
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            isVisible = entry.isIntersecting;
+            if (isVisible) {
+                request = requestAnimationFrame(render);
+            } else {
+                cancelAnimationFrame(request);
+            }
+        });
+    }, { threshold: 0.05 });
+
+    observer.observe(container);
 
     // Live update listener for Theme Lab
     const handleThemeChange = (e) => {
@@ -237,6 +255,7 @@ void main() {
         destroy: () => {
             window.removeEventListener('resize', resize);
             window.removeEventListener('themeChanged', handleThemeChange);
+            observer.disconnect();
             if (mouseInteraction) {
                 container.removeEventListener('mousemove', handleMouseMove);
                 container.removeEventListener('mouseenter', handleMouseEnter);

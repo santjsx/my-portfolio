@@ -89,6 +89,7 @@ class Waves {
     this.lines = [];
     this.mouse = { x: -10, y: 0, lx: 0, ly: 0, sx: 0, sy: 0, v: 0, vs: 0, a: 0, set: false };
     this.frameId = null;
+    this.isVisible = true;
 
     this.init();
   }
@@ -97,7 +98,22 @@ class Waves {
     this.setSize();
     this.setLines();
     this.bindEvents();
+    this.initObserver();
     this.frameId = requestAnimationFrame((t) => this.tick(t));
+  }
+
+  initObserver() {
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        this.isVisible = entry.isIntersecting;
+        if (this.isVisible) {
+          this.frameId = requestAnimationFrame((t) => this.tick(t));
+        } else {
+          cancelAnimationFrame(this.frameId);
+        }
+      });
+    }, { threshold: 0.05 });
+    this.observer.observe(this.container);
   }
 
   setSize() {
@@ -215,6 +231,8 @@ class Waves {
   }
 
   tick(t) {
+    if (!this.isVisible) return;
+
     this.mouse.sx += (this.mouse.x - this.mouse.sx) * 0.1;
     this.mouse.sy += (this.mouse.y - this.mouse.sy) * 0.1;
     const dx = this.mouse.x - this.mouse.lx, dy = this.mouse.y - this.mouse.ly;
@@ -242,6 +260,7 @@ class Waves {
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('mousemove', this.onMouseMove);
     window.removeEventListener('touchmove', this.onTouchMove);
+    if (this.observer) this.observer.disconnect();
     cancelAnimationFrame(this.frameId);
   }
 }
