@@ -1662,89 +1662,48 @@ footer{
 }
 
 
-/* ─── BAT-LAB SHOWCASE ───────────────────────────────────────── */
-.bat-showcase {
-  margin: clamp(4rem, 10vh, 8rem) auto;
-  max-width: 1300px;
-  padding: 0 clamp(1.25rem, 5vw, 4rem);
-}
-.bat-container {
-  width: 100%;
-  height: 400px;
-  background: radial-gradient(circle at center, #1a1a24 0%, #050507 100%);
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
-}
-.bat-container::after {
-  content: '';
+/* ─── BATARANG ORNAMENT ───────────────────────────────────────── */
+.bat-ornament {
   position: absolute;
-  inset: 0;
-  background-image: linear-gradient(rgba(37, 236, 47, 0.03) 1px, transparent 1px);
-  background-size: 100% 3px;
-  pointer-events: none;
-  opacity: 0.3;
-}
-.bat-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(320px, 70%);
+  width: 80px;
   height: auto;
   opacity: 0;
-  filter: drop-shadow(0 0 25px rgba(37, 236, 47, 0.4));
-  z-index: 5;
+  filter: drop-shadow(0 0 15px rgba(37, 236, 47, 0.4));
+  z-index: 1;
   pointer-events: none;
+  /* Default position in hero */
+  top: 15%;
+  right: 10%;
+}
+@media (max-width: 768px) {
+  .bat-ornament { top: 12%; right: 5%; width: 60px; }
 }
 
-/* Animation Classes */
-.bat-fly-top { animation: bat-top 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.bat-fly-bottom { animation: bat-bottom 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.bat-fly-left { animation: bat-left 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.bat-fly-right { animation: bat-right 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+/* Entry Animations */
+.bat-fly-top { animation: bat-top 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards, bat-float 4s ease-in-out infinite 1.4s; }
+.bat-fly-bottom { animation: bat-bottom 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards, bat-float 4s ease-in-out infinite 1.4s; }
+.bat-fly-left { animation: bat-left 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards, bat-float 4s ease-in-out infinite 1.4s; }
+.bat-fly-right { animation: bat-right 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards, bat-float 4s ease-in-out infinite 1.4s; }
 
 @keyframes bat-top {
-  0% { transform: translate(-50%, -300%) rotate(0deg) scale(0.5); opacity: 0; }
-  100% { transform: translate(-50%, -50%) rotate(720deg) scale(1); opacity: 1; }
+  0% { transform: translateY(-500%) rotate(0deg) scale(0.5); opacity: 0; }
+  100% { transform: translateY(0) rotate(720deg) scale(1); opacity: 0.6; }
 }
 @keyframes bat-bottom {
-  0% { transform: translate(-50%, 200%) rotate(0deg) scale(0.5); opacity: 0; }
-  100% { transform: translate(-50%, -50%) rotate(720deg) scale(1); opacity: 1; }
+  0% { transform: translateY(500%) rotate(0deg) scale(0.5); opacity: 0; }
+  100% { transform: translateY(0) rotate(720deg) scale(1); opacity: 0.6; }
 }
 @keyframes bat-left {
-  0% { transform: translate(-300%, -50%) rotate(0deg) scale(0.5); opacity: 0; }
-  100% { transform: translate(-50%, -50%) rotate(720deg) scale(1); opacity: 1; }
+  0% { transform: translateX(-500%) rotate(0deg) scale(0.5); opacity: 0; }
+  100% { transform: translateX(0) rotate(720deg) scale(1); opacity: 0.6; }
 }
 @keyframes bat-right {
-  0% { transform: translate(200%, -50%) rotate(0deg) scale(0.5); opacity: 0; }
-  100% { transform: translate(-50%, -50%) rotate(720deg) scale(1); opacity: 1; }
+  0% { transform: translateX(500%) rotate(0deg) scale(0.5); opacity: 0; }
+  100% { transform: translateX(0) rotate(720deg) scale(1); opacity: 0.6; }
 }
-
-.bat-label {
-  position: absolute;
-  bottom: 2rem;
-  left: 2rem;
-  font-family: var(--mono);
-  font-size: 0.6rem;
-  color: var(--fg3);
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.bat-label::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  background: var(--accent);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--accent);
+@keyframes bat-float {
+  0%, 100% { transform: translateY(0) rotate(720deg); }
+  50% { transform: translateY(-15px) rotate(725deg); }
 }
 </style>
 </head>
@@ -1860,6 +1819,7 @@ footer{
     <div class="hero-stat"><div class="hero-stat-num" id="stat-iss">—</div><div class="hero-stat-label">Humans in Space</div></div>
     <div class="hero-stat"><div class="hero-stat-num">∞</div><div class="hero-stat-label">Lines of Curiosity</div></div>
   </div>
+  <img src="/images/3bf32967367a8384f367cf610ac2a62b-removebg-preview.png" alt="Batarang" class="bat-ornament" id="bat-logo"/>
 </section>
 
 <!-- ═══ ABOUT ══════════════════════════════════════════════ -->
@@ -1910,14 +1870,6 @@ footer{
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ═══ BAT-LAB SHOWCASE ═══ -->
-<section class="bat-showcase" id="batman-showcase">
-  <div class="bat-container">
-    <div class="bat-label">Artifact: Gotham_Utility_v1.0</div>
-    <img src="/images/3bf32967367a8384f367cf610ac2a62b-removebg-preview.png" alt="Batarang" class="bat-logo" id="bat-logo"/>
   </div>
 </section>
 
@@ -4000,23 +3952,16 @@ window.initNeko = function() {
   });
 })();
 
-    // --- BAT-LAB LOGIC ---
+    // --- BATARANG LOGIC ---
     const batLogo = document.getElementById('bat-logo');
     if (batLogo) {
       const directions = ['bat-fly-top', 'bat-fly-bottom', 'bat-fly-left', 'bat-fly-right'];
       const randomDir = directions[Math.floor(Math.random() * directions.length)];
       
-      // Use IntersectionObserver to trigger when visible for better impact
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            batLogo.classList.add(randomDir);
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.5 });
-      
-      observer.observe(document.getElementById('batman-showcase'));
+      // Delay slightly for maximum impact after page reveal
+      setTimeout(() => {
+        batLogo.classList.add(randomDir);
+      }, 1000);
     }
 
     // --- SERVICE WORKER REGISTRATION ---
