@@ -1673,9 +1673,8 @@ footer{
 }
 
 .loader-logo {
-  width: 280px; /* Significantly increased for visual dominance */
+  width: min(280px, 60vw); /* Responsive size */
   height: auto;
-  margin-bottom: 3.5rem;
   filter: drop-shadow(0 0 40px rgba(126, 255, 160, 0.6));
   opacity: 0;
   will-change: transform, opacity, filter;
@@ -1686,12 +1685,6 @@ footer{
 <body>
 <div id="global-loader">
   <img src="/images/WhatsApp_Image_2026-05-07_at_12.19.37_AM-removebg-preview (1).png" alt="Logo" class="loader-logo" id="loader-logo"/>
-  <div class="loader-num-wrap">
-    <div class="loader-number" id="loader-num" data-text="00">00</div>
-  </div>
-  <div class="loader-progress-wrap">
-    <div class="loader-progress-bar" id="loader-bar"></div>
-  </div>
 </div>
 
 <div id="cur-dot"></div>
@@ -3868,60 +3861,64 @@ window.initNeko = function() {
       });
     },
     onUpdate: () => {
-      let num = Math.floor(dummy.val);
-      if (num !== lastNum) {
-        lastNum = num;
-        let padded = num < 10 ? '0' + num : num;
-        loaderNum.textContent = padded;
-        loaderNum.setAttribute('data-text', padded);
-      }
-      loaderNum.style.setProperty('--fill-width', dummy.val + '%');
-      loaderBar.style.transform = `scaleX(${dummy.val / 100})`;
-
-      if (dummy.val >= 50) {
-        if (typeof window.initHeroAnim === 'function') window.initHeroAnim();
-      }
+      // Logic for background tasks can stay here if needed
     },
     onComplete: () => {
-      gsap.to(loader, {
-        yPercent: -100,
-        duration: 1.2,
-        ease: 'expo.inOut',
-        delay: 0.5, /* Pause at 100% so they see the logo */
-        onStart: () => {
-          // Trigger animations as soon as the loader begins to slide away
-          if (typeof window.initHeroAnim === 'function') window.initHeroAnim();
-          // Delay Neko to avoid thread competition
-          setTimeout(() => {
-            if (typeof window.initNeko === 'function') window.initNeko();
-          }, 500);
-        },
+      const loaderLogo = document.getElementById('loader-logo');
+      const headerLogo = document.getElementById('nav-logo-img');
+      
+      // Stop the heartbeat loop
+      gsap.killTweensOf(loaderLogo);
+
+      // Get positions for the 'fly to header' effect
+      const startRect = loaderLogo.getBoundingClientRect();
+      const endRect = headerLogo.getBoundingClientRect();
+
+      // Calculate the difference
+      const dx = endRect.left - startRect.left;
+      const dy = endRect.top - startRect.top;
+      const scale = endRect.width / startRect.width;
+
+      const mainTl = gsap.timeline({
         onComplete: () => {
           loader.style.display = 'none';
           document.body.style.overflow = '';
-          if (typeof lenis !== 'undefined' && lenis) lenis.start();
-
-          // Reveal Logo
-          gsap.fromTo("#nav-logo-img", 
-            { 
-              opacity: 0, 
-              scale: 0.5, 
-              rotate: -15,
-              filter: "blur(10px) brightness(0)"
-            }, 
-            { 
-              opacity: 1, 
-              scale: 1, 
-              rotate: 0,
-              y: 12,
-              filter: "blur(0px) brightness(1.1)",
-              duration: 1.2, 
-              ease: "elastic.out(1, 0.75)",
-              delay: 0.2
-            }
-          );
+          if (typeof window.lenis !== 'undefined' && window.lenis) window.lenis.start();
         }
       });
+
+      // Animate the logo to the header position
+      mainTl.to(loaderLogo, {
+        x: dx,
+        y: dy,
+        scale: scale,
+        opacity: 0,
+        filter: "blur(15px) brightness(2)",
+        duration: 1.2,
+        ease: "expo.inOut"
+      });
+
+      // Fade out the loader background simultaneously
+      mainTl.to(loader, {
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.inOut"
+      }, "-=0.8");
+
+      // Trigger hero animations slightly before completion
+      mainTl.add(() => {
+        if (typeof window.initHeroAnim === 'function') window.initHeroAnim();
+        setTimeout(() => {
+          if (typeof window.initNeko === 'function') window.initNeko();
+        }, 500);
+      }, "-=0.6");
+
+      // Seamlessly reveal the actual header logo
+      mainTl.fromTo(headerLogo, 
+        { opacity: 0, scale: 0.5, y: -20, filter: "blur(10px)" }, 
+        { opacity: 1, scale: 1, y: 12, filter: "blur(0px)", duration: 1.2, ease: "elastic.out(1, 0.75)" },
+        "-=0.4"
+      );
     }
   });
 })();
