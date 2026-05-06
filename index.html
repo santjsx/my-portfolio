@@ -1550,116 +1550,6 @@ footer{
   will-change: transform;
 }
 
-/* ─── DEV LAB (DYNAMIC WORKSPACE) — ULTRA MINIMAL ────────── */
-.widget.dev-lab {
-  background: var(--bg2);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 240px;
-  overflow: hidden;
-  position: relative;
-  border: 1px solid var(--line);
-  transition: border-color 0.8s ease, background 0.8s ease;
-}
-.dev-lab-container {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-}
-.dev-lab-bg {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(var(--line) 1px, transparent 1px);
-  background-size: 20px 20px;
-  opacity: 0.1;
-  transition: opacity 1s ease;
-}
-.laptop-3d {
-  width: 80px;
-  height: 50px;
-  position: relative;
-  perspective: 800px;
-  transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-}
-.laptop-screen {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: #050507;
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 3px;
-  transform-origin: bottom;
-  transform: rotateX(-95deg);
-  transition: transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 1s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.laptop-screen::after {
-  content: '';
-  width: 12px; height: 12px;
-  background: var(--accent);
-  border-radius: 50%;
-  filter: blur(8px);
-  opacity: 0;
-  transition: opacity 0.8s ease;
-}
-.laptop-body {
-  position: absolute;
-  bottom: -3px; left: -10%; width: 120%; height: 4px;
-  background: #1a1a1a;
-  border-radius: 1px;
-  transform: rotateX(20deg);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-}
-.dev-lab-info {
-  text-align: center;
-  opacity: 0.4;
-  transition: opacity 0.8s ease, transform 0.8s ease;
-  transform: translateY(5px);
-}
-.dev-lab-project {
-  font-family: var(--display);
-  font-weight: 800;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  color: var(--fg);
-  text-transform: uppercase;
-}
-
-/* Active State — Perfection */
-.dev-lab.is-active {
-  border-color: rgba(126, 255, 160, 0.2);
-  background: radial-gradient(circle at center, rgba(126, 255, 160, 0.03), transparent);
-}
-.dev-lab.is-active .dev-lab-bg {
-  opacity: 0.3;
-}
-.dev-lab.is-active .laptop-screen {
-  transform: rotateX(0deg);
-  box-shadow: 0 0 40px var(--accent-glow), inset 0 0 10px var(--accent-glow);
-  border-color: var(--accent);
-}
-.dev-lab.is-active .laptop-screen::after {
-  opacity: 1;
-}
-.dev-lab.is-active .dev-lab-info {
-  opacity: 1;
-  transform: translateY(0);
-}
-.dev-lab.is-active .laptop-3d {
-  transform: scale(1.1) translateY(-5px);
-}
-
-/* THEMES — Minimalist Tints */
-body.theme-backend { --accent: #5b8cff; --accent-glow: rgba(91, 140, 255, 0.25); }
-body.theme-frontend { --accent: #ff6b35; --accent-glow: rgba(255, 107, 53, 0.25); }
-body.theme-design { --accent: #ff00ff; --accent-glow: rgba(255, 0, 255, 0.25); }
-
 </style>
 </head>
 <body>
@@ -2264,19 +2154,6 @@ body.theme-design { --accent: #ff00ff; --accent-glow: rgba(255, 0, 255, 0.25); }
             </div>
           </div>
         </div>
-      <div class="widget dev-lab" id="dev-lab-widget">
-        <div class="dev-lab-bg"></div>
-        <div class="widget-label live">Workstation</div>
-        <div class="dev-lab-container">
-          <div class="laptop-3d" id="laptop-3d">
-            <div class="laptop-screen"></div>
-            <div class="laptop-body"></div>
-          </div>
-          <div class="dev-lab-info">
-            <div class="dev-lab-project" id="dev-project">Standby</div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -3147,36 +3024,6 @@ function updateLanyardUI(p) {
 
   const container = $('dw-activities-container');
   const activities = p.activities || [];
-
-  // ─── DEV LAB SYNC ──────────────────────────────────────────
-  (function updateDevLab(data) {
-    const widget = $('dev-lab-widget');
-    const projectEl = $('dev-project');
-    if (!widget || !projectEl) return;
-
-    const acts = data.activities || [];
-    const vscode = acts.find(a => a.name === 'Visual Studio Code' || a.application_id === '383226320970055681');
-    
-    // Check KV for project name
-    const projectName = data.kv && data.kv.project ? data.kv.project.replace(/^"|"$/g, '') : (vscode ? vscode.details : null);
-
-    if (vscode) {
-        widget.classList.add('is-active');
-        setText('dev-project', projectName || 'ACTIVE');
-        
-        if (projectName) {
-            const pr = projectName.toLowerCase();
-            document.body.classList.remove('theme-backend', 'theme-frontend', 'theme-design');
-            if (pr.includes('api') || pr.includes('server') || pr.includes('back')) document.body.classList.add('theme-backend');
-            else if (pr.includes('css') || pr.includes('front') || pr.includes('ui') || pr.includes('ux')) document.body.classList.add('theme-frontend');
-            else if (pr.includes('design') || pr.includes('figma') || pr.includes('art')) document.body.classList.add('theme-design');
-        }
-    } else {
-        widget.classList.remove('is-active');
-        setText('dev-project', 'STANDBY');
-        document.body.classList.remove('theme-backend', 'theme-frontend', 'theme-design');
-    }
-  })(p);
 
   if(container){
     if(activities.length > 0){
