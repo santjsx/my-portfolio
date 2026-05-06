@@ -5,3 +5,4 @@ dist/
 .env
 .npm
 package-lock.json
+GLB format/
