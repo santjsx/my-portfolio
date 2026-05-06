@@ -1663,20 +1663,22 @@ footer{
 
 
 /* ─── BATARANG ORNAMENT ───────────────────────────────────────── */
+.bat-anchor {
+  position: relative;
+  display: inline-block;
+}
 .bat-ornament {
   position: absolute;
-  width: 80px;
+  width: clamp(40px, 10vw, 60px);
   height: auto;
   opacity: 0;
   filter: drop-shadow(0 0 15px rgba(37, 236, 47, 0.4));
-  z-index: 1;
+  z-index: 10;
   pointer-events: none;
-  /* Default position in hero */
-  top: 15%;
-  right: 10%;
-}
-@media (max-width: 768px) {
-  .bat-ornament { top: 12%; right: 5%; width: 60px; }
+  /* Precisely above the H */
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* Entry Animations */
@@ -1686,24 +1688,24 @@ footer{
 .bat-fly-right { animation: bat-right 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards, bat-float 4s ease-in-out infinite 1.4s; }
 
 @keyframes bat-top {
-  0% { transform: translateY(-500%) rotate(0deg) scale(0.5); opacity: 0; }
-  100% { transform: translateY(0) rotate(720deg) scale(1); opacity: 0.6; }
+  0% { transform: translate(-50%, -500%) rotate(0deg) scale(0.5); opacity: 0; }
+  100% { transform: translate(-50%, 0) rotate(720deg) scale(1); opacity: 0.8; }
 }
 @keyframes bat-bottom {
-  0% { transform: translateY(500%) rotate(0deg) scale(0.5); opacity: 0; }
-  100% { transform: translateY(0) rotate(720deg) scale(1); opacity: 0.6; }
+  0% { transform: translate(-50%, 500%) rotate(0deg) scale(0.5); opacity: 0; }
+  100% { transform: translate(-50%, 0) rotate(720deg) scale(1); opacity: 0.8; }
 }
 @keyframes bat-left {
-  0% { transform: translateX(-500%) rotate(0deg) scale(0.5); opacity: 0; }
-  100% { transform: translateX(0) rotate(720deg) scale(1); opacity: 0.6; }
+  0% { transform: translate(-500%, 0) rotate(0deg) scale(0.5); opacity: 0; }
+  100% { transform: translate(-50%, 0) rotate(720deg) scale(1); opacity: 0.8; }
 }
 @keyframes bat-right {
-  0% { transform: translateX(500%) rotate(0deg) scale(0.5); opacity: 0; }
-  100% { transform: translateX(0) rotate(720deg) scale(1); opacity: 0.6; }
+  0% { transform: translate(500%, 0) rotate(0deg) scale(0.5); opacity: 0; }
+  100% { transform: translate(-50%, 0) rotate(720deg) scale(1); opacity: 0.8; }
 }
 @keyframes bat-float {
-  0%, 100% { transform: translateY(0) rotate(720deg); }
-  50% { transform: translateY(-15px) rotate(725deg); }
+  0%, 100% { transform: translate(-50%, 0) rotate(720deg); }
+  50% { transform: translate(-50%, -10px) rotate(725deg); }
 }
 </style>
 </head>
@@ -1791,7 +1793,7 @@ footer{
   <div style="height: 100px; width: 100%;"></div>
   <div class="hero-main">
     <h1 class="hero-name" id="hero-name">
-      <span class="name-line" style="display:block">SANTHOSH</span>
+      <span class="name-line" style="display:block">SANTHOS<span class="bat-anchor">H<img src="/images/3bf32967367a8384f367cf610ac2a62b-removebg-preview.png" alt="Batarang" class="bat-ornament" id="bat-logo"/></span></span>
       <em class="name-line" style="display:block"><span>REDDY.</span></em>
     </h1>
     <div class="hero-sub" id="hero-sub">
@@ -1819,7 +1821,6 @@ footer{
     <div class="hero-stat"><div class="hero-stat-num" id="stat-iss">—</div><div class="hero-stat-label">Humans in Space</div></div>
     <div class="hero-stat"><div class="hero-stat-num">∞</div><div class="hero-stat-label">Lines of Curiosity</div></div>
   </div>
-  <img src="/images/3bf32967367a8384f367cf610ac2a62b-removebg-preview.png" alt="Batarang" class="bat-ornament" id="bat-logo"/>
 </section>
 
 <!-- ═══ ABOUT ══════════════════════════════════════════════ -->
