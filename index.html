@@ -118,10 +118,6 @@ button{cursor:none;border:none;background:none;font-family:inherit;position:rela
 
   body:has(a:hover,button:hover) #cur-dot{width:10px;height:10px;background:var(--accent2)}
   body:has(a:hover,button:hover) #cur-ring{width:44px;height:44px;border-color:rgba(255,107,53,.4)}
-  
-  /* Invert cursor on light-colored Contact section */
-  body:has(.contact:hover) #cur-dot { background: var(--bg); }
-  body:has(.contact:hover) #cur-ring { border-color: rgba(5, 5, 7, 0.4); }
 }
 
 /* ─── HERO GRID ─────────────────────────────────────────── */
@@ -470,8 +466,15 @@ nav {
   font-family:var(--display);
   font-size:clamp(1.8rem,7vw,8rem);
   font-weight:800;line-height:.9;letter-spacing:-.03em;
-  color:var(--fg);margin-bottom:.8rem;
+  color:var(--fg);
+  margin-bottom:.8rem;
   overflow:visible;
+}
+.hero-name .name-line:not(em) .char {
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
 }
 .name-line{display:block;white-space:nowrap}
 .hero-name em {
@@ -531,7 +534,15 @@ nav {
   background:var(--bg3);flex-shrink:0;
 }
 .presence-info{flex:1;min-width:0}
-.presence-name{font-family:var(--display);font-weight:600;font-size:.82rem;color:var(--fg)}
+.presence-name{
+  font-family:var(--display);
+  font-weight:600;
+  font-size:.82rem;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 .presence-activity{
   font-family:var(--mono);font-size:.58rem;letter-spacing:.06em;
   color:var(--fg3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
@@ -653,7 +664,10 @@ nav {
   font-family: var(--mono);
   font-size: 0.6rem;
   letter-spacing: 0.2em;
-  color: var(--fg3);
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   text-transform: uppercase;
   border-left: 1px solid var(--line);
   border-right: 1px solid var(--line);
@@ -1348,8 +1362,27 @@ nav {
   border-radius:4px;padding:.7rem;display:flex;gap:.7rem;align-items:center;
 }
 .discord-activity-img{width:38px;height:38px;border-radius:3px;object-fit:cover;background:var(--bg3);flex-shrink:0}
-.discord-activity-name{font-family:var(--display);font-weight:600;font-size:.8rem;color:var(--fg);margin-bottom:.12rem}
-.discord-activity-detail{font-family:var(--mono);font-size:.56rem;color:var(--fg3);line-height:1.5}
+.discord-activity-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 0.12rem;
+}
+.discord-activity-detail {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--fg2);
+  line-height: 1.4;
+}
+.activity-duration {
+  color: var(--fg3);
+  font-size: 0.6rem;
+  margin-left: 0.3rem;
+}
 
 /* Movie */
 .movie-poster{width:44px;height:66px;object-fit:cover;border-radius:3px;background:var(--bg3);flex-shrink:0}
@@ -1484,7 +1517,18 @@ nav {
   margin-bottom: clamp(1.5rem, 4vh, 2.5rem);
 }
 .contact-big .line-wrap{overflow:hidden;display:block;padding-bottom:.08em; white-space: nowrap;}
-.contact-big .line-inner{display:block;opacity:0;transform:translateY(110%)}
+.contact-big .line-inner{
+  display:block;
+  opacity:0;
+  transform:translateY(110%);
+}
+.contact-big .kinetic-roll .char-primary,
+.contact-big .kinetic-roll .char-secondary {
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
 .contact-big em{font-style:normal;}
 
 .contact-links{
@@ -1495,17 +1539,18 @@ nav {
 }
 .contact-link{
   display:flex;align-items:center;gap:.65rem;
-  padding:.75rem 1.2rem;border:1px solid rgba(37, 236, 47, 0.2);
+  padding:.75rem 1.2rem;border:1px solid rgba(255, 255, 255, 0.12);
   font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;
   text-transform:uppercase;
-  background: var(--accent-grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #fff;
   transition:all .2s;border-radius:3px;
   opacity:0;transform:translateY(20px);
 }
-.contact-link:hover{border-color: var(--accent); background:rgba(37, 236, 47, 0.05)}
+.contact-link:hover{
+  border-color: var(--accent); 
+  background:rgba(126, 255, 160, 0.08);
+  color: var(--accent);
+}
 .contact-link svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.5;flex-shrink:0}
 
 /* Form Styles */
@@ -3260,7 +3305,7 @@ function updateLanyardUI(p) {
             <img class="discord-activity-img" src="${imgSrc}" alt="" onerror="this.src='https://ui-avatars.com/api/?name=?&background=12121a&color=7effa0&size=80'"/>
             <div>
               <div class="discord-activity-name">${esc(name)}</div>
-              <div class="discord-activity-detail">${esc(details)} ${durationText ? `<span style="opacity:0.5; font-size:0.5rem">(${durationText})</span>` : ''}</div>
+              <div class="discord-activity-detail">${esc(details)} ${durationText ? `<span class="activity-duration">(${durationText})</span>` : ''}</div>
             </div>
           </div>
         `;
