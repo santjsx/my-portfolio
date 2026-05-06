@@ -341,12 +341,51 @@ async function fetchLanyardData() {
             }
 
             updateWidgetUI(lanyardJson.data, lastfmTrack);
+            updateDevLab(lanyardJson.data);
             updateHeroQuote(lanyardJson.data.kv);
             updateAboutPhoto(lanyardJson.data.kv);
             updateSkills(lanyardJson.data.kv);
         }
     } catch (error) {
         console.error('Failed to sync Lanyard/Last.fm:', error);
+    }
+}
+
+function updateDevLab(data) {
+    const widget = document.getElementById('dev-lab-widget');
+    const statusEl = document.getElementById('dev-status');
+    const projectEl = document.getElementById('dev-project');
+    if (!widget || !statusEl || !projectEl) return;
+
+    const activities = data.activities || [];
+    const vscode = activities.find(a => a.name === 'Visual Studio Code' || a.application_id === '383226320970055681');
+    
+    // Check KV for project name (user can push this to Lanyard)
+    const projectName = data.kv && data.kv.project ? data.kv.project.replace(/^"|"$/g, '') : (vscode ? vscode.details : null);
+
+    if (vscode) {
+        widget.classList.add('is-active');
+        statusEl.textContent = 'ACTIVE';
+        projectEl.textContent = projectName || 'Coding...';
+        
+        // Dynamic Theming based on project keywords
+        if (projectName) {
+            const p = projectName.toLowerCase();
+            document.body.classList.remove('theme-backend', 'theme-frontend', 'theme-design');
+            
+            if (p.includes('api') || p.includes('server') || p.includes('back')) {
+                document.body.classList.add('theme-backend');
+            } else if (p.includes('css') || p.includes('front') || p.includes('ui') || p.includes('ux')) {
+                document.body.classList.add('theme-frontend');
+            } else if (p.includes('design') || p.includes('figma') || p.includes('art')) {
+                document.body.classList.add('theme-design');
+            }
+        }
+    } else {
+        widget.classList.remove('is-active');
+        statusEl.textContent = 'STANDBY';
+        projectEl.textContent = 'No active project detected';
+        document.body.classList.remove('theme-backend', 'theme-frontend', 'theme-design');
     }
 }
 
