@@ -29,7 +29,7 @@
   --display:'Syne',sans-serif;
   --mono:'Syne Mono',monospace;
   --body:'DM Sans',sans-serif;
-  --nav-h:60px;
+  --nav-h:65px;
 }
 html{scroll-behavior:auto} /* Lenis handles smooth scroll */
 .hero-main,.contact-inner{overflow-x:visible}
@@ -194,16 +194,23 @@ nav {
   display: flex; align-items: center; gap: 0.5rem;
   text-decoration: none; position: relative;
   transition: transform 0.3s ease;
+  z-index: 10;
 }
-.nav-logo:hover { transform: translateX(4px); }
+.nav-logo:hover { transform: scale(1.02); }
 
-.nav-logo-name {
-  font-family: var(--display); font-weight: 800; font-size: 0.9rem;
-  letter-spacing: 0.15em; text-transform: uppercase; color: var(--fg);
-  display: flex; align-items: center;
+.nav-logo-img {
+  height: 110px; /* Large breakout size */
+  width: auto;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(126, 255, 160, 0.3));
+  transition: filter 0.3s ease, transform 0.3s ease;
+  transform: translateY(12px); /* Center and breakout slightly */
 }
-.logo-h { color: var(--accent); transition: color 0.3s; }
-.nav-logo:hover .logo-h { color: var(--accent2); }
+.nav-logo:hover .nav-logo-img {
+  filter: drop-shadow(0 8px 24px rgba(126, 255, 160, 0.5)) brightness(1.1);
+  transform: translateY(15px) scale(1.05);
+}
 
 .nav-status {
   display: flex; align-items: center; gap: 0.5rem;
@@ -1580,7 +1587,7 @@ footer{
 <nav>
   <div class="nav-inner">
     <a class="nav-logo" href="#hero" aria-label="Santhosh — home">
-      <span class="nav-logo-name">SANTHOSH<span class="logo-h">H</span><span class="logo-h" style="opacity:0.7">H</span><span class="logo-h" style="opacity:0.4">H</span></span>
+      <img src="/images/WhatsApp_Image_2026-05-07_at_12.19.37_AM-removebg-preview (1).png" alt="Santhosh Logo" class="nav-logo-img" id="nav-logo-img"/>
     </a>
     
     <div class="nav-status"><span>Open to work</span></div>
@@ -3709,6 +3716,26 @@ window.initNeko = function() {
           loader.style.display = 'none';
           document.body.style.overflow = '';
           if (typeof lenis !== 'undefined' && lenis) lenis.start();
+
+          // Reveal Logo
+          gsap.fromTo("#nav-logo-img", 
+            { 
+              opacity: 0, 
+              scale: 0.5, 
+              rotate: -15,
+              filter: "blur(10px) brightness(0)"
+            }, 
+            { 
+              opacity: 1, 
+              scale: 1, 
+              rotate: 0,
+              y: 12,
+              filter: "blur(0px) brightness(1.1)",
+              duration: 1.2, 
+              ease: "elastic.out(1, 0.75)",
+              delay: 0.2
+            }
+          );
         }
       });
     }
