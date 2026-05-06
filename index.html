@@ -446,7 +446,7 @@ nav {
   margin-top: 50px; /* Additional hard margin */
   padding:clamp(2.5rem,7vh,6rem) clamp(1.25rem,5vw,4rem);
   max-width:1200px;margin:0 auto;width:100%;
-  overflow:hidden;
+  overflow:visible;
 }
 .hero-eyebrow{display:flex;align-items:center;gap:1rem;margin-bottom:clamp(1.5rem,3vh,2.5rem);opacity:0}
 .hero-eyebrow-line{width:2rem;height:1px;background:var(--fg3);flex-shrink:0}
@@ -1793,7 +1793,7 @@ footer{
   <div style="height: 100px; width: 100%;"></div>
   <div class="hero-main">
     <h1 class="hero-name" id="hero-name">
-      <span class="name-line" style="display:block">SANTHOS<span class="bat-anchor">H<img src="/images/3bf32967367a8384f367cf610ac2a62b-removebg-preview.png" alt="Batarang" class="bat-ornament" id="bat-logo"/></span></span>
+      <span class="name-line" style="display:block">SANTHOSH</span>
       <em class="name-line" style="display:block"><span>REDDY.</span></em>
     </h1>
     <div class="hero-sub" id="hero-sub">
@@ -2783,15 +2783,20 @@ scrollBtn.addEventListener('click', () => lenis.scrollTo(0, { duration: 1.6 }));
   const container = document.getElementById('hero-name');
   if (!container) return;
   const lines = container.querySelectorAll('.name-line');
-  lines.forEach(line => {
+  lines.forEach((line, lineIdx) => {
     const target = line.querySelector('span') || line;
     const text = target.textContent;
     target.innerHTML = '';
-    [...text].forEach(ch => {
+    [...text].forEach((ch, charIdx) => {
       const span = document.createElement('span');
       span.className = 'char';
+      if (lineIdx === 0 && charIdx === 7) { // The last 'H' in SANTHOSH
+        span.classList.add('bat-anchor');
+        span.innerHTML = `${ch}<img src="/images/3bf32967367a8384f367cf610ac2a62b-removebg-preview.png" alt="Batarang" class="bat-ornament" id="bat-logo"/>`;
+      } else {
+        span.textContent = ch === ' ' ? '\u00A0' : ch;
+      }
       span.style.display = 'inline-block';
-      span.textContent = ch === ' ' ? '\u00A0' : ch;
       gsap.set(span, { y: '110%', opacity: 0, filter: 'blur(10px)', skewY: 10 });
       target.appendChild(span);
     });
