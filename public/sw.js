@@ -1,5 +1,5 @@
-const CACHE_NAME = 'archive-v2';
-const ASSETS = [
+const CACHE_NAME = 'santhosh-portfolio-v3';
+const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/favicon.png',
@@ -8,53 +8,59 @@ const ASSETS = [
   'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js'
 ];
 
+// Install Event
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
-  );
-});
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(clients.claim());
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name))
-      );
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log('[SW] Pre-caching static assets');
+      return cache.addAll(ASSETS_TO_CACHE);
     })
   );
 });
 
+// Activate Event - Cleanup old caches
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+      );
+    })
+  );
+  return self.clients.claim();
+});
+
+// Fetch Event
 self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-  
-  // Network First for the main page to ensure updates are seen immediately
-  if (url.pathname === '/' || url.pathname === '/index.html') {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  // Network-first for HTML
+  if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request)
+      fetch(request)
         .then((response) => {
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, response.clone());
-            return response;
-          });
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          return response;
         })
-        .catch(() => caches.match(event.request))
+        .catch(() => caches.match(request))
     );
     return;
   }
 
+  // Stale-while-revalidate for everything else (Images, Fonts, Scripts)
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request).then((fetchResponse) => {
-        if (event.request.url.startsWith('http')) {
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, fetchResponse.clone());
-            return fetchResponse;
-          });
+    caches.match(request).then((cachedResponse) => {
+      const fetchPromise = fetch(request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const copy = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
         }
-        return fetchResponse;
+        return networkResponse;
       });
+      return cachedResponse || fetchPromise;
     })
   );
 });

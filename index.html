@@ -10,6 +10,11 @@
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com"/>
 <link rel="dns-prefetch" href="https://unpkg.com"/>
 <link rel="dns-prefetch" href="https://api.lanyard.rest"/>
+
+<!-- Critical Resource Preloading -->
+<link rel="preload" href="/images/WhatsApp_Image_2026-05-07_at_12.19.37_AM-removebg-preview (1).png" as="image"/>
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" as="style"/>
+
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
 <style>
 /* ─── RESET & TOKENS ──────────────────────────────────────── */
@@ -33,6 +38,11 @@
 }
 html{scroll-behavior:auto} /* Lenis handles smooth scroll */
 .hero-main,.contact-inner{overflow-x:visible}
+section {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1000px;
+}
+.hero { content-visibility: visible; } /* Keep hero visible for instant load */
 body{
   background:var(--bg);
   color:var(--fg);
@@ -3649,7 +3659,11 @@ window.initNeko = function() {
       }
     }, { passive: true });
 
-    // --- CYBER GUIDE UPGRADE ---
+    // --- PERFORMANCE CONFIG ---
+    gsap.config({ force3D: true, nullTargetWarn: false });
+    gsap.defaults({ ease: "power2.out", duration: 0.8 });
+
+    // --- CYBER GUIDE ---
     const bubble = document.createElement('div');
     bubble.className = 'neko-bubble';
     document.body.appendChild(bubble);
