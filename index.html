@@ -1672,10 +1672,20 @@ footer{
   will-change: transform;
 }
 
+.loader-logo {
+  width: 120px;
+  height: auto;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 0 20px rgba(126, 255, 160, 0));
+  opacity: 0;
+  transform: scale(0.8) translateY(20px);
+}
+
 </style>
 </head>
 <body>
 <div id="global-loader">
+  <img src="/images/WhatsApp_Image_2026-05-07_at_12.19.37_AM-removebg-preview (1).png" alt="Logo" class="loader-logo" id="loader-logo"/>
   <div class="loader-num-wrap">
     <div class="loader-number" id="loader-num" data-text="00">00</div>
   </div>
@@ -3851,6 +3861,16 @@ window.initNeko = function() {
       }
       loaderNum.style.setProperty('--fill-width', dummy.val + '%');
       loaderBar.style.transform = `scaleX(${dummy.val / 100})`;
+
+      // Animate Loader Logo
+      gsap.to("#loader-logo", {
+        opacity: dummy.val / 100,
+        scale: 0.8 + (dummy.val / 100) * 0.2,
+        y: 20 - (dummy.val / 100) * 20,
+        filter: `drop-shadow(0 0 ${ (dummy.val / 100) * 30 }px rgba(126, 255, 160, 0.4))`,
+        duration: 0.1,
+        overwrite: true
+      });
 
       if (dummy.val >= 50) {
         if (typeof window.initHeroAnim === 'function') window.initHeroAnim();
