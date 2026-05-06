@@ -1651,37 +1651,6 @@ footer{
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   color: var(--fg); font-family: var(--mono);
 }
-.loader-num-wrap {
-  min-width: 4ch;
-  display: flex;
-  justify-content: center;
-}
-.loader-number {
-  font-family: var(--display); font-size: clamp(3rem, 8vw, 6rem);
-  font-weight: 800; line-height: 1; color: var(--bg);
-  -webkit-text-stroke: 1px var(--line2);
-  position: relative;
-  font-variant-numeric: tabular-nums;
-  display: inline-block;
-}
-.loader-number::after {
-  content: attr(data-text);
-  position: absolute; left: 0; top: 0;
-  color: var(--accent);
-  -webkit-text-stroke: 0;
-  clip-path: inset(0 calc(100% - var(--fill-width, 0%)) 0 0);
-}
-.loader-progress-wrap {
-  width: 150px; height: 1px; background: rgba(255,255,255,0.1);
-  margin-top: 1.5rem; position: relative; overflow: hidden;
-}
-.loader-progress-bar {
-  position: absolute; left: 0; top: 0; bottom: 0; width: 100%;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  will-change: transform;
-}
 
 .loader-logo {
   width: min(280px, 60vw);
