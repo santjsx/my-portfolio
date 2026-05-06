@@ -3149,6 +3149,39 @@ function updateLanyardUI(p) {
   const container = $('dw-activities-container');
   const activities = p.activities || [];
 
+  // ─── DEV LAB SYNC ──────────────────────────────────────────
+  (function updateDevLab(data) {
+    const widget = $('dev-lab-widget');
+    const statusEl = $('dev-status');
+    const projectEl = $('dev-project');
+    if (!widget || !statusEl || !projectEl) return;
+
+    const acts = data.activities || [];
+    const vscode = acts.find(a => a.name === 'Visual Studio Code' || a.application_id === '383226320970055681');
+    
+    // Check KV for project name
+    const projectName = data.kv && data.kv.project ? data.kv.project.replace(/^"|"$/g, '') : (vscode ? vscode.details : null);
+
+    if (vscode) {
+        widget.classList.add('is-active');
+        setText('dev-status', 'ACTIVE');
+        setText('dev-project', projectName || 'Coding...');
+        
+        if (projectName) {
+            const pr = projectName.toLowerCase();
+            document.body.classList.remove('theme-backend', 'theme-frontend', 'theme-design');
+            if (pr.includes('api') || pr.includes('server') || pr.includes('back')) document.body.classList.add('theme-backend');
+            else if (pr.includes('css') || pr.includes('front') || pr.includes('ui') || pr.includes('ux')) document.body.classList.add('theme-frontend');
+            else if (pr.includes('design') || pr.includes('figma') || pr.includes('art')) document.body.classList.add('theme-design');
+        }
+    } else {
+        widget.classList.remove('is-active');
+        setText('dev-status', 'STANDBY');
+        setText('dev-project', 'No active project detected');
+        document.body.classList.remove('theme-backend', 'theme-frontend', 'theme-design');
+    }
+  })(p);
+
   if(container){
     if(activities.length > 0){
       container.innerHTML = activities.map(act => {
