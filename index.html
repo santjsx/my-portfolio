@@ -1673,12 +1673,13 @@ footer{
 }
 
 .loader-logo {
-  width: 120px;
+  width: 130px; /* Slightly bigger */
   height: auto;
   margin-bottom: 2rem;
-  filter: drop-shadow(0 0 20px rgba(126, 255, 160, 0));
-  opacity: 0;
-  transform: scale(0.8) translateY(20px);
+  filter: drop-shadow(0 0 20px rgba(126, 255, 160, 0.4));
+  opacity: 1; /* Make visible by default */
+  transform: translateY(0);
+  will-change: transform, opacity, filter;
 }
 
 </style>
@@ -3849,8 +3850,15 @@ window.initNeko = function() {
   
   gsap.to(dummy, {
     val: 100,
-    duration: 0.8,
-    ease: 'none',
+    duration: 1.5, /* Slowed down to see animation */
+    ease: 'power2.inOut',
+    onStart: () => {
+      // Immediate entrance for logo
+      gsap.fromTo("#loader-logo", 
+        { opacity: 0, scale: 0.5, y: 20 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "back.out(1.7)" }
+      );
+    },
     onUpdate: () => {
       let num = Math.floor(dummy.val);
       if (num !== lastNum) {
