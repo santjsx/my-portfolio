@@ -1673,12 +1673,11 @@ footer{
 }
 
 .loader-logo {
-  width: 130px; /* Slightly bigger */
+  width: 180px; /* Increased size */
   height: auto;
-  margin-bottom: 2rem;
-  filter: drop-shadow(0 0 20px rgba(126, 255, 160, 0.4));
-  opacity: 1; /* Make visible by default */
-  transform: translateY(0);
+  margin-bottom: 3rem;
+  filter: drop-shadow(0 0 30px rgba(126, 255, 160, 0.5));
+  opacity: 0;
   will-change: transform, opacity, filter;
 }
 
@@ -3853,11 +3852,20 @@ window.initNeko = function() {
     duration: 2.5, /* Increased significantly to ensure visibility */
     ease: 'power1.inOut',
     onStart: () => {
-      // Clear and impactful entrance
-      gsap.fromTo("#loader-logo", 
-        { opacity: 0, scale: 0.7, y: 15, filter: "blur(5px)" },
-        { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "expo.out" }
+      // Sophisticated Cinematic Entrance
+      const tl = gsap.timeline();
+      tl.fromTo("#loader-logo", 
+        { opacity: 0, scale: 0.4, filter: "blur(20px) brightness(2)" },
+        { opacity: 1, scale: 1, filter: "blur(0px) brightness(1)", duration: 1.5, ease: "elastic.out(1, 0.5)" }
       );
+      // Subtle heartbeat/float loop
+      tl.to("#loader-logo", {
+        scale: 1.05,
+        duration: 1.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
     },
     onUpdate: () => {
       let num = Math.floor(dummy.val);
