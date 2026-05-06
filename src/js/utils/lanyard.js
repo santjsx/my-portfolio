@@ -320,11 +320,10 @@ let cachedLastFmTrack = null;
 
 async function processLanyardUpdate(data) {
     try {
-        let lastfmTrack = null;
-
-        // Efficiency Tweak: Only fetch Last.fm if NOT on Spotify OR if the cache has expired (15s)
+        // Equal Priority: Fetch both Lanyard and Last.fm concurrently
         const now = Date.now();
-        const shouldFetchLastFm = !data.listening_to_spotify && (now - lastLastFmFetch > 15000);
+        // Throttle Last.fm to 2 seconds to avoid API rate limits during rapid Discord updates
+        const shouldFetchLastFm = (now - lastLastFmFetch > 2000);
 
         if (shouldFetchLastFm) {
             try {
@@ -355,11 +354,6 @@ async function processLanyardUpdate(data) {
             }
         }
 
-        // Use cached track if we aren't fetching new one
-        if (!data.listening_to_spotify) {
-            lastfmTrack = cachedLastFmTrack;
-        }
-
         // Spotify optimization: Fetch missing high-res covers immediately
         if (data.listening_to_spotify && data.spotify) {
             if (!data.spotify.album_art_url || data.spotify.album_art_url.includes('placeholder')) {
@@ -367,8 +361,8 @@ async function processLanyardUpdate(data) {
             }
         }
 
-        // Update all UI components instantly
-        updateWidgetUI(data, lastfmTrack);
+        // Update all UI components instantly with both sources
+        updateWidgetUI(data, cachedLastFmTrack);
         updateHeroQuote(data.kv);
         updateAboutPhoto(data.kv);
         updateSkills(data.kv);
