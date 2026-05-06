@@ -3835,8 +3835,7 @@ window.initNeko = function() {
   if (typeof lenis !== 'undefined' && lenis) lenis.stop();
   
   const loader = document.getElementById('global-loader');
-  const loaderNum = document.getElementById('loader-num');
-  const loaderBar = document.getElementById('loader-bar');
+  // loaderNum and loaderBar removed from HTML
   let dummy = { val: 0 };
   let lastNum = -1;
   
@@ -3883,7 +3882,7 @@ window.initNeko = function() {
         onComplete: () => {
           loader.style.display = 'none';
           document.body.style.overflow = '';
-          if (typeof window.lenis !== 'undefined' && window.lenis) window.lenis.start();
+          if (typeof lenis !== 'undefined' && lenis) lenis.start();
         }
       });
 
