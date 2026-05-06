@@ -609,6 +609,109 @@ nav {
   display:block;opacity:0;
 }
 
+/* ─── STATUS CARD ────────────────────────────────────────── */
+.status-card {
+  margin-top: 3rem;
+  position: relative;
+  border: 1px solid var(--line);
+  padding: 1.5rem;
+  background: rgba(12, 12, 16, 0.5);
+  max-width: 420px;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.status-card-header {
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  background: var(--bg);
+  padding: 0 10px;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--fg3);
+  text-transform: uppercase;
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+}
+.status-card-inner {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+.status-avatar-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border: 1px solid var(--line2);
+  background: #000;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.status-avatar-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1) 0, rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px);
+  pointer-events: none;
+  z-index: 2;
+}
+.status-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%; /* Shifted up to hide top borders */
+  image-rendering: pixelated;
+  transform: scale(1.15); /* Slightly more zoom for safety */
+  transform-origin: center;
+}
+.status-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.status-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.2rem;
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent);
+  animation: pulse-dot 2s infinite;
+}
+.status-title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.status-stat {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.05em;
+  color: var(--fg3);
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+.status-stat span {
+  color: var(--fg2);
+  margin-left: 0.5rem;
+}
+.status-tagline {
+  margin-top: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  color: var(--accent);
+  opacity: 0.8;
+}
+
 /* ═══════════════════════════════════════════════════════════
    SKILLS — Stagger grid with scale+fade
 ═══════════════════════════════════════════════════════════ */
@@ -1715,6 +1818,27 @@ footer{
         Every pixel is a decision. Every interaction is a story. I build the kind of web that makes people stop and look twice.
       </div>
       <span class="about-quote-src tag" id="about-src" style="margin-top:1.2rem">— santhoshh.xyz</span>
+
+      <!-- AVAILABILITY STATUS CARD -->
+      <div class="status-card" id="status-card">
+        <div class="status-card-header">AVAILABILITY_STATUS</div>
+        <div class="status-card-inner">
+          <div class="status-avatar-wrap">
+            <img src="/images/expressions/Picsart_26-05-07_00-59-19-444.jpg.jpeg" alt="Santhosh" class="status-avatar" id="status-avatar"/>
+          </div>
+          <div class="status-info">
+            <div class="status-title-row">
+              <div class="status-dot"></div>
+              <div class="status-title">ACTIVE_READY</div>
+            </div>
+            <div class="status-stat" style="color: var(--accent); opacity: 0.6; font-size: 0.5rem; margin-bottom: 0.2rem;">ID: <span>SANTHOSH</span></div>
+            <div class="status-stat">SYSTEM_LOAD: <span>29%</span></div>
+            <div class="status-stat">FOCUS: <span>PRODUCT_DESIGN</span></div>
+            <div class="status-stat">AI_CONTEXT: <span>ENABLED</span></div>
+            <div class="status-tagline">READY_FOR_NEXT_BUILD.</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -3663,6 +3787,39 @@ window.initNeko = function() {
 
     // Initial greeting
     setTimeout(() => say('Meow! Welcome.', 3000), 2000);
+
+    // --- STATUS CARD SHUFFLE ---
+    const statusAvatar = document.getElementById('status-avatar');
+    const expressions = [
+      '/images/expressions/Picsart_26-05-07_00-59-19-444.jpg.jpeg',
+      '/images/expressions/Picsart_26-05-07_00-59-54-836.jpg (1).jpeg',
+      '/images/expressions/Picsart_26-05-07_01-00-19-715.jpg.jpeg',
+      '/images/expressions/Picsart_26-05-07_01-01-02-349.jpg.jpeg',
+      '/images/expressions/Picsart_26-05-07_01-01-34-472.jpg.jpeg',
+      '/images/expressions/Picsart_26-05-07_01-02-02-944.jpg.jpeg',
+      '/images/expressions/Picsart_26-05-07_01-02-30-713.jpg.jpeg',
+      '/images/expressions/Picsart_26-05-07_01-02-47-747.jpg.jpeg'
+    ];
+    let currentExp = 0;
+
+    if (statusAvatar) {
+      setInterval(() => {
+        currentExp = (currentExp + 1) % expressions.length;
+        statusAvatar.src = expressions[currentExp];
+      }, 3000);
+    }
+
+    // Status Card GSAP
+    gsap.to("#status-card", {
+      scrollTrigger: {
+        trigger: "#status-card",
+        start: "top 85%",
+      },
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out"
+    });
   }
 };
 </script>
