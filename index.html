@@ -1550,116 +1550,115 @@ footer{
   will-change: transform;
 }
 
-/* ─── DEV LAB (DYNAMIC WORKSPACE) ────────────────────────── */
+/* ─── DEV LAB (DYNAMIC WORKSPACE) — ULTRA MINIMAL ────────── */
 .widget.dev-lab {
   background: var(--bg2);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 200px;
+  justify-content: center;
+  align-items: center;
+  min-height: 240px;
   overflow: hidden;
   position: relative;
+  border: 1px solid var(--line);
+  transition: border-color 0.8s ease, background 0.8s ease;
 }
 .dev-lab-container {
-  flex: 1;
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
+  gap: 1.5rem;
+}
+.dev-lab-bg {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--line) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.1;
+  transition: opacity 1s ease;
 }
 .laptop-3d {
-  width: 100px;
-  height: 60px;
+  width: 80px;
+  height: 50px;
   position: relative;
-  perspective: 1000px;
-  margin-bottom: 2rem;
-  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  perspective: 800px;
+  transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .laptop-screen {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
   background: #050507;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 3px;
   transform-origin: bottom;
-  transform: rotateX(-95deg); /* Slightly over-closed for tension */
-  transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 1s ease;
+  transform: rotateX(-95deg);
+  transition: transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 1s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  box-shadow: 0 0 0 rgba(126, 255, 160, 0);
-}
-.laptop-screen::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, var(--accent-glow) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 1s ease;
 }
 .laptop-screen::after {
-  content: '</>';
-  font-family: var(--mono);
-  font-size: 1rem;
-  font-weight: 400;
-  color: var(--accent);
+  content: '';
+  width: 12px; height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  filter: blur(8px);
   opacity: 0;
-  transition: opacity 0.5s ease;
-  z-index: 1;
+  transition: opacity 0.8s ease;
 }
 .laptop-body {
   position: absolute;
-  bottom: -4px; left: -5%; width: 110%; height: 6px;
-  background: linear-gradient(to bottom, #1e1e28, #0c0c10);
-  border-radius: 2px 2px 4px 4px;
-  transform: rotateX(15deg);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  bottom: -3px; left: -10%; width: 120%; height: 4px;
+  background: #1a1a1a;
+  border-radius: 1px;
+  transform: rotateX(20deg);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
 .dev-lab-info {
   text-align: center;
-  width: 100%;
-}
-.dev-lab-status {
-  font-family: var(--mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  color: var(--fg3);
-  text-transform: uppercase;
-  margin-bottom: 0.4rem;
+  opacity: 0.4;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateY(5px);
 }
 .dev-lab-project {
   font-family: var(--display);
-  font-weight: 700;
-  font-size: 0.85rem;
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
   color: var(--fg);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  text-transform: uppercase;
 }
 
-/* Active State */
-.dev-lab.is-active .laptop-screen {
-  transform: rotateX(0deg);
-  box-shadow: 0 0 30px var(--accent-glow), inset 0 0 15px var(--accent-glow);
-  border-color: var(--accent);
+/* Active State — Perfection */
+.dev-lab.is-active {
+  border-color: rgba(126, 255, 160, 0.2);
+  background: radial-gradient(circle at center, rgba(126, 255, 160, 0.03), transparent);
 }
-.dev-lab.is-active .laptop-screen::before {
+.dev-lab.is-active .dev-lab-bg {
   opacity: 0.3;
 }
-.dev-lab.is-active .laptop-screen::after {
-  opacity: 0.8;
+.dev-lab.is-active .laptop-screen {
+  transform: rotateX(0deg);
+  box-shadow: 0 0 40px var(--accent-glow), inset 0 0 10px var(--accent-glow);
+  border-color: var(--accent);
 }
-.dev-lab.is-active #dev-status {
-  color: var(--accent);
-  text-shadow: 0 0 8px var(--accent-glow);
+.dev-lab.is-active .laptop-screen::after {
+  opacity: 1;
+}
+.dev-lab.is-active .dev-lab-info {
+  opacity: 1;
+  transform: translateY(0);
+}
+.dev-lab.is-active .laptop-3d {
+  transform: scale(1.1) translateY(-5px);
 }
 
-/* THEMES */
-body.theme-backend { --accent: #5b8cff; --accent-glow: rgba(91, 140, 255, 0.4); }
-body.theme-frontend { --accent: #ff6b35; --accent-glow: rgba(255, 107, 53, 0.4); }
-body.theme-design { --accent: #ff00ff; --accent-glow: rgba(255, 0, 255, 0.4); }
+/* THEMES — Minimalist Tints */
+body.theme-backend { --accent: #5b8cff; --accent-glow: rgba(91, 140, 255, 0.25); }
+body.theme-frontend { --accent: #ff6b35; --accent-glow: rgba(255, 107, 53, 0.25); }
+body.theme-design { --accent: #ff00ff; --accent-glow: rgba(255, 0, 255, 0.25); }
 
 </style>
 </head>
@@ -2266,15 +2265,15 @@ body.theme-design { --accent: #ff00ff; --accent-glow: rgba(255, 0, 255, 0.4); }
           </div>
         </div>
       <div class="widget dev-lab" id="dev-lab-widget">
-        <div class="widget-label live">Dynamic Workspace</div>
+        <div class="dev-lab-bg"></div>
+        <div class="widget-label live">Workstation</div>
         <div class="dev-lab-container">
           <div class="laptop-3d" id="laptop-3d">
             <div class="laptop-screen"></div>
             <div class="laptop-body"></div>
           </div>
           <div class="dev-lab-info">
-            <div class="dev-lab-status">System: <span id="dev-status">Standby</span></div>
-            <div class="dev-lab-project" id="dev-project">No active project detected</div>
+            <div class="dev-lab-project" id="dev-project">Standby</div>
           </div>
         </div>
       </div>
@@ -3152,9 +3151,8 @@ function updateLanyardUI(p) {
   // ─── DEV LAB SYNC ──────────────────────────────────────────
   (function updateDevLab(data) {
     const widget = $('dev-lab-widget');
-    const statusEl = $('dev-status');
     const projectEl = $('dev-project');
-    if (!widget || !statusEl || !projectEl) return;
+    if (!widget || !projectEl) return;
 
     const acts = data.activities || [];
     const vscode = acts.find(a => a.name === 'Visual Studio Code' || a.application_id === '383226320970055681');
@@ -3164,8 +3162,7 @@ function updateLanyardUI(p) {
 
     if (vscode) {
         widget.classList.add('is-active');
-        setText('dev-status', 'ACTIVE');
-        setText('dev-project', projectName || 'Coding...');
+        setText('dev-project', projectName || 'ACTIVE');
         
         if (projectName) {
             const pr = projectName.toLowerCase();
@@ -3176,8 +3173,7 @@ function updateLanyardUI(p) {
         }
     } else {
         widget.classList.remove('is-active');
-        setText('dev-status', 'STANDBY');
-        setText('dev-project', 'No active project detected');
+        setText('dev-project', 'STANDBY');
         document.body.classList.remove('theme-backend', 'theme-frontend', 'theme-design');
     }
   })(p);
