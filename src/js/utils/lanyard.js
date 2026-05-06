@@ -315,28 +315,49 @@ function initLanyardSocket() {
     };
 }
 
+let lastLastFmFetch = 0;
+let cachedLastFmTrack = null;
+
 async function processLanyardUpdate(data) {
     try {
-        // Last.fm check (optional, can be combined with socket data)
-        const lastfmRes = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=1`);
-        const lastfmJson = await lastfmRes.json();
-        
         let lastfmTrack = null;
-        if (lastfmJson && lastfmJson.recenttracks && lastfmJson.recenttracks.track) {
-            const track = Array.isArray(lastfmJson.recenttracks.track) ? lastfmJson.recenttracks.track[0] : lastfmJson.recenttracks.track;
-            if (track && track['@attr'] && track['@attr'].nowplaying === 'true') {
-                const trackName = track.name;
-                const artistName = track.artist['#text'] || track.artist.name;
-                let albumArt = await fetchiTunesAlbumArt(trackName, artistName);
-                if (!albumArt) albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
+
+        // Efficiency Tweak: Only fetch Last.fm if NOT on Spotify OR if the cache has expired (15s)
+        const now = Date.now();
+        const shouldFetchLastFm = !data.listening_to_spotify && (now - lastLastFmFetch > 15000);
+
+        if (shouldFetchLastFm) {
+            try {
+                const lastfmRes = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=1`);
+                const lastfmJson = await lastfmRes.json();
                 
-                lastfmTrack = {
-                    song: trackName,
-                    artist: artistName,
-                    album: track.album['#text'] || track.album.name || 'Unknown Album',
-                    album_art_url: albumArt
-                };
+                if (lastfmJson?.recenttracks?.track) {
+                    const track = Array.isArray(lastfmJson.recenttracks.track) ? lastfmJson.recenttracks.track[0] : lastfmJson.recenttracks.track;
+                    if (track?.['@attr']?.nowplaying === 'true') {
+                        const trackName = track.name;
+                        const artistName = track.artist['#text'] || track.artist.name;
+                        let albumArt = await fetchiTunesAlbumArt(trackName, artistName);
+                        if (!albumArt) albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
+                        
+                        cachedLastFmTrack = {
+                            song: trackName,
+                            artist: artistName,
+                            album: track.album['#text'] || track.album.name || 'Unknown Album',
+                            album_art_url: albumArt
+                        };
+                    } else {
+                        cachedLastFmTrack = null;
+                    }
+                }
+                lastLastFmFetch = now;
+            } catch (err) {
+                console.warn('Last.fm fetch failed, using cache');
             }
+        }
+
+        // Use cached track if we aren't fetching new one
+        if (!data.listening_to_spotify) {
+            lastfmTrack = cachedLastFmTrack;
         }
 
         // Spotify optimization: Fetch missing high-res covers immediately
