@@ -2124,7 +2124,7 @@ footer{
         <div class="widget-label">Currently Reading</div>
         <div class="book-grid" id="bookshelf-widget">
           <div class="book-card">
-            <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/9780735211292-M.jpg" alt="Atomic Habits" loading="lazy"/>
+            <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/9780735211292-M.jpg" alt="Atomic Habits" loading="lazy" onerror="this.src='https://covers.openlibrary.org/b/id/15147241-M.jpg'"/>
             <div class="book-tooltip">
               <div class="book-title">Atomic Habits</div>
               <div class="book-author">James Clear</div>
@@ -2132,7 +2132,7 @@ footer{
             </div>
           </div>
           <div class="book-card">
-            <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/9781612680194-M.jpg" alt="Rich Dad Poor Dad" loading="lazy"/>
+            <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/9781612680194-M.jpg" alt="Rich Dad Poor Dad" loading="lazy" onerror="this.src='https://covers.openlibrary.org/b/id/15215449-M.jpg'"/>
             <div class="book-tooltip">
               <div class="book-title">Rich Dad Poor Dad</div>
               <div class="book-author">Robert Kiyosaki</div>
@@ -2140,7 +2140,7 @@ footer{
             </div>
           </div>
           <div class="book-card">
-            <img class="book-cover" src="https://covers.openlibrary.org/b/id/15052166-M.jpg" alt="The Art of Being Alone" loading="lazy"/>
+            <img class="book-cover" src="https://www.crossword.in/cdn/shop/files/the-art-of-being-alone-bk0485870-41285770150105.jpg?v=1775115576" alt="The Art of Being Alone" loading="lazy" onerror="this.src='https://covers.openlibrary.org/b/id/15052166-M.jpg'"/>
             <div class="book-tooltip">
               <div class="book-title">The Art of Being Alone</div>
               <div class="book-author">Renuka Gavrani</div>
@@ -2148,7 +2148,7 @@ footer{
             </div>
           </div>
           <div class="book-card">
-            <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/9780857197689-M.jpg" alt="The Psychology of Money" loading="lazy"/>
+            <img class="book-cover" src="https://covers.openlibrary.org/b/id/15215449-M.jpg" alt="The Psychology of Money" loading="lazy" onerror="this.src='https://covers.openlibrary.org/b/isbn/9780857197689-M.jpg'"/>
             <div class="book-tooltip">
               <div class="book-title">The Psychology of Money</div>
               <div class="book-author">Morgan Housel</div>
@@ -2156,7 +2156,7 @@ footer{
             </div>
           </div>
           <div class="book-card">
-            <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/9780143130727-M.jpg" alt="Ikigai" loading="lazy"/>
+            <img class="book-cover" src="https://covers.openlibrary.org/b/id/15147241-M.jpg" alt="Ikigai" loading="lazy" onerror="this.src='https://covers.openlibrary.org/b/isbn/9780143130727-M.jpg'"/>
             <div class="book-tooltip">
               <div class="book-title">Ikigai</div>
               <div class="book-author">Héctor García & Francesc Miralles</div>
@@ -3588,6 +3588,13 @@ window.initNeko = function() {
     }
   });
 })();
+
+// --- SERVICE WORKER REGISTRATION ---
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed: ', err));
+  });
+}
 </script>
 </body>
 </html>
