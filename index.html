@@ -2914,16 +2914,44 @@ gsap.registerPlugin(ScrollTrigger);
       .then(async (response) => {
         let json = await response.json();
         if (response.status == 200) {
+          // Success State
           result.style.display = "block";
+          result.style.opacity = "1";
           result.textContent = "// TRANSMISSION SUCCESSFUL";
-          form.style.display = "none";
+          
+          form.reset();
+          form.style.display = "flex"; // Explicitly ensure form stays visible
+          
+          if (submitBtn) {
+            submitBtn.querySelector('span').textContent = "Message Sent!";
+            gsap.to(submitBtn, { backgroundColor: "var(--accent)", color: "var(--bg)", duration: 0.3 });
+            setTimeout(() => {
+              submitBtn.querySelector('span').textContent = "Send Message";
+              gsap.to(submitBtn, { backgroundColor: "", color: "", duration: 0.3 });
+            }, 3000);
+          }
+
+          // Dispatch event for pet cat
+          document.dispatchEvent(new CustomEvent('neko-message', { 
+            detail: { text: "Purrr! Message sent! My human will get back to you shortly. 😺", duration: 6000 }
+          }));
+
+          // Hide success message after a delay
+          setTimeout(() => {
+            gsap.to(result, { opacity: 0, duration: 0.5, onComplete: () => {
+              result.style.display = "none";
+              result.style.opacity = "1";
+            }});
+          }, 5000);
         } else {
+          if (submitBtn) submitBtn.querySelector('span').textContent = "Send Message";
           console.log(response);
           result.style.display = "block";
           result.textContent = "// ERROR: " + json.message;
         }
       })
       .catch(error => {
+        if (submitBtn) submitBtn.querySelector('span').textContent = "Send Message";
         console.log(error);
         result.style.display = "block";
         result.textContent = "// SYSTEM ERROR: RETRY LATER";
@@ -3322,6 +3350,16 @@ loadTMDB();
 <!-- Neko.js — A classic desktop pet -->
 <script src="https://louisabraham.github.io/nekojs/neko.js"></script>
 <script>
+// Global Neko Message Listener (Catches events even before cat is ready)
+document.addEventListener('neko-message', (e) => {
+  if (window.nekoSay) {
+    window.nekoSay(e.detail.text, e.detail.duration || 3000);
+  } else {
+    window._nekoQueue = window._nekoQueue || [];
+    window._nekoQueue.push(e.detail);
+  }
+});
+
 window.initNeko = function() {
   // Wait for Neko to be available
   if (typeof createNeko === 'function') {
@@ -3400,24 +3438,48 @@ window.initNeko = function() {
 
     window.addEventListener('pointerdown', handleInstantAction, { capture: true, passive: true });
 
+    // --- CYBER GUIDE UPGRADE ---
+    const bubble = document.createElement('div');
+    bubble.className = 'neko-bubble';
+    document.body.appendChild(bubble);
+
+    let bubbleTimeout;
+    const say = (text, duration = 3000) => {
+      clearTimeout(bubbleTimeout);
+      bubble.textContent = text;
+      bubble.style.opacity = '1';
+      bubble.style.transform = 'translate(-50%, -100%) translateY(0)';
+      bubbleTimeout = setTimeout(() => {
+        bubble.style.opacity = '0';
+        bubble.style.transform = 'translate(-50%, -100%) translateY(10px)';
+      }, duration);
+    };
+    window.nekoSay = say;
+
     // Custom "Unique" Interaction: Heart when near logo
     const logo = document.querySelector('.nav-logo');
     
     function checkProximity() {
-      if (!pet.element || !logo) return;
+      if (!pet.element) return;
       
       const petRect = pet.element.getBoundingClientRect();
-      const logoRect = logo.getBoundingClientRect();
       
-      const dx = (petRect.left + petRect.width/2) - (logoRect.left + logoRect.width/2);
-      const dy = (petRect.top + petRect.height/2) - (logoRect.top + logoRect.height/2);
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      
-      if (dist < 100 && Math.random() < 0.05) {
-        spawnHeart(petRect.left, petRect.top);
+      // Update bubble position
+      if (bubble.style.opacity === '1') {
+        bubble.style.left = (petRect.left + petRect.width / 2) + 'px';
+        bubble.style.top = (petRect.top - 5) + 'px';
       }
-      
-      // (Removed intentional CSS glitch effect to prevent jittering)
+
+      if (logo) {
+        const logoRect = logo.getBoundingClientRect();
+        const dx = (petRect.left + petRect.width/2) - (logoRect.left + logoRect.width/2);
+        const dy = (petRect.top + petRect.height/2) - (logoRect.top + logoRect.height/2);
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        
+        if (dist < 100 && Math.random() < 0.05) {
+          spawnHeart(petRect.left, petRect.top);
+        }
+      }
       
       requestAnimationFrame(checkProximity);
     }
@@ -3446,22 +3508,11 @@ window.initNeko = function() {
 
     requestAnimationFrame(checkProximity);
 
-    // --- CYBER GUIDE UPGRADE ---
-    const bubble = document.createElement('div');
-    bubble.className = 'neko-bubble';
-    document.body.appendChild(bubble);
-
-    let bubbleTimeout;
-    const say = (text, duration = 3000) => {
-      clearTimeout(bubbleTimeout);
-      bubble.textContent = text;
-      bubble.style.opacity = '1';
-      bubble.style.transform = 'translateY(0)';
-      bubbleTimeout = setTimeout(() => {
-        bubble.style.opacity = '0';
-        bubble.style.transform = 'translateY(10px)';
-      }, duration);
-    };
+    // Process any queued messages
+    if (window._nekoQueue) {
+      window._nekoQueue.forEach(d => say(d.text, d.duration));
+      delete window._nekoQueue;
+    }
 
     // Follow the cat smoothly
     const updateBubblePos = () => {
