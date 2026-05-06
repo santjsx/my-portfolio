@@ -28,7 +28,10 @@
   --fg:#e8e4db;
   --fg2:#8a8590;
   --fg3:#4a4758;
+  --accent-light:#9dff95;
   --accent:#25ec2f;
+  --accent-dark:#189e1f;
+  --accent-grad: linear-gradient(180deg, var(--accent-light) 0%, var(--accent-dark) 100%);
   --accent2:#ff6b35;
   --accent3:#5b8cff;
   --display:'Syne',sans-serif;
@@ -446,7 +449,7 @@ nav {
   margin-top: 50px; /* Additional hard margin */
   padding:clamp(2.5rem,7vh,6rem) clamp(1.25rem,5vw,4rem);
   max-width:1200px;margin:0 auto;width:100%;
-  overflow:visible;
+  overflow:hidden;
 }
 .hero-eyebrow{display:flex;align-items:center;gap:1rem;margin-bottom:clamp(1.5rem,3vh,2.5rem);opacity:0}
 .hero-eyebrow-line{width:2rem;height:1px;background:var(--fg3);flex-shrink:0}
@@ -1284,7 +1287,7 @@ nav {
   display:flex;align-items:center;gap:.5rem;
 }
 .widget-label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--line2);flex-shrink:0}
-.widget-label.live::before{background:var(--accent);box-shadow:0 0 6px rgba(126,255,160,.4);animation:pulse-dot 2s infinite}
+.widget-label.live::before{background:var(--accent-grad);box-shadow:0 0 8px var(--accent);animation:pulse-dot 2s infinite}
 
 .skel{
   background:linear-gradient(90deg,var(--bg3) 25%,var(--line) 50%,var(--bg3) 75%);
@@ -1564,8 +1567,8 @@ nav {
 .submit-btn {
   margin-top: 1rem;
   padding: 1rem;
-  background: var(--accent); /* Inverted */
-  color: var(--bg); /* Inverted */
+  background: var(--accent-grad); /* Gradient Apply */
+  color: var(--bg);
   border: none;
   border-radius: 4px;
   font-family: var(--display);
@@ -1661,52 +1664,6 @@ footer{
   image-rendering: -webkit-optimize-contrast;
 }
 
-
-/* ─── BATARANG ORNAMENT ───────────────────────────────────────── */
-.bat-anchor {
-  position: relative;
-  display: inline-block;
-}
-.bat-ornament {
-  position: absolute;
-  width: clamp(40px, 10vw, 60px);
-  height: auto;
-  opacity: 0;
-  filter: drop-shadow(0 0 15px rgba(37, 236, 47, 0.4));
-  z-index: 10;
-  pointer-events: none;
-  /* Precisely above the H */
-  bottom: 110%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* Entry Animations */
-.bat-fly-top { animation: bat-top 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards, bat-float 4s ease-in-out infinite 1.4s; }
-.bat-fly-bottom { animation: bat-bottom 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards, bat-float 4s ease-in-out infinite 1.4s; }
-.bat-fly-left { animation: bat-left 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards, bat-float 4s ease-in-out infinite 1.4s; }
-.bat-fly-right { animation: bat-right 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards, bat-float 4s ease-in-out infinite 1.4s; }
-
-@keyframes bat-top {
-  0% { transform: translate(-50%, -500%) rotate(0deg) scale(0.5); opacity: 0; }
-  100% { transform: translate(-50%, 0) rotate(720deg) scale(1); opacity: 0.8; }
-}
-@keyframes bat-bottom {
-  0% { transform: translate(-50%, 500%) rotate(0deg) scale(0.5); opacity: 0; }
-  100% { transform: translate(-50%, 0) rotate(720deg) scale(1); opacity: 0.8; }
-}
-@keyframes bat-left {
-  0% { transform: translate(-500%, 0) rotate(0deg) scale(0.5); opacity: 0; }
-  100% { transform: translate(-50%, 0) rotate(720deg) scale(1); opacity: 0.8; }
-}
-@keyframes bat-right {
-  0% { transform: translate(500%, 0) rotate(0deg) scale(0.5); opacity: 0; }
-  100% { transform: translate(-50%, 0) rotate(720deg) scale(1); opacity: 0.8; }
-}
-@keyframes bat-float {
-  0%, 100% { transform: translate(-50%, 0) rotate(720deg); }
-  50% { transform: translate(-50%, -10px) rotate(725deg); }
-}
 </style>
 </head>
 <body>
@@ -2783,20 +2740,15 @@ scrollBtn.addEventListener('click', () => lenis.scrollTo(0, { duration: 1.6 }));
   const container = document.getElementById('hero-name');
   if (!container) return;
   const lines = container.querySelectorAll('.name-line');
-  lines.forEach((line, lineIdx) => {
+  lines.forEach(line => {
     const target = line.querySelector('span') || line;
     const text = target.textContent;
     target.innerHTML = '';
-    [...text].forEach((ch, charIdx) => {
+    [...text].forEach(ch => {
       const span = document.createElement('span');
       span.className = 'char';
-      if (lineIdx === 0 && charIdx === 7) { // The last 'H' in SANTHOSH
-        span.classList.add('bat-anchor');
-        span.innerHTML = `${ch}<img src="/images/3bf32967367a8384f367cf610ac2a62b-removebg-preview.png" alt="Batarang" class="bat-ornament" id="bat-logo"/>`;
-      } else {
-        span.textContent = ch === ' ' ? '\u00A0' : ch;
-      }
       span.style.display = 'inline-block';
+      span.textContent = ch === ' ' ? '\u00A0' : ch;
       gsap.set(span, { y: '110%', opacity: 0, filter: 'blur(10px)', skewY: 10 });
       target.appendChild(span);
     });
@@ -3958,19 +3910,7 @@ window.initNeko = function() {
   });
 })();
 
-    // --- BATARANG LOGIC ---
-    const batLogo = document.getElementById('bat-logo');
-    if (batLogo) {
-      const directions = ['bat-fly-top', 'bat-fly-bottom', 'bat-fly-left', 'bat-fly-right'];
-      const randomDir = directions[Math.floor(Math.random() * directions.length)];
-      
-      // Delay slightly for maximum impact after page reveal
-      setTimeout(() => {
-        batLogo.classList.add(randomDir);
-      }, 1000);
-    }
-
-    // --- SERVICE WORKER REGISTRATION ---
+// --- SERVICE WORKER REGISTRATION ---
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed: ', err));
