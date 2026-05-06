@@ -643,10 +643,11 @@ nav {
   position: relative;
   width: 100px;
   height: 100px;
-  border: 1px solid var(--line2);
+  border: 1px solid var(--accent); /* Solid accent border */
   background: #000;
   flex-shrink: 0;
   overflow: hidden;
+  box-shadow: 0 0 20px rgba(126, 255, 160, 0.25); /* Prominent glow */
 }
 .status-avatar-wrap::after {
   content: '';
@@ -3806,7 +3807,7 @@ window.initNeko = function() {
       setInterval(() => {
         currentExp = (currentExp + 1) % expressions.length;
         statusAvatar.src = expressions[currentExp];
-      }, 3000);
+      }, 275);
     }
 
     // Status Card GSAP
